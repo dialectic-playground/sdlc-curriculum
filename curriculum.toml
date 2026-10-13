@@ -6,6 +6,9 @@
 #   tools   executable names the project produces (all prefixed "dp-" so that
 #           `make install` never shadows a real system utility)
 
+# Version of the *specified behavior* (printed by every tool's --version, CONV-02). It is
+# independent of release tags and changes only when specified behavior changes; see README.md
+# "Versioning".
 spec_version = "1.0.0"
 
 [[project]]
