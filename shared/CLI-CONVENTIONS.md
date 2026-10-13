@@ -67,9 +67,14 @@ Unless a tool's SRS specifies different parsing (for example, `dp-echo` and `dp-
   wins. Repeating a flag (an option with no value) has the same effect as giving it once.
 - **CONV-12: Scan order.** Arguments are examined from left to right. As soon as the first
   `--help` or `--version` is reached, the tool prints the help or version output and exits
-  with status 0. If a usage error is found earlier in the scan, the usage error is reported
-  instead. Usage errors are always detected before any input is read or any output is
-  written.
+  with status 0. If an option *syntax* error (unknown option, missing option argument, or an
+  argument given to an option that takes none) is found earlier in the scan, that usage error
+  is reported instead. Operands are only collected during the scan, and option *values* are
+  only recorded. Errors about operands (missing or extra) and about option values are
+  detected after the scan completes, so they never take precedence over `--help` or
+  `--version`. For example, `<tool> extra --help` and `<tool> --count 0 --help` print the help,
+  while `<tool> -x --help` reports the invalid option. Usage errors are always detected before
+  any input is read or any output is written.
 
 ## 4. Diagnostics
 
@@ -175,6 +180,13 @@ literal.
   in that case is unspecified.
 - **CONV-26**: Tools MUST NOT read standard input unless their SRS says they do. A tool that
   reads stdin MUST work when stdin is empty, redirected from a file, or a pipe.
+
+- **CONV-31: Resource limits and runtimes.** Memory limits in a project's NFRs apply to
+  natively compiled implementations. An implementation on a managed runtime or interpreter
+  (for example the JVM, .NET, Node.js, Python, Ruby, Perl, PHP, or Julia) meets a memory
+  limit when its peak memory, minus the runtime's own baseline, is within the limit. The
+  baseline is the peak memory of starting the runtime with an empty program. Run-time limits
+  state their interpreted-runtime allowance explicitly.
 
 ## 9. Conditions under the black-box test harness
 

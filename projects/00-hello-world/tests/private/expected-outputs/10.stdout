@@ -6,3 +6,11 @@ Options:
   -c, --count=COUNT   print the greeting COUNT times (1-1000, default 1)
       --help          display this help and exit
       --version       output version information and exit
+Usage: dp-hello [OPTION]...
+Print a greeting to standard output.
+
+Options:
+  -n, --name=NAME     greet NAME instead of World
+  -c, --count=COUNT   print the greeting COUNT times (1-1000, default 1)
+      --help          display this help and exit
+      --version       output version information and exit

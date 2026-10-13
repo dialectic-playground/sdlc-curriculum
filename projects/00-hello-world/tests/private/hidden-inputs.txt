@@ -10,3 +10,4 @@
 08 dp-hello -n A -n B
 09 dp-hello -- -n
 10 dp-hello --help extra -x
+10 dp-hello extra --help

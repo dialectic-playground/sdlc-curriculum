@@ -149,7 +149,8 @@ Validation (FR-03, FR-05) applies only to the winning value.
 `--help` MUST write the help text from user-manual §"Help output" byte-for-byte to standard
 output and exit 0, following the scan order in CONV-12.
 *AC:* `dp-hello --help` matches the user manual exactly. `dp-hello --help extra -x` prints the
-help and exits 0, because the scan reaches `--help` first. *(UR-04)*
+help and exits 0, because the scan reaches `--help` first. `dp-hello extra --help` also prints
+the help: operand errors are detected only after the scan (CONV-12). *(UR-04)*
 
 **FR-08: Version.**
 `--version` MUST write `dp-hello (dialectic-playground) 1.0.0` + LF and exit 0 (CONV-02).
@@ -157,7 +158,9 @@ help and exits 0, because the scan reaches `--help` first. *(UR-04)*
 
 **FR-09: Operands rejected.**
 Any operand, including tokens that follow `--`, MUST produce
-`dp-hello: extra operand '<first operand>'` and exit status 2.
+`dp-hello: extra operand '<first operand>'` and exit status 2. Operands are checked after the
+whole argument list has been scanned, so `--help` or `--version` anywhere in the list takes
+precedence (CONV-12).
 *AC:* `dp-hello extra` and `dp-hello -- -n` each exit 2 with that diagnostic. *(UR-06)*
 
 **FR-10: Unknown and malformed options.**
@@ -176,7 +179,7 @@ When a usage error occurs, the tool MUST NOT write anything to standard output (
 | ID | Category | Requirement | Verification |
 | :-- | :-- | :-- | :-- |
 | NFR-01 | Portability | Output MUST be byte-identical on Linux, macOS, and Windows, and every line MUST end in LF only (CONV-03). | CI black-box tests on 3 OSes |
-| NFR-02 | Performance | Wall-clock run time MUST be under 100 ms for a natively compiled build (under 300 ms for an interpreted runtime) on CI hardware, with peak memory under 32 MiB. | Measurement |
+| NFR-02 | Performance | Wall-clock run time MUST be under 100 ms for a natively compiled build (under 300 ms for an interpreted runtime) on CI hardware, with peak memory under 32 MiB (above the runtime's baseline for managed or interpreted runtimes, CONV-31). | Measurement |
 | NFR-03 | Robustness | The tool MUST NOT crash, panic, or print a stack trace for any argument list (CONV-24). | Unit + black-box tests |
 | NFR-04 | Maintainability | Option parsing, validation, greeting construction, and output MUST be separate units (Principles 13, 18). | Design review |
 | NFR-05 | Testability | Greeting construction MUST be a pure function covered by unit tests. | Code review |
@@ -203,7 +206,7 @@ Each diagnostic is followed by `Try 'dp-hello --help' for more information.` and
 | Method | Applies to |
 | :-- | :-- |
 | Black-box test (public, `tests/public/`, 10 cases) | FR-01, FR-02, FR-04, FR-07, FR-08, FR-09, FR-10 |
-| Black-box test (hidden, `tests/private/`, 10 cases) | FR-02 … FR-07, FR-09, FR-10 |
+| Black-box test (hidden, `tests/private/`, 10 cases; case 10 has two steps) | FR-02 … FR-07, FR-09, FR-10 |
 | Unit test (written by the implementer) | FR-02 … FR-06, NFR-05 |
 | Inspection / review | NFR-02, NFR-04, NFR-07 |
 
