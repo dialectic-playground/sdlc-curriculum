@@ -50,7 +50,8 @@ sdlc-curriculum/
 │   │   ├── MASTER-TEST-PLAN-TEMPLATE.md
 │   │   ├── DOCS-PLAN-TEMPLATE.md
 │   │   ├── BASE-MAKEFILE           # universal polyglot build contract
-│   │   └── assignment/             # templates for each project's assignment/ workspace
+│   │   ├── assignment/             # templates for each project's assignment/ workspace
+│   │   └── language/               # skeleton for language repositories (root Makefile)
 │   ├── ci/
 │   │   └── cross-platform-ci.yml   # GitHub Actions template for implementation repos
 │   └── tools/
@@ -199,18 +200,20 @@ directory into a private repository and have CI check it out using a token.
 
    ```sh
    git submodule add https://github.com/dialectic-playground/sdlc-curriculum
-   git -C sdlc-curriculum checkout v1.1.0
-   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.1.0"
+   git -C sdlc-curriculum checkout v1.2.0
+   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.2.0"
    ```
 
-2. For each project, copy `projects/XX-slug/assignment/` to `XX-slug/` in your repository. Set
-   `CURRICULUM_ROOT := ../sdlc-curriculum` and `BIN_DIR`, and fill in the `DP_*` hooks. Base the
-   repository's `Containerfile` on the language's official image (pinned by digest), adding
-   `make` and `python3`.
+2. Lay the repository out as described in
+   [`shared/templates/language/`](shared/templates/language/README.md): the root `Makefile`,
+   and a copy of `projects/XX-slug/assignment/` as `XX-slug/` for every project (with
+   `CURRICULUM_ROOT := ../sdlc-curriculum`). Base the `Containerfile` on the language's
+   official image (pinned by digest), adding `make` and `python3`. To implement a project, set
+   its `BIN_DIR` and `DP_*` hooks, then add it to `IMPLEMENTED` in the root `Makefile`.
 3. Complete `hld.md` and `lld.md` **before** writing code (Principle 11). Then implement,
    write unit tests, and keep `rtm.md` and `master-test-plan.md` current.
-4. Copy `shared/ci/cross-platform-ci.yml` to `.github/workflows/ci.yml`, then list your projects
-   and add your native toolchain setup step.
+4. Copy `shared/ci/cross-platform-ci.yml` to `.github/workflows/ci.yml` and add your native
+   toolchain setup step. CI runs `make check`, so it needs no edits as projects are added.
 5. A project is done when `make lint test test-hidden` passes in the container and natively on
    all three operating systems.
 
