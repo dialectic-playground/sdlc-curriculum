@@ -51,7 +51,8 @@ check-repository:
 
 # TEMPLATE: print each tool's version and fail unless it is on the expected release line,
 # so the container image and the native CI toolchains stay in step. For example:
-#	go version | tee /dev/stderr | grep -q 'go1\.27\.'
+#	@version="$$(go version)"; echo "$$version"; echo "$$version" | grep -q 'go1\.27\.' \
+#		|| { echo "toolchain: expected Go 1.27" >&2; exit 1; }
 toolchain:
 	python3 --version || python --version
 	make --version | head -1
