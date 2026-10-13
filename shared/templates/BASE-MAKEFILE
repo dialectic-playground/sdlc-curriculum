@@ -1,0 +1,131 @@
+# =============================================================================
+# BASE-MAKEFILE: universal polyglot build contract for the SDLC curriculum.
+# =============================================================================
+#
+# This file is language-neutral. It defines the standard targets that every implementation
+# must offer, in every language, and wires the black-box acceptance suites to them. Each
+# implementation supplies its own language-specific commands through the DP_* hook variables
+# in its project Makefile (generated from projects/<slug>/assignment/Makefile).
+#
+# Standard targets:
+#
+#     make all          build the tools; the executables end up in $(BIN_DIR)      DP_BUILD
+#     make install      install the tools into $(BINDIR) (default ~/.local/bin)    DP_INSTALL
+#     make uninstall    remove the installed tools                                 DP_UNINSTALL
+#     make test         language-native unit tests, then the public black-box suite  DP_UNIT_TEST
+#     make check        alias for test
+#     make lint         static analysis, linters, and type checkers                DP_LINT
+#     make format       apply the language's standard formatter                    DP_FORMAT
+#     make clean        remove build artifacts and compilation caches             DP_CLEAN
+#     make distclean    clean, then remove virtualenvs, dependency caches, local config  DP_DISTCLEAN
+#
+# Additional targets provided by this file (no hooks needed):
+#
+#     make test-blackbox  run the public black-box suite against $(BIN_DIR)
+#     make test-hidden    run the hidden black-box suite (grading / CI)
+#     make grade          run both suites
+#     make help           show the configuration and which hooks are defined
+#
+# Variables a project Makefile MUST set before including this file:
+#
+#     PROJECT          curriculum project slug, e.g. 02-cat
+#     TOOLS            executables the project produces, e.g. dp-cat
+#     BIN_DIR          directory where `make all` leaves those executables. On Windows the
+#                      runner also accepts <tool>.exe.
+#     DP_BUILD … DP_DISTCLEAN   shell commands for the hooks listed above. Use `define` for
+#                      multi-line commands. An undefined hook makes its target fail with
+#                      an explanation.
+#
+# Variables it MAY override:
+#
+#     CURRICULUM_ROOT  path to a checkout of the sdlc-curriculum repository (default ../../..),
+#                      for example a git submodule in a language repository
+#     PREFIX / BINDIR  install location used by DP_INSTALL / DP_UNINSTALL
+#                      (default ~/.local and ~/.local/bin)
+#     PYTHON           interpreter for the black-box runner (Python >= 3.11)
+#
+# Variables this file provides for use in hooks: EXE (".exe" on Windows, otherwise empty),
+# PREFIX, BINDIR, TOOLS.
+#
+# Requirements: GNU Make >= 3.82, a POSIX shell (on Windows, Git Bash or MSYS2), and
+# Python >= 3.11 for shared/tools/run-tests.py.
+# =============================================================================
+
+ifndef PROJECT
+  $(error PROJECT is not set: include BASE-MAKEFILE from a project Makefile)
+endif
+
+SHELL := /bin/sh
+.DEFAULT_GOAL := all
+
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+  PYTHON ?= python
+else
+  EXE :=
+  PYTHON ?= python3
+endif
+
+CURRICULUM_ROOT ?= ../../..
+PREFIX ?= $(HOME)/.local
+BINDIR ?= $(PREFIX)/bin
+RUNNER := $(CURRICULUM_ROOT)/shared/tools/run-tests.py
+PUBLIC_SUITE ?= $(CURRICULUM_ROOT)/projects/$(PROJECT)/tests/public
+PRIVATE_SUITE ?= $(CURRICULUM_ROOT)/projects/$(PROJECT)/tests/private
+
+HOOKS := DP_BUILD DP_INSTALL DP_UNINSTALL DP_UNIT_TEST DP_LINT DP_FORMAT DP_CLEAN DP_DISTCLEAN
+
+# $(call run_hook,NAME): expand hook NAME as recipe lines, or fail with a helpful message.
+run_hook = $(if $(strip $(value $(1))),$($(1)),@echo "$(PROJECT): hook $(1) is not defined; \
+set it in your project Makefile (see shared/templates/BASE-MAKEFILE)" >&2; exit 1)
+
+.PHONY: all install uninstall test check test-unit test-blackbox test-hidden grade \
+        lint format clean distclean help require-bin-dir
+
+all:
+	$(call run_hook,DP_BUILD)
+
+install: all
+	$(call run_hook,DP_INSTALL)
+
+uninstall:
+	$(call run_hook,DP_UNINSTALL)
+
+test: test-unit test-blackbox
+
+check: test
+
+test-unit:
+	$(call run_hook,DP_UNIT_TEST)
+
+lint:
+	$(call run_hook,DP_LINT)
+
+format:
+	$(call run_hook,DP_FORMAT)
+
+clean:
+	$(call run_hook,DP_CLEAN)
+
+distclean: clean
+	$(call run_hook,DP_DISTCLEAN)
+
+require-bin-dir:
+	@test -n "$(BIN_DIR)" || { echo "$(PROJECT): BIN_DIR is not set" >&2; exit 1; }
+
+test-blackbox: all require-bin-dir
+	$(PYTHON) $(RUNNER) --bin-dir "$(BIN_DIR)" "$(PUBLIC_SUITE)"
+
+test-hidden: all require-bin-dir
+	$(PYTHON) $(RUNNER) --bin-dir "$(BIN_DIR)" "$(PRIVATE_SUITE)"
+
+grade: all require-bin-dir
+	$(PYTHON) $(RUNNER) --bin-dir "$(BIN_DIR)" "$(PUBLIC_SUITE)" "$(PRIVATE_SUITE)"
+
+help:
+	@echo "project:         $(PROJECT)"
+	@echo "tools:           $(TOOLS)"
+	@echo "BIN_DIR:         $(if $(BIN_DIR),$(BIN_DIR),(not set))"
+	@echo "curriculum root: $(CURRICULUM_ROOT)"
+	@$(foreach hook,$(HOOKS),echo "$(hook): $(if $(strip $(value $(hook))),defined,NOT DEFINED)";)
+	@echo "targets: all install uninstall test check test-hidden grade lint format clean distclean"

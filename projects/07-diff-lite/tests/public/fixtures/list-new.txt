@@ -1,0 +1,6 @@
+milk
+flour
+sugar
+eggs
+butter
+cheese

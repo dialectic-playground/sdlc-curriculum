@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-diff (projects/07-diff-lite).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Input files live in fixtures/ (crlf.txt intentionally uses CRLF line endings).
+01 dp-diff same-1.txt same-2.txt
+02 dp-diff fruits.txt fruits-changed.txt
+03 dp-diff list-old.txt list-new.txt
+04 dp-diff -u long-old.txt long-new.txt
+05 dp-diff -U 1 long-old.txt long-new.txt
+06 dp-diff pings.txt pongs.txt
+07 dp-diff -u poem.txt poem-no-eol.txt
+08 dp-diff --strip-trailing-cr crlf.txt lf.txt
+09 dp-diff -q fruits.txt fruits-changed.txt
+10 dp-diff fruits.txt nosuch.txt

@@ -1,0 +1,64 @@
+# Curriculum registry — the single source of truth for the project list.
+# Read by shared/tools/check-curriculum.py, tools/scaffold-project.py, and CI.
+#
+#   slug    directory under projects/
+#   title   human-readable title
+#   tools   executable names the project produces (all prefixed "dp-" so that
+#           `make install` never shadows a real system utility)
+
+spec_version = "1.0.0"
+
+[[project]]
+slug = "00-hello-world"
+title = "Standard Terminal Hello World"
+tools = ["dp-hello"]
+
+[[project]]
+slug = "01-echo"
+title = "Stream Echo & Formatting"
+tools = ["dp-echo"]
+
+[[project]]
+slug = "02-cat"
+title = "Concatenate & Number Files"
+tools = ["dp-cat"]
+
+[[project]]
+slug = "03-head-tail"
+title = "Stream Slicing Utility"
+tools = ["dp-head", "dp-tail"]
+
+[[project]]
+slug = "04-wc"
+title = "Word, Line, and Byte Counter"
+tools = ["dp-wc"]
+
+[[project]]
+slug = "05-grep-lite"
+title = "Pattern Matching Search Engine"
+tools = ["dp-grep"]
+
+[[project]]
+slug = "06-find-lite"
+title = "Recursive File Discovery Suite"
+tools = ["dp-find"]
+
+[[project]]
+slug = "07-diff-lite"
+title = "Line-by-Line File Comparison"
+tools = ["dp-diff"]
+
+[[project]]
+slug = "08-env-run"
+title = "Environment Execution Wrapper"
+tools = ["dp-env"]
+
+[[project]]
+slug = "09-kv-store"
+title = "Local Key-Value Storage Engine (CLI + API)"
+tools = ["dp-kv"]
+
+[[project]]
+slug = "10-sys-monitor"
+title = "System Resource Telemetry Daemonic CLI"
+tools = ["dp-sysmon"]

@@ -1,0 +1,1 @@
+{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":8,"percent":37.5},"memory":{"total_bytes":17179869184,"available_bytes":6442450944},"disks":[{"mount":"/","total_bytes":107374182400,"used_bytes":53687091200},{"mount":"/boot","total_bytes":1073741824,"used_bytes":268435456},{"mount":"/home","total_bytes":536870912000,"used_bytes":214748364800}],"processes":[]}

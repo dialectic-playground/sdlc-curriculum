@@ -1,0 +1,12 @@
+# Hidden black-box verification tests for dp-wc (projects/04-wc).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+01 dp-wc -lwmcL invalid.bin
+02 dp-wc --lines --words --bytes --max-line-length crlf.txt
+03 dp-wc empty.txt noeol.txt
+04 dp-wc -cmL big-utf8.txt
+05 dp-wc subdir missing.txt
+06 dp-wc - poem.txt - < poem.txt
+07 dp-wc -wL spaces.txt
+08 dp-wc --version
+09 dp-wc -lz poem.txt
+10 dp-wc --bytes=1 poem.txt

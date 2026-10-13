@@ -1,0 +1,6 @@
+dp-kv: bad-version.json: not a valid dp-kv store file
+dp-kv: dup-key.json: not a valid dp-kv store file
+dp-kv: too-long.json: not a valid dp-kv store file
+dp-kv: nothere.json: No such file or directory
+dp-kv: missing operand
+Try 'dp-kv --help' for more information.

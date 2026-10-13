@@ -1,0 +1,12 @@
+dp-kv: missing command
+Try 'dp-kv --help' for more information.
+dp-kv: missing operand
+Try 'dp-kv --help' for more information.
+dp-kv: missing operand
+Try 'dp-kv --help' for more information.
+dp-kv: extra operand 'b'
+Try 'dp-kv --help' for more information.
+dp-kv: invalid argument '' for '--store'
+Try 'dp-kv --help' for more information.
+dp-kv: unrecognized option '--bogus'
+Try 'dp-kv --help' for more information.

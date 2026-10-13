@@ -1,0 +1,21 @@
+Usage: dp-env [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]
+Set each NAME to VALUE in the environment and run COMMAND.
+
+Options are recognized only before the first operand. A lone '-' as the first
+operand implies -i. Without COMMAND, print the resulting environment, one
+NAME=VALUE entry per line, sorted by name.
+
+Options:
+  -i, --ignore-environment  start with an empty environment
+  -u, --unset=NAME          remove variable NAME from the environment
+  -C, --chdir=DIR           change the working directory to DIR before
+                              running COMMAND
+  -0, --null                end each printed entry with NUL, not newline
+      --help                display this help and exit
+      --version             output version information and exit
+
+Exit status:
+  125  dp-env itself failed
+  126  COMMAND was found but could not be run
+  127  COMMAND was not found
+  otherwise, the exit status of COMMAND (128+N if killed by signal N)

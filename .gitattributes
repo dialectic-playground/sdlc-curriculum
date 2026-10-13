@@ -1,0 +1,7 @@
+# Check out every text file with LF on every OS (GitHub's Windows runners default to
+# core.autocrlf=true). The user manuals' help text and the Makefiles depend on this.
+* text=auto eol=lf
+
+# Test inputs, fixtures, and expected outputs are compared byte-for-byte on every OS.
+# Never let git rewrite them; some fixtures contain CRLF on purpose. (Later rules win.)
+projects/*/tests/** -text

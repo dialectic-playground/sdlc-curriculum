@@ -1,0 +1,18 @@
+Host:      alpha
+Time:      2026-03-14T09:26:53Z
+CPU:       37.5% busy; logical CPUs: 8
+Memory:    10.0 GiB used of 16.0 GiB (62.5%); 6.0 GiB available
+Processes: 8 total; 4 shown
+
+MOUNT                       USED       TOTAL    USE%
+/                       50.0 GiB   100.0 GiB    50.0
+/boot                  256.0 MiB     1.0 GiB    25.0
+/home                  200.0 GiB   500.0 GiB    40.0
+
+    PID    CPU%         RSS  NAME
+      1     0.0    12.0 MiB  systemd
+    412     0.1     8.0 MiB  sshd
+    977     0.0     5.0 MiB  bash
+   1203    42.3     1.5 GiB  firefox
+{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":8,"percent":37.5},"memory":{"total_bytes":17179869184,"available_bytes":6442450944},"disks":[{"mount":"/","total_bytes":107374182400,"used_bytes":53687091200},{"mount":"/boot","total_bytes":1073741824,"used_bytes":268435456},{"mount":"/home","total_bytes":536870912000,"used_bytes":214748364800}],"processes":[{"pid":1,"name":"systemd","cpu_percent":0.0,"rss_bytes":12582912},{"pid":412,"name":"sshd","cpu_percent":0.1,"rss_bytes":8388608},{"pid":977,"name":"bash","cpu_percent":0.0,"rss_bytes":5242880},{"pid":1203,"name":"firefox","cpu_percent":42.3,"rss_bytes":1610612736}]}
+{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":8,"percent":37.5},"memory":{"total_bytes":17179869184,"available_bytes":6442450944},"disks":[{"mount":"/","total_bytes":107374182400,"used_bytes":53687091200},{"mount":"/boot","total_bytes":1073741824,"used_bytes":268435456},{"mount":"/home","total_bytes":536870912000,"used_bytes":214748364800}],"processes":[{"pid":1,"name":"systemd","cpu_percent":0.0,"rss_bytes":12582912},{"pid":412,"name":"sshd","cpu_percent":0.1,"rss_bytes":8388608},{"pid":977,"name":"bash","cpu_percent":0.0,"rss_bytes":5242880},{"pid":1203,"name":"firefox","cpu_percent":42.3,"rss_bytes":1610612736}]}

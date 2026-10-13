@@ -1,0 +1,6 @@
+dp-kv: invalid argument '65536' for '--port'
+Try 'dp-kv --help' for more information.
+dp-kv: invalid argument 'localhost' for '--host'
+Try 'dp-kv --help' for more information.
+dp-kv: extra operand 'extra'
+Try 'dp-kv --help' for more information.

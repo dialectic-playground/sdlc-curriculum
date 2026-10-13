@@ -1,0 +1,6 @@
+dp-sysmon: bad-nan.jsonl:1: invalid JSON
+dp-sysmon: bad-dupkey.jsonl:1: invalid JSON
+dp-sysmon: bad-surrogate.jsonl:2: invalid JSON
+dp-sysmon: bad-utf8.jsonl:1: invalid JSON
+dp-sysmon: bad-trailing.jsonl:1: invalid JSON
+dp-sysmon: bad-deep.jsonl:1: invalid JSON

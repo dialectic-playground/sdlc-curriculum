@@ -1,0 +1,1 @@
+{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":8,"percent":37.5},"memory":{"total_bytes":17179869184,"available_bytes":6442450944},"disks":[{"mount":"/","total_bytes":10,"used_bytes":10},{"mount":"/data","total_bytes":10,"used_bytes":11}],"processes":[]}

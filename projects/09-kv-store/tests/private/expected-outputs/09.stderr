@@ -1,0 +1,9 @@
+dp-kv: unrecognized option '--store=data.json'
+Try 'dp-kv --help' for more information.
+dp-kv: unrecognized option '--prefix=a'
+Try 'dp-kv --help' for more information.
+dp-kv: invalid argument 'user 1' for '--prefix'
+Try 'dp-kv --help' for more information.
+dp-kv: extra operand 'extra'
+Try 'dp-kv --help' for more information.
+dp-kv: key not found: nope

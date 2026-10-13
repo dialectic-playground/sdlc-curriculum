@@ -1,0 +1,9 @@
+cat
+dog
+bird
+concatenate
+cat_food
+the cat sat
+CAT!
+bobcat
+dog|bird

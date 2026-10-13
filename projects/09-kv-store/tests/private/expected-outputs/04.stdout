@@ -1,0 +1,14 @@
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "control": "bell\u0007 tab\t cr\r nul\u0000 del",
+    "multi-line": "line one\nline two",
+    "quote": "say \"hi\" \\ back/slash",
+    "raw-utf8": "Ελληνικά",
+    "unicode": "café 😀   Å"
+  }
+}
+line one
+line two
+Zoë Ångström

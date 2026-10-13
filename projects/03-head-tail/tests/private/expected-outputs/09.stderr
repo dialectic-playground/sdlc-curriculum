@@ -1,0 +1,6 @@
+dp-tail: invalid argument '+x' for '-n'
+Try 'dp-tail --help' for more information.
+dp-head: invalid argument '+3' for '--lines'
+Try 'dp-head --help' for more information.
+dp-tail: invalid argument '1.5.2' for '-s'
+Try 'dp-tail --help' for more information.

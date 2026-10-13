@@ -1,0 +1,11 @@
+{
+    "format": "dp-kv",
+    "version": 1,
+    "data": {
+        "multi-line": "line one\nline two",
+        "quote": "say \"hi\" \\ back\/slash",
+        "control": "bell\u0007 tab\t cr\r nul\u0000 del\u007F",
+        "unicode": "café 😀   Å",
+        "raw-utf8": "Ελληνικά"
+    }
+}

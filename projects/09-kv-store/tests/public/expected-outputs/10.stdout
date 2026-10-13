@@ -1,0 +1,28 @@
+Usage: dp-kv [--store=PATH] COMMAND [ARG]...
+Store text values under keys in a local JSON file, or serve them over HTTP.
+
+Commands:
+  set KEY VALUE             store VALUE under KEY, replacing any previous value
+  get KEY                   print the value stored under KEY
+  del KEY                   remove KEY and its value
+  list [--prefix=P]         print the keys in byte order, one per line
+  export                    print the whole store as canonical JSON
+  import [--replace] FILE   merge the store document FILE (- for stdin) in
+  serve [--host=ADDR] [--port=N]
+                            serve the store over HTTP until interrupted
+
+The store is PATH if --store is given, else $DP_KV_STORE if it is set and not
+empty, else kv.json. Keys are 1-256 characters from A-Z a-z 0-9 . _ : - and
+values are UTF-8 text of at most 65536 bytes. Global options go before
+COMMAND; command options go after it. Use -- before a VALUE that starts with -.
+
+Global options:
+  -s, --store=PATH          use the store file PATH
+      --help                display this help and exit
+      --version             output version information and exit
+
+Command options:
+  -p, --prefix=P            list: only keys that start with P
+  -r, --replace             import: replace all contents instead of merging
+      --host=ADDR           serve: IP address to listen on (default 127.0.0.1)
+      --port=N              serve: TCP port, 0 for any free one (default 7700)

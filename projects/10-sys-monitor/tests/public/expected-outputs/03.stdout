@@ -1,0 +1,18 @@
+Host:      alpha
+Time:      2026-03-14T09:26:53Z
+CPU:       37.5% busy; logical CPUs: 8
+Memory:    10.0 GiB used of 16.0 GiB (62.5%); 6.0 GiB available
+Processes: 8 total; 6 shown
+
+MOUNT                       USED       TOTAL    USE%
+/                       50.0 GiB   100.0 GiB    50.0
+/boot                  256.0 MiB     1.0 GiB    25.0
+/home                  200.0 GiB   500.0 GiB    40.0
+
+    PID    CPU%         RSS  NAME
+   1203    42.3     1.5 GiB  firefox
+   1350    12.5   256.0 MiB  Xorg
+   2201    12.5   100.0 MiB  python3
+      1     0.0    12.0 MiB  systemd
+    412     0.1     8.0 MiB  sshd
+    977     0.0     5.0 MiB  bash

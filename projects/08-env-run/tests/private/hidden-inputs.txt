@@ -1,0 +1,12 @@
+# Hidden black-box verification tests for dp-env (projects/08-env-run).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+01 dp-env --help
+02 dp-env - A=1 B= A=2
+03 dp-env -i -0 B=2 A=1
+04 dp-env -i =x
+05 dp-env -u A=B -i
+06 dp-env -C subdir
+07 dp-env ./subdir
+08 dp-env DP_X=1 -i
+09 dp-env --chdir=subdir DP_Z=z {PYTHON} ../child.py @cwd DP_Z @exit=7
+10 dp-env -0 {PYTHON} child.py

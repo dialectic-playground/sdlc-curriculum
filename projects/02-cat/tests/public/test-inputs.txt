@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-cat (projects/02-cat).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files are shared by both suites and live in ../fixtures/.
+01 dp-cat alpha.txt beta.txt
+02 dp-cat < stdin.txt
+03 dp-cat alpha.txt - beta.txt < stdin.txt
+04 dp-cat -n alpha.txt beta.txt no-eol.txt
+05 dp-cat -b blanks.txt
+06 dp-cat -s blanks.txt
+07 dp-cat -A crlf.txt
+08 dp-cat -v controls.bin
+09 dp-cat alpha.txt missing.txt beta.txt
+10 dp-cat --help

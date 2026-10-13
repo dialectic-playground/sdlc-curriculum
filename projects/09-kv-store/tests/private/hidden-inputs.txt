@@ -1,0 +1,56 @@
+# Hidden black-box verification tests for dp-kv (projects/09-kv-store).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-kv --store=absent.json get alpha
+01 dp-kv --store=absent.json list
+01 dp-kv --store=absent.json export
+01 dp-kv --store=absent.json del alpha
+01 dp-kv --store=no-such-dir/kv.json list
+01 dp-kv --store=other.json import absent.json
+02 dp-kv --store=corrupt.json get alpha
+02 dp-kv --store=corrupt.json set alpha 1
+02 dp-kv --store=corrupt.json export
+02 dp-kv --store=sub get alpha
+03 dp-kv --store=data.json import --replace - < import.json
+03 dp-kv --store=data.json export
+04 dp-kv --store=esc.json import escapes.json
+04 dp-kv --store=esc.json export
+04 dp-kv --store=esc.json get multi-line
+04 dp-kv --store=esc.json set name 'Zoë Ångström'
+04 dp-kv --store=esc.json get name
+05 dp-kv --store=data.json import bad-version.json
+05 dp-kv --store=data.json import dup-key.json
+05 dp-kv --store=data.json import too-long.json
+05 dp-kv --store=data.json import nothere.json
+05 dp-kv --store=data.json import -r
+05 dp-kv --store=data.json export
+05 dp-kv --store=data.json import max-value.json
+05 dp-kv --store=data.json list
+06 DP_KV_STORE=env.json dp-kv set colour blue
+06 dp-kv --store=env.json get colour
+06 DP_KV_STORE=env.json dp-kv --store=data.json get colour
+06 dp-kv list
+06 DP_KV_STORE= dp-kv get default:store
+07 dp-kv
+07 dp-kv --store=s.json set onlykey
+07 dp-kv --store=s.json get
+07 dp-kv --store=s.json get a b
+07 dp-kv --store= get a
+07 dp-kv --bogus get a
+08 dp-kv --store=k.json set -- -dash- '-starts with a dash'
+08 dp-kv --store=k.json set kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk longest
+08 dp-kv --store=k.json set kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk too-long
+08 dp-kv --store=k.json set 'Zoë' value
+08 dp-kv --store=k.json set empty ''
+08 dp-kv --store=k.json export
+09 dp-kv get alpha --store=data.json
+09 dp-kv --store=data.json get --prefix=a alpha
+09 dp-kv --store=data.json list --prefix='user 1'
+09 dp-kv --store=data.json list -p Z
+09 dp-kv --store=data.json list extra
+09 dp-kv --store=data.json del nope
+10 dp-kv serve --help
+10 dp-kv get --version
+10 dp-kv serve --port=65536
+10 dp-kv serve --host=localhost
+10 dp-kv serve --port 8080 extra

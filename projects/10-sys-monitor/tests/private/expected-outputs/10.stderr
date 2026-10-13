@@ -1,0 +1,18 @@
+dp-sysmon: invalid argument 'JSON' for '--format'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid argument '-1' for '-n'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid argument '0.05' for '--interval'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid argument '1.' for '-i'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid argument '1000001' for '--count'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid argument '' for '--snapshot'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: extra operand 'extra'
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: option '--top' requires an argument
+Try 'dp-sysmon --help' for more information.
+dp-sysmon: invalid option -- 'z'
+Try 'dp-sysmon --help' for more information.

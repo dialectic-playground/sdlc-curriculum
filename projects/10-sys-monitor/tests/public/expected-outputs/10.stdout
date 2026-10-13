@@ -1,0 +1,20 @@
+Usage: dp-sysmon [OPTION]...
+Report CPU, memory, disk, and process telemetry as a table or JSON Lines.
+
+Without --snapshot, samples the local system every --interval seconds.
+With --snapshot, replays recorded samples (JSON Lines, one sample per
+line) from FILE instead; FILE '-' means standard input.
+
+Options:
+  -s, --snapshot=FILE   replay samples from FILE instead of polling the system
+  -f, --format=FORMAT   output format: table (default) or json
+  -k, --sort=KEY        order processes by cpu (default), mem, pid, or name
+  -n, --top=N           show at most N processes (0-1000000)
+  -m, --filter=TEXT     show only processes whose name contains TEXT
+                        (ASCII letters match case-insensitively)
+  -i, --interval=SECS   seconds between live samples (0.1-86400, default 1)
+  -c, --count=N         stop after N samples (0-1000000, 0 = no limit;
+                        default 1 when live, 0 when replaying)
+  -o, --output=FILE     also append each sample as a JSON line to FILE
+      --help            display this help and exit
+      --version         output version information and exit

@@ -1,0 +1,13 @@
+# Hidden black-box verification tests for dp-grep (projects/05-grep-lite).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Fixture files are shared by both suites and live in tests/fixtures/.
+01 dp-grep -n -e fox -e '(lazy|dog' poem.txt
+02 dp-grep 'colou+?r' poem.txt
+03 dp-grep -q fox missing.txt poem.txt
+04 dp-grep -s fox missing.txt - < poem.txt
+05 dp-grep -n 'o.$' crlf.txt
+06 dp-grep -w -n -i cat words.txt
+07 dp-grep -r -l fox .
+08 dp-grep fox tree poem.txt
+09 dp-grep -i -x '[[:upper:]]+-[0-9]{2,3}' codes.txt
+10 dp-grep -rc fox tree/

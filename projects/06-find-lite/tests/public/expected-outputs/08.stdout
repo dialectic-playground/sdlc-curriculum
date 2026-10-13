@@ -1,0 +1,6 @@
+show.py: [tree/src/lib/core.c]
+tree/src/lib/core.c
+show.py: [tree/src/main.c]
+tree/src/main.c
+show.py: [tree/src/util.c]
+tree/src/util.c

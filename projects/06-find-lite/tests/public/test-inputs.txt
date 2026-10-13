@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-find (projects/06-find-lite).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Every test runs in a fresh copy of ../fixtures/ (the tree/ directory and the -exec helpers).
+01 dp-find tree
+02 dp-find tree -name '*.txt'
+03 dp-find tree -type d
+04 dp-find tree -type f -name '*.c'
+05 dp-find tree -type f -size -2k
+06 dp-find tree -mindepth 1 -maxdepth 1
+07 dp-find tree -type f '(' -name '*.md' -o -name '*.log' ')'
+08 dp-find tree/src -name '*.c' -exec {PYTHON} show.py {} ';' -print
+09 dp-find nope tree/docs
+10 dp-find tree -bogus

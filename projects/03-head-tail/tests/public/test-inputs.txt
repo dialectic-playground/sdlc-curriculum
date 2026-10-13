@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-head and dp-tail (projects/03-head-tail).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files come from tests/fixtures/ (lines.txt has 15 lines "line 1" ... "line 15").
+01 dp-head lines.txt
+02 dp-tail lines.txt
+03 dp-head -n 3 lines.txt
+04 dp-tail -c 20 lines.txt
+05 dp-head -n -12 lines.txt
+06 dp-tail -n +13 lines.txt
+07 dp-head -n 2 lines.txt short.txt
+08 dp-tail -n 1 < lines.txt
+09 dp-head -n 1 missing.txt short.txt
+10 dp-tail -f --max-polls 1 -s 0 lines.txt

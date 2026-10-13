@@ -1,0 +1,8 @@
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "beta": "two",
+    "user:1003": "Grace Hopper"
+  }
+}

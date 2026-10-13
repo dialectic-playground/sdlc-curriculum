@@ -1,0 +1,9 @@
+# Python caches from the test runner, checker, and reference models
+__pycache__/
+*.py[cod]
+.venv/
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,81 @@
+# =============================================================================
+# Cross-platform CI template for curriculum implementation repositories.
+# =============================================================================
+#
+# Copy this file to .github/workflows/ci.yml in a language repository (for example
+# dialectic-playground/py) that has the curriculum as a git submodule and one directory
+# per implemented project:
+#
+#   <language-repo>/
+#   ├── sdlc-curriculum/        git submodule (dialectic-playground/sdlc-curriculum)
+#   ├── 00-hello-world/Makefile
+#   └── 01-echo/Makefile …
+#
+# Then edit the two places marked "EDIT":
+#   1. the list of implemented projects in the matrix
+#   2. the "Set up language toolchain" step
+#
+# Every job runs the same universal targets (BASE-MAKEFILE) on Linux, macOS, and Windows:
+#   make all → make lint → make test → make test-hidden
+# =============================================================================
+name: Cross-platform CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.project }} (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        # EDIT 1: the project directories this repository implements.
+        project:
+          - 00-hello-world
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        # Git Bash on Windows, so the Makefile's POSIX recipes behave identically everywhere.
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python (black-box test runner)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ensure GNU Make is available
+        if: runner.os == 'Windows'
+        run: command -v make || choco install make --no-progress -y
+
+      # EDIT 2: install your language's toolchain (compiler/interpreter, package manager,
+      # linters, formatters), e.g. with the official setup action for your language.
+      - name: Set up language toolchain
+        run: echo "Replace this step with your toolchain setup" && exit 1
+
+      - name: make all
+        run: make -C "${{ matrix.project }}" all
+
+      - name: make lint
+        run: make -C "${{ matrix.project }}" lint
+
+      - name: make test (unit + public black-box)
+        run: make -C "${{ matrix.project }}" test
+
+      - name: make test-hidden (hidden black-box)
+        run: make -C "${{ matrix.project }}" test-hidden
+
+      - name: make install / uninstall round trip
+        run: |
+          make -C "${{ matrix.project }}" install PREFIX="$RUNNER_TEMP/prefix"
+          make -C "${{ matrix.project }}" uninstall PREFIX="$RUNNER_TEMP/prefix"

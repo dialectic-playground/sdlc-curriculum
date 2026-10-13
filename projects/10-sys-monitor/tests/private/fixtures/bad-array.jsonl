@@ -1,0 +1,1 @@
+[{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":8,"percent":37.5},"memory":{"total_bytes":17179869184,"available_bytes":6442450944},"disks":[],"processes":[{"pid":1,"name":"init","cpu_percent":0.0,"rss_bytes":4096}]}]

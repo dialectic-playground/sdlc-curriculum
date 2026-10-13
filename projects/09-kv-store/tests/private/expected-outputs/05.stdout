@@ -1,0 +1,19 @@
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "Zeta": "uppercase sorts first",
+    "alpha": "first value",
+    "beta": "2",
+    "config:theme": "dark",
+    "user:1001": "Ada Lovelace",
+    "user:1002": "Zoë Ångström"
+  }
+}
+Zeta
+alpha
+beta
+big
+config:theme
+user:1001
+user:1002

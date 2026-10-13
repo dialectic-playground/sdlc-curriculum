@@ -1,0 +1,8 @@
+Hello, World!
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "greeting": "Hello, World!"
+  }
+}
