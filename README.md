@@ -199,8 +199,8 @@ directory into a private repository and have CI check it out using a token.
 
    ```sh
    git submodule add https://github.com/dialectic-playground/sdlc-curriculum
-   git -C sdlc-curriculum checkout v1.0.0
-   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.0.0"
+   git -C sdlc-curriculum checkout v1.1.0
+   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.1.0"
    ```
 
 2. For each project, copy `projects/XX-slug/assignment/` to `XX-slug/` in your repository. Set
