@@ -1,0 +1,41 @@
+# Hidden black-box verification tests for dp-sysmon (projects/10-sys-monitor).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test (shared directory, concatenated output).
+01 dp-sysmon --version
+01 dp-sysmon -s absent.jsonl --sort=bad --version
+02 dp-sysmon -s odd.jsonl -k pid
+03 dp-sysmon -s odd.jsonl -k pid -f json
+04 dp-sysmon -s nulls.jsonl
+04 dp-sysmon -s nulls.jsonl --sort=mem --format=json
+05 dp-sysmon -s bad-type.jsonl -f json
+05 dp-sysmon -s bad-value.jsonl -f json
+05 dp-sysmon -s bad-exceeds.jsonl -f json
+05 dp-sysmon -s bad-dup.jsonl -f json
+05 dp-sysmon -s bad-missing.jsonl -f json
+05 dp-sysmon -s bad-array.jsonl -f json
+06 dp-sysmon -s bad-nan.jsonl -f json
+06 dp-sysmon -s bad-dupkey.jsonl -f json
+06 dp-sysmon -s bad-surrogate.jsonl -f json
+06 dp-sysmon -s bad-utf8.jsonl -f json
+06 dp-sysmon -s bad-trailing.jsonl -f json
+06 dp-sysmon -s bad-deep.jsonl -f json
+07 dp-sysmon -s basic.jsonl -k pid -n 4 -o rec.jsonl
+07 dp-sysmon -s rec.jsonl -f json -k pid --output=rec2.jsonl
+07 dp-sysmon -s rec2.jsonl -f json -k pid
+07 dp-sysmon -s rec.jsonl -o rec.jsonl
+08 dp-sysmon -s - --count=0 --top=0 --format=json < crlf.jsonl
+08 dp-sysmon -s lazy.jsonl -c 1 -i 5 -f json
+08 dp-sysmon -s lazy.jsonl -c 2 -i 0.1 -f json
+09 dp-sysmon -s empty.jsonl
+09 dp-sysmon -s subdir
+09 dp-sysmon -s basic.jsonl -o subdir
+09 dp-sysmon -s basic.jsonl -m zzz -f json
+10 dp-sysmon --format=JSON
+10 dp-sysmon -n -1
+10 dp-sysmon --interval=0.05
+10 dp-sysmon -i 1.
+10 dp-sysmon --count=1000001
+10 dp-sysmon --snapshot=
+10 dp-sysmon -s basic.jsonl extra
+10 dp-sysmon --top
+10 dp-sysmon -z

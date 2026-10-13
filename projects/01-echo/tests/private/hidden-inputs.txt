@@ -1,0 +1,13 @@
+# Hidden black-box verification tests for dp-echo (projects/01-echo).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Arguments are split with POSIX shell rules: inside '...' a backslash is an ordinary character.
+01 dp-echo -e '\0101\x42\x4a\0|\x7|\0'
+02 dp-echo -n -e 'first\r\nsecond\r\n'
+03 dp-echo - -x -n
+04 dp-echo -ne 'a\tb' -nx
+05 dp-echo --help extra
+06 dp-echo -n --version
+07 dp-echo -e 'Zoë' '日本語\t→'
+08 dp-echo -e 'a\qb\' 'c\x' 'd\8\1'
+09 dp-echo -e 'a' 'b\cc' d
+10 dp-echo -e '\e\a\b\f\v\\|\01234|\0777|\0400'

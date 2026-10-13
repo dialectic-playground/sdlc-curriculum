@@ -1,0 +1,14 @@
+# Hidden black-box verification tests for dp-find (projects/06-find-lite).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Every test runs in a fresh copy of ../fixtures/ (the tree/ directory and the -exec helpers).
+01 dp-find tree -iname 'A*.TXT'
+02 dp-find tree -type f -size +1024c
+03 dp-find tree/src ! -type d -not -name '*.c' -mtime -1
+04 dp-find tree/docs -maxdepth 0 -exec {PYTHON} make-dir.py '{}/void' ';'
+04 dp-find tree -empty
+05 dp-find -maxdepth 2 -name 'd*'
+06 dp-find tree -type f -mtime +1000 -o -name 'a.txt'
+07 dp-find tree/docs/img -exec no-such-command-dp {} ';' -o -print
+08 dp-find tree -exec {PYTHON} show.py {}
+09 dp-find tree '(' -type f -o ')'
+10 dp-find tree -size 10q

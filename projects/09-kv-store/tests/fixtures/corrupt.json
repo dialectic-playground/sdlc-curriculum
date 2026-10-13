@@ -1,0 +1,5 @@
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "alpha": "first value",

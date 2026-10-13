@@ -1,0 +1,6 @@
+dp-sysmon: bad-type.jsonl:1: invalid type for 'hostname'
+dp-sysmon: bad-value.jsonl:3: invalid value for 'cpu.percent'
+dp-sysmon: bad-exceeds.jsonl:1: 'disks[1].used_bytes' exceeds 'disks[1].total_bytes'
+dp-sysmon: bad-dup.jsonl:1: duplicate value for 'processes[2].pid'
+dp-sysmon: bad-missing.jsonl:2: missing member 'processes[0].name'
+dp-sysmon: bad-array.jsonl:1: sample is not a JSON object

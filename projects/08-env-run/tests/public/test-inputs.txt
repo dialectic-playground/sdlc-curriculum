@@ -1,0 +1,16 @@
+# Public black-box acceptance tests for dp-env (projects/08-env-run).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# The child process is tests/fixtures/child.py: it prints the variables it is asked for
+# (NAME=<unset> when missing), its working directory's base name (@cwd), and exits with @exit=N.
+# -i is used only when printing; a Python child always needs the inherited environment.
+01 dp-env -i b=3 C=x=y A=1
+02 dp-env -i
+03 DP_X=hello dp-env -u DP_X {PYTHON} child.py DP_X
+04 DP_X=old dp-env DP_X=new DP_Y=added {PYTHON} child.py DP_X DP_Y
+05 dp-env -C subdir {PYTHON} ../child.py @cwd
+06 dp-env {PYTHON} child.py @exit=3
+07 dp-env dp-env-no-such-command
+08 dp-env -C no-such-dir {PYTHON} child.py
+09 dp-env -x
+10 DP_Y=1 dp-env -u DP_Y -- {PYTHON} child.py DP_Y

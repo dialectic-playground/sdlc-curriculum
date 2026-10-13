@@ -1,0 +1,28 @@
+Host:      alpha
+Time:      2026-03-14T09:26:53Z
+CPU:       0.0% busy; logical CPUs: 1
+Memory:    1.0 TiB used of 1.0 TiB (100.0%); 1 B available
+Processes: 14 total; 14 shown
+
+MOUNT                       USED       TOTAL    USE%
+/big                     4.0 PiB     8.0 PiB    50.0
+/empty                       0 B         0 B       -
+/full                    1.0 MiB     1.0 MiB   100.0
+/tie-even                    1 B     2.0 KiB     0.0
+/tie-odd                     3 B     2.0 KiB     0.2
+
+    PID    CPU%         RSS  NAME
+      1     0.0         0 B  rss-0
+      2     0.0      1023 B  rss-1023
+      3     0.0     1.0 KiB  rss-1024
+      4     0.0     1.0 KiB  rss-1075
+      5     0.0     1.1 KiB  rss-1126
+      6     0.0     1.2 KiB  rss-1280
+      7     0.0     1.5 KiB  rss-1536
+      8     0.0     1.0 MiB  rss-1048575
+      9     0.0     1.0 MiB  rss-1048576
+     10     0.0     1.5 MiB  rss-1572864
+     11     0.0     1.0 GiB  rss-1073741823
+     12     0.0     1.5 GiB  rss-1610612736
+     13     0.0     1.0 TiB  rss-1099511627776
+     14     0.0     8.0 PiB  rss-9007199254740991

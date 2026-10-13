@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-grep (projects/05-grep-lite).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files are shared by both suites and live in tests/fixtures/.
+01 dp-grep fox poem.txt
+02 dp-grep -i -n the poem.txt
+03 dp-grep -v -n e < poem.txt
+04 dp-grep -c zebra poem.txt words.txt
+05 dp-grep -F -n 'a.b*' meta.txt
+06 dp-grep -x -e cat -e 'dog|bird' words.txt
+07 dp-grep -n '^[0-9]{3}-[0-9]{4}$' phones.txt
+08 dp-grep -r fox tree
+09 dp-grep '(a)\1' poem.txt
+10 dp-grep -l fox poem.txt missing.txt words.txt

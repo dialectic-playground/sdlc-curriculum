@@ -1,0 +1,19 @@
+Host:      alpha
+Time:      2026-03-14T09:26:53Z
+CPU:       - busy; logical CPUs: -
+Memory:    - used of 16.0 GiB (-); - available
+Processes: 9 total; 9 shown
+
+MOUNT                       USED       TOTAL    USE%
+
+    PID    CPU%         RSS  NAME
+     10   100.0           -  near-full
+      6    33.8     2.0 KiB  tie-high
+      2    12.2     8.0 KiB  exact
+      5    12.2           -  tie-low
+      7     0.1      1000 B  binary-below
+      8     0.1     4.0 KiB  binary-above
+      9     0.0         0 B  neg-zero
+     11       -     8.0 KiB  unknown
+     12       -           -  unknown-too
+{"timestamp":"2026-03-14T09:26:53Z","hostname":"alpha","cpu":{"count":null,"percent":null},"memory":{"total_bytes":17179869184,"available_bytes":null},"disks":[],"processes":[{"pid":2,"name":"exact","cpu_percent":12.2,"rss_bytes":8192},{"pid":11,"name":"unknown","cpu_percent":null,"rss_bytes":8192},{"pid":8,"name":"binary-above","cpu_percent":0.1,"rss_bytes":4096},{"pid":6,"name":"tie-high","cpu_percent":33.8,"rss_bytes":2048},{"pid":7,"name":"binary-below","cpu_percent":0.1,"rss_bytes":1000},{"pid":9,"name":"neg-zero","cpu_percent":0.0,"rss_bytes":0},{"pid":5,"name":"tie-low","cpu_percent":12.2,"rss_bytes":null},{"pid":10,"name":"near-full","cpu_percent":100.0,"rss_bytes":null},{"pid":12,"name":"unknown-too","cpu_percent":null,"rss_bytes":null}]}

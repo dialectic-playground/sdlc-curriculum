@@ -1,0 +1,32 @@
+Usage: dp-echo [SHORT-OPTION]... [STRING]...
+  or:  dp-echo --help
+  or:  dp-echo --version
+Write the STRINGs to standard output, separated by single spaces and followed
+by a line feed (LF) on every platform.
+
+Only leading arguments made of '-' and the letters n, e, E are options. The
+first other argument and every argument after it is printed as given; '--' is
+not special. --help and --version are recognized only as the sole argument.
+
+Options:
+  -n             do not output the trailing line feed
+  -e             enable interpretation of backslash escapes
+  -E             disable interpretation of backslash escapes (default)
+      --help     display this help and exit
+      --version  output version information and exit
+
+When -e is in effect, the following sequences are recognized:
+  \\      backslash
+  \a      alert (BEL, 0x07)
+  \b      backspace (0x08)
+  \c      produce no further output, not even the line feed
+  \e      escape (0x1B)
+  \f      form feed (0x0C)
+  \n      line feed (LF, 0x0A)
+  \r      carriage return (CR, 0x0D)
+  \t      horizontal tab (0x09)
+  \v      vertical tab (0x0B)
+  \0NNN   byte with octal value NNN (0 to 3 octal digits)
+  \xHH    byte with hexadecimal value HH (1 to 2 hex digits)
+Any other backslash is printed as is. To print a CRLF line ending, use
+-ne 'text\r\n'.

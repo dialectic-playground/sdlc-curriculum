@@ -1,0 +1,6 @@
+milk
+eggs
+bread
+butter
+cheese
+jam

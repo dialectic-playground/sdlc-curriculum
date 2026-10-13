@@ -1,0 +1,13 @@
+tree/a-b.txt
+tree/a.txt
+tree/a_b.txt
+tree/ab.txt
+tree/docs/guide.md
+tree/docs/img/.keep
+tree/empty.log
+tree/notes.md
+tree/src/.hidden.txt
+tree/src/lib/core.c
+tree/src/lib/core.h
+tree/src/main.c
+tree/src/util.c

@@ -1,0 +1,16 @@
+# Hidden black-box verification tests for dp-head and dp-tail (projects/03-head-tail).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+01 dp-head -n abc lines.txt
+02 dp-tail -v -q -n 1 lines.txt short.txt
+03 dp-head -v -c 5 - < short.txt
+04 dp-tail -n 5 short.txt
+05 dp-tail -n 2 nonl.txt
+05 dp-head -n -1 nonl.txt
+06 dp-head -c -7 crlf.txt
+07 dp-tail -c +5 short.txt
+07 dp-head --bytes=1K short.txt
+08 dp-tail -f --max-polls 2 -s 0 -n 1 lines.txt missing.txt short.txt
+09 dp-tail -n +x lines.txt
+09 dp-head --lines=+3 lines.txt
+09 dp-tail -f -s 1.5.2 lines.txt
+10 dp-tail -f --max-polls 1 -s 0 -n 2 < lines.txt

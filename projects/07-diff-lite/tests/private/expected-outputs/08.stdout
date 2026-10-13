@@ -1,0 +1,6 @@
+--- items-old.txt
++++ items-new.txt
+@@ -1,0 +2 @@
++item
+@@ -4 +4,0 @@
+-beta

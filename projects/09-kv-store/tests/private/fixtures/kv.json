@@ -1,0 +1,7 @@
+{
+  "format": "dp-kv",
+  "version": 1,
+  "data": {
+    "default:store": "kv.json in the working directory"
+  }
+}

@@ -1,0 +1,13 @@
+# Hidden black-box verification tests for dp-cat (projects/02-cat).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Fixture files are shared by both suites and live in ../fixtures/.
+01 dp-cat -nE no-eol.txt alpha.txt
+02 dp-cat folder crlf.txt
+03 dp-cat -sn -b crlf.txt blanks.txt
+04 dp-cat -T - < controls.bin
+05 dp-cat -E controls.bin crlf.txt
+06 dp-cat -n - alpha.txt - < stdin.txt
+07 dp-cat alpha.txt --number-nonblank=yes
+08 dp-cat --version --show-al
+09 dp-cat empty.txt nope.txt -n -s blanks.txt blanks.txt
+10 dp-cat -A controls.bin no-eol.txt

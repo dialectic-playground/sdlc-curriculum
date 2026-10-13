@@ -1,0 +1,27 @@
+Host:      alpha
+Time:      2026-03-14T09:27:00Z
+CPU:       20.0% busy; logical CPUs: 8
+Memory:    10.0 GiB used of 16.0 GiB (62.5%); 6.0 GiB available
+Processes: 3 total; 3 shown
+
+MOUNT                       USED       TOTAL    USE%
+/                       50.0 GiB   100.0 GiB    50.0
+
+    PID    CPU%         RSS  NAME
+   1203    30.0     1.5 GiB  firefox
+   2201     5.5   100.0 MiB  python3
+      1     0.0    12.0 MiB  systemd
+
+Host:      alpha
+Time:      2026-03-14T09:27:01Z
+CPU:       55.5% busy; logical CPUs: 8
+Memory:    11.0 GiB used of 16.0 GiB (68.8%); 5.0 GiB available
+Processes: 3 total; 3 shown
+
+MOUNT                       USED       TOTAL    USE%
+/                       50.0 GiB   100.0 GiB    50.0
+
+    PID    CPU%         RSS  NAME
+   2201    99.9   100.0 MiB  python3
+   1203    80.2     1.5 GiB  firefox
+      1     0.0    12.0 MiB  systemd

@@ -1,0 +1,13 @@
+# Public black-box acceptance tests for dp-hello (projects/00-hello-world).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+01 dp-hello
+02 dp-hello --name Ada
+03 dp-hello -n Grace
+04 dp-hello --name=Linus
+05 dp-hello --count 3
+06 dp-hello -c2 -n Ken
+07 dp-hello --help
+08 dp-hello --version
+09 dp-hello -x
+10 dp-hello extra

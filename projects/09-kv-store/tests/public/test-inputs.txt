@@ -1,0 +1,22 @@
+# Public black-box acceptance tests for dp-kv (projects/09-kv-store).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+# Every test names its store explicitly with --store; data.json and import.json are shared
+# fixtures in tests/fixtures/ (data.json is a byte-exact canonical store, SRS section 5.1).
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+01 dp-kv --store=data.json get alpha
+02 dp-kv --store=data.json list
+03 dp-kv --store=data.json list --prefix=user:
+04 dp-kv --store=data.json export
+05 dp-kv --store=new.json set greeting 'Hello, World!'
+05 dp-kv --store=new.json get greeting
+05 dp-kv --store=new.json export
+06 dp-kv --store=data.json set beta 'second value'
+06 dp-kv --store=data.json get beta
+06 dp-kv --store=data.json del beta
+06 dp-kv --store=data.json get beta
+07 dp-kv --store=data.json import import.json
+07 dp-kv --store=data.json export
+08 dp-kv --store=data.json set 'bad key' value
+09 dp-kv --store=data.json frobnicate
+10 dp-kv --help

@@ -1,0 +1,2 @@
+dp-env: cannot specify --null (-0) with command
+Try 'dp-env --help' for more information.

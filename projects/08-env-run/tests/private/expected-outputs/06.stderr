@@ -1,0 +1,2 @@
+dp-env: must specify command with --chdir (-C)
+Try 'dp-env --help' for more information.

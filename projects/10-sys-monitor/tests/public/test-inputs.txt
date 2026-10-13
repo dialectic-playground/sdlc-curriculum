@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-sysmon (projects/10-sys-monitor).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Every test replays a snapshot fixture (--snapshot); live sampling is not black-box tested.
+01 dp-sysmon --snapshot=basic.jsonl
+02 dp-sysmon --snapshot basic.jsonl --format=json
+03 dp-sysmon -s basic.jsonl --sort=mem --top=6
+04 dp-sysmon -s basic.jsonl -k name --filter=SH
+05 dp-sysmon -s units.jsonl -k pid
+06 dp-sysmon -s series.jsonl --count=2
+07 dp-sysmon -s broken.jsonl -f json
+08 dp-sysmon --snapshot=absent.jsonl
+09 dp-sysmon -s basic.jsonl --sort=size
+10 dp-sysmon --help

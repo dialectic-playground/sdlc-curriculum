@@ -1,0 +1,21 @@
+Host:      -
+Time:      2026-03-14T10:26:53+01:00
+CPU:       100.0% busy; logical CPUs: 1
+Memory:    0 B used of 4.0 GiB (0.0%); 4.0 GiB available
+Processes: 9 total; 9 shown
+
+MOUNT                       USED       TOTAL    USE%
+/media/Zoë's USB             0 B    29.7 GiB     0.0
+/mnt/backup-volum...   953.7 MiB   953.7 MiB   100.0
+C:\                    118.9 GiB   237.8 GiB    50.0
+
+    PID    CPU%         RSS  NAME
+     10     1.0     1.0 MiB  abcdefghijklmnopqrstuvwx
+     11     1.0     1.0 MiB  abcdefghijklmnopqrstu...
+     12     1.0     1.0 MiB  Zoë-日本語-worker-proces...
+     13     1.0     1.0 MiB  tab?here?[31mred
+     14     1.0     1.0 MiB
+     15     1.0     1.0 MiB  say "hi" \ bye
+     16     1.0     1.0 MiB  del?c1?end
+     17     1.0     1.0 MiB  trailing space 
+     18     1.0     1.0 MiB  nl?ret?bs?ff?

@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-echo (projects/01-echo).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Arguments are split with POSIX shell rules: inside '...' a backslash is an ordinary character.
+01 dp-echo hello   world
+02 dp-echo -n hello
+03 dp-echo -e 'col1\tcol2\nrow2'
+04 dp-echo -e 'windows\r\nline'
+05 dp-echo -e 'one\c' two
+06 dp-echo -e -E 'a\nb'
+07 dp-echo -- -n
+08 dp-echo '' ''
+09 dp-echo --help
+10 dp-echo --version

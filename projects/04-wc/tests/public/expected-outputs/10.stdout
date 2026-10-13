@@ -1,0 +1,18 @@
+Usage: dp-wc [OPTION]... [FILE]...
+Print line, word, character, and byte counts for each FILE, and a total line
+if more than one FILE is given.
+
+With no FILE, read standard input.  The FILE '-' also means standard input.
+A word is a maximal run of bytes other than space, tab, LF, VT, FF, and CR.
+Characters are UTF-8 code points; each byte of an invalid sequence counts as
+one character.  Counts are printed in the order lines, words, characters,
+bytes, maximum line length.  With no option, -l -w -c is assumed.
+
+Options:
+  -l, --lines             print the line (LF) counts
+  -w, --words             print the word counts
+  -m, --chars             print the character counts
+  -c, --bytes             print the byte counts
+  -L, --max-line-length   print the maximum line length in characters
+      --help              display this help and exit
+      --version           output version information and exit
