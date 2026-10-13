@@ -19,3 +19,8 @@ updates:
       interval: weekly
     commit-message:
       prefix: build
+    # The Python line (3.12) is an organization-wide decision shared with the native CI jobs;
+    # Dependabot keeps the digest current but never moves to a new Python minor or major.
+    ignore:
+      - dependency-name: "library/python"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
