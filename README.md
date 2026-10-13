@@ -1,8 +1,22 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/dialectic-playground/.github/main/assets/sdlc-curriculum/dist/logo-dark.svg">
+    <img alt="dialectic playground / sdlc-curriculum" src="https://raw.githubusercontent.com/dialectic-playground/.github/main/assets/sdlc-curriculum/dist/logo.svg" height="96">
+  </picture>
+</p>
+
 # SDLC Curriculum: System-Level Tooling
 
-A **specification-driven** curriculum of eleven language-agnostic, system-level CLI and API
-tools. It starts with Project 00, "Hello, World!", and works up through ten classic POSIX
-coreutils and shell built-ins to a key-value store with an HTTP API and a telemetry daemon.
+Specification-driven curriculum: specs, black-box tests, and templates for eleven
+cross-platform CLI projects.
+
+📖 **Documentation:** <https://dialectic-playground.github.io/docs/> (curriculum index:
+[Reference → Curriculum](https://dialectic-playground.github.io/docs/reference/curriculum/))
+
+A **specification-driven** curriculum of eleven language-agnostic, system-level projects
+(twelve CLI tools, one of which also serves an HTTP API). It starts with Project 00,
+"Hello, World!", and works up through ten classic POSIX coreutils and shell built-ins to a
+key-value store with an HTTP API and a telemetry daemon.
 
 This repository contains **everything except the implementations**: requirements, user
 manuals, black-box acceptance tests with exact expected outputs, white-box document templates,
@@ -76,9 +90,10 @@ projects/XX-slug/
 │   ├── SRS.md                  # software requirements (FR-xx, NFR-xx), exact diagnostics
 │   └── user-manual.md          # complete user manual, including the normative --help text
 ├── tests/
+│   ├── fixtures/               # input files shared by both suites (where needed)
 │   ├── public/
 │   │   ├── test-inputs.txt     # 10 visible invocations
-│   │   ├── fixtures/           # input files (where needed)
+│   │   ├── fixtures/           # input files for this suite only (where needed)
 │   │   └── expected-outputs/   # <ID>.stdout, <ID>.stderr, <ID>.exit
 │   └── private/
 │       ├── hidden-inputs.txt   # 10 hidden invocations (grading / CI)
@@ -130,7 +145,9 @@ toolchain's commands through **hook variables** in the project `Makefile`:
 | `format` | The language's standard formatter | `DP_FORMAT` |
 | `clean` | Remove build artifacts and compilation caches | `DP_CLEAN` |
 | `distclean` | `clean`, plus virtualenvs, dependency caches, and local config | `DP_DISTCLEAN` |
+| `test-blackbox` | Public black-box suite only (part of `test`) | *(provided)* |
 | `test-hidden` / `grade` | Hidden suite, or both suites (CI and grading) | *(provided)* |
+| `help` | Show the configuration and which hooks are defined | *(provided)* |
 
 A hook that is left undefined makes its target fail with an explanation. It never succeeds
 silently. `make help` shows which hooks are configured.
@@ -145,8 +162,9 @@ Each line of `test-inputs.txt` or `hidden-inputs.txt` is one invocation:
 
 Arguments use POSIX shell quoting, but no shell is ever run. Consecutive lines with the same ID
 are the steps of a single stateful test. `{PYTHON}` expands to a portable interpreter path, for
-tests that need a child process. Each test runs in a fresh temporary copy of `fixtures/`, with
-empty stdin and a minimal environment.
+tests that need a child process. Each test runs in a fresh temporary copy of the fixtures
+(`tests/fixtures/` merged with the suite's own `fixtures/`), with empty stdin and a minimal
+environment.
 
 ```sh
 python3 shared/tools/run-tests.py --bin-dir path/to/bin projects/02-cat/tests/public
@@ -161,9 +179,16 @@ directory into a private repository and have CI check it out using a token.
 
 ### Implementing the curriculum in a language repository
 
-1. Create the repository (for example `dialectic-playground/rs`) and add this curriculum as a
-   submodule:
-   `git submodule add https://github.com/dialectic-playground/sdlc-curriculum`.
+1. Create the repository from the organization's template repository (for example
+   `dialectic-playground/rs`). Add this curriculum as a submodule pinned to a release tag,
+   so specification changes arrive only when you choose to upgrade:
+
+   ```sh
+   git submodule add https://github.com/dialectic-playground/sdlc-curriculum
+   git -C sdlc-curriculum checkout v1.0.0
+   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.0.0"
+   ```
+
 2. For each project, copy `projects/XX-slug/assignment/` to `XX-slug/` in your repository. Set
    `CURRICULUM_ROOT := ../sdlc-curriculum` and `BIN_DIR`, and fill in the `DP_*` hooks.
 3. Complete `hld.md` and `lld.md` **before** writing code (Principle 11). Then implement,
@@ -214,6 +239,21 @@ Every implementation, in every language repository, must follow these principles
 18. **Follow the Single Responsibility Principle (SRP):** Each function or class should have a well-defined single responsibility.
 19. **Consider Space and Time Efficiency:** In addition to time efficiency, also consider efficient memory usage in your code.
 20. **Learn from Your Mistakes and Others:** Analyze past errors and other programmers’ code to learn and improve your skills.
+
+## Versioning
+
+Releases are tagged `vMAJOR.MINOR.PATCH`, matching `spec_version` in `curriculum.toml` and
+the version printed by every tool's `--version` (CONV-02). A MAJOR release changes the
+specified behavior or the test fixtures in a way that can break a conforming implementation.
+A MINOR release adds projects or tests. A PATCH release fixes documentation without changing
+behavior.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for specification changes, fixtures, and new projects.
+Organization-wide rules apply as well: squash merges, Conventional Commit pull request titles,
+and DCO sign-off (see the
+[organization CONTRIBUTING.md](https://github.com/dialectic-playground/.github/blob/main/CONTRIBUTING.md)).
 
 ## License
 
