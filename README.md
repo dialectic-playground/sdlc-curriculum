@@ -264,11 +264,23 @@ Every implementation, in every language repository, must follow these principles
 
 ## Versioning
 
-Releases are tagged `vMAJOR.MINOR.PATCH`, matching `spec_version` in `curriculum.toml` and
-the version printed by every tool's `--version` (CONV-02). A MAJOR release changes the
-specified behavior or the test fixtures in a way that can break a conforming implementation.
-A MINOR release adds projects or tests. A PATCH release fixes documentation without changing
-behavior.
+Two version numbers are kept deliberately separate:
+
+| Version | Where | Changes when |
+| :-- | :-- | :-- |
+| **Release** | Git tag `vMAJOR.MINOR.PATCH` ([releases](https://github.com/dialectic-playground/sdlc-curriculum/releases)) | Anything in the repository changes: specifications, tests, templates, or tooling |
+| **Specification** | `spec_version` in `curriculum.toml`; printed by every tool's `--version` (CONV-02) | Specified tool behavior changes |
+
+Release numbers follow these rules:
+
+- **MAJOR:** specified behavior or test fixtures change in a way that can break a conforming
+  implementation. `spec_version` changes too.
+- **MINOR:** something is added (projects, tests, templates, or tooling) without breaking
+  conforming implementations.
+- **PATCH:** documentation or tooling fixes, with no change to specified behavior.
+
+Language repositories pin a **release** tag. A new release that leaves `spec_version` unchanged
+never requires implementation changes.
 
 ## Contributing
 
