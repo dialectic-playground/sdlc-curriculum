@@ -13,12 +13,19 @@
 #
 # Then edit the two places marked "EDIT":
 #   1. the list of implemented projects in the matrix
-#   2. the "Set up language toolchain" step
+#   2. the "Set up language toolchain" step (pin any action you add to a full commit SHA)
 #
-# Every job runs the same universal targets (BASE-MAKEFILE) on Linux, macOS, and Windows:
-#   make all → make lint → make test → make test-hidden
+# Every project runs the same universal targets (BASE-MAKEFILE) on Linux, macOS, and Windows:
+#   make all → make lint → make test → make test-hidden → install/uninstall round trip
+#
+# Organization conventions (keep them when editing):
+# - Workflow name "CI"; every job and step is named.
+# - Actions are pinned to full commit SHAs with a version comment. The curriculum's own CI
+#   keeps these pins identical to its workflow, and Dependabot updates them in each repo.
+# - "DCO" checks Signed-off-by on every pull-request commit.
+# - "CI result" is the single check required by the branch ruleset in every repository.
 # =============================================================================
-name: Cross-platform CI
+name: CI
 
 on:
   push:
@@ -44,13 +51,16 @@ jobs:
       run:
         # Git Bash on Windows, so the Makefile's POSIX recipes behave identically everywhere.
         shell: bash
+    env:
+      PROJECT: ${{ matrix.project }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository (with curriculum submodule)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
 
       - name: Set up Python (black-box test runner)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
 
@@ -64,18 +74,57 @@ jobs:
         run: echo "Replace this step with your toolchain setup" && exit 1
 
       - name: make all
-        run: make -C "${{ matrix.project }}" all
+        run: make -C "$PROJECT" all
 
       - name: make lint
-        run: make -C "${{ matrix.project }}" lint
+        run: make -C "$PROJECT" lint
 
       - name: make test (unit + public black-box)
-        run: make -C "${{ matrix.project }}" test
+        run: make -C "$PROJECT" test
 
       - name: make test-hidden (hidden black-box)
-        run: make -C "${{ matrix.project }}" test-hidden
+        run: make -C "$PROJECT" test-hidden
 
       - name: make install / uninstall round trip
         run: |
-          make -C "${{ matrix.project }}" install PREFIX="$RUNNER_TEMP/prefix"
-          make -C "${{ matrix.project }}" uninstall PREFIX="$RUNNER_TEMP/prefix"
+          make -C "$PROJECT" install PREFIX="$RUNNER_TEMP/prefix"
+          make -C "$PROJECT" uninstall PREFIX="$RUNNER_TEMP/prefix"
+
+  dco:
+    name: DCO
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository (full history)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Check Signed-off-by on every commit
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          status=0
+          for commit in $(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA"); do
+            author="$(git log -1 --format='%an <%ae>' "$commit")"
+            case "$author" in *"[bot]@users.noreply.github.com>") continue ;; esac
+            if ! git log -1 --format=%B "$commit" | grep -qiF "Signed-off-by: $author"; then
+              echo "::error::Commit $commit is missing 'Signed-off-by: $author' (use git commit -s)"
+              status=1
+            fi
+          done
+          exit "$status"
+
+  ci-result:
+    name: CI result
+    if: always()
+    needs: [build-and-test, dco]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any required job failed or was cancelled
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+
+      - name: All required jobs passed
+        run: echo "All required jobs succeeded or were skipped."
