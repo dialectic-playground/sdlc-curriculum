@@ -1,7 +1,16 @@
+# Shared attributes (identical base in every Dialectic Playground repository).
 # Check out every text file with LF on every OS (GitHub's Windows runners default to
-# core.autocrlf=true). The user manuals' help text and the Makefiles depend on this.
+# core.autocrlf=true).
 * text=auto eol=lf
 
-# Test inputs, fixtures, and expected outputs are compared byte-for-byte on every OS.
-# Never let git rewrite them; some fixtures contain CRLF on purpose. (Later rules win.)
+# Binary files: never convert or diff as text.
+*.png binary
+*.ico binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+
+# Repository-specific: test inputs, fixtures, and expected outputs are compared byte-for-byte
+# on every OS. Never let git rewrite them; some fixtures contain CRLF on purpose.
+# (Later rules win.)
 projects/*/tests/** -text
