@@ -24,7 +24,10 @@ An implementation of `10-sys-monitor` is complete when, from its project directo
    pinned by digest, plus `make` and `python3` ≥ 3.11), so every target works container-first
    (`make test`) as well as natively (`DP_RUNTIME=local make test`).
 
-## Suggested layout in a language repository
+## Layout in a language repository
+
+See [`shared/templates/language/`](https://github.com/dialectic-playground/sdlc-curriculum/blob/main/shared/templates/language/README.md) for the full
+skeleton.
 
 ```text
 <language-repo>/

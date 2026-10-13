@@ -1,34 +1,34 @@
 # =============================================================================
-# Cross-platform CI template for curriculum implementation repositories.
+# Cross-platform CI template for curriculum implementation (language) repositories.
 # =============================================================================
 #
-# Copy this file to .github/workflows/ci.yml in a language repository (for example
-# dialectic-playground/py) that has the curriculum as a git submodule and one directory
-# per implemented project:
+# Copy this file to .github/workflows/ci.yml in a language repository laid out as described
+# in shared/templates/language/README.md:
 #
 #   <language-repo>/
-#   ├── sdlc-curriculum/        git submodule (dialectic-playground/sdlc-curriculum)
-#   ├── 00-hello-world/Makefile
-#   └── 01-echo/Makefile …
+#   ├── Makefile                # from shared/templates/language/Makefile
+#   ├── Containerfile           # official toolchain image + make + python3
+#   ├── sdlc-curriculum/        # git submodule, pinned to a release tag
+#   └── 00-hello-world/ …       # one workspace per curriculum project
 #
-# Then edit the places marked "EDIT":
-#   1. the list of implemented projects, in both matrices (container and build-and-test)
-#   2. the "Set up language toolchain" step of the native job (pin any action you add to a
-#      full commit SHA); the container job needs no setup, because ./Containerfile provides
-#      the toolchain
+# Then edit the place marked "EDIT": the native toolchain setup steps. Pin every action you
+# add to a full commit SHA. The container job needs no setup: ./Containerfile provides the
+# toolchain.
 #
-# Every project runs the same universal targets (BASE-MAKEFILE) two ways:
-# - Container (podman): in the repository's toolchain image (./Containerfile), on Linux.
-# - Native (Linux, macOS, Windows): DP_RUNTIME=local, with the toolchain set up on the runner.
-#   make all → make lint → make test → make test-hidden → install/uninstall round trip
+# Every job runs the repository's make targets, so CI never needs editing as projects are
+# implemented: `make check` covers the repository, the toolchain versions, and every project
+# listed in IMPLEMENTED in the root Makefile (make all lint test test-hidden).
+# - Container (podman): `make check` in the toolchain image, on Linux.
+# - Native (Linux, macOS, Windows): `make check roundtrip` with DP_RUNTIME=local.
 #
 # Organization conventions (keep them when editing):
 # - Workflow name "CI"; every job and step is named.
 # - Actions are pinned to full commit SHAs with a version comment. The curriculum's own CI
-#   keeps these pins identical to its workflow, and Dependabot updates them in each repo.
-# - "DCO" checks Signed-off-by on every pull-request commit; "Shared tooling" checks that
-#   tools/dp-run and tools/container.mk match the canonical copies in dialectic-playground/.github.
-# - "CI result" is the single check required by the branch ruleset in every repository.
+#   keeps the pins in this template identical to its workflow; Dependabot updates them in
+#   each repository.
+# - "Shared tooling" checks that tools/dp-run and tools/container.mk match the canonical
+#   copies in dialectic-playground/.github; "DCO" checks Signed-off-by on every pull-request
+#   commit; "CI result" is the single check required by the branch ruleset.
 # =============================================================================
 name: CI
 
@@ -43,43 +43,35 @@ permissions:
 
 jobs:
   container:
-    name: ${{ matrix.project }} (container, podman)
-    strategy:
-      fail-fast: false
-      matrix:
-        # EDIT 1 (keep in step with build-and-test below): the implemented project directories.
-        project:
-          - 00-hello-world
+    name: Container (podman)
     runs-on: ubuntu-latest
     env:
       DP_RUNTIME: podman
-      PROJECT: ${{ matrix.project }}
     steps:
       - name: Check out repository (with curriculum submodule)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
 
-      - name: make all lint test test-hidden (in the toolchain container)
-        run: make -C "$PROJECT" all lint test test-hidden
+      - name: Show toolchain environment
+        run: make dp-info
 
-  build-and-test:
-    name: ${{ matrix.project }} (${{ matrix.os }})
+      - name: make check
+        run: make check
+
+  native:
+    name: Native (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        # EDIT 1: the project directories this repository implements.
-        project:
-          - 00-hello-world
     runs-on: ${{ matrix.os }}
+    env:
+      DP_RUNTIME: local
     defaults:
       run:
         # Git Bash on Windows, so the Makefile's POSIX recipes behave identically everywhere.
         shell: bash
-    env:
-      DP_RUNTIME: local
-      PROJECT: ${{ matrix.project }}
     steps:
       - name: Check out repository (with curriculum submodule)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -95,27 +87,13 @@ jobs:
         if: runner.os == 'Windows'
         run: command -v make || choco install make --no-progress -y
 
-      # EDIT 2: install your language's toolchain (compiler/interpreter, package manager,
-      # linters, formatters), e.g. with the official setup action for your language.
+      # EDIT: install the language toolchain on every OS, on the same release line as
+      # ./Containerfile (make toolchain verifies this), e.g. with its official setup action.
       - name: Set up language toolchain
         run: echo "Replace this step with your toolchain setup" && exit 1
 
-      - name: make all
-        run: make -C "$PROJECT" all
-
-      - name: make lint
-        run: make -C "$PROJECT" lint
-
-      - name: make test (unit + public black-box)
-        run: make -C "$PROJECT" test
-
-      - name: make test-hidden (hidden black-box)
-        run: make -C "$PROJECT" test-hidden
-
-      - name: make install / uninstall round trip
-        run: |
-          make -C "$PROJECT" install PREFIX="$RUNNER_TEMP/prefix"
-          make -C "$PROJECT" uninstall PREFIX="$RUNNER_TEMP/prefix"
+      - name: make check roundtrip
+        run: make check roundtrip
 
   shared-tooling:
     name: Shared tooling
@@ -163,7 +141,7 @@ jobs:
   ci-result:
     name: CI result
     if: always()
-    needs: [container, build-and-test, shared-tooling, dco]
+    needs: [container, native, shared-tooling, dco]
     runs-on: ubuntu-latest
     steps:
       - name: Fail if any required job failed or was cancelled
