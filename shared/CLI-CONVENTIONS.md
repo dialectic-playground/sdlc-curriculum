@@ -181,7 +181,9 @@ literal.
 `shared/tools/run-tests.py` runs every test under these conditions, which implementations can
 rely on:
 
-- **CONV-27**: The tool is started directly, never through a shell. Its working directory is a
+- **CONV-27**: The tool is started directly, never through a shell. A tool may be a native
+  executable or a script with a `#!` line. On Windows, the runner starts such a script's
+  interpreter directly, resolving the `#!` interpreter on `PATH`. Its working directory is a
   fresh temporary copy of the suite's `fixtures/` directory, and the copied files have fresh
   modification times.
 - **CONV-28**: Standard input is empty (the null device) unless the test redirects it with

@@ -30,6 +30,13 @@ test, and run CI the same way.
 and passes its tests. CI picks it up automatically: the workflow only runs `make check` and
 `make check roundtrip`, so it never needs editing.
 
+## Executables and installation
+
+`make all` leaves each tool in the project's `BIN_DIR`: a native executable (`.exe` on
+Windows) or a script with a `#!` line. The black-box runner starts scripts' interpreters
+itself on Windows. `make install` copies an executable, or the build payload plus a launcher,
+to `$(BINDIR)` and `$(LIBDIR)/<repository>/<project>/`.
+
 ## Containerfile
 
 Start from the language's official image, pinned by its multi-architecture index digest. Add

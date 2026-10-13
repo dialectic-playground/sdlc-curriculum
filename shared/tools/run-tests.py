@@ -32,6 +32,10 @@ Test definition format (one step per line)::
 Each test runs in a fresh temporary copy of the fixtures, with empty stdin unless redirected
 and a minimal environment (see shared/CLI-CONVENTIONS.md section 9).
 
+Tools are looked up in --bin-dir as `<tool>` (and, on Windows, `<tool>.exe` first). A tool may
+be a native executable or a script that starts with a `#!` line. On Windows, which has no
+shebang support, the runner starts the script's interpreter itself (resolved on PATH).
+
 Exit status: 0 all tests passed, 1 a test failed, 2 usage or configuration error.
 """
 
@@ -146,8 +150,37 @@ class ToolResolver:
         for name in names:
             candidate = self.bin_dir / name
             if candidate.is_file():
-                return [str(candidate.resolve())]
+                path = str(candidate.resolve())
+                if IS_WINDOWS and not name.endswith(".exe"):
+                    return shebang_command(path)
+                return [path]
         raise ConfigError(f"tool '{tool}' not found in {self.bin_dir} (did 'make all' run?)")
+
+
+def shebang_command(script: str) -> list[str]:
+    """Windows has no shebang support: run a `#!` launcher script through its interpreter.
+
+    `#!/usr/bin/env [-S] NAME [ARG]...` and `#!/path/to/NAME [ARG]...` both resolve NAME on
+    PATH (an absolute interpreter path is used as-is only if it exists). The interpreter is
+    started directly, never through cmd.exe, so arguments reach it unmodified.
+    """
+    with open(script, "rb") as handle:
+        first_line = handle.readline().decode("utf-8", "replace").strip()
+    if not first_line.startswith("#!"):
+        raise ConfigError(f"{script} is neither an .exe nor a script with a #! line")
+    words = first_line[2:].split()
+    if words and (words[0] == "env" or words[0].endswith("/env")):
+        words = words[1:]
+        if words and words[0] == "-S":
+            words = words[1:]
+    if not words:
+        raise ConfigError(f"{script}: empty #! line")
+    interpreter, *interpreter_args = words
+    resolved = interpreter if os.path.isfile(interpreter) else None
+    resolved = resolved or shutil.which(interpreter) or shutil.which(os.path.basename(interpreter))
+    if resolved is None:
+        raise ConfigError(f"{script}: interpreter '{interpreter}' not found on PATH")
+    return [resolved, *interpreter_args, script]
 
 
 def base_environment() -> dict[str, str]:

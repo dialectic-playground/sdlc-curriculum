@@ -1,10 +1,11 @@
 # Makefile for dialectic-playground/sdlc-curriculum (container-first; see tools/container.mk).
 #
 #   make                 same as `make check`
-#   make check           everything CI checks: curriculum, wiring, consistency
+#   make check           everything CI checks: curriculum, wiring, consistency, launchers
 #   make curriculum      structure, help text, and every fixture (check-curriculum.py)
 #   make wiring          the BASE-MAKEFILE contract fails loudly on an undefined hook
 #   make consistency     generated assignment/ files and the CI template's pins are in sync
+#   make launchers       `#!` script launchers work as tools on this OS (Windows included)
 #   make scaffold        regenerate every project's assignment/ from the templates
 #   make dp-info | dp-shell | dp-image
 #
@@ -25,9 +26,9 @@ endif
 WIRING_PROJECT := projects/00-hello-world/assignment
 CI_TEMPLATE := shared/ci/cross-platform-ci.yml
 
-.PHONY: check curriculum wiring consistency scaffold help
+.PHONY: check curriculum wiring consistency launchers scaffold help
 
-check: curriculum wiring consistency
+check: curriculum wiring consistency launchers
 
 curriculum:
 	$(PYTHON) shared/tools/check-curriculum.py
@@ -52,10 +53,13 @@ consistency:
 	done; \
 	[ $$status -eq 0 ] && echo "consistency: CI template pins match .github/workflows/ci.yml"; exit $$status
 
+launchers:
+	$(PYTHON) shared/tools/selftest-launchers.py
+
 scaffold:
 	$(PYTHON) tools/scaffold-project.py --force
 
 help:
-	@sed -n '3,13p' Makefile | sed 's/^# \{0,1\}//'
+	@sed -n '3,14p' Makefile | sed 's/^# \{0,1\}//'
 
 endif

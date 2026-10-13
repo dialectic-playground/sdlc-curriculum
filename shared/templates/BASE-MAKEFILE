@@ -30,8 +30,11 @@
 #
 #     PROJECT          curriculum project slug, e.g. 02-cat
 #     TOOLS            executables the project produces, e.g. dp-cat
-#     BIN_DIR          directory where `make all` leaves those executables. On Windows the
-#                      runner also accepts <tool>.exe.
+#     BIN_DIR          directory where `make all` leaves those executables: native executables
+#                      (<tool>, or <tool>.exe on Windows) or scripts that start with a #! line.
+#                      On Windows, which has no shebang support, the black-box runner starts a
+#                      script's interpreter itself; users run script tools from Git Bash or
+#                      MSYS2, which honor #! lines.
 #     DP_BUILD … DP_DISTCLEAN   shell commands for the hooks listed above. Use `define` for
 #                      multi-line commands. An undefined hook makes its target fail with
 #                      an explanation.
@@ -42,10 +45,13 @@
 #                      for example a git submodule in a language repository
 #     PREFIX / BINDIR  install location used by DP_INSTALL / DP_UNINSTALL
 #                      (default ~/.local and ~/.local/bin)
+#     LIBDIR           where script-based tools install their payload (default
+#                      $(PREFIX)/lib/dialectic-playground): use $(LIBDIR)/<repository>/$(PROJECT)/
+#                      for the files and put only a launcher in $(BINDIR)
 #     PYTHON           interpreter for the black-box runner (Python >= 3.11)
 #
 # Variables this file provides for use in hooks: EXE (".exe" on Windows, otherwise empty),
-# PREFIX, BINDIR, TOOLS.
+# PREFIX, BINDIR, LIBDIR, TOOLS.
 #
 # Container-first execution (tools/container.mk in the curriculum):
 #
@@ -84,6 +90,7 @@ endif
 
 PREFIX ?= $(HOME)/.local
 BINDIR ?= $(PREFIX)/bin
+LIBDIR ?= $(PREFIX)/lib/dialectic-playground
 RUNNER := $(CURRICULUM_ROOT)/shared/tools/run-tests.py
 PUBLIC_SUITE ?= $(CURRICULUM_ROOT)/projects/$(PROJECT)/tests/public
 PRIVATE_SUITE ?= $(CURRICULUM_ROOT)/projects/$(PROJECT)/tests/private
