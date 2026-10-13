@@ -10,6 +10,10 @@
 # fills in each DP_* hook with its toolchain's commands, and points CURRICULUM_ROOT at its
 # checkout of sdlc-curriculum (for example a git submodule). Hooks that are left empty make
 # their target fail with an explanation. `make help` shows which hooks are defined.
+#
+# Container-first: goals run in the toolchain container built from the repository's
+# Containerfile (podman, then docker, then local; override with DP_RUNTIME). The image needs
+# the language toolchain, make, and python3 >= 3.11. Use DP_RUNTIME=local for native builds.
 
 PROJECT := 05-grep-lite
 TOOLS   := dp-grep

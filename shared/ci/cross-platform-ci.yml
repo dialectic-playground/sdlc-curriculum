@@ -11,18 +11,23 @@
 #   ├── 00-hello-world/Makefile
 #   └── 01-echo/Makefile …
 #
-# Then edit the two places marked "EDIT":
-#   1. the list of implemented projects in the matrix
-#   2. the "Set up language toolchain" step (pin any action you add to a full commit SHA)
+# Then edit the places marked "EDIT":
+#   1. the list of implemented projects, in both matrices (container and build-and-test)
+#   2. the "Set up language toolchain" step of the native job (pin any action you add to a
+#      full commit SHA); the container job needs no setup, because ./Containerfile provides
+#      the toolchain
 #
-# Every project runs the same universal targets (BASE-MAKEFILE) on Linux, macOS, and Windows:
+# Every project runs the same universal targets (BASE-MAKEFILE) two ways:
+# - Container (podman): in the repository's toolchain image (./Containerfile), on Linux.
+# - Native (Linux, macOS, Windows): DP_RUNTIME=local, with the toolchain set up on the runner.
 #   make all → make lint → make test → make test-hidden → install/uninstall round trip
 #
 # Organization conventions (keep them when editing):
 # - Workflow name "CI"; every job and step is named.
 # - Actions are pinned to full commit SHAs with a version comment. The curriculum's own CI
 #   keeps these pins identical to its workflow, and Dependabot updates them in each repo.
-# - "DCO" checks Signed-off-by on every pull-request commit.
+# - "DCO" checks Signed-off-by on every pull-request commit; "Shared tooling" checks that
+#   tools/dp-run and tools/container.mk match the canonical copies in dialectic-playground/.github.
 # - "CI result" is the single check required by the branch ruleset in every repository.
 # =============================================================================
 name: CI
@@ -37,6 +42,27 @@ permissions:
   contents: read
 
 jobs:
+  container:
+    name: ${{ matrix.project }} (container, podman)
+    strategy:
+      fail-fast: false
+      matrix:
+        # EDIT 1 (keep in step with build-and-test below): the implemented project directories.
+        project:
+          - 00-hello-world
+    runs-on: ubuntu-latest
+    env:
+      DP_RUNTIME: podman
+      PROJECT: ${{ matrix.project }}
+    steps:
+      - name: Check out repository (with curriculum submodule)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+
+      - name: make all lint test test-hidden (in the toolchain container)
+        run: make -C "$PROJECT" all lint test test-hidden
+
   build-and-test:
     name: ${{ matrix.project }} (${{ matrix.os }})
     strategy:
@@ -52,6 +78,7 @@ jobs:
         # Git Bash on Windows, so the Makefile's POSIX recipes behave identically everywhere.
         shell: bash
     env:
+      DP_RUNTIME: local
       PROJECT: ${{ matrix.project }}
     steps:
       - name: Check out repository (with curriculum submodule)
@@ -90,6 +117,23 @@ jobs:
           make -C "$PROJECT" install PREFIX="$RUNNER_TEMP/prefix"
           make -C "$PROJECT" uninstall PREFIX="$RUNNER_TEMP/prefix"
 
+  shared-tooling:
+    name: Shared tooling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: tools/dp-run and tools/container.mk match the canonical copies
+        run: |
+          status=0
+          for file in tools/dp-run tools/container.mk; do
+            curl -fsSL "https://raw.githubusercontent.com/dialectic-playground/.github/main/$file" \
+              | diff -u - "$file" \
+              || { echo "::error::$file differs from the canonical copy in dialectic-playground/.github"; status=1; }
+          done
+          exit "$status"
+
   dco:
     name: DCO
     if: github.event_name == 'pull_request'
@@ -119,7 +163,7 @@ jobs:
   ci-result:
     name: CI result
     if: always()
-    needs: [build-and-test, dco]
+    needs: [container, build-and-test, shared-tooling, dco]
     runs-on: ubuntu-latest
     steps:
       - name: Fail if any required job failed or was cancelled

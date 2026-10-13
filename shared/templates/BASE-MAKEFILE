@@ -47,13 +47,29 @@
 # Variables this file provides for use in hooks: EXE (".exe" on Windows, otherwise empty),
 # PREFIX, BINDIR, TOOLS.
 #
-# Requirements: GNU Make >= 3.82, a POSIX shell (on Windows, Git Bash or MSYS2), and
-# Python >= 3.11 for shared/tools/run-tests.py.
+# Container-first execution (tools/container.mk in the curriculum):
+#
+#     Every goal runs in the language repository's toolchain container, built from the
+#     Containerfile at the repository root: podman, then docker, then the local system.
+#     Override with DP_RUNTIME=podman|docker|local (or DP_IMAGE=<image>). Inside the container
+#     DP_IN_CONTAINER=1 and the goals run natively. The image must provide the language
+#     toolchain, make, and python3 >= 3.11 (for the black-box runner). Use DP_RUNTIME=local
+#     to build and test natively on your own operating system.
+#     install, uninstall, and help act on the host, so they always run locally.
+#
+# Requirements: GNU Make >= 3.82, a POSIX shell (on Windows, Git Bash or MSYS2), and Podman
+# or Docker. With DP_RUNTIME=local: the language toolchain and Python >= 3.11 for
+# shared/tools/run-tests.py.
 # =============================================================================
 
 ifndef PROJECT
   $(error PROJECT is not set: include BASE-MAKEFILE from a project Makefile)
 endif
+
+CURRICULUM_ROOT ?= ../../..
+DP_HOST_GOALS += help install uninstall
+include $(CURRICULUM_ROOT)/tools/container.mk
+ifeq ($(DP_DELEGATE),)
 
 SHELL := /bin/sh
 .DEFAULT_GOAL := all
@@ -66,7 +82,6 @@ else
   PYTHON ?= python3
 endif
 
-CURRICULUM_ROOT ?= ../../..
 PREFIX ?= $(HOME)/.local
 BINDIR ?= $(PREFIX)/bin
 RUNNER := $(CURRICULUM_ROOT)/shared/tools/run-tests.py
@@ -129,3 +144,6 @@ help:
 	@echo "curriculum root: $(CURRICULUM_ROOT)"
 	@$(foreach hook,$(HOOKS),echo "$(hook): $(if $(strip $(value $(hook))),defined,NOT DEFINED)";)
 	@echo "targets: all install uninstall test check test-hidden grade lint format clean distclean"
+	@echo "runtime: $(DP_RESOLVED) (DP_RUNTIME=$(or $(DP_RUNTIME),auto)); see make dp-info"
+
+endif
