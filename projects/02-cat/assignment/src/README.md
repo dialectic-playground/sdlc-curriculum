@@ -20,11 +20,15 @@ An implementation of `02-cat` is complete when, from its project directory:
 6. The white-box deliverables in `../` (`hld.md`, `lld.md`, `rtm.md`,
    `master-test-plan.md`) are completed for that implementation.
 7. The code follows the 20 engineering principles in the curriculum's root `README.md`.
+8. The repository's `Containerfile` provides the toolchain (the language's official image,
+   pinned by digest, plus `make` and `python3` ≥ 3.11), so every target works container-first
+   (`make test`) as well as natively (`DP_RUNTIME=local make test`).
 
 ## Suggested layout in a language repository
 
 ```text
 <language-repo>/
+├── Containerfile             # toolchain image: official language image + make + python3
 ├── sdlc-curriculum/          # git submodule of dialectic-playground/sdlc-curriculum
 └── 02-cat/
     ├── Makefile              # copied from assignment/Makefile, with hooks filled in

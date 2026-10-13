@@ -1,9 +1,11 @@
 # CI for the curriculum itself.
 #
-# - Verify (3 OSes): structure, suite shape, normative help text, and every expected-output
-#   fixture against the maintainer reference models; BASE-MAKEFILE contract wiring.
-# - Consistency: generated assignment/ files match the templates, and the language-repo CI
-#   template (shared/ci/) uses exactly the same SHA-pinned actions as this workflow.
+# Container-first: every check is a make target (see Makefile: curriculum, wiring,
+# consistency), run two ways:
+# - Container (podman): `make check` in the same toolchain image developers use.
+# - Native (Linux, macOS, Windows): `make check` with DP_RUNTIME=local. This is what proves
+#   the specifications and fixtures are consistent on every operating system.
+# - Shared tooling: tools/dp-run and tools/container.mk match the canonical copies.
 # - DCO: Signed-off-by on every pull-request commit.
 # - "CI result" is the single check required by the branch ruleset (same name in every repo).
 #
@@ -20,13 +22,34 @@ permissions:
   contents: read
 
 jobs:
-  verify:
-    name: Verify (${{ matrix.os }})
+  container:
+    name: Container (podman)
+    runs-on: ubuntu-latest
+    env:
+      DP_RUNTIME: podman
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Show toolchain environment
+        run: make dp-info
+
+      - name: make check
+        run: make check
+
+  native:
+    name: Native (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      DP_RUNTIME: local
+    defaults:
+      run:
+        # Git Bash on Windows, so the Makefile's POSIX recipes behave identically everywhere.
+        shell: bash
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -36,53 +59,27 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Check curriculum (structure, help text, fixtures)
-        run: python shared/tools/check-curriculum.py
-
       - name: Ensure GNU Make is available
         if: runner.os == 'Windows'
-        shell: bash
         run: command -v make || choco install make --no-progress -y
 
-      - name: Check BASE-MAKEFILE contract wiring
-        shell: bash
-        run: |
-          make -C projects/00-hello-world/assignment help
-          # An unconfigured hook must fail loudly, never silently succeed.
-          if make -C projects/00-hello-world/assignment all; then
-            echo "expected 'make all' to fail when DP_BUILD is undefined" >&2
-            exit 1
-          fi
+      - name: make check
+        run: make check
 
-  consistency:
-    name: Consistency
+  shared-tooling:
+    name: Shared tooling
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-
-      - name: Generated assignment/ files match the templates
-        run: |
-          python tools/scaffold-project.py --force > /dev/null
-          git diff --exit-code -- projects/ \
-            || { echo "::error::Run 'python3 tools/scaffold-project.py --force' and commit."; exit 1; }
-
-      - name: CI template uses this workflow's SHA-pinned actions
+      - name: tools/dp-run and tools/container.mk match the canonical copies
         run: |
           status=0
-          template=shared/ci/cross-platform-ci.yml
-          if grep -E '^\s*(- )?uses:' "$template" | grep -vqE '@[0-9a-f]{40} # v[0-9]'; then
-            echo "::error::$template has an action not pinned as '@<40-hex-sha> # vX.Y.Z'"
-            status=1
-          fi
-          for pin in $(grep -oE '[a-z0-9_.-]+/[a-z0-9_.-]+@[0-9a-f]{40}' "$template" | sort -u); do
-            grep -qF "$pin" .github/workflows/ci.yml \
-              || { echo "::error::$template pins $pin, which differs from .github/workflows/ci.yml"; status=1; }
+          for file in tools/dp-run tools/container.mk; do
+            curl -fsSL "https://raw.githubusercontent.com/dialectic-playground/.github/main/$file" \
+              | diff -u - "$file" \
+              || { echo "::error::$file differs from the canonical copy in dialectic-playground/.github"; status=1; }
           done
           exit "$status"
 
@@ -115,7 +112,7 @@ jobs:
   ci-result:
     name: CI result
     if: always()
-    needs: [verify, consistency, dco]
+    needs: [container, native, shared-tooling, dco]
     runs-on: ubuntu-latest
     steps:
       - name: Fail if any required job failed or was cancelled

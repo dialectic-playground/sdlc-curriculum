@@ -58,8 +58,13 @@ sdlc-curriculum/
 │       └── check-curriculum.py     # repository validator used by CI
 ├── projects/                       # the eleven projects (00–10), described below
 ├── reference/                      # maintainer-only models that generate/verify fixtures
-├── tools/scaffold-project.py       # creates a project's assignment/ from the templates
-└── .github/workflows/ci.yml         # validates this repository on 3 OSes
+├── tools/
+│   ├── scaffold-project.py         # creates a project's assignment/ from the templates
+│   ├── dp-run                      # shared container-first runner (copy of the .github original)
+│   └── container.mk                # shared make integration, also used by BASE-MAKEFILE
+├── Makefile, Containerfile         # container-first entry points: make check, the toolchain image
+├── .devcontainer/                  # dev container using the same image
+└── .github/workflows/ci.yml         # validates this repository in a container and on 3 OSes
 ```
 
 ## The projects
@@ -149,6 +154,15 @@ toolchain's commands through **hook variables** in the project `Makefile`:
 | `test-hidden` / `grade` | Hidden suite, or both suites (CI and grading) | *(provided)* |
 | `help` | Show the configuration and which hooks are defined | *(provided)* |
 
+**Container-first.** `BASE-MAKEFILE` includes the curriculum's copy of `tools/container.mk`.
+Every target runs in the language repository's toolchain container, built from the
+`Containerfile` at the repository root: Podman, then Docker, then the local system. Override
+the choice with `DP_RUNTIME=podman|docker|local`. The image needs the language toolchain,
+`make`, and `python3` ≥ 3.11 for the black-box runner. `install`, `uninstall`, and `help` act on
+the host, so they always run locally. Use `DP_RUNTIME=local` to build and test natively on your
+own operating system. See
+[Container-first development](https://dialectic-playground.github.io/docs/explanation/container-first-development/).
+
 A hook that is left undefined makes its target fail with an explanation. It never succeeds
 silently. `make help` shows which hooks are configured.
 
@@ -190,19 +204,27 @@ directory into a private repository and have CI check it out using a token.
    ```
 
 2. For each project, copy `projects/XX-slug/assignment/` to `XX-slug/` in your repository. Set
-   `CURRICULUM_ROOT := ../sdlc-curriculum` and `BIN_DIR`, and fill in the `DP_*` hooks.
+   `CURRICULUM_ROOT := ../sdlc-curriculum` and `BIN_DIR`, and fill in the `DP_*` hooks. Base the
+   repository's `Containerfile` on the language's official image (pinned by digest), adding
+   `make` and `python3`.
 3. Complete `hld.md` and `lld.md` **before** writing code (Principle 11). Then implement,
    write unit tests, and keep `rtm.md` and `master-test-plan.md` current.
 4. Copy `shared/ci/cross-platform-ci.yml` to `.github/workflows/ci.yml`, then list your projects
-   and add your toolchain setup step.
-5. A project is done when `make lint test test-hidden` passes on all three operating systems.
+   and add your native toolchain setup step.
+5. A project is done when `make lint test test-hidden` passes in the container and natively on
+   all three operating systems.
 
 ### Maintaining the curriculum
 
+Container-first, like every repository: `make` targets and `tools/dp-run` run in the
+toolchain image ([`Containerfile`](Containerfile): Python 3.12, `make`, `git`), using Podman,
+then Docker, then the local system (`DP_RUNTIME` overrides the choice).
+
 ```sh
-python3 shared/tools/check-curriculum.py              # everything CI checks
-python3 shared/tools/check-curriculum.py 04-wc        # one project
-python3 tools/scaffold-project.py --force 04-wc       # regenerate assignment/ from templates
+make check                                                  # everything CI checks
+tools/dp-run python3 shared/tools/check-curriculum.py 04-wc # one project
+make scaffold                                               # regenerate every assignment/
+DP_RUNTIME=local make check                                 # natively, on your system
 ```
 
 - **Changing a spec:** update the SRS and user manual first, then the model in `reference/`.

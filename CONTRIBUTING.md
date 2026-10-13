@@ -25,13 +25,13 @@ This file adds curriculum-specific rules to the
 ```sh
 # 1. Edit specs/SRS.md and specs/user-manual.md (and specs/URD.md if needed)
 # 2. Update the reference model: reference/dpref/<tool>.py
-# 3. Regenerate the project's fixtures
-python3 shared/tools/run-tests.py --reference --update \
+# 3. Regenerate the project's fixtures (in the toolchain container)
+tools/dp-run python3 shared/tools/run-tests.py --reference --update \
     projects/<slug>/tests/public projects/<slug>/tests/private
 # 4. Review the regenerated fixtures byte by byte
 git diff projects/<slug>/tests/
-# 5. Run every check CI runs
-python3 shared/tools/check-curriculum.py <slug>
+# 5. Run every check CI runs (in the toolchain container; DP_RUNTIME=local for native)
+make check
 ```
 
 Use a scope in the pull request title, for example `fix(02-cat): correct -v notation for 0x7F`.
@@ -50,7 +50,7 @@ the next MAJOR release (see [Versioning](README.md#versioning)).
 ## Changing shared templates or tooling
 
 - `shared/templates/` changes affect every project. After editing the assignment templates, run
-  `python3 tools/scaffold-project.py --force` and commit the regenerated `assignment/` files.
+  `make scaffold` and commit the regenerated `assignment/` files.
   CI's **Consistency** job checks that they match.
 - `shared/ci/cross-platform-ci.yml` must use exactly the same SHA-pinned actions as
   `.github/workflows/ci.yml`. When Dependabot bumps an action, update the template in the same
@@ -63,6 +63,6 @@ the next MAJOR release (see [Versioning](README.md#versioning)).
    Project 00 as the exemplar.
 3. Add the reference model `reference/dpref/<tool>.py`, then the 10 + 10 tests and their
    fixtures.
-4. Run `python3 tools/scaffold-project.py <slug>` and `python3 shared/tools/check-curriculum.py <slug>`.
+4. Run `tools/dp-run python3 tools/scaffold-project.py <slug>`, then `make check`.
 5. Add the project to the README's project table, and to the docs site's
    [curriculum reference](https://github.com/dialectic-playground/docs/blob/main/docs/reference/curriculum/index.md).
