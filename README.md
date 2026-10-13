@@ -45,7 +45,7 @@ sdlc-curriculum/
 ├── projects/                       # the eleven projects (00–10), described below
 ├── reference/                      # maintainer-only models that generate/verify fixtures
 ├── tools/scaffold-project.py       # creates a project's assignment/ from the templates
-└── .github/workflows/curriculum-ci.yml   # validates this repository on 3 OSes
+└── .github/workflows/ci.yml         # validates this repository on 3 OSes
 ```
 
 ## The projects

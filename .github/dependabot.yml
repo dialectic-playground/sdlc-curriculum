@@ -1,0 +1,14 @@
+# Keeps GitHub Actions (SHA-pinned) current. Dependabot does not read
+# shared/ci/cross-platform-ci.yml, so CI requires its pins to match .github/workflows/ci.yml:
+# when Dependabot bumps an action here, update the template in the same pull request.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
