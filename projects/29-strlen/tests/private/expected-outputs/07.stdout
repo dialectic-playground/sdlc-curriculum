@@ -1,0 +1,14 @@
+Usage: dp-strlen [OPTION]... [STRING]...
+Print the length of each STRING, or of each line of the input.
+
+With no STRING, print the length of each line of standard input, or of FILE
+with -f (the FILE - is standard input).  The LF that ends a line is not
+counted, and neither is one CR before it.  Lengths count UTF-8 characters;
+each byte of an invalid sequence counts as one character.  With -b, lengths
+count bytes.
+
+Options:
+  -f, --file=FILE   read lines from FILE instead of standard input
+  -b, --bytes       count bytes instead of characters
+      --help        display this help and exit
+      --version     output version information and exit

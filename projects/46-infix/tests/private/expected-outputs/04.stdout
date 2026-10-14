@@ -1,0 +1,10 @@
+Infix:   A+B
+Postfix: A B +
+Infix:   A%B
+Postfix: A B %
+Infix:   C-D
+Postfix: C D -
+Infix:   A+B
+Postfix: A B +
+Infix:   C*D
+Postfix: C D *

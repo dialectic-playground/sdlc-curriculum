@@ -1,0 +1,8 @@
+(A + B
+y
+A + * B
+y
+A $ B
+y
+A + B
+n

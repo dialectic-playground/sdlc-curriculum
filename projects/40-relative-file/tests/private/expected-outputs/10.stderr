@@ -1,0 +1,4 @@
+dp-relfile: subdir: Is a directory
+dp-relfile: nodir/r.dat: No such file or directory
+dp-relfile: empty.dat: not a relative file (size 0, expected 3500)
+dp-relfile: badkey.dat: slot 12: invalid record

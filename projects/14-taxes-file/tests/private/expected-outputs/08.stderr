@@ -1,0 +1,8 @@
+dp-taxes-file: invalid argument '' for '-i'
+Try 'dp-taxes-file --help' for more information.
+dp-taxes-file: invalid argument '' for '--output'
+Try 'dp-taxes-file --help' for more information.
+dp-taxes-file: option '--input' requires an argument
+Try 'dp-taxes-file --help' for more information.
+dp-taxes-file: option requires an argument -- 'o'
+Try 'dp-taxes-file --help' for more information.

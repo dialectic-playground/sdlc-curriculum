@@ -1,0 +1,26 @@
+# Hidden black-box verification tests for dp-koch (projects/51-koch).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-koch --version
+02 dp-koch -l 006
+03 dp-koch -s -l 3 -L 100
+03 dp-koch --svg -s -l 2 -L 1
+04 dp-koch
+04 dp-koch -p one.txt
+04 dp-koch yes.txt
+05 dp-koch -p answer.txt
+06 dp-koch dos.txt
+06 dp-koch midz.txt
+07 dp-koch extra --help
+07 dp-koch -x --help
+07 dp-koch --svg=1
+07 dp-koch --level
+08 dp-koch --length 0
+08 dp-koch -l abc
+08 dp-koch -L 1000001 -l 7
+08 dp-koch -l 2 two.txt
+09 dp-koch subdir
+09 dp-koch -- -l
+10 dp-koch -l0
+10 dp-koch -sl0 --svg -L1
+10 dp-koch -L 1000000 - < two.txt

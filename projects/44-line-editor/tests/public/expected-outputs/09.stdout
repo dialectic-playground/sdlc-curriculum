@@ -1,0 +1,23 @@
+Usage: dp-line-ed [OPTION]... FILE
+Edit FILE with a line editor that reads its commands from standard input.
+
+A missing FILE starts an empty buffer, and the current line starts at [BOF],
+the position before the first line.  Commands, one per line:
+  i              insert the lines that follow after the current line, up to
+                   a line consisting of a single .
+  d [N]          delete N lines (default 1) after the current line
+  t .            type the current line
+  t b            go to [BOF] and type the first line
+  t e            go to the last line and type it
+  t N            type the N lines after the current line
+  m N            move forward N lines and type the new current line
+  f 'PAT'        find the next line containing PAT and type it
+  s 'OLD' 'NEW'  replace the first OLD in the current line by NEW; type it
+  q              write the buffer to FILE and quit
+Any punctuation character can be used in place of ' around PAT, OLD, NEW.
+At the end of the input without q, the editor quits without writing FILE.
+
+Options:
+  -p, --prompt    write the prompt * to standard error before each command
+      --help      display this help and exit
+      --version   output version information and exit

@@ -1,0 +1,3 @@
+dp-relfile: cannot add 1234: duplicate key
+dp-relfile: cannot find 4321: no such record
+dp-relfile: cannot remove 4321: no such record

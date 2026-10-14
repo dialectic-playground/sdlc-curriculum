@@ -1,0 +1,13 @@
+open berlin g=0 f=386
+select berlin g=0 f=386
+open bern g=628 f=1118 via berlin
+open hamburg g=182 f=735 via berlin
+open prague g=219 f=405 via berlin
+open warsaw g=345 f=902 via berlin
+select prague g=219 f=405
+open munich g=393 f=657 via prague
+open vienna g=404 f=404 via prague
+select vienna g=404 f=404
+Optimal path to Vienna:
+berlin -> prague -> vienna
+Total distance: 404 kilometers

@@ -1,0 +1,18 @@
+# Hidden black-box verification tests for dp-bargraph (projects/16-bargraph).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-bargraph --version
+02 dp-bargraph max.txt
+03 dp-bargraph high.txt
+03 dp-bargraph - < negative.txt
+04 dp-bargraph bytes.txt
+05 dp-bargraph empty.txt
+05 dp-bargraph blank.txt
+06 dp-bargraph noeol.txt
+07 dp-bargraph extra1 extra2 --help
+07 dp-bargraph -x --help
+08 dp-bargraph twotokens.txt
+08 dp-bargraph blankvalue.txt
+09 dp-bargraph subdir
+10 dp-bargraph -- trunc-eof.txt
+10 dp-bargraph --version=1

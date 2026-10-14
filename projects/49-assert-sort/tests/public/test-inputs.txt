@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-assert-sort (projects/49-assert-sort).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (textbook.txt, mixed.txt, bad.txt) live in ../fixtures/; textbook.txt is the textbook's array.
+01 dp-assert-sort < textbook.txt
+02 dp-assert-sort --trace textbook.txt
+03 dp-assert-sort mixed.txt
+04 dp-assert-sort --fault=off-by-one textbook.txt
+05 dp-assert-sort -t --fault=search-from-next textbook.txt
+06 dp-assert-sort -f skip-swap - < textbook.txt
+07 dp-assert-sort bad.txt
+08 dp-assert-sort missing.txt
+09 dp-assert-sort --help
+10 dp-assert-sort --fault=bogus textbook.txt

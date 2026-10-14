@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-size (projects/39-size).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-size --version
+02 dp-size -e '' license
+02 dp-size --extension= sub/inner.c
+03 dp-size < ctrlz-names.txt
+03 dp-size - < midz-names.txt
+04 dp-size < nul-names.txt
+05 dp-size -p
+05 dp-size -p - - < size-name.txt
+06 dp-size '' size
+06 dp-size -- -x
+07 dp-size large allz
+08 dp-size extra --help
+08 dp-size -e bad --version
+08 dp-size -x --help
+09 dp-size -e
+09 dp-size --extension
+09 dp-size --prompt=yes
+09 dp-size --ext=.h size
+10 dp-size dir sub
+10 dp-size sub/

@@ -1,0 +1,3 @@
+dp-sched: neg.in:1: value out of range '-1'
+dp-sched: equal.in:2: finish time is not later than start time
+dp-sched: -:1: finish time is not later than start time

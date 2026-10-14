@@ -1,0 +1,6 @@
+dp-bfs-adj: invalid argument '1000' for '-s'
+Try 'dp-bfs-adj --help' for more information.
+dp-bfs-link: invalid argument '-1' for '--start'
+Try 'dp-bfs-link --help' for more information.
+dp-bfs-link: invalid argument '' for '-g'
+Try 'dp-bfs-link --help' for more information.

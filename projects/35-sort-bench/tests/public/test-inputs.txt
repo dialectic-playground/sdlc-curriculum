@@ -1,0 +1,13 @@
+# Public black-box acceptance tests for dp-sort-bench (projects/35-sort-bench).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+01 dp-sort-bench
+02 dp-sort-bench --sizes=10,20,40
+03 dp-sort-bench -s 100 --seed=7
+04 dp-sort-bench --sizes 0,1,2,3
+05 dp-sort-bench -s 8 --seed 4294967295
+06 dp-sort-bench --help
+07 dp-sort-bench --sizes=100001
+08 dp-sort-bench -s 10,,20
+09 dp-sort-bench --seed=-1
+10 dp-sort-bench extra

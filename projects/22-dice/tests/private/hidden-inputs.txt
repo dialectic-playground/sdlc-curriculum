@@ -1,0 +1,24 @@
+# Hidden black-box verification tests for dp-dice (projects/22-dice).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-dice --version
+02 dp-dice --seed=0 < once.txt
+02 dp-dice --seed=80 nozero.txt
+03 dp-dice --seed=4294967295 play.txt
+03 dp-dice --seed=4294967296 play.txt
+03 dp-dice --seed= play.txt
+03 dp-dice --seed=-1 play.txt
+04 dp-dice -p nobet.txt
+05 dp-dice two.txt
+05 dp-dice -p yes.txt
+06 dp-dice ctrlz.txt
+07 dp-dice --seed=abc --help
+07 dp-dice -x --help
+07 dp-dice --prompt=1
+07 dp-dice --seed
+08 dp-dice missing.txt
+08 dp-dice subdir
+09 dp-dice -p - extra < play.txt
+09 dp-dice --seed=1 --seed=14 - -p < double.txt
+10 dp-dice --seed=14 huge.txt
+10 dp-dice --seed=14 rich.txt

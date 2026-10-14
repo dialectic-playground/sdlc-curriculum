@@ -1,0 +1,3 @@
+dp-resistor: foreign.txt:1: invalid color code 'é'
+dp-resistor: foreign.txt:1: invalid color code 'i'
+dp-resistor: foreign.txt:1: invalid color code 'BB'

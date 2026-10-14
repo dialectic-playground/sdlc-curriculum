@@ -1,0 +1,12 @@
+Usage: dp-chk-sort [OPTION]... [FILE]
+Check whether the integers in FILE are in non-decreasing order.
+
+With no FILE, or when FILE is -, read standard input.  Integers are separated
+by whitespace.  Print 'file is sorted' and exit with status 0 if no integer
+is less than the one before it; otherwise print 'file is not sorted' as soon
+as the first such integer is read, stop reading, and exit with status 1.
+Any error exits with status 2.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

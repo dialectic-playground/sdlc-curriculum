@@ -1,0 +1,19 @@
+Usage: dp-astar [OPTION]... [CITY]
+Find the shortest road route from CITY to Vienna with the A* search.
+
+With no CITY, or when CITY is -, read the start city from standard input.
+City names are matched without regard to ASCII case.  The cities and their
+estimated distances to the goal are read from names.dat, and the road
+distances from distance.dat, where 1000 means that there is no road.
+
+Options:
+  -n, --names=FILE      read the cities and estimates from FILE
+                          (default names.dat)
+  -d, --distances=FILE  read the road distances from FILE
+                          (default distance.dat)
+  -g, --goal=CITY       find a route to CITY instead of vienna
+  -t, --trace           show every step of the search before the result
+  -p, --prompt          write the prompt 'Enter start city: ' to standard
+                          error before the start city is read
+      --help            display this help and exit
+      --version         output version information and exit

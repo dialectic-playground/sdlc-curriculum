@@ -1,0 +1,17 @@
+Usage: dp-sort-host [OPTION]... [FILE]
+Sort integers with a concurrent worker and merge the two sorted halves.
+
+With no FILE, or when FILE is -, read standard input.  Up to 100000 integers,
+separated by whitespace, are read.  The first half is sorted here and the rest
+by a worker running at the same time; the merged result is written one
+integer per line.
+
+Options:
+  -r, --random=COUNT   sort COUNT pseudo-random integers 0-32767 (0-100000)
+                         instead of reading input
+      --seed=SEED      seed the pseudo-random generator (0-4294967295,
+                         default 1)
+  -t, --trace          write the messages exchanged with the worker and each
+                         merge step to standard error
+      --help           display this help and exit
+      --version        output version information and exit

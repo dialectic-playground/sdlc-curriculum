@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-tromino (projects/24-tromino).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (readme.txt, boards.txt, corners.txt, bad-size.txt, bad-square.txt) live in ../fixtures/.
+01 dp-tromino < readme.txt
+02 dp-tromino --prompt readme.txt
+03 dp-tromino boards.txt
+04 dp-tromino corners.txt
+05 dp-tromino --draw readme.txt
+06 dp-tromino -d - < boards.txt
+07 dp-tromino bad-size.txt
+08 dp-tromino bad-square.txt
+09 dp-tromino --help
+10 dp-tromino readme.txt boards.txt

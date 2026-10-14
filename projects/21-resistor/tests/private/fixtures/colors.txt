@@ -1,0 +1,22 @@
+B N R
++1
+O Y G
+01
+E V A
+1
+W B B
+1
+N R O
+1
+R O Y
+1
+A N N
+1
+Y G E
+1
+G E V
+1
+E V A
+1
+V A W
+0

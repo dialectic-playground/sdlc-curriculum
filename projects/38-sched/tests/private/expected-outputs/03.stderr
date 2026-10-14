@@ -1,0 +1,3 @@
+dp-sched: long.in:2: invalid line length 11, expected 10
+dp-sched: blank.in:2: invalid line length 0, expected 10
+dp-sched: midz.in:2: invalid line length 1, expected 10

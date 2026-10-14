@@ -1,0 +1,7 @@
+dp-kinder (dialectic-playground) 1.0.0
+Usage: dp-kinder [OPTION]...
+Print the message 'ANSI--A kinder and gentler C!' to standard output.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

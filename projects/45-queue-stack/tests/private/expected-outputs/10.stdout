@@ -1,0 +1,38 @@
+Usage: dp-queue2 [OPTION]... [FILE]
+Run a queue of bank customers stored in a linked list of any length.
+
+Read commands from FILE, or from standard input when FILE is absent or -.
+1 inserts the customer whose last name, first name, account number, and
+balance (at most 2 decimal places) follow; 2 removes the customer at the
+front; 3 displays the queue from front to rear; 0 or the end of the input
+quits.  Removing from an empty queue prints QUEUE EMPTY.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit
+Usage: dp-stack1 [OPTION]... [FILE]
+Run a stack of cafeteria trays stored in an array of 100 places.
+
+Read commands from FILE, or from standard input when FILE is absent or -.
+1 pushes the tray whose color and id follow; 2 pops the tray on top; 3
+displays the stack from top to bottom; 0 or the end of the input quits.
+Pushing onto a full stack prints STACK FULL, and popping an empty one prints
+STACK EMPTY.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit
+Usage: dp-stack2 [OPTION]... [FILE]
+Run a stack of cafeteria trays stored in a linked list of any length.
+
+Read commands from FILE, or from standard input when FILE is absent or -.
+1 pushes the tray whose color and id follow; 2 pops the tray on top; 3
+displays the stack from top to bottom; 0 or the end of the input quits.
+Popping an empty stack prints STACK EMPTY.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit

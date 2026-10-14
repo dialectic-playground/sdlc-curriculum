@@ -1,0 +1,13 @@
+Usage: dp-convert [OPTION]... [FILE]
+Convert lengths in yards to feet and inches.
+
+With no FILE, or when FILE is -, read standard input.  Lengths are whole
+numbers of yards from 0 to 256204778801521550, separated by whitespace.  A
+negative number ends the input: it prints '*** END OF PROGRAM ***', and
+nothing after it is read.
+
+Options:
+  -p, --prompt    write the prompt 'Enter next length ' to standard error
+                    before each length is read
+      --help      display this help and exit
+      --version   output version information and exit

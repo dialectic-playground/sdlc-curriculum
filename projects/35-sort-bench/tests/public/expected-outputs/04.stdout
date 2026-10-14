@@ -1,0 +1,39 @@
+Array size: 0
+	Algorithm: Selection Sort
+		Comparisons = 0
+		Swaps = 0
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 0
+		Swaps = 0
+		Sorted = yes
+
+Array size: 1
+	Algorithm: Selection Sort
+		Comparisons = 0
+		Swaps = 0
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 0
+		Swaps = 0
+		Sorted = yes
+
+Array size: 2
+	Algorithm: Selection Sort
+		Comparisons = 1
+		Swaps = 0
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 1
+		Swaps = 0
+		Sorted = yes
+
+Array size: 3
+	Algorithm: Selection Sort
+		Comparisons = 3
+		Swaps = 2
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 3
+		Swaps = 2
+		Sorted = yes

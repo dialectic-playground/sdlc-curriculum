@@ -1,0 +1,15 @@
+Usage: dp-tromino [OPTION]... [FILE]
+Tile a 2^k-by-2^k board with one missing square using L-shaped trominoes.
+
+Read whitespace-separated answers from FILE, or from standard input when FILE
+is absent or -.  Each round gives a board size (2, 4, 8, 16, 32, or 64; 0 to
+quit) and the x and y coordinates of the missing square (0 to size-1, with
+0 0 the lower-left square).  For each tromino placed, in divide-and-conquer
+order, a line gives the center of its 2-by-2 block and its orientation (UL,
+UR, LR, or LL: the corner where its two arms meet).
+
+Options:
+  -d, --draw      after each tiling, draw the board with numbered trominoes
+  -p, --prompt    write prompts to standard error before reading
+      --help      display this help and exit
+      --version   output version information and exit

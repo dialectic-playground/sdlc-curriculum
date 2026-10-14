@@ -1,0 +1,14 @@
+dp-assert-sort: invalid argument 'skip-swap:' for '--fault'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: invalid argument ':1' for '-f'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: invalid argument '' for '--fault'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: invalid argument 'Skip-swap' for '--fault'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: invalid argument 'skip-swap:-1' for '-f'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: invalid argument 'skip-swap:9223372036854775808' for '-f'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: option requires an argument -- 'f'
+Try 'dp-assert-sort --help' for more information.

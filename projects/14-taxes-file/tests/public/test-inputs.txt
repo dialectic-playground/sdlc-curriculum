@@ -1,0 +1,20 @@
+# Public black-box acceptance tests for dp-taxes-file (projects/14-taxes-file).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Consecutive lines with the same ID are steps of one test and share a working directory; a
+# later step reads back (with -i) the file an earlier step wrote. Fixtures live in ../fixtures/.
+01 dp-taxes-file -o -
+02 dp-taxes-file
+02 dp-taxes-file -i out.dat -o -
+03 dp-taxes-file --input=more.dat --output=-
+04 dp-taxes-file -i - -o - < incomes.dat
+05 dp-taxes-file -i prev.dat -o -
+05 dp-taxes-file -i empty.dat -o prev.dat
+05 dp-taxes-file -i prev.dat -o -
+06 dp-taxes-file -i bad.dat -o prev.dat
+06 dp-taxes-file -i prev.dat -o -
+07 dp-taxes-file -i missing.dat
+07 dp-taxes-file -i out.dat
+08 dp-taxes-file -i bad.dat -o -
+09 dp-taxes-file --help
+10 dp-taxes-file incomes.dat

@@ -1,0 +1,21 @@
+Usage: dp-sales [OPTION]...
+Print the sales report by salesperson from an accounts file and a
+salesperson file.
+
+Each line of the accounts file (default sales.dat) describes one account:
+  ID NAME ACTUAL PROJECTED
+Each line of the salesperson file (default sper.dat) describes one
+salesperson and lists the ids of the accounts the salesperson manages:
+  NAME COACH REGION SALARY BONUS # ID...
+Ids are whole numbers; amounts have at most two decimals.  Salespeople are
+listed in order of name, each with the accounts in the order listed.  Both
+files are checked completely before the report is written.
+
+Options:
+  -a, --accounts=FILE      read the accounts from FILE (default sales.dat);
+                             - means standard input
+  -s, --salespeople=FILE   read the salespeople from FILE (default sper.dat);
+                             - means standard input
+      --help               display this help and exit
+      --version            output version information and exit
+dp-sales (dialectic-playground) 1.0.0

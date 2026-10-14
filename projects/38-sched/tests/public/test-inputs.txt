@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-sched (projects/38-sched).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixtures (sched.in from the textbook; ties.in, empty.in, bad.in) live in ../fixtures/.
+01 dp-sched sched.in
+02 dp-sched - < sched.in
+03 dp-sched ties.in
+04 dp-sched empty.in
+05 dp-sched bad.in
+06 dp-sched missing.in
+07 dp-sched --help
+08 dp-sched
+09 dp-sched sched.in ties.in
+10 dp-sched -p sched.in

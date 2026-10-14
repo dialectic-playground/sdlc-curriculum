@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-sched (projects/38-sched).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-sched --version
+02 dp-sched crlf.in
+02 dp-sched crend.in
+03 dp-sched long.in
+03 dp-sched blank.in
+03 dp-sched midz.in
+04 dp-sched nofinish.in
+04 dp-sched tab.in
+04 dp-sched real.in
+05 dp-sched neg.in
+05 dp-sched equal.in
+05 dp-sched - < reversed.in
+06 dp-sched loose.in
+07 dp-sched subdir
+07 dp-sched -- -x
+08 dp-sched extra --help
+08 dp-sched -x --help
+08 dp-sched --help=all
+09 dp-sched one.in
+09 dp-sched overlap.in
+10 dp-sched missing.in --version
+10 dp-sched --

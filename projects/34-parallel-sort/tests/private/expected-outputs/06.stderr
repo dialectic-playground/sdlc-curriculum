@@ -1,0 +1,5 @@
+dp-sort-child: count-neg.txt:2: value out of range '-1'
+dp-sort-child: count-big.txt:1: value out of range '100001'
+dp-sort-child: badvalue.txt:3: invalid integer 'x2'
+dp-sort-child: midz.txt:2: invalid integer '1'
+dp-sort-child: -:1: unexpected end of input

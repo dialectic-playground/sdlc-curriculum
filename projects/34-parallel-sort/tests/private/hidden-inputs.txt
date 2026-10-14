@@ -1,0 +1,32 @@
+# Hidden black-box verification tests for dp-sort-host and dp-sort-child (projects/34-parallel-sort).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-sort-host --version
+01 dp-sort-child --version
+02 dp-sort-host -t ties.txt
+03 dp-sort-host -t one.txt
+03 dp-sort-host -t two.txt
+04 dp-sort-host extremes.txt
+04 dp-sort-host -t --random 7 --seed=42
+05 dp-sort-child trailing.txt
+05 dp-sort-child zero.txt
+05 dp-sort-child - < ctrlz.txt
+06 dp-sort-child count-neg.txt
+06 dp-sort-child count-big.txt
+06 dp-sort-child badvalue.txt
+06 dp-sort-child midz.txt
+06 dp-sort-child
+07 dp-sort-host overflow.txt
+07 dp-sort-host toomany.txt
+08 dp-sort-host --random=100001
+08 dp-sort-host --seed=4294967296
+08 dp-sort-host --random=
+08 dp-sort-host -r 5 data.txt
+08 dp-sort-host --trace=yes
+09 dp-sort-host extra --help
+09 dp-sort-host -x --help
+09 dp-sort-host --random --help
+09 dp-sort-child request.txt extra
+10 dp-sort-host subdir
+10 dp-sort-host -- -t
+10 dp-sort-child subdir

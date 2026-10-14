@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-page (projects/36-page).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (lines50.txt, lines53.txt, lines104.txt, poem.txt, noeol.txt) live in ../fixtures/.
+01 dp-page < lines50.txt
+02 dp-page lines53.txt
+03 dp-page lines104.txt
+04 dp-page
+05 dp-page -l 3 poem.txt
+06 dp-page noeol.txt
+07 dp-page --lines=4 poem.txt - noeol.txt < lines50.txt
+08 dp-page missing.txt noeol.txt
+09 dp-page --help
+10 dp-page -l 0 poem.txt

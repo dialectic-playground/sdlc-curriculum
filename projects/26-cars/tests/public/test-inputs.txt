@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-cars1 (projects/26-cars).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (day.txt, rejected.txt, noend.txt, cut.txt, bad.txt) live in ../fixtures/.
+01 dp-cars1 day.txt
+02 dp-cars1 < day.txt
+03 dp-cars1 --prompt < day.txt
+04 dp-cars1 rejected.txt
+05 dp-cars1 noend.txt
+06 dp-cars1 cut.txt
+07 dp-cars1 bad.txt
+08 dp-cars1 missing.txt
+09 dp-cars1 --help
+10 dp-cars1 day.txt rejected.txt

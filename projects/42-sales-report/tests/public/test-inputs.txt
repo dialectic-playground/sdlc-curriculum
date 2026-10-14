@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-sales (projects/42-sales-report).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (sales.rpt is the textbook's sample report; test 01 reproduces it).
+01 dp-sales
+02 dp-sales --accounts=- < sales.dat
+03 dp-sales -s team.dat
+04 dp-sales -a mixed.dat
+05 dp-sales -s unknown.dat
+06 dp-sales -a dup.dat
+07 dp-sales -a bad-amount.dat
+08 dp-sales -a missing.dat
+09 dp-sales --help
+10 dp-sales sales.dat

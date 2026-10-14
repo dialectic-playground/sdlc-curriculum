@@ -1,0 +1,3 @@
+dp-taxes-file: subdir: Is a directory
+dp-taxes-file: nodir/out.dat: No such file or directory
+dp-taxes-file: subdir: Is a directory

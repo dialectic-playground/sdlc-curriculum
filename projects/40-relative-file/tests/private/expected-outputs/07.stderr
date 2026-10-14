@@ -1,0 +1,5 @@
+dp-relfile: data too long (maximum 30 characters)
+Try 'dp-relfile --help' for more information.
+dp-relfile: invalid character in data
+Try 'dp-relfile --help' for more information.
+dp-relfile: -:3: invalid character in data

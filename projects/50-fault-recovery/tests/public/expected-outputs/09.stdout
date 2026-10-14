@@ -1,0 +1,15 @@
+Usage: dp-divide [OPTION]... [FILE]
+Divide pairs of numbers, recovering from an arithmetic fault.
+
+With no FILE, or when FILE is -, read standard input.  The input is a list of
+real numbers separated by whitespace, taken two at a time.  For each pair
+a b the line 'a / b == q' is written, with six digits after the decimal
+point.  A zero divisor, or a quotient too large to represent, is a fault: the
+tool writes 'Signal status == 8.' and 'At jump point and about to exit...',
+ignores the rest of the input, and exits with status 0.
+
+Options:
+  -p, --prompt    write the prompt 'Two floats: ' to standard error before
+                    each pair is read
+      --help      display this help and exit
+      --version   output version information and exit

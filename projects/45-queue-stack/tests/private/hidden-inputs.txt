@@ -1,0 +1,32 @@
+# Hidden black-box verification tests for dp-queue1, dp-queue2, dp-stack1, and dp-stack2 (projects/45-queue-stack).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-queue1 --version
+01 dp-queue2 --version
+01 dp-stack1 --version
+01 dp-stack2 --version
+02 dp-queue1 wrap.txt
+02 dp-queue2 wrap.txt
+03 dp-stack1 drain-stack.txt
+03 dp-stack2 drain-stack.txt
+04 dp-queue2 amounts.txt
+04 dp-queue1 bad-amount.txt
+04 dp-queue2 big-amount.txt
+05 dp-queue1 -p cut-record.txt
+05 dp-stack2 -p < empty.txt
+06 dp-queue2 bad-account.txt
+06 dp-stack1 command4.txt
+06 dp-stack2 bad-id.txt
+07 dp-stack2 crlf-stack.txt
+07 dp-stack1 quit.txt
+08 dp-queue1 subdir
+08 dp-stack2 missing.txt
+08 dp-queue2 -- -p
+09 dp-stack2 a b --help
+09 dp-queue2 -x --help
+09 dp-stack1 --prompt=1
+09 dp-queue1 a b
+10 dp-queue2 --help
+10 dp-stack1 --help
+10 dp-stack2 --help
+10 dp-queue1 -p - extra < customers.txt

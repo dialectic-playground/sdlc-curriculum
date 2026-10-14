@@ -1,0 +1,60 @@
+Forest before fire:
++-------------------------+
+|TTTTTTTTT T   TT  T    T |
+|TTT TTT TT TT  T  T T T T|
+|TTTT TTTTT  T  TTTTTT TTT|
+| TT TTTTT   TT  TTT  TT T|
+|T TT T TT TT T TTTTTT    |
+|T  TT  TTT T TT  T T   T |
+|T TT T TTT  T TTT T  T   |
+|TT   TTT  TT     T TT TT |
+|T  T TTTTTT TTTT TT   T  |
+|T  TTTTT TT     T T T  T |
+|  T  T      T TTT  T  TTT|
+|TT T T T  TT TT  TT  T   |
+|T  TT  TTTTTT  T TT TTTTT|
+|T T     T TTTTTT TT TTT T|
+| TTT T T T   T  T  TTTTTT|
+|  T  TTT TT TTTT  T  TTTT|
+|T  TTT T  TTTT T T TTTTT |
+|  TT TT  TT     TTT T TTT|
+| TTTT TTTT TTTTTT    TT T|
+|TTTTTT TT     TTT  TT  T |
+| T TTTTTTT TT      T T  T|
+|T   TT T   TT  TTT  TT   |
+|  TTTTTTT T  T   TT T  TT|
+|   TTT    TTTTTTT TT T TT|
+|  T  T TTTT  TT TT  T  TT|
++-------------------------+
+Forest after fire:
++-------------------------+
+|********* *   **  *    * |
+|*** *** ** *T  *  * T * *|
+|**** *****  *  *****T ***|
+| ** *****   **  ***  ** *|
+|* ** * ** T* * ******    |
+|*  **  *** * **  * *   T |
+|* ** * ***  * *** *  T   |
+|**   ***  **     * *T TT |
+|*  T ****** *TTT **   T  |
+|*  T**** **     * * T  T |
+|  T  *      T T**  *  TTT|
+|TT T * T  TT T*  **  T   |
+|T  T*  TTTTTT  * ** TTTTT|
+|T T     T TTTT** ** TTT T|
+| TTT T T T   *  *  *TTTTT|
+|  T  TTT TT ****  *  TTTT|
+|T  TTT T  T*** * * *TTTT |
+|  TT TT  T*     *** * TTT|
+| TTTT TTT* *TTT**    *T T|
+|TTTTTT T*     ***  T*  T |
+| T TTTT*** TT      * *  T|
+|T   TT *   TT  TTT  **   |
+|  TTTT*** T  T   TT *  TT|
+|   TT*    TTTTTTT T* * TT|
+|  T  * TTTT  TT TT  *  TT|
++-------------------------+
+Requested density: 60%
+Actual density: 56.16%
+Trees at start: 351
+Trees surviving: 164

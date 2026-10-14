@@ -1,0 +1,3 @@
+dp-phone: long.dat:2: invalid record length 63, expected 62
+dp-phone: blank.dat:3: invalid record length 0, expected 62
+dp-phone: midz.dat:3: invalid record length 1, expected 62

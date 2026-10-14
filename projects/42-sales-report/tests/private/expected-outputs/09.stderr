@@ -1,0 +1,10 @@
+dp-sales: invalid argument '' for '-a'
+Try 'dp-sales --help' for more information.
+dp-sales: invalid argument '-' for '-s'
+Try 'dp-sales --help' for more information.
+dp-sales: option '--salespeople' requires an argument
+Try 'dp-sales --help' for more information.
+dp-sales: invalid option -- 'p'
+Try 'dp-sales --help' for more information.
+dp-sales: invalid option -- 'x'
+Try 'dp-sales --help' for more information.

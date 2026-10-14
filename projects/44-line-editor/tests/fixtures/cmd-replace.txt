@@ -1,0 +1,8 @@
+f 'rat'
+s 'rat' 'bat'
+f "cat"
+s /cat/ /dog/
+s |the rat| |it|
+t b
+f |rat|
+q

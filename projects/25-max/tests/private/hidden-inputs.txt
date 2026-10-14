@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-max (projects/25-max).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-max --version
+02 dp-max limits.txt
+02 dp-max minimum.txt
+03 dp-max overflow.txt
+03 dp-max underflow.txt
+04 dp-max equal.txt
+04 dp-max spelling.txt
+05 dp-max dos.txt
+05 dp-max midz.txt
+06 dp-max -p blank.txt
+07 dp-max fifth-junk.txt
+07 dp-max second-junk.txt
+07 dp-max six.txt
+08 dp-max missing.txt
+08 dp-max subdir
+08 dp-max -- -p
+09 dp-max a b --help
+09 dp-max -x --help
+09 dp-max --prompt=1
+09 dp-max -5
+10 dp-max -p missing.txt
+10 dp-max - -p < readme.txt

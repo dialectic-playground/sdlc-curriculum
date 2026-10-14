@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-page (projects/36-page).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-page --version
+02 dp-page -l 5 lines53.txt
+03 dp-page -l 2 blank.txt
+04 dp-page ctrlz.txt
+05 dp-page -l 3 noeol.txt
+05 dp-page -l2 noeol.txt
+06 dp-page empty.txt
+06 dp-page -l 2 empty.txt - poem.txt - < noeol.txt
+07 dp-page subdir noeol.txt
+07 dp-page -- -l
+08 dp-page extra --help
+08 dp-page --lines 0 --help
+08 dp-page -x --help
+09 dp-page -l abc
+09 dp-page --lines=
+09 dp-page -l 9223372036854775808 poem.txt
+09 dp-page poem.txt -l
+09 dp-page --lines=9223372036854775807 poem.txt
+10 dp-page --lines=52 -l002 poem.txt
+10 dp-page --help=x

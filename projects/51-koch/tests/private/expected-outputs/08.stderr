@@ -1,0 +1,8 @@
+dp-koch: invalid argument '0' for '--length'
+Try 'dp-koch --help' for more information.
+dp-koch: invalid argument 'abc' for '-l'
+Try 'dp-koch --help' for more information.
+dp-koch: invalid argument '7' for '-l'
+Try 'dp-koch --help' for more information.
+dp-koch: extra operand 'two.txt'
+Try 'dp-koch --help' for more information.

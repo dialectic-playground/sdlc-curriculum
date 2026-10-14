@@ -1,0 +1,14 @@
+open origin g=0 f=0
+select origin g=0 f=0
+open alpha g=4 f=4 via origin
+open beta g=1 f=11 via origin
+select alpha g=4 f=4
+open target g=14 f=14 via alpha
+select beta g=1 f=11
+reopen alpha g=2 f=2 via beta
+select alpha g=2 f=2
+update target g=12 f=12 via alpha
+select target g=12 f=12
+Optimal path to Target:
+origin -> beta -> alpha -> target
+Total distance: 12 kilometers

@@ -1,0 +1,17 @@
+B B B
+1
+W W B
+1
+A W N
+1
+B N O
+1
+A W R
+1
+W W O
+1
+W W Y
+1
+B N E
+1
+W W W

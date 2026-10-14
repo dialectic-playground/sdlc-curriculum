@@ -1,0 +1,2 @@
+dp-queue1: bad-amount.txt:2: invalid amount '12.345'
+dp-queue2: big-amount.txt:2: value out of range '1000000000000000'

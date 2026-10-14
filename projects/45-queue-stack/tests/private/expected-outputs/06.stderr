@@ -1,0 +1,3 @@
+dp-queue2: bad-account.txt:3: value out of range '-5'
+dp-stack1: command4.txt:2: value out of range '4'
+dp-stack2: bad-id.txt:3: invalid integer '1.5'

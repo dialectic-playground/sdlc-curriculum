@@ -1,0 +1,15 @@
+dp-cars1: extra operand 'extra'
+Try 'dp-cars1 --help' for more information.
+Cars in stock for brand: 0
+Cars in stock for brand: 1
+Cars in stock for brand: 2
+Cars in stock for brand: 3
+Cars in stock for brand: 4
+Cars in stock for brand: 5
+Cars in stock for brand: 6
+Cars in stock for brand: 7
+Cars in stock for brand: 8
+Cars in stock for brand: 9
+Cars in stock for brand: 10
+Cars in stock for brand: 11
+Which brand was sold? How many cars in sale? Which brand was sold? How many cars in sale? dp-cars1: -:4: unexpected end of input

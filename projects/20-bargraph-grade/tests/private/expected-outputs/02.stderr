@@ -1,0 +1,2 @@
+dp-bargraph2: badvalue.txt:4: invalid integer 'forty-two'
+dp-bargraph2: truncated.txt:4: unexpected end of input

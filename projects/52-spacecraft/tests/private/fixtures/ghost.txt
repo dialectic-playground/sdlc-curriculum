@@ -1,0 +1,2 @@
+new s1
+print s9

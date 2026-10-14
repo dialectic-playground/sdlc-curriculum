@@ -9,6 +9,7 @@ are started through :func:`run` (CONV-24, CONV-25).
 from __future__ import annotations
 
 import os
+import re
 import sys
 from dataclasses import dataclass, field
 from typing import BinaryIO, Callable
@@ -237,3 +238,140 @@ def run(main: Callable[[list[str]], int], tool: str) -> None:
     except KeyboardInterrupt:
         status = 130
     sys.exit(status)
+
+
+# --- data input, numbers, prompts, and randomness (CONV-32 … CONV-38) -------------------
+
+WHITESPACE = b" \t\n\v\f\r"
+_INTEGER = re.compile(rb"[+-]?[0-9]+\Z")
+_REAL = re.compile(rb"[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][+-]?[0-9]+)?\Z")
+INT64_MIN, INT64_MAX = -(2 ** 63), 2 ** 63 - 1
+
+
+class DataError(Exception):
+    """A CONV-34 data diagnostic: ``<source>:<line>: <message>`` (message may hold raw bytes)."""
+
+    def __init__(self, source: str, line: int, message: bytes | str):
+        super().__init__(message)
+        self.source = source
+        self.line = line
+        self.message = message if isinstance(message, bytes) else message.encode()
+
+
+@dataclass(frozen=True)
+class Token:
+    text: bytes
+    line: int
+
+
+def strip_eof_marker(data: bytes) -> bytes:
+    """Drop a trailing run of 0x1A bytes from text data (CONV-37)."""
+    return data.rstrip(b"\x1a")
+
+
+def tokenize(data: bytes) -> list[Token]:
+    """Split ``data`` into whitespace-separated tokens with line numbers (CONV-32)."""
+    tokens = []
+    line = 1
+    start = None
+    for index, byte in enumerate(data):
+        if byte in WHITESPACE:
+            if start is not None:
+                tokens.append(Token(data[start:index], line))
+                start = None
+            if byte == 0x0A:
+                line += 1
+        elif start is None:
+            start = index
+            token_line = line
+    if start is not None:
+        tokens.append(Token(data[start:], token_line))
+    return tokens
+
+
+def end_line(data: bytes) -> int:
+    """The end-of-input line number (CONV-32)."""
+    return data.count(b"\n") + 1
+
+
+def parse_int_token(token: Token, source: str, minimum: int = INT64_MIN,
+                    maximum: int = INT64_MAX) -> int:
+    """An *integer* token (CONV-33), optionally range-restricted (``value out of range``)."""
+    if not _INTEGER.match(token.text) or not INT64_MIN <= int(token.text) <= INT64_MAX:
+        raise DataError(source, token.line, b"invalid integer '" + token.text + b"'")
+    value = int(token.text)
+    if not minimum <= value <= maximum:
+        raise DataError(source, token.line, b"value out of range '" + token.text + b"'")
+    return value
+
+
+def parse_real_token(token: Token, source: str) -> float:
+    """A *real* token (CONV-33): nearest binary64, overflow to infinity is invalid."""
+    if _REAL.match(token.text):
+        value = float(token.text)
+        if value not in (float("inf"), float("-inf")):
+            return value
+    raise DataError(source, token.line, b"invalid number '" + token.text + b"'")
+
+
+def unexpected_end(source: str, data: bytes) -> DataError:
+    return DataError(source, end_line(data), "unexpected end of input")
+
+
+def data_failure(tool: str, error: DataError) -> int:
+    """Write a CONV-34 diagnostic and return exit status 1."""
+    err.write(encode_arg(f"{tool}: {error.source}:{error.line}: ") + error.message + b"\n")
+    return 1
+
+
+def fix(value: float, digits: int) -> str:
+    """``FIX(x, n)`` (CONV-35): correctly rounded fixed point, no negative zero."""
+    text = f"{value:.{digits}f}"
+    if text.startswith("-") and not text.strip("-0."):
+        text = text[1:]
+    return text
+
+
+def gen(value: float, precision: int) -> str:
+    """``GEN(x, p)`` (CONV-35): C's ``%.pg``, no negative zero."""
+    text = f"{value:.{precision}g}"
+    return "0" if text in ("-0", "0") else text
+
+
+def prompt(enabled: bool, text: str | bytes) -> None:
+    """Write a CONV-36 prompt to standard error (only with --prompt) and flush."""
+    if enabled:
+        err.write(text if isinstance(text, bytes) else text.encode())
+        err.flush()
+
+
+PROMPT = Option("prompt", short="p", long="prompt")
+MAX_SEED = 2 ** 32 - 1
+
+
+def parse_seed(parsed: "Parsed", dest: str = "seed") -> int:
+    """The CONV-38 seed: default 1, ASCII digits 0 … 4294967295."""
+    if dest not in parsed.values:
+        return 1
+    return parse_count(str(parsed.values[dest]), parsed.spelled[dest], 0, MAX_SEED)
+
+
+class AnsiRand:
+    """The ANSI C standard's portable rand() example (CONV-38)."""
+
+    def __init__(self, seed: int = 1):
+        self.state = seed & 0xFFFFFFFF
+
+    def next(self) -> int:
+        self.state = (self.state * 1103515245 + 12345) & 0xFFFFFFFF
+        return (self.state // 65536) % 32768
+
+
+def read_all(path: str) -> bytes:
+    """Read a whole input (``-`` is standard input); raises OSError per open_input."""
+    handle = open_input(path)
+    try:
+        return handle.read()
+    finally:
+        if handle is not sys.stdin.buffer:
+            handle.close()

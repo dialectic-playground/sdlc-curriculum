@@ -1,0 +1,12 @@
+Infix:   a-b+c-d
+Postfix: a b - c + d -
+Infix:   a/b*c%d
+Postfix: a b / c * d %
+Infix:   a+b*c-d/e%f
+Postfix: a b c * + d e / f % -
+Infix:   ((a+b)*(c-d))/(e%f)
+Postfix: a b + c d - * e f % /
+Infix:   007 + 0x1f*A1B2
+Postfix: 007 0x1f A1B2 * +
+Infix:   (((((z)))))
+Postfix: z

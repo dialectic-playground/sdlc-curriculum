@@ -1,0 +1,14 @@
+1
+1234
+Ada Lovelace
+1
+0097
+Grace Hopper
+1
+0000
+Alan Turing
+2
+0000
+3
+1234
+0

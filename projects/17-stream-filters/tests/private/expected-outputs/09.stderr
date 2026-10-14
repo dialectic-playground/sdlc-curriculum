@@ -1,0 +1,6 @@
+dp-chk-sort: invalid option -- 'x'
+Try 'dp-chk-sort --help' for more information.
+dp-average: extra operand 'nonpos.txt'
+Try 'dp-average --help' for more information.
+dp-chk-sort: option '--help' doesn't allow an argument
+Try 'dp-chk-sort --help' for more information.

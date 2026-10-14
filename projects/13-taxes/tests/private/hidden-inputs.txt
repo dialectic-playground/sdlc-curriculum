@@ -1,0 +1,19 @@
+# Hidden black-box verification tests for dp-taxes (projects/13-taxes).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-taxes --version
+02 dp-taxes large.txt
+03 dp-taxes truncate.txt
+04 dp-taxes negative.txt
+05 dp-taxes overflow.txt
+06 dp-taxes ctrlz.txt
+06 dp-taxes midz.txt
+07 dp-taxes -p decimal.txt
+07 dp-taxes -p
+08 dp-taxes subdir
+08 dp-taxes -- -p
+09 dp-taxes extra --help
+09 dp-taxes -x --help
+09 dp-taxes --prompt=yes
+10 dp-taxes -p - extra < incomes.txt
+10 dp-taxes - -p < incomes.txt

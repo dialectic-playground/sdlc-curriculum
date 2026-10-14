@@ -1,0 +1,4 @@
+Maximum
+10000
+Negative Zero
+-0

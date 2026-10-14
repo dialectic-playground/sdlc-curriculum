@@ -1,0 +1,32 @@
+# Hidden black-box verification tests for dp-assert-sort (projects/49-assert-sort).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-assert-sort --version
+02 dp-assert-sort -t
+02 dp-assert-sort -t single.txt
+02 dp-assert-sort extremes.txt
+03 dp-assert-sort overflow.txt
+04 dp-assert-sort ctrlz.txt
+04 dp-assert-sort midz.txt
+05 dp-assert-sort -f skip-swap:3 -t textbook.txt
+05 dp-assert-sort --fault off-by-one:1 textbook.txt
+05 dp-assert-sort --fault=off-by-one:4 textbook.txt
+06 dp-assert-sort -t --fault=search-from-next dups.txt
+06 dp-assert-sort -t -f search-from-next:4 dups.txt
+07 dp-assert-sort --fault=skip-swap: textbook.txt
+07 dp-assert-sort -f :1 textbook.txt
+07 dp-assert-sort --fault '' textbook.txt
+07 dp-assert-sort --fault=Skip-swap textbook.txt
+07 dp-assert-sort -f skip-swap:-1 textbook.txt
+07 dp-assert-sort -f skip-swap:9223372036854775808 textbook.txt
+07 dp-assert-sort textbook.txt -f
+08 dp-assert-sort extra --help
+08 dp-assert-sort -x --help
+08 dp-assert-sort --fault=bogus --help
+08 dp-assert-sort --trace=yes
+09 dp-assert-sort subdir
+09 dp-assert-sort - extra < textbook.txt
+09 dp-assert-sort -- -t
+10 dp-assert-sort -f off-by-one -f skip-swap textbook.txt
+10 dp-assert-sort -tf off-by-one:2 dups.txt
+10 dp-assert-sort -f skip-swap:0 single.txt

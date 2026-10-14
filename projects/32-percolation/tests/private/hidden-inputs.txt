@@ -1,0 +1,30 @@
+# Hidden black-box verification tests for dp-perc (projects/32-percolation).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-perc --version
+02 dp-perc --seed=0 -s 4 once.txt
+02 dp-perc --seed=4294967295 -s 4 once.txt
+03 dp-perc --seed=4294967296 once.txt
+03 dp-perc --seed=-1 once.txt
+03 dp-perc --seed= once.txt
+03 dp-perc --seed=+5 once.txt
+04 dp-perc --size=1 again.txt
+04 dp-perc -s78 d1.txt
+04 dp-perc --size=79 once.txt
+05 dp-perc -s 3 eofanswer.txt
+05 dp-perc -p -s 3 cutdensity.txt
+05 dp-perc
+06 dp-perc -s 4 ctrlz.txt
+06 dp-perc midz.txt
+07 dp-perc percent.txt
+07 dp-perc real.txt
+07 dp-perc -p zero.txt
+08 dp-perc extra --help
+08 dp-perc -x --help
+08 dp-perc --prompt=yes
+08 dp-perc once.txt --size
+08 dp-perc --size=abc --seed=x once.txt
+09 dp-perc subdir
+09 dp-perc -- -p
+09 dp-perc once.txt again.txt
+10 dp-perc -ps5 --seed 7 --seed=3 once.txt

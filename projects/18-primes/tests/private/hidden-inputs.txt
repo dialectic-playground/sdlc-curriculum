@@ -1,0 +1,22 @@
+# Hidden black-box verification tests for dp-primes (projects/18-primes).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-primes --version
+02 dp-primes two.txt
+02 dp-primes zero.txt
+03 dp-primes over.txt
+03 dp-primes -c min.txt
+04 dp-primes huge.txt
+04 dp-primes min.txt
+05 dp-primes ctrlz.txt
+05 dp-primes midz.txt
+06 dp-primes mixed.txt
+07 dp-primes -p blank.txt
+08 dp-primes subdir
+08 dp-primes -- -c
+09 dp-primes extra --help
+09 dp-primes -x --help
+09 dp-primes --count=yes
+09 dp-primes --prom
+10 dp-primes fifteen.txt hundred.txt
+10 dp-primes -cp - < hundred.txt

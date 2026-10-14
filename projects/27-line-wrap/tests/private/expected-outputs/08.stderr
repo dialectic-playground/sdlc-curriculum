@@ -1,0 +1,4 @@
+dp-wrap: subdir: Is a directory
+dp-wrap: -w: No such file or directory
+dp-wrap: extra operand 'extra'
+Try 'dp-wrap --help' for more information.

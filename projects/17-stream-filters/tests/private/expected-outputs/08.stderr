@@ -1,0 +1,3 @@
+dp-chk-sort: overflow.txt:2: invalid integer '9223372036854775808'
+dp-chk-sort: subdir: Is a directory
+dp-chk-sort: -x: No such file or directory

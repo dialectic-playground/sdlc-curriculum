@@ -1,0 +1,8 @@
+dp-sort-bench: invalid argument '' for '-s'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument '5,' for '-s'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument ' 5' for '-s'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument '-5' for '--sizes'
+Try 'dp-sort-bench --help' for more information.

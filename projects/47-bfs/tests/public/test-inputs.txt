@@ -1,0 +1,20 @@
+# Public black-box acceptance tests for dp-bfs-adj and dp-bfs-link (projects/47-bfs).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (sins.txt describes the built-in graph). Consecutive
+# lines with the same ID are steps of one test.
+01 dp-bfs-adj
+02 dp-bfs-link
+03 dp-bfs-adj --graph=sins.txt
+03 dp-bfs-link -g sins.txt
+04 dp-bfs-adj --start=4
+04 dp-bfs-link -s 4
+05 dp-bfs-adj -g order.txt
+05 dp-bfs-link -g order.txt
+06 dp-bfs-link -g - < order.txt
+07 dp-bfs-adj -g islands.txt
+07 dp-bfs-link -g islands.txt -s 4
+08 dp-bfs-link -g bad-edge.txt
+09 dp-bfs-adj --help
+09 dp-bfs-link --help
+10 dp-bfs-adj sins.txt

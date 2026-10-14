@@ -1,0 +1,25 @@
+Usage: dp-relfile [OPTION]... [COMMAND [ARG]...]
+Keep records in a relative file: 100 slots of 35 bytes, addressed by hashing.
+
+Each record has a key of exactly 4 digits and up to 30 characters of data
+(printable ASCII; trailing spaces are not kept).  A key's home slot is the key
+modulo 97; a collision moves on to the next slot, wrapping from 99 to 0.  A
+removed record leaves a tombstone that a later add can reuse.  The file is
+created, with 100 free slots, if it does not exist.
+
+Commands:
+  add KEY DATA    add a record
+  find KEY        print the record with key KEY
+  remove KEY      remove the record with key KEY
+  slots           list every slot that is not free
+
+With no COMMAND, run the menu dialog: read the choices (1 add, 2 find,
+3 remove, 0 exit), keys, and data from standard input, one per line.
+
+Options:
+  -f, --file=FILE   use the relative file FILE (default relative.dat)
+  -p, --prompt      in the menu dialog, write the menu and prompts to
+                      standard error before each line is read
+      --help        display this help and exit
+      --version     output version information and exit
+dp-relfile (dialectic-playground) 1.0.0

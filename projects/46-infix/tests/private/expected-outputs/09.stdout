@@ -1,0 +1,13 @@
+Usage: dp-infix [OPTION]... [FILE]
+Convert infix expressions to postfix (reverse Polish) notation.
+
+Read FILE, or standard input when FILE is absent or -.  Lines alternate
+between an infix expression and the answer to 'Another? (y/n)': y or Y asks
+for another expression; n, N, or the end of the input ends the session.
+Operands are runs of letters and digits; the operators are + - * / % (all
+left-associative, * / % before + -), and parentheses group.
+
+Options:
+  -p, --prompt    write the prompts to standard error before each read
+      --help      display this help and exit
+      --version   output version information and exit

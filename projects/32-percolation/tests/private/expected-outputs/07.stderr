@@ -1,0 +1,3 @@
+dp-perc: percent.txt:1: invalid integer '50%'
+dp-perc: real.txt:1: invalid integer '60.5'
+Enter density (1-100): dp-perc: zero.txt:1: value out of range '0'

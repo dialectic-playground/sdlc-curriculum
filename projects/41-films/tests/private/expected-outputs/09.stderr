@@ -1,0 +1,12 @@
+dp-films: invalid argument '' for '-s'
+Try 'dp-films --help' for more information.
+dp-films: invalid argument '-' for '-s'
+Try 'dp-films --help' for more information.
+dp-films: invalid argument '-' for '-s'
+Try 'dp-films --help' for more information.
+dp-films: option '--sample' requires an argument
+Try 'dp-films --help' for more information.
+dp-films: invalid option -- 'x'
+Try 'dp-films --help' for more information.
+dp-films: option '--prompt' doesn't allow an argument
+Try 'dp-films --help' for more information.

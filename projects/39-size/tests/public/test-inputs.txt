@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-size (projects/39-size).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixtures (size.c, binary.c, crlf.c, ctrlz.c, empty.c, notes.txt, dir.c/, ...) live in ../fixtures/.
+01 dp-size size
+02 dp-size < size-name.txt
+03 dp-size --prompt < size-name.txt
+04 dp-size binary crlf ctrlz empty
+05 dp-size --extension=.txt notes
+06 dp-size < names.txt
+07 dp-size missing size dir
+08 dp-size crlf - empty < size-name.txt
+09 dp-size --help
+10 dp-size -e txt notes

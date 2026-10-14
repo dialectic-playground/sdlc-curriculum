@@ -40,8 +40,8 @@ repeated. The tool reads no input, takes no operands, and touches no files.
 
 ### 2.1 Product perspective
 `dp-hello` is a standalone executable. Its interfaces are the command line, standard output,
-standard error, and the exit status. It is the first of the eleven curriculum tools and the one
-that establishes the shared conventions in CLI-CONV.
+standard error, and the exit status. It is the first of the fifty-three curriculum projects and the
+one that establishes the shared conventions in CLI-CONV.
 
 ### 2.2 Product functions
 1. Print the greeting `Hello, World!`.

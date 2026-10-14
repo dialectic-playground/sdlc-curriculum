@@ -1,0 +1,29 @@
+Array size: 10
+	Algorithm: Selection Sort
+		Comparisons = 45
+		Swaps = 8
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 27
+		Swaps = 18
+		Sorted = yes
+
+Array size: 20
+	Algorithm: Selection Sort
+		Comparisons = 190
+		Swaps = 16
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 81
+		Swaps = 50
+		Sorted = yes
+
+Array size: 40
+	Algorithm: Selection Sort
+		Comparisons = 780
+		Swaps = 37
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 174
+		Swaps = 93
+		Sorted = yes

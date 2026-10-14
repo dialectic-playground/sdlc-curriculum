@@ -1,0 +1,2 @@
+dp-taxes-file: second.dat:1: invalid integer 'Income'
+dp-taxes-file: first.dat: No such file or directory

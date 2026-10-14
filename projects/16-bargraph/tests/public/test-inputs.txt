@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-bargraph (projects/16-bargraph).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (bargraph.in is the textbook's data file, ending in Ctrl-Z).
+01 dp-bargraph bargraph.in
+02 dp-bargraph < bargraph.in
+03 dp-bargraph edge.txt
+04 dp-bargraph crlf.txt
+05 dp-bargraph trailing.txt
+06 dp-bargraph badvalue.txt
+07 dp-bargraph truncated.txt
+08 dp-bargraph missing.txt
+09 dp-bargraph --help
+10 dp-bargraph bargraph.in extra

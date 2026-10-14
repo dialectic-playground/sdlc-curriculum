@@ -1,0 +1,28 @@
+Usage: dp-page [OPTION]... [FILE]...
+Break the concatenation of the FILEs into numbered pages for printing.
+
+With no FILE, or when FILE is -, read standard input.  Each page starts with
+the header line 'Page     N' (five spaces before the page number) and a blank
+line, holds the next 52 input lines exactly as read, and ends with a form
+feed character.  A last line without a newline is copied without one.  No
+page is written for an empty input.
+
+Options:
+  -l, --lines=N   put N input lines on each page instead of 52
+                    (1 to 9223372036854775807)
+      --help      display this help and exit
+      --version   output version information and exit
+Usage: dp-page [OPTION]... [FILE]...
+Break the concatenation of the FILEs into numbered pages for printing.
+
+With no FILE, or when FILE is -, read standard input.  Each page starts with
+the header line 'Page     N' (five spaces before the page number) and a blank
+line, holds the next 52 input lines exactly as read, and ends with a form
+feed character.  A last line without a newline is copied without one.  No
+page is written for an empty input.
+
+Options:
+  -l, --lines=N   put N input lines on each page instead of 52
+                    (1 to 9223372036854775807)
+      --help      display this help and exit
+      --version   output version information and exit

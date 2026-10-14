@@ -1,0 +1,34 @@
+# Hidden black-box verification tests for dp-sales (projects/42-sales-report).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-sales --version
+02 dp-sales -a neg-id.dat
+02 dp-sales -a big-id.dat
+02 dp-sales -a over-amount.dat
+02 dp-sales -a sign.dat
+03 dp-sales -a short.dat
+03 dp-sales -a long.dat
+03 dp-sales -s short-sper.dat
+04 dp-sales -s nohash.dat
+04 dp-sales -s twice.dat
+04 dp-sales -s badid.dat
+05 dp-sales -a acc100.dat -s sper100.dat
+05 dp-sales -a acc101.dat -s sper100.dat
+05 dp-sales -a acc100.dat -s sper101.dat
+06 dp-sales -a empty.dat -s empty.dat
+06 dp-sales -s empty.dat
+06 dp-sales -a empty.dat
+07 dp-sales -a crlf-sales.dat -s crlf-sper.dat
+08 dp-sales -s missing.dat
+08 dp-sales -a subdir
+08 dp-sales -a missing.dat -s missing.dat
+08 dp-sales -a dup.dat -s missing.dat
+09 dp-sales -a ''
+09 dp-sales -a - -s -
+09 dp-sales --salespeople
+09 dp-sales -p
+09 dp-sales extra --help
+09 dp-sales -x --version
+09 dp-sales --accounts=nowhere.dat --version
+10 dp-sales -a max.dat -s max-sper.dat
+10 dp-sales -a dup.dat -a sales.dat -s team.dat -s sper.dat

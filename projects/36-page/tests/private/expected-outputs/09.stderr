@@ -1,0 +1,8 @@
+dp-page: invalid argument 'abc' for '-l'
+Try 'dp-page --help' for more information.
+dp-page: invalid argument '' for '--lines'
+Try 'dp-page --help' for more information.
+dp-page: invalid argument '9223372036854775808' for '-l'
+Try 'dp-page --help' for more information.
+dp-page: option requires an argument -- 'l'
+Try 'dp-page --help' for more information.

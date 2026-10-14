@@ -1,0 +1,16 @@
+dp-infix: all-errors.txt:1: empty expression
+dp-infix: all-errors.txt:3: empty expression
+dp-infix: all-errors.txt:5: unexpected end of expression
+dp-infix: all-errors.txt:7: unexpected end of expression
+dp-infix: all-errors.txt:9: unexpected ')'
+dp-infix: all-errors.txt:11: unexpected ')'
+dp-infix: all-errors.txt:13: unmatched ')'
+dp-infix: all-errors.txt:15: unexpected operand 'B'
+dp-infix: all-errors.txt:17: unexpected '('
+dp-infix: all-errors.txt:19: unexpected operator '-'
+dp-infix: all-errors.txt:21: unexpected operator '*'
+dp-infix: all-errors.txt:23: unmatched '('
+dp-infix: all-errors.txt:25: invalid character '\xC3'
+dp-infix: all-errors.txt:27: invalid character '\x0B'
+dp-infix: all-errors.txt:29: invalid character '\x0D'
+dp-infix: all-errors.txt:31: invalid character '_'

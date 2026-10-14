@@ -1,0 +1,16 @@
+Usage: dp-dice [OPTION]... [FILE]
+Play the dice game Roll Them Bones against the house.
+
+With no FILE, or when FILE is -, read the player's responses from standard
+input: before each round, 1 to play or 0 to quit, then the bet in whole
+dollars.  The bankroll starts at $500; a bet must be from 1 to 250 and may not
+exceed the bankroll.  A first roll of 7 or 11 wins at once; any other first
+roll becomes the mark, which wins if it is rolled again (double for 2 and 12)
+before a 7 or 11, which loses.  The game ends when the player quits or is
+broke.
+
+Options:
+  -p, --prompt       write prompts to standard error before each read
+      --seed=SEED    seed the dice with SEED, from 0 to 4294967295 (default 1)
+      --help         display this help and exit
+      --version      output version information and exit

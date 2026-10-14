@@ -1,0 +1,4 @@
+pass 0: min_ind = 4 in bounds; a = 1 4 3 2 5; sorted(a, 0, 5) holds
+pass 1: min_ind = 3 in bounds; a = 1 2 3 4 5; sorted(a, 1, 5) holds
+pass 2: min_ind = 2 in bounds; a = 1 2 3 4 5; sorted(a, 2, 5) holds
+pass 3: min_ind = 3 in bounds; a = 1 2 3 4 5; sorted(a, 3, 5) holds

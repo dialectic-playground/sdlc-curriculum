@@ -1,0 +1,52 @@
+Sales report by salesperson:
+
+        Salesperson:  Max
+        Sales coach:  Boss
+        Sales region: XX
+        Base salary and bonus:  92233720368547758.07  0.00
+        2 Account(s): 
+
+                Name:       Max
+                Id:         9223372036854775807
+                Projected:  0.01
+                Actual:     92233720368547758.07
+
+                Name:       Zero
+                Id:         0
+                Projected:  0.50
+                Actual:     0.00
+
+Sales report by salesperson:
+
+        Salesperson:  Chessare
+        Sales coach:  Cruz
+        Sales region: TX
+        Base salary and bonus:  102300.00  15671.90
+        2 Account(s): 
+
+                Name:       PetRocks
+                Id:         245
+                Projected:  8130000.00
+                Actual:     95679.10
+
+                Name:       BusterBurger
+                Id:         943
+                Projected:  4650000.00
+                Actual:     1432567.88
+
+        Salesperson:  Johnsonbaugh
+        Sales coach:  Epp
+        Sales region: IL
+        Base salary and bonus:  98450.00  29324.18
+        2 Account(s): 
+
+                Name:       AceRecords
+                Id:         127
+                Projected:  6780000.00
+                Actual:     2762890.50
+
+                Name:       TacosAndThings
+                Id:         812
+                Projected:  2345000.00
+                Actual:     1412987.50
+

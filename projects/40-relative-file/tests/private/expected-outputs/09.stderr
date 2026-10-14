@@ -1,0 +1,4 @@
+dp-relfile: invalid option -- 'x'
+Try 'dp-relfile --help' for more information.
+dp-relfile: option '--prompt' doesn't allow an argument
+Try 'dp-relfile --help' for more information.

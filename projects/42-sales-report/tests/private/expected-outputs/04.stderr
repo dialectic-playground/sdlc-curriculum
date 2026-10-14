@@ -1,0 +1,3 @@
+dp-sales: nohash.dat:1: expected '#' but found '245'
+dp-sales: twice.dat:1: account listed twice '0245'
+dp-sales: badid.dat:1: invalid integer 'x9'

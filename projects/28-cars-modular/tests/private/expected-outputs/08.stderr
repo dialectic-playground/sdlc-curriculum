@@ -1,0 +1,8 @@
+dp-cars2: option '--totals' doesn't allow an argument
+Try 'dp-cars2 --help' for more information.
+dp-cars2: invalid option -- 'x'
+Try 'dp-cars2 --help' for more information.
+dp-cars2: option requires an argument -- 's'
+Try 'dp-cars2 --help' for more information.
+dp-cars2: invalid argument '-' for '--save'
+Try 'dp-cars2 --help' for more information.

@@ -1,0 +1,12 @@
+Infix:   (A + B) * C - D / E
+Postfix: A B + C * D E / -
+Infix:   A + B
+Postfix: A B +
+Infix:   A + B * C
+Postfix: A B C * +
+Infix:   (A + B) * C
+Postfix: A B + C *
+Infix:   (A + B) * (C - D)
+Postfix: A B + C D - *
+Infix:   A - B - C
+Postfix: A B - C -

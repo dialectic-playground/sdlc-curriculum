@@ -1,0 +1,13 @@
+Usage: dp-sched [OPTION]... FILE
+Find a largest set of activities that do not overlap.
+
+Each line of FILE describes one activity: its start time in columns 1-5 and
+its finish time in columns 6-10, as whole numbers from 0 to 99999 padded with
+spaces.  An activity may start at the time another one finishes.  The
+activities are sorted by finish time (equal finish times keep the order of the
+file) and chosen greedily; the chosen lines are printed as they appear in
+FILE.  When FILE is -, read standard input.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

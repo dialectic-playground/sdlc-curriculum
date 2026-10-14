@@ -1,0 +1,8 @@
+dp-perc: invalid argument '4294967296' for '--seed'
+Try 'dp-perc --help' for more information.
+dp-perc: invalid argument '-1' for '--seed'
+Try 'dp-perc --help' for more information.
+dp-perc: invalid argument '' for '--seed'
+Try 'dp-perc --help' for more information.
+dp-perc: invalid argument '+5' for '--seed'
+Try 'dp-perc --help' for more information.

@@ -1,0 +1,18 @@
+Usage: dp-taxes-file [OPTION]...
+Compute the progressive income tax for every income in an input file and
+write the report to an output file.
+
+Incomes are whole numbers from 0 to 9223372036854775807, separated by
+whitespace.  An income below 6000 greenbacks is taxed at 30%, any other
+income at 60%; the tax is rounded down to a whole number.  The whole input is
+checked before the output file is opened: if the input cannot be read or
+contains an invalid income, the output file is not created or changed.
+
+Options:
+  -i, --input=FILE    read the incomes from FILE (default incomes.dat);
+                        - means standard input
+  -o, --output=FILE   write the report to FILE, replacing its contents
+                        (default out.dat); - means standard output
+      --help          display this help and exit
+      --version       output version information and exit
+dp-taxes-file (dialectic-playground) 1.0.0

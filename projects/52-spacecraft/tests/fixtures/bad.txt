@@ -1,0 +1,4 @@
+new s1 5000 63567 560989 4 MightyMite
+print s1
+adjust s1 fast
+trip s1

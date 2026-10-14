@@ -1,0 +1,3 @@
+dp-max: fifth-junk.txt:1: too many values 'junk'
+dp-max: second-junk.txt:1: invalid integer 'junk'
+dp-max: six.txt:3: too many values '5'

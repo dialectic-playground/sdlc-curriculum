@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-infix (projects/46-infix).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (readme.txt, mixed.txt, errors.txt, stop.txt) live in ../fixtures/.
+01 dp-infix readme.txt
+02 dp-infix < readme.txt
+03 dp-infix mixed.txt
+04 dp-infix --prompt < readme.txt
+05 dp-infix errors.txt
+06 dp-infix stop.txt
+07 dp-infix
+08 dp-infix missing.txt
+09 dp-infix --help
+10 dp-infix readme.txt mixed.txt

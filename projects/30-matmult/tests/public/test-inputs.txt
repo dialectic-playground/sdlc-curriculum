@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-matmult (projects/30-matmult).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (readme.txt, identity.txt, negative.txt, bad.txt, overflow.txt) live in ../fixtures/.
+01 dp-matmult readme.txt
+02 dp-matmult < identity.txt
+03 dp-matmult --prompt < readme.txt
+04 dp-matmult negative.txt
+05 dp-matmult -p
+06 dp-matmult bad.txt
+07 dp-matmult overflow.txt
+08 dp-matmult missing.txt
+09 dp-matmult --help
+10 dp-matmult readme.txt identity.txt

@@ -1,0 +1,19 @@
+Usage: dp-films [OPTION]... [FILE]
+Classify films as hits or flops by their nearest neighbor in a sample set.
+
+The sample set (default films.dat) holds 1 to 100 films.  Each film is three
+values: the percentage of hits of its director, the percentage of hits of the
+leading members of its cast (each 0 to 100), and 1 for a hit or 0 for a flop.
+
+Each film to classify is two percentages, director then cast, read from FILE,
+or from standard input when there is no FILE or FILE is -, until the end of
+the input.  It is a hit if the nearest film in the sample set is a hit; of
+several equally near films, the first in the sample set decides.
+
+Options:
+  -s, --sample=FILE   read the sample set from FILE (default films.dat);
+                        - means standard input
+  -p, --prompt        write a prompt to standard error before each
+                        percentage is read
+      --help          display this help and exit
+      --version       output version information and exit

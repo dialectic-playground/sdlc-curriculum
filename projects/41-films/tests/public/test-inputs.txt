@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-films (projects/41-films).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (films.dat is the textbook's sample set, byte for byte).
+01 dp-films < readme.txt
+02 dp-films queries.txt
+03 dp-films --prompt < readme.txt
+04 dp-films -s pair.dat center.txt
+05 dp-films -s - readme.txt < films.dat
+06 dp-films
+07 dp-films bad-query.txt
+08 dp-films -s bad-code.dat < readme.txt
+09 dp-films --help
+10 dp-films readme.txt queries.txt

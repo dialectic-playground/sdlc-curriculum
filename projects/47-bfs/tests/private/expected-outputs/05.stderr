@@ -1,0 +1,3 @@
+dp-bfs-adj: no-vertices.txt:1: value out of range '0'
+dp-bfs-link: bad-int.txt:5: invalid integer 'x2'
+dp-bfs-adj: many-edges.txt:3: value out of range '4'

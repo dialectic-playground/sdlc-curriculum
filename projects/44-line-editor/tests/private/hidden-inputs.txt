@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-line-ed (projects/44-line-editor).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-line-ed --version
+02 dp-line-ed dos.txt < cmd-crlf.txt
+02 dp-line-ed dos.txt < cmd-list.txt
+02 dp-line-ed midz.txt < cmd-list.txt
+03 dp-line-ed blank.txt < cmd-empty.txt
+03 dp-line-ed blank.txt < cmd-list.txt
+04 dp-line-ed poem.txt < cmd-counts.txt
+05 dp-line-ed poem.txt < cmd-strings.txt
+05 dp-line-ed poem.txt < cmd-list.txt
+06 dp-line-ed -p poem.txt < cmd-insert-eof.txt
+06 dp-line-ed poem.txt < cmd-dots.txt
+07 dp-line-ed subdir < cmd-list.txt
+07 dp-line-ed nodir/new.txt < cmd-new.txt
+07 dp-line-ed missing.txt < cmd-list.txt
+08 dp-line-ed - < cmd-new.txt
+08 dp-line-ed -p -- - < cmd-list.txt
+09 dp-line-ed extra --help
+09 dp-line-ed -x --help
+09 dp-line-ed --prompt=yes poem.txt
+09 dp-line-ed --prom poem.txt
+10 dp-line-ed -p poem.txt extra < cmd-noquit.txt
+10 dp-line-ed poem.txt < cmd-list.txt

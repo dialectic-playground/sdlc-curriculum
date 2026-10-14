@@ -1,0 +1,3 @@
+dp-tromino: coord-negative.txt:1: value out of range '-1'
+dp-tromino: coord-real.txt:1: invalid integer '1.5'
+dp-tromino: coord-high.txt:1: value out of range '4'

@@ -1,0 +1,13 @@
+Usage: dp-taxes [OPTION]... [FILE]
+Compute the progressive income tax for each income in FILE.
+
+With no FILE, or when FILE is -, read standard input.  Incomes are whole
+numbers from 0 to 9223372036854775807, separated by whitespace, and are read
+until the end of the input.  An income below 6000 greenbacks is taxed at 30%,
+any other income at 60%; the tax is rounded down to a whole number.
+
+Options:
+  -p, --prompt    write the prompt 'Enter income: ' to standard error before
+                    each income is read
+      --help      display this help and exit
+      --version   output version information and exit

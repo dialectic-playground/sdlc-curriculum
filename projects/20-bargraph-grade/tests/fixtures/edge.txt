@@ -1,0 +1,14 @@
+Zero Value
+0
+One
+1
+  Spaced  Title  
+75
+
+2
+Plus Sign
++9
+Leading Zeros
+007
+Padded Value
+ 	 13 	

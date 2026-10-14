@@ -11,7 +11,7 @@ test, and run CI the same way.
 ├── .devcontainer/               # same image, for editors
 ├── tools/dp-run, container.mk   # shared container tooling (from repo-template)
 ├── sdlc-curriculum/             # git submodule, pinned to a release tag
-├── 00-hello-world/ … 10-sys-monitor/
+├── 00-hello-world/ … 52-spacecraft/
 │                                # each a copy of projects/<slug>/assignment/ with
 │                                # CURRICULUM_ROOT := ../sdlc-curriculum
 └── .github/workflows/ci.yml     # from shared/ci/cross-platform-ci.yml

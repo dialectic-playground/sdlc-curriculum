@@ -1,0 +1,24 @@
+# Hidden black-box verification tests for dp-strlen (projects/29-strlen).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-strlen --version
+02 dp-strlen -f invalid.bin
+02 dp-strlen -b -f invalid.bin
+03 dp-strlen -f noeol.txt
+03 dp-strlen -f cr.txt
+04 dp-strlen -f empty.txt
+04 dp-strlen < blank.txt
+05 dp-strlen -f nul.txt
+05 dp-strlen -f ctrlz.txt
+06 dp-strlen -f big.txt
+06 dp-strlen -bf big.txt
+07 dp-strlen extra --help
+07 dp-strlen -x --help
+07 dp-strlen --file
+07 dp-strlen -f ''
+08 dp-strlen -f subdir
+08 dp-strlen -- -b -
+09 dp-strlen -f - < utf8.txt
+09 dp-strlen -f missing.txt --file utf8.txt
+10 dp-strlen --bytes=1 x
+10 dp-strlen -bf utf8.txt

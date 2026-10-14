@@ -1,0 +1,19 @@
+# Hidden black-box verification tests for dp-resistor (projects/21-resistor).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-resistor --version
+02 dp-resistor two.txt
+02 dp-resistor minuszero.txt
+03 dp-resistor -p short.txt
+04 dp-resistor ctrlz.txt
+04 dp-resistor midz.txt
+05 dp-resistor subdir
+05 dp-resistor -- -p
+06 dp-resistor extra --help
+06 dp-resistor -x --help
+06 dp-resistor --prompt=yes
+07 dp-resistor -p invalid.txt
+08 dp-resistor foreign.txt
+09 dp-resistor -p - extra < codes.txt
+09 dp-resistor - -p < codes.txt
+10 dp-resistor colors.txt

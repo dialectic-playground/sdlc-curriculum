@@ -1,0 +1,3 @@
+dp-stats: sumsq.txt:3: arithmetic overflow at '1e154'
+dp-stats: square.txt:2: arithmetic overflow at '-2e154'
+dp-stats: huge.txt:1: invalid number '1e309'

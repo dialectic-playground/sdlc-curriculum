@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-stats (projects/15-stats).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (three.txt, data.txt, single.txt, same.txt, round.txt, bad.txt) live in ../fixtures/.
+01 dp-stats < three.txt
+02 dp-stats data.txt
+03 dp-stats - < single.txt
+04 dp-stats
+05 dp-stats same.txt
+06 dp-stats round.txt
+07 dp-stats bad.txt
+08 dp-stats missing.txt
+09 dp-stats --help
+10 dp-stats data.txt three.txt

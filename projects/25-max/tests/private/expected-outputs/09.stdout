@@ -1,0 +1,11 @@
+Usage: dp-max [OPTION]... [FILE]
+Print the largest of one to four integers.
+
+Read the integers from FILE, or from standard input when FILE is absent or -,
+until the end of the input.  They are whole numbers from -9223372036854775808
+to 9223372036854775807, separated by whitespace.
+
+Options:
+  -p, --prompt    write a prompt to standard error before reading
+      --help      display this help and exit
+      --version   output version information and exit

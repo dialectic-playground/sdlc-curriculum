@@ -1,0 +1,16 @@
+# Public black-box acceptance tests for dp-dice (projects/22-dice).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (play.txt, once.txt, double.txt, broke.txt, refusals.txt, badbet.txt) live in ../fixtures/.
+01 dp-dice < play.txt
+02 dp-dice --seed=6 < once.txt
+02 dp-dice --seed=4 < once.txt
+03 dp-dice --seed=14 < double.txt
+03 dp-dice --seed 68 < double.txt
+04 dp-dice --seed=2 < broke.txt
+05 dp-dice --prompt --seed=8 < once.txt
+06 dp-dice --seed=5 refusals.txt
+07 dp-dice
+08 dp-dice badbet.txt
+09 dp-dice --help
+10 dp-dice --seed=abc

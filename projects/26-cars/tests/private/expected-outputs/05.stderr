@@ -1,0 +1,2 @@
+dp-cars1: signs.txt:4: no such brand '9223372036854775807'
+dp-cars1: signs.txt:5: not enough cars in stock for brand 1 '9223372036854775807'

@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-resistor (projects/21-resistor).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (codes.txt, mixed.txt, invalid.txt, bounds.txt, answer.txt) live in ../fixtures/.
+01 dp-resistor < codes.txt
+02 dp-resistor mixed.txt
+03 dp-resistor invalid.txt
+04 dp-resistor --prompt < codes.txt
+05 dp-resistor
+06 dp-resistor - < bounds.txt
+07 dp-resistor answer.txt
+08 dp-resistor missing.txt
+09 dp-resistor --help
+10 dp-resistor codes.txt mixed.txt

@@ -1,0 +1,7 @@
+# DOS file
+
+  new	s1  
+print s1
+#trip s1
+trip s1
+

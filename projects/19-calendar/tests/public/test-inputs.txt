@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-calendar (projects/19-calendar).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (tue.txt, retry.txt, sat.txt, bad.txt, leapbad.txt) live in ../fixtures/.
+01 dp-calendar < tue.txt
+02 dp-calendar --year 2024
+03 dp-calendar --prompt < retry.txt
+04 dp-calendar sat.txt
+05 dp-calendar bad.txt
+06 dp-calendar
+07 dp-calendar leapbad.txt
+08 dp-calendar missing.txt
+09 dp-calendar --help
+10 dp-calendar --year 0

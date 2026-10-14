@@ -1,0 +1,4 @@
+dp-kinder: invalid option -- 'x'
+Try 'dp-kinder --help' for more information.
+dp-kinder: unrecognized option '--bogus'
+Try 'dp-kinder --help' for more information.

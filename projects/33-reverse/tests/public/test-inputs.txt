@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-reverse (projects/33-reverse).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (words.txt, utf8.txt, lines.txt, toolong.txt) live in ../fixtures/.
+01 dp-reverse words.txt
+02 dp-reverse --prompt < words.txt
+03 dp-reverse utf8.txt
+04 dp-reverse -b utf8.txt
+05 dp-reverse -l lines.txt
+06 dp-reverse toolong.txt
+07 dp-reverse -p
+08 dp-reverse missing.txt
+09 dp-reverse --help
+10 dp-reverse words.txt lines.txt

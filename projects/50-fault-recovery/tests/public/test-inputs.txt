@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-divide (projects/50-fault-recovery).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (textbook.txt, pairs.txt, mixed.txt, bad.txt, odd.txt) live in ../fixtures/.
+01 dp-divide < textbook.txt
+02 dp-divide pairs.txt
+03 dp-divide --prompt < textbook.txt
+04 dp-divide mixed.txt
+05 dp-divide bad.txt
+06 dp-divide odd.txt
+07 dp-divide
+08 dp-divide missing.txt
+09 dp-divide --help
+10 dp-divide textbook.txt pairs.txt

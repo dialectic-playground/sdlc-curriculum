@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-convert (projects/12-convert).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (lengths.txt, mixed.txt, nosentinel.txt, bad.txt) live in ../fixtures/.
+01 dp-convert < lengths.txt
+02 dp-convert lengths.txt
+03 dp-convert --prompt < lengths.txt
+04 dp-convert mixed.txt
+05 dp-convert - < mixed.txt
+06 dp-convert nosentinel.txt
+07 dp-convert bad.txt
+08 dp-convert missing.txt
+09 dp-convert --help
+10 dp-convert lengths.txt mixed.txt

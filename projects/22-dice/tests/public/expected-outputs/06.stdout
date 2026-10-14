@@ -1,0 +1,31 @@
+Your bankroll is $500.
+Bet refused: the table limit is $250.
+Bet refused: the minimum bet is $1.
+You bet $250.
+Roll: 2 + 4 = 6
+Your mark is 6.
+Roll: 3 + 6 = 9
+Roll: 6 + 3 = 9
+Roll: 3 + 4 = 7
+Out! You lose $250.
+Your bankroll is $250.
+Bet refused: the minimum bet is $1.
+You bet $100.
+Roll: 5 + 1 = 6
+Your mark is 6.
+Roll: 4 + 3 = 7
+Out! You lose $100.
+Your bankroll is $150.
+Bet refused: you only have $150.
+You bet $150.
+Roll: 6 + 6 = 12
+Your mark is 12; it pays double.
+Roll: 4 + 6 = 10
+Roll: 3 + 2 = 5
+Roll: 5 + 5 = 10
+Roll: 4 + 6 = 10
+Roll: 1 + 2 = 3
+Roll: 5 + 2 = 7
+Out! You lose $150.
+Your bankroll is $0.
+You're broke! Better luck next time.

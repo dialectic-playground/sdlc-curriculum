@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-kinder (projects/11-kinder).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# The fixture input.txt (in ../fixtures/) is only redirected to standard input, which is never read.
+01 dp-kinder
+02 dp-kinder --help
+03 dp-kinder --version
+04 dp-kinder < input.txt
+05 dp-kinder --
+06 dp-kinder extra
+07 dp-kinder -
+08 dp-kinder -x
+09 dp-kinder --verbose
+10 dp-kinder --help=yes

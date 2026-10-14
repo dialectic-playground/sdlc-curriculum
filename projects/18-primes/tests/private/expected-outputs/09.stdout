@@ -1,0 +1,15 @@
+Usage: dp-primes [OPTION]... [FILE]
+List every prime number less than or equal to n.
+
+With no FILE, or when FILE is -, read standard input.  n is the first whole
+number in the input; anything after it is ignored.  n may be negative, but it
+must not exceed 10000000.  The output is a header line (a TAB, then
+'Primes <= n:'), a blank line, and the primes in ascending order, one per
+line.
+
+Options:
+  -c, --count     write only the number of primes <= n
+  -p, --prompt    write the program banner and the prompt 'Input n: ' to
+                    standard error before n is read
+      --help      display this help and exit
+      --version   output version information and exit

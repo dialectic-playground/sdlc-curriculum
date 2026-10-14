@@ -1,0 +1,4 @@
+dp-assert-sort: assertion failed in pass 0: sorted(a, 0, 5) (a[1] = 4 < a[0] = 5)
+pass 0: min_ind = 5 in bounds; a = 0 1 2 1 3 3; sorted(a, 0, 6) holds
+pass 1: min_ind = 1 in bounds; a = 0 1 2 1 3 3; sorted(a, 1, 6) holds
+dp-assert-sort: assertion failed in pass 2: sorted(a, 2, 6) (a[3] = 1 < a[2] = 3)

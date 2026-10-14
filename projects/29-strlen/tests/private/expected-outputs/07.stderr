@@ -1,0 +1,6 @@
+dp-strlen: invalid option -- 'x'
+Try 'dp-strlen --help' for more information.
+dp-strlen: option '--file' requires an argument
+Try 'dp-strlen --help' for more information.
+dp-strlen: invalid argument '' for '-f'
+Try 'dp-strlen --help' for more information.

@@ -1,0 +1,2 @@
+new a
+trip a b

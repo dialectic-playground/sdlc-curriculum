@@ -1,0 +1,15 @@
+# Public black-box acceptance tests for dp-cars2 (projects/28-cars-modular).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (day.txt, rejected.txt, and cut.txt are Project 26's).
+01 dp-cars2 day.txt
+02 dp-cars2 --prompt < day.txt
+03 dp-cars2 rejected.txt
+04 dp-cars2 --totals totals.tot
+05 dp-cars2 --save day.tot day.txt
+05 dp-cars2 -t day.tot
+06 dp-cars2 -tp < totals.tot
+07 dp-cars2 --totals oversold.tot
+08 dp-cars2 cut.txt
+09 dp-cars2 --help
+10 dp-cars2 -s '' day.txt

@@ -1,0 +1,5 @@
+i
+first line
+second line
+.
+q

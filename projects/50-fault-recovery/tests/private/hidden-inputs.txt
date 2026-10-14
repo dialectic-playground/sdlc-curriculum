@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-divide (projects/50-fault-recovery).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-divide --version
+02 dp-divide overflow.txt
+03 dp-divide negzero.txt
+03 dp-divide zerozero.txt
+04 dp-divide underflow.txt
+05 dp-divide inf.txt
+05 dp-divide big.txt
+06 dp-divide ctrlz.txt
+06 dp-divide midz.txt
+07 dp-divide -p odd.txt
+07 dp-divide -p
+07 dp-divide -p bad.txt
+08 dp-divide subdir
+08 dp-divide -- -p
+09 dp-divide extra --help
+09 dp-divide -x --help
+09 dp-divide --prompt=yes
+09 dp-divide --pro
+10 dp-divide -p - extra < textbook.txt
+10 dp-divide - -p < textbook.txt

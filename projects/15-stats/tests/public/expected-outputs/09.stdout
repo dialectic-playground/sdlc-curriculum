@@ -1,0 +1,12 @@
+Usage: dp-stats [OPTION]... [FILE]
+Print summary statistics of the real numbers in FILE.
+
+With no FILE, or when FILE is -, read standard input.  Numbers are separated
+by whitespace and read in a single pass until the end of the input.  The
+report gives the count, maximum, minimum, sum, mean, population variance
+(sum of squares / N - mean * mean), and standard deviation, each real number
+with six digits after the decimal point.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

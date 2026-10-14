@@ -1,0 +1,4 @@
+dp-sched: invalid option -- 'x'
+Try 'dp-sched --help' for more information.
+dp-sched: option '--help' doesn't allow an argument
+Try 'dp-sched --help' for more information.

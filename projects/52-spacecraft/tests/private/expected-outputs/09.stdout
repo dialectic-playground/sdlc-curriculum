@@ -1,0 +1,15 @@
+Usage: dp-ship [OPTION]... [FILE]
+Model spacecraft and report their basics and trip times.
+
+With no FILE, run the textbook scenario.  Otherwise run the command script in
+FILE (standard input when FILE is -), one command per line:
+  new ID                          create ship ID with default values
+  new ID MASS VEL DIST CAP NAME   create ship ID with the given values
+  adjust ID DIFF                  add DIFF to the velocity (never below 0)
+  print ID                        report the ship's basics
+  trip ID                         report the time the ship needs for its trip
+Empty lines and lines whose first word starts with # are ignored.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

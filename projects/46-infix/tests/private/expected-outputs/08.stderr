@@ -1,0 +1,4 @@
+Enter infix expression: dp-infix: errors.txt:1: unmatched '('
+Another? (y/n) Enter infix expression: dp-infix: errors.txt:3: unexpected operator '*'
+Another? (y/n) Enter infix expression: dp-infix: errors.txt:5: invalid character '$'
+Another? (y/n) Enter infix expression: Another? (y/n) Enter infix expression: 

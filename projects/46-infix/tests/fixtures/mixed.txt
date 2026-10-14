@@ -1,0 +1,6 @@
+rate * (hours + 40) % 7
+Y
+((x1))
+y
+	 a/b/c*d 
+N
