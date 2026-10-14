@@ -17,5 +17,5 @@
 08 dp-reverse -- -l
 09 dp-reverse -p - extra < words.txt
 09 dp-reverse - -p < words.txt
-10 dp-reverse nul.txt
+10 dp-reverse nul-bytes.txt
 10 dp-reverse -lp blank.txt
