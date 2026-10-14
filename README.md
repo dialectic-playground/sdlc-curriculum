@@ -266,8 +266,8 @@ directory into a private repository and have CI check it out using a token.
 
    ```sh
    git submodule add https://github.com/dialectic-playground/sdlc-curriculum
-   git -C sdlc-curriculum checkout v1.5.0
-   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.5.0"
+   git -C sdlc-curriculum checkout v1.6.0
+   git add sdlc-curriculum && git commit -s -m "build: pin sdlc-curriculum to v1.6.0"
    ```
 
 2. Lay the repository out as described in
