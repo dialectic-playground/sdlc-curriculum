@@ -1,0 +1,34 @@
+# Hidden black-box verification tests for dp-films (projects/41-films).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-films --version
+02 dp-films -s full.dat readme.txt
+02 dp-films -s over.dat readme.txt
+03 dp-films -s empty.dat readme.txt
+03 dp-films -s blank.dat readme.txt
+04 dp-films -s partial.dat readme.txt
+04 dp-films -s range.dat readme.txt
+04 dp-films -s code-real.dat readme.txt
+05 dp-films odd.txt
+05 dp-films --prompt odd.txt
+06 dp-films -s near.dat near-q.txt
+06 dp-films -s pair-rev.dat center.txt
+07 dp-films limits.txt
+07 dp-films q-range.txt
+07 dp-films ctrlz.txt
+07 dp-films midz.txt
+08 dp-films -s missing.dat readme.txt
+08 dp-films -s subdir readme.txt
+08 dp-films missing.txt
+08 dp-films subdir
+08 dp-films -s missing.dat missing.txt
+09 dp-films -s ''
+09 dp-films -s -
+09 dp-films -s - - < films.dat
+09 dp-films --sample
+09 dp-films -x --help
+09 dp-films extra --help
+09 dp-films --prompt=1
+10 dp-films -s films.dat -s crlf.dat readme.txt
+10 dp-films --sample=- readme.txt < crlf.dat
+10 dp-films -p -s bad-code.dat readme.txt

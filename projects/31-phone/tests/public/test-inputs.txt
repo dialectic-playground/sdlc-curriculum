@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-phone (projects/31-phone).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixtures (students.dat from the textbook; names.txt, edges.txt, more.dat, dups.txt, bad.dat) live in ../fixtures/.
+01 dp-phone < names.txt
+02 dp-phone --prompt < names.txt
+03 dp-phone edges.txt
+04 dp-phone -f more.dat dups.txt
+05 dp-phone -f bad.dat names.txt
+06 dp-phone --file=missing.dat names.txt
+07 dp-phone
+08 dp-phone --help
+09 dp-phone missing.txt
+10 dp-phone names.txt edges.txt

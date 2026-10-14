@@ -1,0 +1,14 @@
+Usage: dp-matmult [OPTION]... [FILE]
+Multiply two square matrices of integers.
+
+Read whitespace-separated integers from FILE, or from standard input when FILE
+is absent or -: the size N (1-20), then the N*N elements of the first matrix
+row by row, then the N*N elements of the second.  Print both matrices and
+their product.  Elements and results are 64-bit signed integers; a product
+that does not fit is reported as an error.
+
+Options:
+  -p, --prompt    write prompts to standard error before reading
+      --help      display this help and exit
+      --version   output version information and exit
+dp-matmult (dialectic-playground) 1.0.0

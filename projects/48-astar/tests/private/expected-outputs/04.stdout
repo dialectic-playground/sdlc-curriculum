@@ -1,0 +1,11 @@
+open start g=0 f=0
+select start g=0 f=0
+open south g=5 f=5 via start
+open north g=5 f=5 via start
+select south g=5 f=5
+open end g=10 f=10 via south
+select north g=5 f=5
+select end g=10 f=10
+Optimal path to End:
+start -> south -> end
+Total distance: 10 kilometers

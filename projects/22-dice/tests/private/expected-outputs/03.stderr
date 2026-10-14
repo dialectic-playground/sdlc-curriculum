@@ -1,0 +1,6 @@
+dp-dice: invalid argument '4294967296' for '--seed'
+Try 'dp-dice --help' for more information.
+dp-dice: invalid argument '' for '--seed'
+Try 'dp-dice --help' for more information.
+dp-dice: invalid argument '-1' for '--seed'
+Try 'dp-dice --help' for more information.

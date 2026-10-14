@@ -1,0 +1,3 @@
+dp-films: partial.dat:3: unexpected end of input
+dp-films: range.dat:2: value out of range '100.5'
+dp-films: code-real.dat:1: invalid integer '1.0'

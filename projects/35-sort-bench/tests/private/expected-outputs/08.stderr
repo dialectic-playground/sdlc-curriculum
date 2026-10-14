@@ -1,0 +1,4 @@
+dp-sort-bench: invalid option -- 'x'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument '--help' for '--sizes'
+Try 'dp-sort-bench --help' for more information.

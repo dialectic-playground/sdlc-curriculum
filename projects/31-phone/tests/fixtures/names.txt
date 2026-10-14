@@ -1,0 +1,4 @@
+Turing
+Knuth
+Lovelace
+Gosling

@@ -1,0 +1,36 @@
+# Public black-box acceptance tests for dp-relfile (projects/40-relative-file).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Consecutive lines with the same ID are steps of one test and share a working directory; a
+# later step reads back the relative file an earlier step wrote. Fixtures live in ../fixtures/.
+01 dp-relfile add 1234 'Ada Lovelace'
+01 dp-relfile find 1234
+01 dp-relfile slots
+02 dp-relfile add 0000 first
+02 dp-relfile add 0097 second
+02 dp-relfile add 9700 third
+02 dp-relfile find 9700
+02 dp-relfile slots
+03 dp-relfile add 0000 a
+03 dp-relfile add 0097 b
+03 dp-relfile add 0194 c
+03 dp-relfile remove 0097
+03 dp-relfile find 0194
+03 dp-relfile slots
+03 dp-relfile add 0291 d
+03 dp-relfile slots
+04 dp-relfile < session.txt
+04 dp-relfile slots
+05 dp-relfile --prompt < session.txt
+06 dp-relfile add 1234 x
+06 dp-relfile add 1234 y
+06 dp-relfile find 4321
+06 dp-relfile remove 4321
+07 dp-relfile -f people.dat slots
+07 dp-relfile --file=people.dat find 0167
+07 dp-relfile -f people.dat add 1428 'Donald Knuth'
+07 dp-relfile -f people.dat slots
+08 dp-relfile -f short.dat slots
+08 dp-relfile -f badstatus.dat find 0005
+09 dp-relfile --help
+10 dp-relfile add 123 'too short'

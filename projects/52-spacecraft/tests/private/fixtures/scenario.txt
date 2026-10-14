@@ -1,0 +1,9 @@
+# The textbook scenario as a script
+new s1
+print s1
+new s2 5000 63567 560989 4 MightyMite
+print s2
+adjust s2 2000
+adjust s2 -1000
+print s2
+trip s2

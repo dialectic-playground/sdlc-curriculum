@@ -1,0 +1,8 @@
+Y V R
+1
+R R B
+1
+N B E
+1
+B N O
+0

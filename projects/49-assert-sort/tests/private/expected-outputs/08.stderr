@@ -1,0 +1,4 @@
+dp-assert-sort: invalid option -- 'x'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: option '--trace' doesn't allow an argument
+Try 'dp-assert-sort --help' for more information.

@@ -1,0 +1,8 @@
+dp-phone: invalid argument '' for '-f'
+Try 'dp-phone --help' for more information.
+dp-phone: invalid argument '' for '--file'
+Try 'dp-phone --help' for more information.
+dp-phone: option '--file' requires an argument
+Try 'dp-phone --help' for more information.
+dp-phone: option requires an argument -- 'f'
+Try 'dp-phone --help' for more information.

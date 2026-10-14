@@ -1,0 +1,11 @@
+Elephant number 1 is Dumbo.
+Elephant number 2 is Babar.
+Usage: dp-elephnt1 [OPTION]...
+Build a linked list of three elephants (Edna, Elmer, Eloise) and print it.
+
+The three nodes are linked by hand and the list is printed by walking it from
+its first node to its end, one line per elephant.  No input is read.
+
+Options:
+      --help       display this help and exit
+      --version    output version information and exit

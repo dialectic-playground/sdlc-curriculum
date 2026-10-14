@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-bargraph2 and dp-grade (projects/20-bargraph-grade).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (bargraph.in is the textbook's data file, ending in Ctrl-Z).
+01 dp-bargraph2 bargraph.in
+02 dp-bargraph2 < edge.txt
+03 dp-grade readme-grades.txt
+04 dp-grade --prompt < readme-grades.txt
+05 dp-grade -p stop.txt
+06 dp-grade weights.txt
+07 dp-grade bad-score.txt
+08 dp-grade cut-record.txt
+09 dp-grade --help
+10 dp-bargraph2 --help

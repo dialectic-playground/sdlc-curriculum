@@ -1,0 +1,6 @@
+Infix:   rate * (hours + 40) % 7
+Postfix: rate hours 40 + * 7 %
+Infix:   ((x1))
+Postfix: x1
+Infix:   a/b/c*d
+Postfix: a b / c / d *

@@ -52,8 +52,8 @@ list is valid.
 
 ### 2.1 Product perspective
 `dp-echo` is a standalone executable. Its interfaces are the command line, standard output,
-standard error, and the exit status. It is the second of the eleven curriculum tools and the
-first whose argument syntax deliberately departs from the common conventions, because `echo`
+standard error, and the exit status. It is the second of the fifty-three curriculum projects and
+the first whose argument syntax deliberately departs from the common conventions, because `echo`
 exists to print arbitrary text, including text that looks like options.
 
 ### 2.2 Product functions

@@ -1,0 +1,18 @@
+Usage: dp-size [OPTION]... [NAME]...
+Print the size in bytes of the file NAME.c for each NAME.
+
+Each NAME is a file name without its extension; the extension (.c unless -e
+is given) is appended to it, and the file is read to its end in binary mode,
+counting every byte.  With no NAME, or when NAME is -, read the names from
+standard input, one per line.  For each file, two lines are written:
+a TAB, 'File name:', a TAB, and the file name; then a TAB, 'Byte size:', a
+TAB, and the number of bytes.
+
+Options:
+  -e, --extension=EXT   append EXT instead of .c; EXT is empty or begins
+                          with '.'
+  -p, --prompt          write the prompt 'File name (NO extension):' to
+                          standard error before each name is read
+      --help            display this help and exit
+      --version         output version information and exit
+dp-size (dialectic-playground) 1.0.0

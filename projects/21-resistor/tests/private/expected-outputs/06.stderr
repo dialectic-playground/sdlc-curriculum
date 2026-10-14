@@ -1,0 +1,4 @@
+dp-resistor: invalid option -- 'x'
+Try 'dp-resistor --help' for more information.
+dp-resistor: option '--prompt' doesn't allow an argument
+Try 'dp-resistor --help' for more information.

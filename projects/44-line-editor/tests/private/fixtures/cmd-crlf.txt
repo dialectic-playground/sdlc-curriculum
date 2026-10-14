@@ -1,0 +1,7 @@
+t e
+t b
+t 9
+f 'beta'
+s 'beta' 'BETA'
+q
+

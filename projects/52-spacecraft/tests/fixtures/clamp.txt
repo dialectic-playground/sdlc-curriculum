@@ -1,0 +1,8 @@
+new s2 5000 63567 560989 4 MightyMite
+adjust s2 -100000
+print s2
+trip s2
+adjust s2 0.25
+trip s2
+new s0
+trip s0

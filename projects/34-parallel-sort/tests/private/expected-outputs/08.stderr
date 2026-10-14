@@ -1,0 +1,10 @@
+dp-sort-host: invalid argument '100001' for '--random'
+Try 'dp-sort-host --help' for more information.
+dp-sort-host: invalid argument '4294967296' for '--seed'
+Try 'dp-sort-host --help' for more information.
+dp-sort-host: invalid argument '' for '--random'
+Try 'dp-sort-host --help' for more information.
+dp-sort-host: extra operand 'data.txt'
+Try 'dp-sort-host --help' for more information.
+dp-sort-host: option '--trace' doesn't allow an argument
+Try 'dp-sort-host --help' for more information.

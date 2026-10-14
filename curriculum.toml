@@ -65,3 +65,213 @@ tools = ["dp-kv"]
 slug = "10-sys-monitor"
 title = "System Resource Telemetry Daemonic CLI"
 tools = ["dp-sysmon"]
+
+[[project]]
+slug = "11-kinder"
+title = "Console Output & Environment Verification"
+tools = ["dp-kinder"]
+
+[[project]]
+slug = "12-convert"
+title = "Interactive Length Unit Conversion"
+tools = ["dp-convert"]
+
+[[project]]
+slug = "13-taxes"
+title = "Stream-Based Progressive Income Tax Calculator"
+tools = ["dp-taxes"]
+
+[[project]]
+slug = "14-taxes-file"
+title = "Batch File-Based Progressive Income Tax Calculator"
+tools = ["dp-taxes-file"]
+
+[[project]]
+slug = "15-stats"
+title = "Single-Pass Streaming Statistical Summary"
+tools = ["dp-stats"]
+
+[[project]]
+slug = "16-bargraph"
+title = "ASCII Comic Book Bar Graph Generator"
+tools = ["dp-bargraph"]
+
+[[project]]
+slug = "17-stream-filters"
+title = "Stream Filtering & Monotonicity Validation"
+tools = ["dp-average", "dp-chk-sort"]
+
+[[project]]
+slug = "18-primes"
+title = "Prime Number Generation via Trial Division"
+tools = ["dp-primes"]
+
+[[project]]
+slug = "19-calendar"
+title = "Formatted Annual Calendar Generator"
+tools = ["dp-calendar"]
+
+[[project]]
+slug = "20-bargraph-grade"
+title = "Modular Procedural Decomposition & Evaluation"
+tools = ["dp-bargraph2", "dp-grade"]
+
+[[project]]
+slug = "21-resistor"
+title = "Resistor 3-Band Color Code Decoder"
+tools = ["dp-resistor"]
+
+[[project]]
+slug = "22-dice"
+title = "Roll Them Bones Dice Simulation Game"
+tools = ["dp-dice"]
+
+[[project]]
+slug = "23-recursion"
+title = "Recursion vs. Iteration Comparative Suite"
+tools = ["dp-fact", "dp-tower", "dp-walk-r", "dp-walk-nr"]
+
+[[project]]
+slug = "24-tromino"
+title = "Divide-and-Conquer Tromino Deficiency Tiling"
+tools = ["dp-tromino"]
+
+[[project]]
+slug = "25-max"
+title = "Variadic Functions & Dynamic Arity Processing"
+tools = ["dp-max"]
+
+[[project]]
+slug = "26-cars"
+title = "Car Dealership Daily Sales & Inventory Tracker"
+tools = ["dp-cars1"]
+
+[[project]]
+slug = "27-line-wrap"
+title = "Greedy Word-Wrapping Text Formatter"
+tools = ["dp-wrap"]
+
+[[project]]
+slug = "28-cars-modular"
+title = "Modular Car Sales Architecture & Reporting"
+tools = ["dp-cars2"]
+
+[[project]]
+slug = "29-strlen"
+title = "String Length from First Principles"
+tools = ["dp-strlen"]
+
+[[project]]
+slug = "30-matmult"
+title = "Matrix Multiplication Engine"
+tools = ["dp-matmult"]
+
+[[project]]
+slug = "31-phone"
+title = "Student Directory Lookup via Selection Sort & Binary Search"
+tools = ["dp-phone"]
+
+[[project]]
+slug = "32-percolation"
+title = "Monte Carlo Forest Fire Percolation Simulation"
+tools = ["dp-perc"]
+
+[[project]]
+slug = "33-reverse"
+title = "Two-Pointer In-Place Sequence Reversal"
+tools = ["dp-reverse"]
+
+[[project]]
+slug = "34-parallel-sort"
+title = "Distributed Parallel Sorting & Stream Merging"
+tools = ["dp-sort-host", "dp-sort-child"]
+
+[[project]]
+slug = "35-sort-bench"
+title = "Empirical Algorithm Runtime Benchmarking"
+tools = ["dp-sort-bench"]
+
+[[project]]
+slug = "36-page"
+title = "Stream Text Pagination Utility"
+tools = ["dp-page"]
+
+[[project]]
+slug = "37-calc"
+title = "Interactive Accumulator Calculator"
+tools = ["dp-calc"]
+
+[[project]]
+slug = "38-sched"
+title = "Greedy Interval Activity Scheduling"
+tools = ["dp-sched"]
+
+[[project]]
+slug = "39-size"
+title = "Binary File Byte Size Inspector"
+tools = ["dp-size"]
+
+[[project]]
+slug = "40-relative-file"
+title = "Direct-Access Hashed Relative File Storage Engine"
+tools = ["dp-relfile"]
+
+[[project]]
+slug = "41-films"
+title = "1-Nearest Neighbor Film Success Classifier"
+tools = ["dp-films"]
+
+[[project]]
+slug = "42-sales-report"
+title = "Enterprise Sales Reporting & Relational Data Integration"
+tools = ["dp-sales"]
+
+[[project]]
+slug = "43-linked-list"
+title = "Singly Linked List Foundations"
+tools = ["dp-elephnt1", "dp-elephnt2"]
+
+[[project]]
+slug = "44-line-editor"
+title = "Modal Line-Oriented Text Editor"
+tools = ["dp-line-ed"]
+
+[[project]]
+slug = "45-queue-stack"
+title = "Comparative Queue & Stack ADT Implementations"
+tools = ["dp-queue1", "dp-queue2", "dp-stack1", "dp-stack2"]
+
+[[project]]
+slug = "46-infix"
+title = "Shunting-Yard Infix to Postfix Conversion"
+tools = ["dp-infix"]
+
+[[project]]
+slug = "47-bfs"
+title = "Graph Breadth-First Search: Adjacency Matrix vs. Adjacency List"
+tools = ["dp-bfs-adj", "dp-bfs-link"]
+
+[[project]]
+slug = "48-astar"
+title = "A* Heuristic Graph Search for European Cities"
+tools = ["dp-astar"]
+
+[[project]]
+slug = "49-assert-sort"
+title = "Formal Program Verification via Assertions & Loop Invariants"
+tools = ["dp-assert-sort"]
+
+[[project]]
+slug = "50-fault-recovery"
+title = "Structured Exception Handling & Fault Recovery"
+tools = ["dp-divide"]
+
+[[project]]
+slug = "51-koch"
+title = "Recursive Fractal Geometry: The Koch Snowflake"
+tools = ["dp-koch"]
+
+[[project]]
+slug = "52-spacecraft"
+title = "Object-Oriented Spacecraft Domain Modeling"
+tools = ["dp-ship"]

@@ -1,0 +1,2 @@
+dp-bfs-link: self-loop.txt:6: self-loop '2 2'
+dp-bfs-adj: duplicate.txt:6: duplicate edge '+2 00'

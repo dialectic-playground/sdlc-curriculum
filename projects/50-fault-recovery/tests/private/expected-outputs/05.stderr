@@ -1,0 +1,2 @@
+dp-divide: inf.txt:2: invalid number 'inf'
+dp-divide: big.txt:1: invalid number '1e309'

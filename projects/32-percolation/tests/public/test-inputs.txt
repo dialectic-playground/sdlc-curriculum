@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-perc (projects/32-percolation).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (once.txt, again.txt, full.txt, bad-density.txt, bad-answer.txt) live in ../fixtures/.
+01 dp-perc once.txt
+02 dp-perc --size=8 again.txt
+03 dp-perc --prompt -s 8 < again.txt
+04 dp-perc --seed=42 --size=10 once.txt
+05 dp-perc -s 6 full.txt
+06 dp-perc -s 5 bad-density.txt
+07 dp-perc -s 5 bad-answer.txt
+08 dp-perc missing.txt
+09 dp-perc --help
+10 dp-perc --size=0 once.txt

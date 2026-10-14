@@ -1,0 +1,2 @@
+dp-average: over.txt:2: arithmetic overflow at '1e308'
+dp-average: huge.txt:1: invalid number '1e309'

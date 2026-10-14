@@ -1,0 +1,5 @@
+dp-tromino: big.txt:1: invalid board size '128'
+dp-tromino: one.txt:1: invalid board size '1'
+dp-tromino: negative.txt:1: invalid board size '-2'
+dp-tromino: three.txt:1: invalid board size '3'
+dp-tromino: word.txt:1: invalid integer 'four'

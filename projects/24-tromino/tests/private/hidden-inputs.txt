@@ -1,0 +1,27 @@
+# Hidden black-box verification tests for dp-tromino (projects/24-tromino).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-tromino --version
+02 dp-tromino limit.txt
+03 dp-tromino big.txt
+03 dp-tromino one.txt
+03 dp-tromino negative.txt
+03 dp-tromino three.txt
+03 dp-tromino word.txt
+04 dp-tromino coord-negative.txt
+04 dp-tromino coord-real.txt
+04 dp-tromino coord-high.txt
+05 dp-tromino dos.txt
+05 dp-tromino midz.txt
+05 dp-tromino quit.txt
+06 dp-tromino -p cut.txt
+07 dp-tromino -p
+07 dp-tromino -dp - < readme.txt
+08 dp-tromino missing.txt
+08 dp-tromino subdir
+08 dp-tromino -- -d
+09 dp-tromino a b --help
+09 dp-tromino -x --help
+09 dp-tromino --draw=yes
+09 dp-tromino --dra
+10 dp-tromino --draw wide.txt

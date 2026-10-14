@@ -1,0 +1,4 @@
+dp-astar: neg-dist.dat:7: value out of range '-628'
+dp-astar: extra-dist.dat:57: unexpected token '1000'
+dp-astar: subdir: Is a directory
+dp-astar: missing.dat: No such file or directory

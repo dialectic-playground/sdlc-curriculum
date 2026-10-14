@@ -1,0 +1,11 @@
+Usage: dp-average [OPTION]... [FILE]
+Print the average of the positive numbers in FILE.
+
+With no FILE, or when FILE is -, read standard input.  Numbers are real
+numbers separated by whitespace and are read until the end of the input.
+Numbers less than or equal to zero are checked but otherwise ignored.  The
+average is written with six digits after the decimal point.
+
+Options:
+      --help      display this help and exit
+      --version   output version information and exit

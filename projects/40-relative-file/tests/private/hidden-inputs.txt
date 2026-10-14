@@ -1,0 +1,49 @@
+# Hidden black-box verification tests for dp-relfile (projects/40-relative-file).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-relfile --version
+02 dp-relfile add 0096 a
+02 dp-relfile add 0193 b
+02 dp-relfile add 0290 c
+02 dp-relfile add 0387 d
+02 dp-relfile add 0484 e
+02 dp-relfile find 0484
+02 dp-relfile slots
+03 dp-relfile -f full.dat add 2000 extra
+03 dp-relfile -f full.dat remove 1050
+03 dp-relfile -f full.dat add 2000 extra
+03 dp-relfile -f full.dat find 2000
+03 dp-relfile -f full.dat add 2001 more
+04 dp-relfile -f nofree.dat find 2000
+04 dp-relfile -f nofree.dat remove 1050
+04 dp-relfile -f nofree.dat add 1050 again
+04 dp-relfile -f nofree.dat find 1050
+05 dp-relfile < mixed-session.txt
+05 dp-relfile slots
+06 dp-relfile -p < eof-key.txt
+06 dp-relfile < ctrlz-session.txt
+06 dp-relfile < stop-session.txt
+06 dp-relfile slots
+07 dp-relfile add 0001 'abcdefghijklmnopqrstuvwxyz0123'
+07 dp-relfile add 0002 'abcdefghijklmnopqrstuvwxyz01234'
+07 dp-relfile add 0003 'trailing spaces dropped        '
+07 dp-relfile add 0005 ''
+07 dp-relfile add 0006 '  leading'
+07 dp-relfile add 0007 -- '-5 degrees'
+07 dp-relfile add 0008 'Zoë'
+07 dp-relfile < tab-data.txt
+07 dp-relfile slots
+08 dp-relfile frob
+08 dp-relfile find
+08 dp-relfile slots extra
+08 dp-relfile -f '' slots
+08 dp-relfile add 12a4 x
+08 dp-relfile add 0001
+09 dp-relfile frob --help
+09 dp-relfile -x --version
+09 dp-relfile -f '' --version
+09 dp-relfile --prompt=yes slots
+10 dp-relfile -f subdir slots
+10 dp-relfile -f nodir/r.dat slots
+10 dp-relfile -f empty.dat find 0001
+10 dp-relfile -f badkey.dat slots

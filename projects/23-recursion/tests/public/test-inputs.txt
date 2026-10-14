@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-fact, dp-tower, dp-walk-r, and dp-walk-nr (projects/23-recursion).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (facts.txt, three.txt, disks.txt, dists.txt, far.txt, neg.txt, stop.txt) live in ../fixtures/.
+01 dp-fact facts.txt
+02 dp-tower < three.txt
+03 dp-tower --prompt < disks.txt
+04 dp-walk-r dists.txt
+05 dp-walk-nr - < dists.txt
+06 dp-walk-nr far.txt
+07 dp-fact neg.txt
+08 dp-walk-r stop.txt
+09 dp-tower --help
+10 dp-walk-nr dists.txt extra

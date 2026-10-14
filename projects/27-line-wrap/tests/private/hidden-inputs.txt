@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-wrap (projects/27-line-wrap).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-wrap --version
+02 dp-wrap exact.txt
+02 dp-wrap ones.txt
+03 dp-wrap dos.txt
+04 dp-wrap empty.txt
+04 dp-wrap -w 5 empty.txt
+04 dp-wrap header.txt
+05 dp-wrap zero.txt
+05 dp-wrap - < negative.txt
+05 dp-wrap overflow.txt
+06 dp-wrap maxwidth.txt
+07 dp-wrap a b --help
+07 dp-wrap -x --help
+07 dp-wrap fox.txt --width
+07 dp-wrap -w +5 fox.txt
+08 dp-wrap subdir
+08 dp-wrap -- -w
+08 dp-wrap fox.txt extra
+09 dp-wrap -w 3 mixed8.txt
+09 dp-wrap -bw3 mixed8.txt
+10 dp-wrap -w 4 - < midz.txt
+10 dp-wrap --width=9223372036854775808 fox.txt

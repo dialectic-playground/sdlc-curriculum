@@ -2,7 +2,7 @@
 
 > **This is not a language implementation of the curriculum.** Implementations live in
 > separate language repositories. This directory exists for one purpose: to **generate and
-> verify the expected-output fixtures** in `projects/*/tests/`, so that every one of the 220
+> verify the expected-output fixtures** in `projects/*/tests/`, so that every one of the 1060
 > black-box tests is proven consistent with its SRS on Linux, macOS, and Windows.
 
 ## Why it exists

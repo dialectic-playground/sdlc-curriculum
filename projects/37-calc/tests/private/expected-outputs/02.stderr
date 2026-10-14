@@ -1,0 +1,6 @@
+dp-calc: overflow.txt:2: integer overflow
+dp-calc: overflow.txt:3: integer overflow
+dp-calc: overflow.txt:6: integer overflow
+dp-calc: overflow.txt:7: integer overflow
+dp-calc: overflow.txt:9: invalid integer '9223372036854775808'
+dp-calc: overflow.txt:10: integer overflow

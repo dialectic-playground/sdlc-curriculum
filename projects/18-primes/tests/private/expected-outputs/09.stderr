@@ -1,0 +1,6 @@
+dp-primes: invalid option -- 'x'
+Try 'dp-primes --help' for more information.
+dp-primes: option '--count' doesn't allow an argument
+Try 'dp-primes --help' for more information.
+dp-primes: unrecognized option '--prom'
+Try 'dp-primes --help' for more information.

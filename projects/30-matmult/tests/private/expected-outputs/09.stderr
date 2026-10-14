@@ -1,0 +1,4 @@
+dp-matmult: invalid option -- 'x'
+Try 'dp-matmult --help' for more information.
+dp-matmult: option '--prompt' doesn't allow an argument
+Try 'dp-matmult --help' for more information.

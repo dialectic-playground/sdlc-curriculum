@@ -1,0 +1,14 @@
+Usage: dp-resistor [OPTION]... [FILE]
+Decode the color codes of 3-band resistors into resistances.
+
+With no FILE, or when FILE is -, read standard input.  The color guide is
+written first.  Each resistor is then given as three codes separated by
+whitespace, one letter per band, in either case: B black 0, N brown 1,
+R red 2, O orange 3, Y yellow 4, G green 5, E blue 6, V violet 7, A gray 8,
+W white 9.  After each resistance, answer 1 to decode another resistor or 0
+to stop.  An invalid code is reported and the three codes are asked for again.
+
+Options:
+  -p, --prompt    write prompts to standard error before each read
+      --help      display this help and exit
+      --version   output version information and exit

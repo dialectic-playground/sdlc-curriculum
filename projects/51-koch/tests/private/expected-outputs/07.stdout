@@ -1,0 +1,16 @@
+Usage: dp-koch [OPTION]... [FILE]
+Draw the von Koch curve or snowflake as a list of vertex coordinates.
+
+Reads a dialog from FILE (standard input with no FILE, or when FILE is -):
+a level from 0 to 6, then, after each figure, an answer y or n to the
+question whether to draw another.  With --level, draws one figure and
+reads no input.  The curve starts at (0, 0) and runs in the +x direction.
+
+Options:
+  -l, --level=LEVEL    draw one figure of level LEVEL (0-6) and read no input
+  -s, --snowflake      draw the closed snowflake (three curves), not one curve
+  -L, --length=LENGTH  length of the base segment (1-1000000, default 729)
+      --svg            write each figure as an SVG document
+  -p, --prompt         write prompts to standard error before each read
+      --help           display this help and exit
+      --version        output version information and exit

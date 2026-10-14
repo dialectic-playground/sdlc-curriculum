@@ -1,0 +1,11 @@
+t .
+t b
+t 3
+t .
+m 2
+t .
+t 2
+t e
+m 1
+t b
+q

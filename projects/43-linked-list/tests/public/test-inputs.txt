@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-elephnt1 and dp-elephnt2 (projects/43-linked-list).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (readme.txt, herd.txt, no-answer.txt, bad-answer.txt, cut.txt) live in ../fixtures/.
+01 dp-elephnt1
+02 dp-elephnt2 < readme.txt
+03 dp-elephnt2 --prompt < readme.txt
+04 dp-elephnt2 herd.txt
+05 dp-elephnt2 no-answer.txt
+06 dp-elephnt2 bad-answer.txt
+07 dp-elephnt2 -p cut.txt
+08 dp-elephnt2 missing.txt
+09 dp-elephnt1 --help
+10 dp-elephnt2 --help

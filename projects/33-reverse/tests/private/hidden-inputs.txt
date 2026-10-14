@@ -1,0 +1,21 @@
+# Hidden black-box verification tests for dp-reverse (projects/33-reverse).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-reverse --version
+02 dp-reverse limit.txt
+02 dp-reverse -b limit.txt
+03 dp-reverse -l crlf.txt
+03 dp-reverse -lp crlf.txt
+04 dp-reverse invalid.txt
+05 dp-reverse -p -l longline.txt
+06 dp-reverse dos.txt
+06 dp-reverse --lines midz.txt
+07 dp-reverse a b --help
+07 dp-reverse -x --help
+07 dp-reverse --prompt=yes
+08 dp-reverse subdir
+08 dp-reverse -- -l
+09 dp-reverse -p - extra < words.txt
+09 dp-reverse - -p < words.txt
+10 dp-reverse nul-bytes.txt
+10 dp-reverse -lp blank.txt

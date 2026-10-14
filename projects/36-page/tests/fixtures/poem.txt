@@ -1,0 +1,7 @@
+The printer waits for every page,
+fifty-two lines from top to base;
+a header names the page it starts,
+a form feed ends it and departs.
+
+An empty line still takes its place,
+and counts the same as any trace.

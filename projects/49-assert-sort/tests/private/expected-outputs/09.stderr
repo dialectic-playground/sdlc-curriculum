@@ -1,0 +1,4 @@
+dp-assert-sort: subdir: Is a directory
+dp-assert-sort: extra operand 'extra'
+Try 'dp-assert-sort --help' for more information.
+dp-assert-sort: -t: No such file or directory

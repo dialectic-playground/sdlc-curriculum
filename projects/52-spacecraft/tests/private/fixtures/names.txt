@@ -1,0 +1,7 @@
+new z 70.5 28000 384400 3 Zoë
+print z
+trip z
+new q 1 1 1 1 ???
+trip q
+new r 1 5 0 1 Rest
+trip r

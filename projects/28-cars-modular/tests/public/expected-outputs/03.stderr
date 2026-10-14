@@ -1,0 +1,4 @@
+dp-cars2: rejected.txt:3: no such brand '12'
+dp-cars2: rejected.txt:4: negative quantity '-2'
+dp-cars2: rejected.txt:6: not enough cars in stock for brand 3 '2'
+dp-cars2: rejected.txt:7: not enough cars in stock for brand 4 '1'

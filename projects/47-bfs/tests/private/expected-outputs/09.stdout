@@ -1,0 +1,13 @@
+Usage: dp-bfs-adj [OPTION]...
+Search a graph breadth-first, using an adjacency matrix, and print each
+vertex as it is visited.
+
+Without --graph, search the built-in graph of the seven deadly sins.  The
+neighbors of a vertex are examined in ascending order of vertex number.
+
+Options:
+  -g, --graph=FILE      read the graph from FILE; - means standard input
+  -s, --start=VERTEX    start at vertex number VERTEX (0-999, default 0)
+      --help            display this help and exit
+      --version         output version information and exit
+dp-bfs-link (dialectic-playground) 1.0.0

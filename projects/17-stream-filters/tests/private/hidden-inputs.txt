@@ -1,0 +1,32 @@
+# Hidden black-box verification tests for dp-average and dp-chk-sort (projects/17-stream-filters).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-average --version
+01 dp-chk-sort --version
+02 dp-average
+02 dp-average blank.txt
+02 dp-average under.txt
+03 dp-average - < mixed.txt
+03 dp-average tie.txt
+03 dp-average denorm.txt
+04 dp-average over.txt
+04 dp-average huge.txt
+05 dp-average ctrlz.txt
+05 dp-average midz.txt
+06 dp-chk-sort
+06 dp-chk-sort one.txt
+06 dp-chk-sort extremes.txt
+06 dp-chk-sort < blank.txt
+07 dp-chk-sort last.txt
+07 dp-chk-sort sctrlz.txt
+07 dp-chk-sort smidz.txt
+08 dp-chk-sort overflow.txt
+08 dp-chk-sort subdir
+08 dp-chk-sort -- -x
+09 dp-average extra --help
+09 dp-chk-sort -x --help
+09 dp-average numbers.txt nonpos.txt
+09 dp-chk-sort --help=1
+10 dp-chk-sort - < unsorted.txt
+10 dp-average subdir
+10 dp-average missing.txt

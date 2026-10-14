@@ -1,0 +1,2 @@
+dp-matmult: toobig.txt:2: invalid integer '9223372036854775808'
+dp-matmult: sizereal.txt:1: invalid integer '2.0'

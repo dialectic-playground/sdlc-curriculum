@@ -1,0 +1,6 @@
+dp-sort-bench: invalid argument '4294967296' for '--seed'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument '' for '--seed'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument '+1' for '--seed'
+Try 'dp-sort-bench --help' for more information.

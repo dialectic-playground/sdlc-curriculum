@@ -1,0 +1,2 @@
+dp-relfile: short.dat: not a relative file (size 3499, expected 3500)
+dp-relfile: badstatus.dat: slot 5: invalid record

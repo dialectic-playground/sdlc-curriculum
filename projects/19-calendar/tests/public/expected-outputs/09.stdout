@@ -1,0 +1,17 @@
+Usage: dp-calendar [OPTION]... [FILE]
+  or:  dp-calendar [OPTION]... --year=YEAR
+Print a calendar of the twelve months of a year.
+
+With no FILE, or when FILE is -, read standard input.  The input holds two
+whole numbers: the day code of January 1 (0 = Sunday, 1 = Monday, ...,
+6 = Saturday) and the leap year code (1 = leap year, 0 = common year).  A pair
+whose day code is not 0 to 6 is reported and skipped, and the next pair is
+read.  With --year, the codes are derived from a Gregorian year instead.
+
+Options:
+  -p, --prompt      write the prompt 'Enter day and leap year codes: ' to
+                      standard error before each pair of codes is read
+  -y, --year=YEAR   print the calendar of the Gregorian year YEAR (1 to 9999)
+                      instead of reading codes
+      --help        display this help and exit
+      --version     output version information and exit

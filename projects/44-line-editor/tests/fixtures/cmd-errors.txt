@@ -1,0 +1,9 @@
+m 2
+x
+d 0
+t
+s 'dog' 'cat'
+f 'zebra'
+d
+q now
+q

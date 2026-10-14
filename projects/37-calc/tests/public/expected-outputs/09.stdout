@@ -1,0 +1,16 @@
+Usage: dp-calc [OPTION]... [FILE]
+Evaluate lines of operator-operand pairs left to right on an accumulator.
+
+With no FILE, or when FILE is -, read standard input.  The accumulator starts
+at 0.  Each line holds pairs such as '+ 10 * 3', separated by whitespace; the
+operators are + - * / % and the operands are whole numbers.  Each pair is
+applied in turn, without precedence, and a valid line prints
+'OLD LINE == NEW'.  Division truncates toward zero.  A line with an error is
+reported and leaves the accumulator unchanged.  The operator ! ends the
+calculation.
+
+Options:
+  -p, --prompt    write the accumulator and a space to standard error before
+                    each line is read
+      --help      display this help and exit
+      --version   output version information and exit

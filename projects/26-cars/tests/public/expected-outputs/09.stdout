@@ -1,0 +1,13 @@
+Usage: dp-cars1 [OPTION]... [FILE]
+Record one day of car sales for 12 brands and print the daily report.
+
+Read whitespace-separated whole numbers from FILE, or from standard input when
+FILE is absent or -: first the opening stock of brands 0 to 11 (0-999999
+each), then each sale as a brand and a quantity, until a negative brand or the
+end of the input.  A sale of an unknown brand, of a negative quantity, or of
+more cars than are left in stock is reported and not recorded.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit

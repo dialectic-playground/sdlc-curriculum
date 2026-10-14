@@ -1,0 +1,27 @@
+# Hidden black-box verification tests for dp-fact, dp-tower, dp-walk-r, and dp-walk-nr (projects/23-recursion).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-fact --version
+01 dp-tower --version
+01 dp-walk-r --version
+01 dp-walk-nr --version
+02 dp-fact over.txt
+02 dp-fact word.txt
+03 dp-tower - < mixdisks.txt
+04 dp-tower huge.txt
+04 dp-tower overflow.txt
+05 dp-walk-nr limit.txt
+06 dp-walk-r rlimit.txt
+06 dp-walk-nr rlimit.txt
+07 dp-walk-nr ctrlz.txt
+07 dp-fact midz.txt
+08 dp-walk-r -p negdist.txt
+08 dp-fact -p
+08 dp-tower -p - extra < three.txt
+09 dp-fact extra1 extra2 --help
+09 dp-tower -x --help
+09 dp-walk-nr --prompt=yes
+09 dp-walk-r a b
+10 dp-fact missing.txt
+10 dp-tower subdir
+10 dp-walk-r -- -p

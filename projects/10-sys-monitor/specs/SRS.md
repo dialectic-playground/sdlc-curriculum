@@ -72,8 +72,8 @@ and GPU metrics, and remote collection.
 `dp-sysmon` is a standalone executable. Its interfaces are the command line, an optional
 snapshot file (or standard input), an optional recording file, standard output, standard
 error, the exit status, and — in live mode only — the operating system's telemetry interfaces.
-It is the last of the eleven curriculum tools and the only one whose primary input is the
-running system itself.
+It is the last of the system-level tools (Projects 00–10) and the only curriculum tool whose
+primary input is the running system itself.
 
 ### 2.2 Product functions
 1. Collect live telemetry on Linux, macOS, and Windows, once or repeatedly at an interval.

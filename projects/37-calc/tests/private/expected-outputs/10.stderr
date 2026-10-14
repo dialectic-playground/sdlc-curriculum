@@ -1,0 +1,2 @@
+dp-calc: tokens.txt:1: invalid operator '+5'
+dp-calc: tokens.txt:2: invalid integer '!'

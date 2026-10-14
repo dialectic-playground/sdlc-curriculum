@@ -1,0 +1,12 @@
+dp-relfile: unknown command 'frob'
+Try 'dp-relfile --help' for more information.
+dp-relfile: missing operand
+Try 'dp-relfile --help' for more information.
+dp-relfile: extra operand 'extra'
+Try 'dp-relfile --help' for more information.
+dp-relfile: invalid argument '' for '-f'
+Try 'dp-relfile --help' for more information.
+dp-relfile: invalid key '12a4'
+Try 'dp-relfile --help' for more information.
+dp-relfile: missing operand
+Try 'dp-relfile --help' for more information.

@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-sort-bench (projects/35-sort-bench).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-sort-bench --version
+02 dp-sort-bench --seed=0 --sizes=1000
+03 dp-sort-bench -s 5000,1
+04 dp-sort-bench -s 0010,2 -s 6,6,5
+05 dp-sort-bench -s1000 --seed=1
+05 dp-sort-bench --sizes=2000,4000 --seed 00001
+06 dp-sort-bench --seed=4294967296
+06 dp-sort-bench --seed=
+06 dp-sort-bench --seed=+1
+07 dp-sort-bench -s ''
+07 dp-sort-bench -s 5,
+07 dp-sort-bench -s ' 5'
+07 dp-sort-bench --sizes=-5
+08 dp-sort-bench extra --help
+08 dp-sort-bench -x --help
+08 dp-sort-bench --sizes --help
+09 dp-sort-bench --time=yes
+09 dp-sort-bench --size=5
+09 dp-sort-bench -s
+09 dp-sort-bench --time --version
+10 dp-sort-bench -s 100000x
+10 dp-sort-bench -s 5 --seed=x extra

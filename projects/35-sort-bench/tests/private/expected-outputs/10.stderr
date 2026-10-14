@@ -1,0 +1,4 @@
+dp-sort-bench: invalid argument '100000x' for '-s'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: invalid argument 'x' for '--seed'
+Try 'dp-sort-bench --help' for more information.

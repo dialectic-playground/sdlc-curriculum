@@ -1,0 +1,12 @@
+a-b+c-d
+y
+a/b*c%d
+y
+a+b*c-d/e%f
+y
+((a+b)*(c-d))/(e%f)
+y
+007 + 0x1f*A1B2
+y
+(((((z)))))
+n

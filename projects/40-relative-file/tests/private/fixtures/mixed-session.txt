@@ -1,0 +1,14 @@
+ 1 
+	0042 
+Deep Thought   
+2
+0042
+2
+9999
+1
+0139
+Collides with 0042
+x
+1
+0236
+never added

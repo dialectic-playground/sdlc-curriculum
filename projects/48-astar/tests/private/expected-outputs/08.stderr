@@ -1,0 +1,8 @@
+dp-astar: invalid argument '' for '-n'
+Try 'dp-astar --help' for more information.
+dp-astar: invalid argument '-' for '--distances'
+Try 'dp-astar --help' for more information.
+dp-astar: invalid argument '' for '--goal'
+Try 'dp-astar --help' for more information.
+dp-astar: extra operand 'prague'
+Try 'dp-astar --help' for more information.

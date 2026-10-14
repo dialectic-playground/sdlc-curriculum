@@ -1,0 +1,19 @@
+# Hidden black-box verification tests for dp-calc (projects/37-calc).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-calc --version
+02 dp-calc overflow.txt
+03 dp-calc stop.txt
+04 dp-calc -p errors.txt
+05 dp-calc -p
+05 dp-calc messy.txt -p
+06 dp-calc ctrlz.txt
+06 dp-calc midz.txt
+07 dp-calc subdir
+07 dp-calc -- -p
+08 dp-calc extra --help
+08 dp-calc -x --help
+08 dp-calc --prompt=yes
+09 dp-calc -p - extra < session.txt
+09 dp-calc - -p < session.txt
+10 dp-calc tokens.txt

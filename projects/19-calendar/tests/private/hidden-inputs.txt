@@ -1,0 +1,25 @@
+# Hidden black-box verification tests for dp-calendar (projects/19-calendar).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-calendar --version
+02 dp-calendar sun.txt
+02 dp-calendar --year 2012
+03 dp-calendar ctrlz.txt
+03 dp-calendar midz.txt
+04 dp-calendar -p --year 1
+04 dp-calendar --year=9999
+05 dp-calendar --year 10000
+05 dp-calendar -y +2024
+05 dp-calendar --year ''
+06 dp-calendar --year 2024 tue.txt
+06 dp-calendar tue.txt retry.txt
+07 dp-calendar extra --help
+07 dp-calendar -x --help
+07 dp-calendar --prompt=yes
+07 dp-calendar -y
+08 dp-calendar -p onlybad.txt
+08 dp-calendar -p half.txt
+09 dp-calendar subdir
+09 dp-calendar trailing.txt
+10 dp-calendar huge.txt
+10 dp-calendar signs.txt

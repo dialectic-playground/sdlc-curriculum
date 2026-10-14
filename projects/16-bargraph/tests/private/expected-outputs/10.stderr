@@ -1,0 +1,3 @@
+dp-bargraph: trunc-eof.txt:2: unexpected end of input
+dp-bargraph: option '--version' doesn't allow an argument
+Try 'dp-bargraph --help' for more information.

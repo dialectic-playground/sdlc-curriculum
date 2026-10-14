@@ -1,0 +1,4 @@
+dp-matmult: cut.txt:5: unexpected end of input
+Input matrix size: Input first matrix by row
+Input second matrix by row
+dp-matmult: -:5: unexpected end of input

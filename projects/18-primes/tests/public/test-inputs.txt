@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-primes (projects/18-primes).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (fifteen.txt, hundred.txt, one.txt, negative.txt, limit.txt, bad.txt) live in ../fixtures/.
+01 dp-primes < fifteen.txt
+02 dp-primes hundred.txt
+03 dp-primes --prompt < fifteen.txt
+04 dp-primes one.txt
+05 dp-primes negative.txt
+06 dp-primes --count limit.txt
+07 dp-primes bad.txt
+08 dp-primes
+09 dp-primes --help
+10 dp-primes missing.txt

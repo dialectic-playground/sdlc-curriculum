@@ -1,0 +1,3 @@
+dp-cars2: negsales.tot:1: value out of range '-1'
+dp-cars2: bigstock.tot:2: value out of range '1000000'
+dp-cars2: badtok.tot:2: invalid integer 'x'

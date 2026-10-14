@@ -1,0 +1,44 @@
+Forest before fire:
++------+
+|TTTTTT|
+|TTTTTT|
+|TTTTTT|
+|TTTTTT|
+|TTTTTT|
+|TTTTTT|
++------+
+Forest after fire:
++------+
+|******|
+|******|
+|******|
+|******|
+|******|
+|******|
++------+
+Requested density: 100%
+Actual density: 100.00%
+Trees at start: 36
+Trees surviving: 0
+Forest before fire:
++------+
+|      |
+|      |
+|      |
+|      |
+|      |
+|      |
++------+
+Forest after fire:
++------+
+|      |
+|      |
+|      |
+|      |
+|      |
+|      |
++------+
+Requested density: 1%
+Actual density: 0.00%
+Trees at start: 0
+Trees surviving: 0

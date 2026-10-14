@@ -1,0 +1,26 @@
+# Hidden black-box verification tests for dp-phone (projects/31-phone).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-phone --version
+02 dp-phone -f crlf.dat crlf.txt
+03 dp-phone -f odd.dat odd.txt
+04 dp-phone -f long.dat names.txt
+04 dp-phone -f blank.dat names.txt
+04 dp-phone -p -f midz.dat < names.txt
+05 dp-phone -f - names.txt < students.dat
+05 dp-phone -f - < names.txt
+05 dp-phone -p -f- - < names.txt
+06 dp-phone -f ''
+06 dp-phone --file= names.txt
+06 dp-phone --file
+06 dp-phone -pf
+07 dp-phone extra --help
+07 dp-phone -x --help
+07 dp-phone --prompt=yes
+07 dp-phone -f missing.dat --version
+08 dp-phone -f empty.dat names.txt
+08 dp-phone -f nolf.dat crlf.txt
+09 dp-phone -f dups.dat dupq.txt
+10 dp-phone -p partial.txt
+10 dp-phone -f subdir names.txt
+10 dp-phone -p subdir

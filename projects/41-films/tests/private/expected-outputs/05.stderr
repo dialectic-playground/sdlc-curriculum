@@ -1,0 +1,10 @@
+dp-films: odd.txt:3: unexpected end of input
+Enter the percentage of hits of the
+director of the film to be classified or
+generate EOF to terminate the program: Enter the percentage of hits of the
+leading members of the cast of the film
+to be classified: Enter the percentage of hits of the
+director of the film to be classified or
+generate EOF to terminate the program: Enter the percentage of hits of the
+leading members of the cast of the film
+to be classified: dp-films: odd.txt:3: unexpected end of input

@@ -1,0 +1,6 @@
+dp-queue2: invalid option -- 'x'
+Try 'dp-queue2 --help' for more information.
+dp-stack1: option '--prompt' doesn't allow an argument
+Try 'dp-stack1 --help' for more information.
+dp-queue1: extra operand 'b'
+Try 'dp-queue1 --help' for more information.

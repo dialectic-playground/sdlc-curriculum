@@ -1,0 +1,8 @@
+dp-line-ed: -:1: empty pattern
+dp-line-ed: -:2: missing delimiter
+dp-line-ed: -:3: unterminated string
+dp-line-ed: -:4: missing argument
+dp-line-ed: -:5: empty pattern
+dp-line-ed: -:6: extra argument 'extra'
+dp-line-ed: -:7: extra argument 'c'
+dp-line-ed: -:11: pattern not found

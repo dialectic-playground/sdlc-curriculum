@@ -1,0 +1,30 @@
+# Hidden black-box verification tests for dp-cars2 (projects/28-cars-modular).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-cars2 --version
+02 dp-cars2 -t short.tot
+02 dp-cars2 -t extra.tot
+03 dp-cars2 --totals limits.tot
+04 dp-cars2 -s subdir day.txt
+04 dp-cars2 -s nodir/day.tot day.txt
+05 dp-cars2 -s day.tot rejected.txt
+05 dp-cars2 --totals day.tot
+06 dp-cars2 -s day.tot cut.txt
+06 dp-cars2 -t day.tot
+06 dp-cars2 -s prev.tot bad.txt
+06 dp-cars2 -t prev.tot
+07 dp-cars2 -t -s copy.tot totals.tot
+07 dp-cars2 -t copy.tot
+07 dp-cars2 -t --save=self.tot self.tot
+07 dp-cars2 -t self.tot
+08 dp-cars2 --totals=1
+08 dp-cars2 -x --help
+08 dp-cars2 extra --help
+08 dp-cars2 -s
+08 dp-cars2 --save=- day.txt
+09 dp-cars2 limits.txt
+09 dp-cars2 -p
+09 dp-cars2 signs.txt
+10 dp-cars2 -t negsales.tot
+10 dp-cars2 -t bigstock.tot
+10 dp-cars2 -t badtok.tot

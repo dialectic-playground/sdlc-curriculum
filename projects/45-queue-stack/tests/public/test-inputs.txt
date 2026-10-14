@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-queue1, dp-queue2, dp-stack1, and dp-stack2 (projects/45-queue-stack).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files live in ../fixtures/ (full-queue.txt and full-stack.txt hold 101 insertions).
+01 dp-queue1 < customers.txt
+02 dp-queue2 customers.txt
+03 dp-stack1 trays.txt
+04 dp-stack2 --prompt < trays.txt
+05 dp-queue1 full-queue.txt
+06 dp-queue2 full-queue.txt
+07 dp-stack1 full-stack.txt
+08 dp-queue2 - < empty.txt
+09 dp-queue1 --help
+10 dp-stack1 bad-command.txt

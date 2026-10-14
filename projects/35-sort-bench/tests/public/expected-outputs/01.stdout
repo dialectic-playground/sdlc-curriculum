@@ -1,0 +1,29 @@
+Array size: 1000
+	Algorithm: Selection Sort
+		Comparisons = 499500
+		Swaps = 990
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 11412
+		Swaps = 5980
+		Sorted = yes
+
+Array size: 2000
+	Algorithm: Selection Sort
+		Comparisons = 1999000
+		Swaps = 1994
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 26932
+		Swaps = 11755
+		Sorted = yes
+
+Array size: 4000
+	Algorithm: Selection Sort
+		Comparisons = 7998000
+		Swaps = 3994
+		Sorted = yes
+	Algorithm: Quicksort
+		Comparisons = 52726
+		Swaps = 23943
+		Sorted = yes

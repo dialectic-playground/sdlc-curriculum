@@ -1,0 +1,12 @@
+# The textbook's two ships, then a probe.
+new s1
+new s2 5000 63567 560989 4 MightyMite
+print s1
+print s2
+adjust s2 2000
+adjust s2 -1000
+trip s2
+
+new probe 721.9	61500.5   1.2e9 0 Voyager
+print probe
+trip probe

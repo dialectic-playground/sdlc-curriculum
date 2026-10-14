@@ -1,0 +1,12 @@
+Usage: dp-elephnt2 [OPTION]... [FILE]
+Build a linked list of elephant names from a dialog, then print the list.
+
+Read the dialog from FILE, or from standard input when FILE is absent or -.
+Lines alternate between a name and an answer: 1 adds another elephant, 0 (or
+the end of the input) ends the list.  Spaces and tabs around a name or an
+answer are ignored.  Then print 'Elephant number N is NAME.' for each name.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit

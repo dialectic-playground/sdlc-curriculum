@@ -1,0 +1,6 @@
+dp-dice: invalid option -- 'x'
+Try 'dp-dice --help' for more information.
+dp-dice: option '--prompt' doesn't allow an argument
+Try 'dp-dice --help' for more information.
+dp-dice: option '--seed' requires an argument
+Try 'dp-dice --help' for more information.

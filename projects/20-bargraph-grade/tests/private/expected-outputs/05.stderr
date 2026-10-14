@@ -1,0 +1,2 @@
+dp-grade: high-weight.txt:1: value out of range '1.0004'
+Compute another grade (1 = Yes, 0 = No)? Enter mid term, final, weight: dp-grade: -:1: value out of range '-0.0001'

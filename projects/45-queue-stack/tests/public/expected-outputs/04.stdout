@@ -1,0 +1,10 @@
+1: color blue, id 3
+2: color green, id 2
+3: color red, id 1
+Popped: color blue, id 3
+1: color green, id 2
+2: color red, id 1
+Popped: color green, id 2
+Popped: color red, id 1
+STACK EMPTY
+STACK EMPTY

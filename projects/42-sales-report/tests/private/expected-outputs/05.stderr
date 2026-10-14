@@ -1,0 +1,2 @@
+dp-sales: acc101.dat:101: too many accounts (limit 100)
+dp-sales: sper101.dat:101: too many salespeople (limit 100)

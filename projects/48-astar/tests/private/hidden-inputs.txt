@@ -1,0 +1,33 @@
+# Hidden black-box verification tests for dp-astar (projects/48-astar).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-astar --version
+02 dp-astar < start-crlf.txt
+02 dp-astar -p - < start-two.txt
+02 dp-astar < start-ctrlz.txt
+03 dp-astar -p
+03 dp-astar < start-bad.txt
+03 dp-astar ''
+04 dp-astar -n tie-names.dat -d tie-dist.dat -g END --trace start
+05 dp-astar -n badh-names.dat berlin
+05 dp-astar -n dup-names.dat -d missing.dat rome
+05 dp-astar -n odd-names.dat
+05 dp-astar -n empty.dat
+05 dp-astar -n big-names.dat
+06 dp-astar -d neg-dist.dat berlin
+06 dp-astar -d extra-dist.dat berlin
+06 dp-astar -d subdir berlin
+06 dp-astar -n missing.dat -d subdir berlin
+07 dp-astar -g atlantis prague
+07 dp-astar -g PARIS -p brussels
+08 dp-astar -n '' berlin
+08 dp-astar --distances=- berlin
+08 dp-astar --goal= berlin
+08 dp-astar berlin prague
+09 dp-astar a b --help
+09 dp-astar -d - --version
+09 dp-astar -x --help
+09 dp-astar --trace=yes
+10 dp-astar LISBON
+10 dp-astar -t madrid
+10 dp-astar copenhagen

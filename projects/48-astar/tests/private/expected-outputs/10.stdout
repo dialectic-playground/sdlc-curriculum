@@ -1,0 +1,30 @@
+Optimal path to Vienna:
+lisbon -> madrid -> genoa -> trieste -> vienna
+Total distance: 1968 kilometers
+open madrid g=0 f=1332
+select madrid g=0 f=1332
+open bern g=1104 f=1594 via madrid
+open genoa g=951 f=1473 via madrid
+open lisbon g=339 f=2019 via madrid
+open paris g=805 f=1565 via madrid
+select genoa g=951 f=1473
+open brussels g=1691 f=2363 via genoa
+open rome g=1279 f=1849 via genoa
+open trieste g=1312 f=1518 via genoa
+select trieste g=1312 f=1518
+open belgrade g=1715 f=2316 via trieste
+open budapest g=1696 f=1882 via trieste
+open vienna g=1629 f=1629 via trieste
+select paris g=805 f=1565
+update brussels g=1030 f=1702 via paris
+select bern g=1104 f=1594
+open amsterdam g=1662 f=2352 via bern
+open berlin g=1732 f=2118 via bern
+open munich g=1415 f=1679 via bern
+select vienna g=1629 f=1629
+Optimal path to Vienna:
+madrid -> genoa -> trieste -> vienna
+Total distance: 1629 kilometers
+Optimal path to Vienna:
+copenhagen -> hamburg -> berlin -> prague -> vienna
+Total distance: 766 kilometers

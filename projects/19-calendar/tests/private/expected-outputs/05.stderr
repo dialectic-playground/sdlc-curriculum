@@ -1,0 +1,6 @@
+dp-calendar: invalid argument '10000' for '--year'
+Try 'dp-calendar --help' for more information.
+dp-calendar: invalid argument '+2024' for '-y'
+Try 'dp-calendar --help' for more information.
+dp-calendar: invalid argument '' for '--year'
+Try 'dp-calendar --help' for more information.

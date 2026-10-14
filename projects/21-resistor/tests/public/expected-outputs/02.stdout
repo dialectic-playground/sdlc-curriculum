@@ -1,0 +1,16 @@
+Resistor color codes
+Code  Color   Value
+B     Black   0
+N     Brown   1
+R     Red     2
+O     Orange  3
+Y     Yellow  4
+G     Green   5
+E     Blue    6
+V     Violet  7
+A     Gray    8
+W     White   9
+Resistance of Y V R = 4.700000 kilo-ohms
+Resistance of B N O = 1.000000 kilo-ohms
+Resistance of A W O = 89.000000 kilo-ohms
+Resistance of G B E = 50.000000 mega-ohms

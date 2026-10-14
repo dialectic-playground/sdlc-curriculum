@@ -1,0 +1,8 @@
+dp-size: option requires an argument -- 'e'
+Try 'dp-size --help' for more information.
+dp-size: option '--extension' requires an argument
+Try 'dp-size --help' for more information.
+dp-size: option '--prompt' doesn't allow an argument
+Try 'dp-size --help' for more information.
+dp-size: unrecognized option '--ext=.h'
+Try 'dp-size --help' for more information.

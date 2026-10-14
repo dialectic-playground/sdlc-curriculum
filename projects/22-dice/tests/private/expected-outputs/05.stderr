@@ -1,0 +1,2 @@
+dp-dice: two.txt:1: value out of range '2'
+Want to play? (1: yes, 0: no) dp-dice: yes.txt:1: invalid integer 'yes'

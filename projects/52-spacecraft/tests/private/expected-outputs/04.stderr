@@ -1,0 +1,4 @@
+dp-ship: negmass.txt:1: value out of range '-1'
+dp-ship: cap.txt:1: invalid integer '4.5'
+dp-ship: negcap.txt:1: value out of range '-4'
+dp-ship: inf.txt:1: invalid number 'inf'

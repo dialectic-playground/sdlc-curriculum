@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-max (projects/25-max).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (readme.txt, one.txt, four-negative.txt, five.txt, bad.txt) live in ../fixtures/.
+01 dp-max < readme.txt
+02 dp-max readme.txt
+03 dp-max one.txt
+04 dp-max four-negative.txt
+05 dp-max --prompt < readme.txt
+06 dp-max
+07 dp-max five.txt
+08 dp-max bad.txt
+09 dp-max --help
+10 dp-max readme.txt one.txt

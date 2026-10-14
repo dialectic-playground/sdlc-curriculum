@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-infix (projects/46-infix).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-infix --version
+02 dp-infix all-errors.txt
+03 dp-infix -p badanswer.txt
+04 dp-infix noanswer.txt
+04 dp-infix noeol.txt
+04 dp-infix ctrlz.txt
+04 dp-infix - < midz.txt
+05 dp-infix chain.txt
+06 dp-infix answers.txt
+06 dp-infix empty-answer.txt
+07 dp-infix subdir
+07 dp-infix -- -p
+08 dp-infix -p errors.txt
+08 dp-infix -p
+09 dp-infix extra --help
+09 dp-infix -x --help
+09 dp-infix --prompt=yes
+09 dp-infix --prom
+10 dp-infix -p - extra < readme.txt
+10 dp-infix readme.txt -p

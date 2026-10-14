@@ -4,7 +4,7 @@
 | :-- | :-- |
 | Document ID | CLI-CONV |
 | Version | 1.0.0 |
-| Applies to | Every tool in `projects/00-hello-world` … `projects/10-sys-monitor` |
+| Applies to | Every tool in `projects/00-hello-world` … `projects/52-spacecraft` |
 | Status | Normative |
 
 This document defines behavior that every curriculum tool shares. Each project's Software
@@ -138,7 +138,7 @@ literal.
 | 1 | Runtime failure (at least one operand or operation failed) |
 | 2 | Usage error (CONV-13, CONV-14) |
 
-  `dp-grep`, `dp-diff`, and `dp-env` define their own exit-status tables.
+  `dp-grep`, `dp-diff`, `dp-env`, and `dp-chk-sort` define their own exit-status tables.
 
 ## 6. Paths and traversal
 
@@ -177,7 +177,9 @@ literal.
   combination. Every failure is reported through the diagnostics defined above.
 - **CONV-25**: If writing to standard output fails because the reader has gone away (EPIPE, a
   broken pipe), the tool MUST terminate promptly without printing a diagnostic. Its exit status
-  in that case is unspecified.
+  in that case is unspecified. If writing to standard output fails for any other reason (for
+  example, a full disk), the tool writes `<tool>: write error` to standard error and exits with
+  status 1, unless its SRS specifies another status.
 - **CONV-26**: Tools MUST NOT read standard input unless their SRS says they do. A tool that
   reads stdin MUST work when stdin is empty, redirected from a file, or a pipe.
 
@@ -205,3 +207,97 @@ rely on:
   test sets explicitly.
 - **CONV-30**: Standard output, standard error, and the exit status are each compared
   **byte-for-byte** against the expected-output files.
+
+## 10. Data input, numbers, prompts, and randomness
+
+The tools of Projects 11–52 read numeric and textual *data* rather than arbitrary files, and
+several of them come from interactive programs. This section gives them one shared vocabulary.
+A convention in this section applies to a tool only where its SRS says so; the SRS states which
+inputs are read as tokens, which numeric grammar each value uses, and which prompts exist.
+
+- **CONV-32: Tokens and line numbers.** When an SRS says an input is read as *tokens*, the
+  input is divided into maximal runs of non-whitespace bytes. The whitespace bytes are exactly
+  `0x20` (space), `0x09` (TAB), `0x0A` (LF), `0x0B` (VT), `0x0C` (FF), and `0x0D` (CR), so CRLF
+  input reads exactly like LF input. The *line number* of a token is 1 plus the number of LF
+  bytes that precede its first byte. The *end-of-input line number* is 1 plus the number of LF
+  bytes in the whole input. Tokens are compared and echoed as bytes; no decoding is applied.
+
+- **CONV-33: Numeric grammars.** A token is valid for a numeric value only if it matches the
+  value's grammar in full. No other spelling is accepted: no digit grouping, no hexadecimal,
+  no `inf` or `nan`, no leading or trailing characters.
+
+  | Grammar | Pattern (ASCII only) | Value |
+  | :-- | :-- | :-- |
+  | *integer* | `[+-]?[0-9]+` | The decimal value. It MUST lie in −2⁶³ … 2⁶³−1; otherwise the token is invalid. Leading zeros are allowed. |
+  | *real* | `[+-]?([0-9]+(\.[0-9]*)?\|\.[0-9]+)([eE][+-]?[0-9]+)?` | The IEEE 754 binary64 value nearest to the exact decimal value (round to nearest, ties to even). A token whose converted value overflows to infinity is invalid. `-0` is negative zero. |
+
+  An SRS MAY further restrict a value's range. Such a restriction is checked after the grammar
+  and reported with its own message (CONV-34).
+
+- **CONV-34: Data diagnostics.** A problem with the *content* of an input is reported on
+  standard error as one line:
+
+  ```text
+  <tool>: <source>:<line>: <message>
+  ```
+
+  `<source>` is the operand naming the input, exactly as given, or `-` for standard input.
+  `<line>` is the line number of the offending token or line (CONV-32), or the end-of-input
+  line number when the input ends early. The standard messages are:
+
+  | Condition | `<message>` |
+  | :-- | :-- |
+  | A token is not a valid *integer* | `invalid integer '<token>'` |
+  | A token is not a valid *real* | `invalid number '<token>'` |
+  | A valid number lies outside the range the SRS allows | `value out of range '<token>'` |
+  | The input ends where the SRS requires another value or line | `unexpected end of input` |
+
+  `<token>` is inserted as its exact bytes, without escaping (CONV-15). An SRS MAY define
+  further messages in the same format. Unless the SRS says otherwise, a data diagnostic ends
+  processing of that input, output already produced for earlier records is kept, and the exit
+  status is 1. An SRS MAY instead declare a diagnostic *continuing*: processing goes on after
+  it (for example, a dialog asks again), and the final exit status is 1 unless the SRS says
+  otherwise.
+
+- **CONV-35: Number formatting.** Real numbers are written with one of two rules, which every
+  SRS names explicitly:
+
+  - **`FIX(x, n)`**: *x* rounded to exactly *n* digits after the decimal point, computed from the
+    **exact** binary64 value of *x* (not from a rounded product), with an exact tie rounded to
+    the even digit. No exponent is used; *n* = 0 writes no decimal point. If the rounded value
+    is zero, no minus sign is written (`-0.0000001` with *n* = 6 is `0.000000`). This is C's
+    `printf("%.nf")` with negative zero suppressed.
+  - **`GEN(x, p)`**: *x* with *p* significant digits, as C's `printf("%.pg")`. Let *X* be the
+    decimal exponent of *x* after rounding to *p* significant digits (ties to even, from the
+    exact value). If −4 ≤ *X* < *p*, the value is written as `FIX(x, p − 1 − X)`; otherwise in
+    exponential form `d.ddd…e±XX` with *p* − 1 fraction digits and at least two exponent digits.
+    In both forms, trailing zeros in the fraction are removed, and so is a decimal point left
+    with no digits after it. Zero is `0` (never `-0`). For example, with *p* = 6:
+    `8.688323` → `8.68832`, `63567.0` → `63567`, `1234567.0` → `1.23457e+06`, `0.0001` →
+    `0.0001`, `0.00001` → `1e-05`.
+
+  Integers are written in plain decimal (CONV-06). A `-` precedes negative integers.
+
+- **CONV-36: Prompts.** A tool whose SRS lists prompts accepts the flag `-p`, `--prompt`.
+  Without it, no prompt is ever written. With it, the tool writes each prompt to **standard
+  error**, byte for byte as the SRS gives it, immediately before the read the prompt belongs
+  to, and flushes standard error before reading. Prompts are never written to standard output,
+  so standard output is identical with and without `--prompt`. A prompt is written even if the
+  read that follows reaches the end of the input. Nothing is inserted after a prompt: a
+  diagnostic that follows it on standard error continues the same line.
+
+- **CONV-37: Legacy end-of-file marker.** For inputs that an SRS designates as *text data*, a
+  run of one or more `0x1A` bytes (Ctrl-Z, the CP/M and MS-DOS end-of-file marker) that extends
+  to the very end of the input is ignored, as if the input ended before it. A `0x1A` byte
+  followed by any other byte is ordinary data. A tool that processes its input as a stream
+  meets this rule by treating a final token or line made only of `0x1A` bytes as absent.
+
+- **CONV-38: Pseudo-random numbers.** Tools that simulate chance use the portable generator
+  given as an example in the ANSI C standard's description of `rand()`, so every
+  implementation draws the same numbers. The generator has a 32-bit unsigned state *S*. Each
+  draw sets *S* ← (*S* × 1103515245 + 12345) mod 2³² and yields *r* = ⌊*S* / 65536⌋ mod 32768,
+  an integer in 0 … 32767. The initial state is the seed. The seed is 1 by default, as in C
+  when `srand` is never called, and is set with the option `--seed=SEED`, where SEED consists
+  only of ASCII digits and lies in 0 … 4294967295; any other SEED is an invalid option value
+  (CONV-13). The SRS states every derived quantity (for example a die face is 1 + (*r* mod 6))
+  and the exact order of draws.

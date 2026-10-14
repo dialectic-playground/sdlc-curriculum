@@ -1,0 +1,1 @@
+dp-assert-sort: assertion failed in pass 0: min_ind >= 0 && min_ind < n (min_ind = 5, n = 5)

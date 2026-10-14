@@ -1,0 +1,5 @@
+0 10 dp-calc: errors.txt:2: invalid operator '?'
+10 dp-calc: errors.txt:3: division by zero
+10 dp-calc: errors.txt:4: invalid integer 'x'
+10 dp-calc: errors.txt:5: missing operand after '-'
+10 7 

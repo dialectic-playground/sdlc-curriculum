@@ -1,0 +1,12 @@
+t b
+i
+A Poem
+======
+.
+t e
+i
+-- Anonymous
+.
+t b
+t 3
+q

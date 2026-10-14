@@ -1,0 +1,4 @@
+dp-sales: neg-id.dat:1: value out of range '-5'
+dp-sales: big-id.dat:1: invalid integer '9223372036854775808'
+dp-sales: over-amount.dat:1: value out of range '92233720368547758.08'
+dp-sales: sign.dat:2: invalid amount '+5'

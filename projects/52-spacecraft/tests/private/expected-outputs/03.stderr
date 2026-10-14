@@ -1,0 +1,4 @@
+dp-ship: noarg.txt:1: missing argument for 'print'
+dp-ship: short.txt:1: missing argument for 'new'
+dp-ship: extra.txt:2: extra argument 'b'
+dp-ship: long.txt:1: extra argument 'extra'

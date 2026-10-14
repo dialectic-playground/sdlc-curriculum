@@ -1,0 +1,32 @@
+# Hidden black-box verification tests for dp-bfs-adj and dp-bfs-link (projects/47-bfs).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-bfs-adj --version
+01 dp-bfs-link --version
+02 dp-bfs-link -g - < sins-dos.txt
+02 dp-bfs-adj -g midz.txt
+03 dp-bfs-adj -g web.txt -s 9
+03 dp-bfs-link -g web.txt -s 9
+04 dp-bfs-adj -g single.txt
+04 dp-bfs-link -g single.txt -s 1
+04 dp-bfs-adj -s 7
+05 dp-bfs-adj -g no-vertices.txt
+05 dp-bfs-link -g bad-int.txt
+05 dp-bfs-adj -g many-edges.txt
+06 dp-bfs-link -g self-loop.txt
+06 dp-bfs-adj -g duplicate.txt
+07 dp-bfs-link -g short.txt
+07 dp-bfs-adj -g extra.txt
+07 dp-bfs-link -g -
+08 dp-bfs-adj -g missing.txt
+08 dp-bfs-link -g subdir -s 1000
+08 dp-bfs-link -g subdir
+09 dp-bfs-adj extra --help
+09 dp-bfs-link -s x --version
+09 dp-bfs-adj -x --help
+09 dp-bfs-link --start
+10 dp-bfs-adj -s 1000
+10 dp-bfs-link --start=-1
+10 dp-bfs-adj --graph= -g sins.txt
+10 dp-bfs-link -g ''
+10 dp-bfs-adj -g islands.txt -g sins.txt -s 7 -s 006

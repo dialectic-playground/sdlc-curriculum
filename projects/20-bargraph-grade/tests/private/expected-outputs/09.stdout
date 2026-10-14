@@ -1,0 +1,14 @@
+Usage: dp-grade [OPTION]... [FILE]
+Assign a pass/fail grade from a mid-term score, a final-exam score, and the
+weight of the mid term.
+
+Read whitespace-separated answers from FILE, or from standard input when FILE
+is absent or -.  Each round starts with 1 (compute a grade) or 0 (stop); after
+1 come the mid-term and final scores (whole numbers 0-10) and the mid-term
+weight (0-1, used to the nearest 0.001).  The grade is P when
+weight*midterm + (1-weight)*final exceeds 7, and F otherwise.
+
+Options:
+  -p, --prompt     write prompts to standard error before reading
+      --help       display this help and exit
+      --version    output version information and exit

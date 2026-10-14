@@ -1,0 +1,16 @@
+f ''
+f abc
+f 'abc
+s 'a'
+s '' 'x'
+f 'rat' extra
+s 'a' 'b'c
+f	|rat|
+s "rat" ''
+t .
+s 'X' 'Y'
+s #t# #T#
+f .cat.
+s 'cat''lion'
+f 'The end'
+q

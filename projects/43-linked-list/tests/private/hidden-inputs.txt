@@ -1,0 +1,26 @@
+# Hidden black-box verification tests for dp-elephnt1 and dp-elephnt2 (projects/43-linked-list).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-elephnt1 --version
+01 dp-elephnt2 --version
+02 dp-elephnt1 extra
+02 dp-elephnt1 -p
+02 dp-elephnt1 --prompt
+03 dp-elephnt2 crlf.txt
+03 dp-elephnt2 bytes.txt
+04 dp-elephnt2 answer-two.txt
+04 dp-elephnt2 -p blank-answer.txt
+05 dp-elephnt2 empty-name.txt
+05 dp-elephnt2 -p
+06 dp-elephnt2 many.txt
+07 dp-elephnt2 stop.txt
+07 dp-elephnt2 midz.txt
+08 dp-elephnt2 subdir
+08 dp-elephnt2 -- -p
+09 dp-elephnt2 a b --help
+09 dp-elephnt2 -x --help
+09 dp-elephnt2 --prompt=1
+09 dp-elephnt2 a b
+10 dp-elephnt2 -p - extra < readme.txt
+10 dp-elephnt2 - -p < readme.txt
+10 dp-elephnt1 extra --help

@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-matmult (projects/30-matmult).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-matmult --version
+02 dp-matmult max20.txt
+03 dp-matmult size21.txt
+03 dp-matmult -p size0.txt
+04 dp-matmult scalar.txt
+05 dp-matmult limits.txt
+05 dp-matmult ordered.txt
+05 dp-matmult cancel.txt
+06 dp-matmult cut.txt
+06 dp-matmult --prompt - < cut.txt
+07 dp-matmult ctrlz.txt
+07 dp-matmult midz.txt
+08 dp-matmult toobig.txt
+08 dp-matmult sizereal.txt
+09 dp-matmult extra --help
+09 dp-matmult -x --help
+09 dp-matmult --prompt=yes
+09 dp-matmult -p --version
+10 dp-matmult subdir
+10 dp-matmult -- -p

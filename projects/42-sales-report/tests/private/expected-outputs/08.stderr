@@ -1,0 +1,4 @@
+dp-sales: missing.dat: No such file or directory
+dp-sales: subdir: Is a directory
+dp-sales: missing.dat: No such file or directory
+dp-sales: dup.dat:3: duplicate account id '0812'

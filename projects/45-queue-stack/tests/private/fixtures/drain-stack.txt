@@ -1,0 +1,204 @@
+1 gray 1
+1 gray 2
+1 gray 3
+1 gray 4
+1 gray 5
+1 gray 6
+1 gray 7
+1 gray 8
+1 gray 9
+1 gray 10
+1 gray 11
+1 gray 12
+1 gray 13
+1 gray 14
+1 gray 15
+1 gray 16
+1 gray 17
+1 gray 18
+1 gray 19
+1 gray 20
+1 gray 21
+1 gray 22
+1 gray 23
+1 gray 24
+1 gray 25
+1 gray 26
+1 gray 27
+1 gray 28
+1 gray 29
+1 gray 30
+1 gray 31
+1 gray 32
+1 gray 33
+1 gray 34
+1 gray 35
+1 gray 36
+1 gray 37
+1 gray 38
+1 gray 39
+1 gray 40
+1 gray 41
+1 gray 42
+1 gray 43
+1 gray 44
+1 gray 45
+1 gray 46
+1 gray 47
+1 gray 48
+1 gray 49
+1 gray 50
+1 gray 51
+1 gray 52
+1 gray 53
+1 gray 54
+1 gray 55
+1 gray 56
+1 gray 57
+1 gray 58
+1 gray 59
+1 gray 60
+1 gray 61
+1 gray 62
+1 gray 63
+1 gray 64
+1 gray 65
+1 gray 66
+1 gray 67
+1 gray 68
+1 gray 69
+1 gray 70
+1 gray 71
+1 gray 72
+1 gray 73
+1 gray 74
+1 gray 75
+1 gray 76
+1 gray 77
+1 gray 78
+1 gray 79
+1 gray 80
+1 gray 81
+1 gray 82
+1 gray 83
+1 gray 84
+1 gray 85
+1 gray 86
+1 gray 87
+1 gray 88
+1 gray 89
+1 gray 90
+1 gray 91
+1 gray 92
+1 gray 93
+1 gray 94
+1 gray 95
+1 gray 96
+1 gray 97
+1 gray 98
+1 gray 99
+1 gray 100
+1 gold 101
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+3
+0

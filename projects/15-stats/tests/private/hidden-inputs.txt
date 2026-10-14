@@ -1,0 +1,20 @@
+# Hidden black-box verification tests for dp-stats (projects/15-stats).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-stats --version
+02 dp-stats seq.txt
+03 dp-stats big.txt
+04 dp-stats tiny.txt
+05 dp-stats ctrlz.txt
+05 dp-stats midz.txt
+06 dp-stats sumsq.txt
+06 dp-stats square.txt
+06 dp-stats huge.txt
+07 dp-stats forms.txt
+08 dp-stats blank.txt
+08 dp-stats - < blank.txt
+09 dp-stats subdir
+09 dp-stats -- -x
+10 dp-stats extra --help
+10 dp-stats -x --help
+10 dp-stats --version=1

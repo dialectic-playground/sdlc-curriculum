@@ -1,0 +1,40 @@
+Usage: dp-assert-sort [OPTION]... [FILE]
+Sort integers by selection sort, checking assertions after every pass.
+
+With no FILE, or when FILE is -, read standard input.  The input is a list of
+whole numbers separated by whitespace.  After each pass i the tool asserts
+that the index of the minimum is within the array and that a[0..i] is sorted
+with every later element at least a[i].  The sorted numbers are written one
+per line.  A failed assertion is reported and the exit status is 1.
+
+FAULT is KIND or KIND:PASS, where KIND is skip-swap (omit the swap),
+off-by-one (use the index after the minimum), or search-from-next (start the
+search for the minimum at i+1).  The fault is injected in pass PASS (counted
+from 0), or in every pass when PASS is omitted.
+
+Options:
+  -t, --trace        write one line to standard error for every invariant check
+                       that holds
+  -f, --fault=FAULT  inject the fault FAULT into the sort
+      --help         display this help and exit
+      --version      output version information and exit
+Usage: dp-assert-sort [OPTION]... [FILE]
+Sort integers by selection sort, checking assertions after every pass.
+
+With no FILE, or when FILE is -, read standard input.  The input is a list of
+whole numbers separated by whitespace.  After each pass i the tool asserts
+that the index of the minimum is within the array and that a[0..i] is sorted
+with every later element at least a[i].  The sorted numbers are written one
+per line.  A failed assertion is reported and the exit status is 1.
+
+FAULT is KIND or KIND:PASS, where KIND is skip-swap (omit the swap),
+off-by-one (use the index after the minimum), or search-from-next (start the
+search for the minimum at i+1).  The fault is injected in pass PASS (counted
+from 0), or in every pass when PASS is omitted.
+
+Options:
+  -t, --trace        write one line to standard error for every invariant check
+                       that holds
+  -f, --fault=FAULT  inject the fault FAULT into the sort
+      --help         display this help and exit
+      --version      output version information and exit

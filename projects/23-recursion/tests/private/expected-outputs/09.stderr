@@ -1,0 +1,6 @@
+dp-tower: invalid option -- 'x'
+Try 'dp-tower --help' for more information.
+dp-walk-nr: option '--prompt' doesn't allow an argument
+Try 'dp-walk-nr --help' for more information.
+dp-walk-r: extra operand 'b'
+Try 'dp-walk-r --help' for more information.

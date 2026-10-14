@@ -1,0 +1,5 @@
+dp-grade: missing.txt: No such file or directory
+dp-grade: option '--prompt' doesn't allow an argument
+Try 'dp-grade --help' for more information.
+dp-bargraph2: extra operand 'extra2'
+Try 'dp-bargraph2 --help' for more information.

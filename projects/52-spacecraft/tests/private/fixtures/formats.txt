@@ -1,0 +1,10 @@
+new a 0.0001 -0 0 9223372036854775807 Alpha
+print a
+trip a
+new b 0.00001 123456.5 999999.5 0 Beta
+print b
+trip b
+new c 1e21 .5 3. 007 Gamma
+adjust c +1.5e-1
+print c
+trip c

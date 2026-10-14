@@ -1,0 +1,23 @@
+# Hidden black-box verification tests for dp-bargraph2 and dp-grade (projects/20-bargraph-grade).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-grade --version
+01 dp-bargraph2 --version
+02 dp-bargraph2 badvalue.txt
+02 dp-bargraph2 truncated.txt
+02 dp-bargraph2 - < trailing.txt
+03 dp-bargraph2 crlf.txt
+04 dp-grade rounding.txt
+05 dp-grade high-weight.txt
+05 dp-grade -p - < neg-weight.txt
+06 dp-grade answer-two.txt
+06 dp-grade answer-yes.txt
+07 dp-grade nan-weight.txt
+07 dp-grade real-score.txt
+08 dp-grade -p < eof-answer.txt
+09 dp-grade a b --help
+09 dp-grade -x --help
+09 dp-grade a b
+10 dp-grade missing.txt
+10 dp-grade --prompt=1
+10 dp-bargraph2 extra1 extra2

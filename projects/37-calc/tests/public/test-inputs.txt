@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-calc (projects/37-calc).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (session.txt, acs.txt, messy.txt, negative.txt, errors.txt) live in ../fixtures/.
+01 dp-calc < session.txt
+02 dp-calc acs.txt
+03 dp-calc --prompt < session.txt
+04 dp-calc messy.txt
+05 dp-calc - < negative.txt
+06 dp-calc errors.txt
+07 dp-calc
+08 dp-calc missing.txt
+09 dp-calc --help
+10 dp-calc session.txt acs.txt

@@ -1,0 +1,15 @@
+Usage: dp-sort-bench [OPTION]...
+Compare selection sort and quicksort on random arrays of growing size.
+
+For each size (default 1000,2000,4000) an array of pseudo-random integers
+0-32767 is generated, and a copy of it is sorted by each algorithm.  The
+report gives the number of comparisons and swaps each sort made and whether
+its result is sorted.
+
+Options:
+  -s, --sizes=LIST   comma-separated array sizes, each 0-100000
+                       (default 1000,2000,4000)
+      --seed=SEED    seed the pseudo-random generator (0-4294967295, default 1)
+  -t, --time         also report the elapsed time of each sort in seconds
+      --help         display this help and exit
+      --version      output version information and exit

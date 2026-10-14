@@ -1,0 +1,4 @@
+dp-bfs-adj: invalid option -- 'x'
+Try 'dp-bfs-adj --help' for more information.
+dp-bfs-link: option '--start' requires an argument
+Try 'dp-bfs-link --help' for more information.

@@ -1,0 +1,6 @@
+dp-wrap: invalid option -- 'x'
+Try 'dp-wrap --help' for more information.
+dp-wrap: option '--width' requires an argument
+Try 'dp-wrap --help' for more information.
+dp-wrap: invalid argument '+5' for '-w'
+Try 'dp-wrap --help' for more information.

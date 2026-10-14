@@ -1,0 +1,28 @@
+# Hidden black-box verification tests for dp-taxes-file (projects/14-taxes-file).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-taxes-file --version
+02 dp-taxes-file -i large.dat -o -
+03 dp-taxes-file -i negative.dat -o -
+03 dp-taxes-file -i overflow.dat
+03 dp-taxes-file -i out.dat -o -
+04 dp-taxes-file -i ctrlz.dat -o -
+04 dp-taxes-file -i - -o - < crlf-bad.dat
+05 dp-taxes-file -i empty.dat
+05 dp-taxes-file -i out.dat -o -
+05 dp-taxes-file -i out.dat
+06 dp-taxes-file -i self.dat -o self.dat
+06 dp-taxes-file -i self.dat -o -
+07 dp-taxes-file -o subdir
+07 dp-taxes-file -o nodir/out.dat
+07 dp-taxes-file -i subdir -o nodir/out.dat
+08 dp-taxes-file -i ''
+08 dp-taxes-file --output= -i incomes.dat
+08 dp-taxes-file --input
+08 dp-taxes-file -o
+09 dp-taxes-file extra --help
+09 dp-taxes-file -i missing.dat --version
+09 dp-taxes-file --prompt --help
+10 dp-taxes-file -i incomes.dat -i more.dat -o first.dat -o second.dat
+10 dp-taxes-file -i second.dat -o -
+10 dp-taxes-file -i first.dat -o -

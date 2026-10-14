@@ -1,0 +1,6 @@
+dp-sort-host: invalid option -- 'x'
+Try 'dp-sort-host --help' for more information.
+dp-sort-host: invalid argument '--help' for '--random'
+Try 'dp-sort-host --help' for more information.
+dp-sort-child: extra operand 'extra'
+Try 'dp-sort-child --help' for more information.

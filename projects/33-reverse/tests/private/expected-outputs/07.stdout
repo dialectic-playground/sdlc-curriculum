@@ -1,0 +1,16 @@
+Usage: dp-reverse [OPTION]... [FILE]
+Reverse each string read from FILE and print it.
+
+With no FILE, or when FILE is -, read standard input.  A string is a word (a
+run of bytes other than whitespace), or a whole line with -l.  A string may
+be at most 100 characters long.  Characters are UTF-8 code points, and each
+byte of an invalid sequence is one character; with -b, the string's bytes are
+reversed and counted instead.
+
+Options:
+  -l, --lines    read each line as one string
+  -b, --bytes    reverse and count bytes instead of characters
+  -p, --prompt   write the prompt 'Enter a string:' and a tab to standard error
+                   before each string is read
+      --help     display this help and exit
+      --version  output version information and exit

@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-wrap (projects/27-line-wrap).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (fox.txt, words.txt, utf8.txt, long.txt, badwidth.txt) live in ../fixtures/.
+01 dp-wrap fox.txt
+02 dp-wrap < fox.txt
+03 dp-wrap -w 10 words.txt
+04 dp-wrap --width=12 utf8.txt
+05 dp-wrap -b --width=12 utf8.txt
+06 dp-wrap long.txt
+07 dp-wrap badwidth.txt
+08 dp-wrap missing.txt
+09 dp-wrap --help
+10 dp-wrap -w 0 fox.txt

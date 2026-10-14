@@ -1,0 +1,8 @@
+dp-line-ed: -:1: value out of range '0'
+dp-line-ed: -:2: value out of range '-1'
+dp-line-ed: -:3: invalid integer '9223372036854775808'
+dp-line-ed: -:4: missing argument
+dp-line-ed: -:5: missing argument
+dp-line-ed: -:6: extra argument '2'
+dp-line-ed: -:7: extra argument 'x'
+dp-line-ed: -:12: unknown command 'Q'

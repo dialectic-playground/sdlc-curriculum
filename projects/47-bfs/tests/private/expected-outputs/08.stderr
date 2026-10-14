@@ -1,0 +1,4 @@
+dp-bfs-adj: missing.txt: No such file or directory
+dp-bfs-link: invalid argument '1000' for '-s'
+Try 'dp-bfs-link --help' for more information.
+dp-bfs-link: subdir: Is a directory

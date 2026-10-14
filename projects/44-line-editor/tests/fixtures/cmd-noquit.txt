@@ -1,0 +1,5 @@
+t b
+d 5
+i
+replacement
+.

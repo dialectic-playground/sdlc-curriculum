@@ -1,0 +1,2 @@
+dp-strlen: option '--bytes' doesn't allow an argument
+Try 'dp-strlen --help' for more information.

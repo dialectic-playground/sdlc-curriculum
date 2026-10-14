@@ -1,0 +1,26 @@
+# Hidden black-box verification tests for dp-ship (projects/52-spacecraft).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-ship --version
+02 dp-ship unknown.txt
+02 dp-ship ghost.txt
+02 dp-ship dup.txt
+03 dp-ship noarg.txt
+03 dp-ship short.txt
+03 dp-ship extra.txt
+03 dp-ship long.txt
+04 dp-ship negmass.txt
+04 dp-ship cap.txt
+04 dp-ship negcap.txt
+04 dp-ship inf.txt
+05 dp-ship overflow.txt
+06 dp-ship formats.txt
+07 dp-ship dos.txt
+07 dp-ship midz.txt
+08 dp-ship subdir
+08 dp-ship -- -x
+09 dp-ship extra --help
+09 dp-ship -x --help
+09 dp-ship --version=2
+10 dp-ship scenario.txt
+10 dp-ship - < names.txt

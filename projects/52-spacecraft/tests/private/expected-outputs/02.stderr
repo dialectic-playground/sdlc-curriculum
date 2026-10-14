@@ -1,0 +1,3 @@
+dp-ship: unknown.txt:2: unknown command 'fly'
+dp-ship: ghost.txt:2: unknown ship 's9'
+dp-ship: dup.txt:2: ship 'a' already exists

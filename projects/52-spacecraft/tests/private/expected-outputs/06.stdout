@@ -1,0 +1,12 @@
+Alpha has a mass of 0.0001
+and a velocity of 0 and holds 9223372036854775807 astronauts for a trip of 0 kilometers.
+
+Alpha cannot make the trip at a velocity of 0.
+Beta has a mass of 1e-05
+and a velocity of 123456 and holds 0 astronauts for a trip of 1e+06 kilometers.
+
+Beta requires 8.10001 hours for trip.
+Gamma has a mass of 1e+21
+and a velocity of 0.65 and holds 7 astronauts for a trip of 3 kilometers.
+
+Gamma requires 4.61538 hours for trip.

@@ -1,0 +1,4 @@
+dp-size: -:1: file name contains a NUL byte
+dp-size: -:2: empty file name
+dp-size:   size.c: No such file or directory
+dp-size: size .c: No such file or directory

@@ -1,0 +1,8 @@
+1: Smith, Ann; account 1001; balance 250.75
+2: Jones, Bob; account 1002; balance -12.50
+3: Lee, Kim; account 1003; balance 0.00
+Removed: Smith, Ann; account 1001; balance 250.75
+Removed: Jones, Bob; account 1002; balance -12.50
+1: Lee, Kim; account 1003; balance 0.00
+1: Lee, Kim; account 1003; balance 0.00
+2: Diaz, Rosa; account 1004; balance 1000.00

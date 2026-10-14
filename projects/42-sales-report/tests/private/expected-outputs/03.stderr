@@ -1,0 +1,3 @@
+dp-sales: short.dat:1: incomplete record
+dp-sales: long.dat:1: unexpected field 'extra'
+dp-sales: short-sper.dat:1: incomplete record

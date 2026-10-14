@@ -1,0 +1,3 @@
+dp-infix: errors.txt:1: unmatched '('
+dp-infix: errors.txt:3: unexpected operator '*'
+dp-infix: errors.txt:5: invalid character '$'

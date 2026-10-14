@@ -1,0 +1,21 @@
+# Public black-box acceptance tests for dp-line-ed (projects/44-line-editor).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Consecutive lines with the same ID are steps of one test and share a working directory; a
+# later step reopens the file an earlier step wrote and types it. Fixtures live in ../fixtures/.
+01 dp-line-ed poem.txt < cmd-type.txt
+02 dp-line-ed poem.txt < cmd-insert.txt
+02 dp-line-ed poem.txt < cmd-list.txt
+03 dp-line-ed poem.txt < cmd-delete.txt
+03 dp-line-ed poem.txt < cmd-list.txt
+04 dp-line-ed poem.txt < cmd-replace.txt
+04 dp-line-ed poem.txt < cmd-list.txt
+05 dp-line-ed new.txt < cmd-new.txt
+05 dp-line-ed new.txt < cmd-list.txt
+06 dp-line-ed --prompt poem.txt < cmd-type.txt
+07 dp-line-ed poem.txt < cmd-errors.txt
+07 dp-line-ed poem.txt < cmd-list.txt
+08 dp-line-ed poem.txt < cmd-noquit.txt
+08 dp-line-ed poem.txt < cmd-list.txt
+09 dp-line-ed --help
+10 dp-line-ed < cmd-list.txt

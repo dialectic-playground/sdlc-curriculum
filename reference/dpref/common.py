@@ -9,6 +9,7 @@ are started through :func:`run` (CONV-24, CONV-25).
 from __future__ import annotations
 
 import os
+import re
 import sys
 from dataclasses import dataclass, field
 from typing import BinaryIO, Callable
@@ -237,3 +238,250 @@ def run(main: Callable[[list[str]], int], tool: str) -> None:
     except KeyboardInterrupt:
         status = 130
     sys.exit(status)
+
+
+# --- data input, numbers, prompts, and randomness (CONV-32 … CONV-38) -------------------
+
+WHITESPACE = b" \t\n\v\f\r"
+_INTEGER = re.compile(rb"[+-]?[0-9]+\Z")
+_REAL = re.compile(rb"[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][+-]?[0-9]+)?\Z")
+INT64_MIN, INT64_MAX = -(2 ** 63), 2 ** 63 - 1
+
+
+class DataError(Exception):
+    """A CONV-34 data diagnostic: ``<source>:<line>: <message>`` (message may hold raw bytes)."""
+
+    def __init__(self, source: str, line: int, message: bytes | str):
+        super().__init__(message)
+        self.source = source
+        self.line = line
+        self.message = message if isinstance(message, bytes) else message.encode()
+
+
+@dataclass(frozen=True)
+class Token:
+    text: bytes
+    line: int
+
+
+def strip_eof_marker(data: bytes) -> bytes:
+    """Drop a trailing run of 0x1A bytes from text data (CONV-37)."""
+    return data.rstrip(b"\x1a")
+
+
+def tokenize(data: bytes) -> list[Token]:
+    """Split ``data`` into whitespace-separated tokens with line numbers (CONV-32)."""
+    tokens = []
+    line = 1
+    start = None
+    for index, byte in enumerate(data):
+        if byte in WHITESPACE:
+            if start is not None:
+                tokens.append(Token(data[start:index], line))
+                start = None
+            if byte == 0x0A:
+                line += 1
+        elif start is None:
+            start = index
+            token_line = line
+    if start is not None:
+        tokens.append(Token(data[start:], token_line))
+    return tokens
+
+
+def end_line(data: bytes) -> int:
+    """The end-of-input line number (CONV-32)."""
+    return data.count(b"\n") + 1
+
+
+def parse_int_token(token: Token, source: str, minimum: int = INT64_MIN,
+                    maximum: int = INT64_MAX) -> int:
+    """An *integer* token (CONV-33), optionally range-restricted (``value out of range``)."""
+    if not _INTEGER.match(token.text) or not INT64_MIN <= int(token.text) <= INT64_MAX:
+        raise DataError(source, token.line, b"invalid integer '" + token.text + b"'")
+    value = int(token.text)
+    if not minimum <= value <= maximum:
+        raise DataError(source, token.line, b"value out of range '" + token.text + b"'")
+    return value
+
+
+def parse_real_token(token: Token, source: str) -> float:
+    """A *real* token (CONV-33): nearest binary64, overflow to infinity is invalid."""
+    if _REAL.match(token.text):
+        value = float(token.text)
+        if value not in (float("inf"), float("-inf")):
+            return value
+    raise DataError(source, token.line, b"invalid number '" + token.text + b"'")
+
+
+def unexpected_end(source: str, data: bytes) -> DataError:
+    return DataError(source, end_line(data), "unexpected end of input")
+
+
+def data_failure(tool: str, error: DataError) -> int:
+    """Write a CONV-34 diagnostic and return exit status 1."""
+    err.write(encode_arg(f"{tool}: {error.source}:{error.line}: ") + error.message + b"\n")
+    return 1
+
+
+def fix(value: float, digits: int) -> str:
+    """``FIX(x, n)`` (CONV-35): correctly rounded fixed point, no negative zero."""
+    text = f"{value:.{digits}f}"
+    if text.startswith("-") and not text.strip("-0."):
+        text = text[1:]
+    return text
+
+
+def gen(value: float, precision: int) -> str:
+    """``GEN(x, p)`` (CONV-35): C's ``%.pg``, no negative zero."""
+    text = f"{value:.{precision}g}"
+    return "0" if text in ("-0", "0") else text
+
+
+def prompt(enabled: bool, text: str | bytes) -> None:
+    """Write a CONV-36 prompt to standard error (only with --prompt) and flush."""
+    if enabled:
+        err.write(text if isinstance(text, bytes) else text.encode())
+        err.flush()
+
+
+PROMPT = Option("prompt", short="p", long="prompt")
+MAX_SEED = 2 ** 32 - 1
+
+
+def parse_seed(parsed: "Parsed", dest: str = "seed") -> int:
+    """The CONV-38 seed: default 1, ASCII digits 0 … 4294967295."""
+    if dest not in parsed.values:
+        return 1
+    return parse_count(str(parsed.values[dest]), parsed.spelled[dest], 0, MAX_SEED)
+
+
+class AnsiRand:
+    """The ANSI C standard's portable rand() example (CONV-38)."""
+
+    def __init__(self, seed: int = 1):
+        self.state = seed & 0xFFFFFFFF
+
+    def next(self) -> int:
+        self.state = (self.state * 1103515245 + 12345) & 0xFFFFFFFF
+        return (self.state // 65536) % 32768
+
+
+def read_all(path: str) -> bytes:
+    """Read a whole input (``-`` is standard input); raises OSError per open_input."""
+    handle = open_input(path)
+    try:
+        return handle.read()
+    finally:
+        if handle is not sys.stdin.buffer:
+            handle.close()
+
+
+class InputError(Exception):
+    """A failure while *reading* an input, kept apart from output failures (CONV-25)."""
+
+    def __init__(self, error: OSError):
+        super().__init__(error)
+        self.error = error
+
+
+class InputStream:
+    """Incremental reader of tokens (CONV-32) and lines from one input.
+
+    Data is requested with ``read1``, so a token or line is returned as soon as it is complete
+    and an interactive dialog never waits for input it does not need. With ``eof_marker``
+    (the default), a run of 0x1A bytes that reaches the end of the input is ignored (CONV-37).
+    :attr:`line` is 1 plus the number of LF bytes consumed so far; once the input is
+    exhausted it is the end-of-input line number. Read failures raise :class:`InputError`.
+    """
+
+    CHUNK_SIZE = 65536
+
+    def __init__(self, handle: BinaryIO, *, eof_marker: bool = True):
+        self.handle = handle
+        self.eof_marker = eof_marker
+        self.buffer = bytearray()
+        self.position = 0
+        self.at_eof = False
+        self.line = 1
+
+    def _fill(self) -> bool:
+        """Read more data; False (and CONV-37 applied) once the input is exhausted."""
+        if self.at_eof:
+            return False
+        try:
+            chunk = self.handle.read1(self.CHUNK_SIZE)  # type: ignore[attr-defined]
+        except OSError as error:
+            raise InputError(error) from error
+        if chunk:
+            del self.buffer[:self.position]
+            self.position = 0
+            self.buffer += chunk
+            return True
+        self.at_eof = True
+        if self.eof_marker:
+            end = len(self.buffer)
+            while end > self.position and self.buffer[end - 1] == 0x1A:
+                end -= 1
+            del self.buffer[end:]
+        return False
+
+    def token(self) -> Token | None:
+        """The next whitespace-delimited token, or None at the end of the input."""
+        while True:
+            while self.position < len(self.buffer) and self.buffer[self.position] in WHITESPACE:
+                if self.buffer[self.position] == 0x0A:
+                    self.line += 1
+                self.position += 1
+            if self.position < len(self.buffer) or not self._fill():
+                break
+        if self.position >= len(self.buffer):
+            return None
+        start, scan = self.position, self.position
+        while True:
+            while scan < len(self.buffer) and self.buffer[scan] not in WHITESPACE:
+                scan += 1
+            if scan < len(self.buffer):
+                break
+            offset = scan - self.position
+            if not self._fill():
+                scan = len(self.buffer)
+                break
+            start, scan = self.position, self.position + offset
+        if scan <= start:  # the token was a 0x1A run reaching the end of the input
+            self.position = len(self.buffer)
+            return None
+        text = bytes(self.buffer[start:scan])
+        self.position = scan
+        return Token(text, self.line)
+
+    def read_line(self) -> Token | None:
+        """The next line without its LF (any CR is kept), or None at the end of the input.
+
+        A final segment without LF is a line if it is not empty.
+        """
+        while True:
+            newline = self.buffer.find(b"\n", self.position)
+            if newline >= 0:
+                text = bytes(self.buffer[self.position:newline])
+                self.position = newline + 1
+                number = self.line
+                self.line += 1
+                return Token(text, number)
+            if not self._fill():
+                break
+        if self.position >= len(self.buffer):
+            return None
+        text = bytes(self.buffer[self.position:])
+        self.position = len(self.buffer)
+        return Token(text, self.line)
+
+    def require(self, source: str) -> Token:
+        """The next token; ``unexpected end of input`` (CONV-34) if there is none."""
+        token = self.token()
+        if token is None:
+            raise self.unexpected_end(source)
+        return token
+
+    def unexpected_end(self, source: str) -> DataError:
+        return DataError(source, self.line, "unexpected end of input")

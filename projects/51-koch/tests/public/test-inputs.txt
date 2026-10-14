@@ -1,0 +1,14 @@
+# Public black-box acceptance tests for dp-koch (projects/51-koch).
+# Format: <ID> [NAME=VALUE]... <tool> [ARG]... [< STDIN-FILE]   — see shared/tools/run-tests.py
+# Each ID's expected stdout/stderr/exit live in expected-outputs/<ID>.{stdout,stderr,exit}.
+# Fixture files (two.txt, bad.txt) live in ../fixtures/.
+01 dp-koch --level 1
+02 dp-koch < two.txt
+03 dp-koch --prompt two.txt
+04 dp-koch -s -l 1
+05 dp-koch --svg -l 2
+06 dp-koch -l 2 -L 5
+07 dp-koch bad.txt
+08 dp-koch missing.txt
+09 dp-koch --help
+10 dp-koch --level 9

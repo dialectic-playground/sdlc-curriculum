@@ -1,0 +1,5 @@
+dp-astar: badh-names.dat:4: invalid integer '76O'
+dp-astar: dup-names.dat:3: duplicate city 'ROME'
+dp-astar: odd-names.dat:4: unexpected end of input
+dp-astar: empty.dat:1: unexpected end of input
+dp-astar: big-names.dat:1001: too many cities

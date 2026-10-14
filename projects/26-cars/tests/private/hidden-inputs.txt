@@ -1,0 +1,22 @@
+# Hidden black-box verification tests for dp-cars1 (projects/26-cars).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-cars1 --version
+02 dp-cars1 limits.txt
+03 dp-cars1 big.txt
+03 dp-cars1 negstock.txt
+03 dp-cars1 short.txt
+04 dp-cars1 ctrlz.txt
+04 dp-cars1 midz.txt
+05 dp-cars1 signs.txt
+06 dp-cars1 overflow.txt
+06 dp-cars1 -p - < overflow.txt
+07 dp-cars1 -p
+07 dp-cars1 --prompt rejected.txt
+08 dp-cars1 subdir
+08 dp-cars1 -- -p
+09 dp-cars1 extra --help
+09 dp-cars1 -x --help
+09 dp-cars1 --prompt=yes
+10 dp-cars1 -p - extra < day.txt
+10 dp-cars1 -pp - < cut.txt

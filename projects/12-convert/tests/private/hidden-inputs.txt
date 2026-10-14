@@ -1,0 +1,21 @@
+# Hidden black-box verification tests for dp-convert (projects/12-convert).
+# Used by grading/CI. Assignees: these are "unseen by convention" — design from the SRS, not from this file.
+# Consecutive lines with the same ID are steps of one test and share a working directory.
+01 dp-convert --version
+02 dp-convert limit.txt
+03 dp-convert over.txt
+03 dp-convert unit.txt
+04 dp-convert huge.txt
+04 dp-convert minimum.txt
+05 dp-convert ctrlz.txt
+06 dp-convert
+06 dp-convert -p
+07 dp-convert -p bad.txt
+07 dp-convert -p nosentinel.txt
+08 dp-convert subdir
+08 dp-convert -- -p
+09 dp-convert extra --help
+09 dp-convert -x --help
+09 dp-convert --prompt=yes
+10 dp-convert -p - extra < lengths.txt
+10 dp-convert - -p < lengths.txt

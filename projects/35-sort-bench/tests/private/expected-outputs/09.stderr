@@ -1,0 +1,6 @@
+dp-sort-bench: option '--time' doesn't allow an argument
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: unrecognized option '--size=5'
+Try 'dp-sort-bench --help' for more information.
+dp-sort-bench: option requires an argument -- 's'
+Try 'dp-sort-bench --help' for more information.
