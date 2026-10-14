@@ -9,10 +9,10 @@ reaches the end of the input (CONV-37).
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO, Iterator
+from typing import Iterator
 
-from .common import (PROMPT, WHITESPACE, DataError, Option, Token, UsageError, data_failure,
-                     file_failure, handle_action, open_input, out, parse_args,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, handle_action, open_input, out, parse_args,
                      parse_int_token, prompt, usage_failure, write)
 
 TOOL = "dp-tromino"
@@ -37,80 +37,12 @@ SIZE_PROMPT = "Enter size of board (0 to quit): "
 SQUARE_PROMPT = "Enter coordinates of missing square: "
 MAX_SIZE = 64
 VALID_SIZES = {2 ** k for k in range(1, 7)}
-CTRL_Z = b"\x1a"
 DRAW = Option("draw", short="d", long="draw")
 
 # Orientation of a tromino = the corner of its 2x2 block opposite the uncovered square.
 # Corners are (right, upper) pairs.
 NAMES = {(0, 1): "UL", (1, 1): "UR", (1, 0): "LR", (0, 0): "LL"}
 QUADRANT_ORDER = ((0, 1), (1, 1), (1, 0), (0, 0))  # UL, UR, LR, LL
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-class TokenReader:
-    """CONV-32 tokens read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1  # 1 + LF bytes consumed so far
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""  # the run reaches the end of input: ignored
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def token(self) -> Token | None:
-        """The next token, or None at the end of input."""
-        byte = self._byte()
-        while byte and byte in WHITESPACE:
-            if byte == b"\n":
-                self.line += 1
-            byte = self._byte()
-        if not byte:
-            return None
-        start_line, text = self.line, byte
-        while True:
-            byte = self._byte()
-            if not byte:
-                break
-            if byte in WHITESPACE:
-                if byte == b"\n":
-                    self.line += 1
-                break
-            text += byte
-        return Token(text, start_line)
-
-    def require(self, source: str) -> Token:
-        token = self.token()
-        if token is None:
-            raise DataError(source, self.line, "unexpected end of input")
-        return token
 
 
 def tile(x_board: int, y_board: int, x_missing: int, y_missing: int,
@@ -156,7 +88,7 @@ def report(size: int, x_missing: int, y_missing: int, draw: bool) -> bytes:
     return ("\n".join(lines) + "\n").encode("ascii")
 
 
-def session(reader: TokenReader, source: str, prompts: bool, draw: bool) -> None:
+def session(reader: InputStream, source: str, prompts: bool, draw: bool) -> None:
     while True:
         prompt(prompts, SIZE_PROMPT)
         token = reader.token()
@@ -191,7 +123,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(TokenReader(stream), source, bool(parsed.values.get("prompt")),
+        session(InputStream(stream), source, bool(parsed.values.get("prompt")),
                 bool(parsed.values.get("draw")))
     except DataError as error:
         return data_failure(TOOL, error)

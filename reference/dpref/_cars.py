@@ -9,81 +9,17 @@ receives the two totals sequences and nothing else (SRS-28 NFR-05).
 
 from __future__ import annotations
 
-from typing import BinaryIO, Sequence
+from typing import Sequence
 
-from .common import (WHITESPACE, DataError, Token, encode_arg, err, fix, parse_int_token,
-                     prompt)
+from .common import InputStream, Token, encode_arg, err, fix, parse_int_token, prompt
 
 BRANDS = 12
 MAX_STOCK = 999_999
-CTRL_Z = 0x1A
-CHUNK_SIZE = 64 * 1024
 STOCK_PROMPT = "Cars in stock for brand: {brand}\n"
 BRAND_PROMPT = "Which brand was sold? "
 QUANTITY_PROMPT = "How many cars in sale? "
 REPORT_TITLE = "DAILY REPORT"
 REPORT_HEADING = "Brand    Start    Sales      End      Sales %"
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-class TokenReader:
-    """CONV-32 tokens, each returned as soon as it is complete; CONV-37 at the very end."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.buffer = b""
-        self.position = 0
-        self.line = 1  # 1 + LF bytes consumed so far; the end-of-input line number at the end
-
-    def _byte(self) -> int | None:
-        if self.position == len(self.buffer):
-            try:
-                self.buffer = self.stream.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-            except OSError as error:
-                raise InputError(error) from error
-            self.position = 0
-            if not self.buffer:
-                return None
-        byte = self.buffer[self.position]
-        self.position += 1
-        return byte
-
-    def token(self) -> Token | None:
-        """The next token, or None at the end of the input."""
-        byte = self._byte()
-        while byte is not None and byte in WHITESPACE:
-            if byte == 0x0A:
-                self.line += 1
-            byte = self._byte()
-        if byte is None:
-            return None
-        start_line = self.line
-        text = bytearray()
-        while byte is not None and byte not in WHITESPACE:
-            text.append(byte)
-            byte = self._byte()
-        if byte is None:
-            # Only a token that reaches the end of the input can end in the CONV-37 run.
-            while text and text[-1] == CTRL_Z:
-                text.pop()
-            if not text:
-                return None
-        elif byte == 0x0A:
-            self.line += 1
-        return Token(bytes(text), start_line)
-
-    def require(self, source: str) -> Token:
-        token = self.token()
-        if token is None:
-            raise DataError(source, self.line, "unexpected end of input")
-        return token
 
 
 def warn(tool: str, source: str, token: Token, message: bytes) -> None:
@@ -93,7 +29,7 @@ def warn(tool: str, source: str, token: Token, message: bytes) -> None:
     err.flush()
 
 
-def read_day(reader: TokenReader, source: str, prompting: bool,
+def read_day(reader: InputStream, source: str, prompting: bool,
              tool: str) -> tuple[list[int], list[int], bool]:
     """Opening stock, then sales until a negative brand or the end of input.
 

@@ -9,18 +9,17 @@ the input (CONV-37).
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO
 
-from .common import (INT64_MAX, INT64_MIN, PROMPT, WHITESPACE, DataError, Token, UsageError,
-                     data_failure, diagnose, file_failure, handle_action, open_input, out,
-                     parse_args, parse_int_token, prompt, usage_failure, write)
+from .common import (INT64_MAX, INT64_MIN, PROMPT, DataError, InputError, InputStream,
+                     UsageError, data_failure, diagnose, file_failure, handle_action,
+                     open_input, out, parse_args, parse_int_token, prompt, usage_failure,
+                     write)
 
 TOOL = "dp-matmult"
 MAX_SIZE = 20
 SIZE_PROMPT = "Input matrix size: "
 FIRST_PROMPT = "Input first matrix by row\n"
 SECOND_PROMPT = "Input second matrix by row\n"
-CTRL_Z = b"\x1a"
 HELP_TEXT = """\
 Usage: dp-matmult [OPTION]... [FILE]
 Multiply two square matrices of integers.
@@ -38,14 +37,6 @@ Options:
 """
 
 
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
 class OverflowFailure(Exception):
     """A product element (1-based row and column) that does not fit in 64 bits."""
 
@@ -55,63 +46,10 @@ class OverflowFailure(Exception):
         self.column = column
 
 
-class TokenReader:
-    """CONV-32 tokens read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1  # 1 + LF bytes consumed so far
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""  # the run reaches the end of the input: ignored
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def require(self, source: str) -> Token:
-        """The next token; the end of the input here is ``unexpected end of input``."""
-        byte = self._byte()
-        while byte and byte in WHITESPACE:
-            if byte == b"\n":
-                self.line += 1
-            byte = self._byte()
-        if not byte:
-            raise DataError(source, self.line, "unexpected end of input")
-        start_line, text = self.line, byte
-        while True:
-            byte = self._byte()
-            if not byte:
-                break
-            if byte in WHITESPACE:
-                if byte == b"\n":
-                    self.line += 1
-                break
-            text += byte
-        return Token(text, start_line)
-
-
 Matrix = list[list[int]]
 
 
-def read_matrix(reader: TokenReader, source: str, size: int) -> Matrix:
+def read_matrix(reader: InputStream, source: str, size: int) -> Matrix:
     """Read size*size integer elements in row-major order, validating each as it arrives."""
     return [[parse_int_token(reader.require(source), source) for _ in range(size)]
             for _ in range(size)]
@@ -144,7 +82,7 @@ def multiply(first: Matrix, second: Matrix) -> Matrix:
     return product
 
 
-def session(reader: TokenReader, source: str, prompts: bool) -> None:
+def session(reader: InputStream, source: str, prompts: bool) -> None:
     prompt(prompts, SIZE_PROMPT)
     size = parse_int_token(reader.require(source), source, 1, MAX_SIZE)
     prompt(prompts, FIRST_PROMPT)
@@ -177,7 +115,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(TokenReader(stream), source, bool(parsed.values.get("prompt")))
+        session(InputStream(stream), source, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
     except OverflowFailure as failure:

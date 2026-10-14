@@ -10,11 +10,11 @@ from __future__ import annotations
 import os
 import sys
 
-from ._cars import (BRANDS, MAX_STOCK, InputError, TokenReader, read_day, render_report)
-from .common import (PROMPT, DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, invalid_argument, open_input, out, parse_args,
-                     parse_int_token, read_all, strip_eof_marker, tokenize, unexpected_end,
-                     usage_failure, write)
+from ._cars import BRANDS, MAX_STOCK, read_day, render_report
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, handle_action, invalid_argument, open_input,
+                     out, parse_args, parse_int_token, read_all, strip_eof_marker, tokenize,
+                     unexpected_end, usage_failure, write)
 
 TOOL = "dp-cars2"
 HELP_TEXT = """\
@@ -86,7 +86,7 @@ def main(argv: list[str]) -> int:
         else:
             stream = open_input(source)
             try:
-                stock, sales, rejected = read_day(TokenReader(stream), source,
+                stock, sales, rejected = read_day(InputStream(stream), source,
                                                   bool(parsed.values.get("prompt")), TOOL)
             finally:
                 if stream is not sys.stdin.buffer:

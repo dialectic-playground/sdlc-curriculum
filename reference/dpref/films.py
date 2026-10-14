@@ -7,10 +7,8 @@ flushed, as soon as the cast percentage's token is complete: the tool works inte
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, Token, UsageError,
                      data_failure, end_line, file_failure, handle_action, invalid_argument,
                      open_input, parse_args, parse_int_token, parse_real_token, prompt,
                      read_all, strip_eof_marker, tokenize, unexpected_end, usage_failure)
@@ -18,7 +16,6 @@ from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
 TOOL = "dp-films"
 DEFAULT_SAMPLE = "films.dat"
 MAX_FILMS = 100
-CHUNK_SIZE = 64 * 1024
 PROMPT_DIRECTOR = ("Enter the percentage of hits of the\n"
                    "director of the film to be classified or\n"
                    "generate EOF to terminate the program: ")
@@ -50,40 +47,6 @@ Options:
 """
 
 OPTIONS = [Option("sample", short="s", long="sample", takes_value=True), PROMPT]
-
-
-class TokenStream:
-    """CONV-32 tokens, yielded as soon as each is complete; CONV-37 applies at the end."""
-
-    def __init__(self, handle: BinaryIO):
-        self.handle = handle
-        self.lines = 1  # after the end of the input: the end-of-input line number
-        self._tokens = self._generate()
-
-    def _generate(self) -> Iterator[Token]:
-        current = bytearray()
-        token_line = 1
-        while True:
-            chunk = self.handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-            if not chunk:
-                break
-            for byte in chunk:
-                if byte in WHITESPACE:
-                    if current:
-                        yield Token(bytes(current), token_line)
-                        current.clear()
-                    if byte == 0x0A:
-                        self.lines += 1
-                else:
-                    if not current:
-                        token_line = self.lines
-                    current.append(byte)
-        text = bytes(current).rstrip(b"\x1a")
-        if text:
-            yield Token(text, token_line)
-
-    def next(self) -> Token | None:
-        return next(self._tokens, None)
 
 
 def percentage(token: Token, source: str) -> float:
@@ -156,24 +119,21 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        stream = TokenStream(handle)
+        stream = InputStream(handle)
         while True:
             prompt(prompting, PROMPT_DIRECTOR)
-            token = stream.next()
+            token = stream.token()
             if token is None:
                 return 0
             director = percentage(token, source)
             prompt(prompting, PROMPT_CAST)
-            token = stream.next()
-            if token is None:
-                raise DataError(source, stream.lines, "unexpected end of input")
-            cast = percentage(token, source)
+            cast = percentage(stream.require(source), source)
             common.write(HIT if classify(films, director, cast) == 1 else FLOP)
             common.out.flush()
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as error:
+        file_failure(TOOL, source, error.error)
         return 1
     finally:
         if source != "-":

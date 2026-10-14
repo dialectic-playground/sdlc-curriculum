@@ -13,9 +13,9 @@ import threading
 
 from . import common
 from ._parallel_sort_worker import MAX_VALUES, selection_sort, serve
-from .common import (AnsiRand, DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, parse_args, parse_count, parse_int_token, parse_seed,
-                     read_all, strip_eof_marker, tokenize, usage_failure)
+from .common import (AnsiRand, DataError, InputError, Option, UsageError, data_failure,
+                     file_failure, handle_action, parse_args, parse_count, parse_int_token,
+                     parse_seed, read_all, strip_eof_marker, tokenize, usage_failure)
 
 TOOL = "dp-sort-host"
 HELP_TEXT = """\
@@ -84,7 +84,7 @@ class Worker:
         def run() -> None:
             try:
                 serve(worker_in, worker_out, "-")
-            except (DataError, OSError):
+            except (DataError, InputError, OSError):
                 self.failed = True
             finally:
                 worker_in.close()

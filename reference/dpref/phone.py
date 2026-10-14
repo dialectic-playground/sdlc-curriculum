@@ -8,19 +8,17 @@ read, so the tool works interactively.
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO, Iterator
 
 from . import common
-from .common import (PROMPT, DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, invalid_argument, open_input, parse_args, prompt,
-                     read_all, strip_eof_marker, usage_failure)
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, handle_action, invalid_argument, open_input,
+                     parse_args, prompt, read_all, strip_eof_marker, usage_failure)
 
 TOOL = "dp-phone"
 DEFAULT_FILE = "students.dat"
 PROMPT_TEXT = "Enter a student's name, or signal EOF to halt: "
 LNAME_SIZE, FNAME_SIZE, PNUM_SIZE = 25, 25, 12
 RECORD_SIZE = LNAME_SIZE + FNAME_SIZE + PNUM_SIZE
-CHUNK_SIZE = 64 * 1024
 HELP_TEXT = """\
 Usage: dp-phone [OPTION]... [FILE]
 Look up students' telephone numbers by last name.
@@ -94,27 +92,6 @@ def binary_search(records: list[bytes], key: bytes) -> bytes | None:
     return None
 
 
-def stream_lines(handle: BinaryIO) -> Iterator[bytes]:
-    """Yield query lines (LF and one CR removed) as soon as each is complete (FR-05)."""
-    pending = bytearray()
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        pending.extend(chunk)
-        while True:
-            newline = pending.find(b"\n")
-            if newline < 0:
-                break
-            line = bytes(pending[:newline])
-            del pending[:newline + 1]
-            yield strip_cr(line)
-    # CONV-37: a run of 0x1A bytes that reaches the end of the input is ignored.
-    last = bytes(pending).rstrip(b"\x1a")
-    if last:
-        yield strip_cr(last)
-
-
 def answer(records: list[bytes], query: bytes) -> bytes:
     if len(query) <= LNAME_SIZE:
         found = binary_search(records, query.ljust(LNAME_SIZE, b" "))
@@ -157,16 +134,17 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, queries, error)
         return 1
     try:
-        lines = stream_lines(handle)
+        lines = InputStream(handle)  # query lines, each as soon as it is complete (FR-05)
         while True:
             prompt(prompting, PROMPT_TEXT)
             try:
-                query = next(lines, None)
-            except OSError as error:
-                file_failure(TOOL, queries, error)
+                line = lines.read_line()
+            except InputError as error:
+                file_failure(TOOL, queries, error.error)
                 return 1
-            if query is None:
+            if line is None:
                 return 0
+            query = strip_cr(line.text)
             if query == b"":
                 continue
             common.write(answer(records, query))

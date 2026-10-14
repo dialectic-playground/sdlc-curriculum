@@ -9,11 +9,10 @@ bytes is held back until the next byte shows whether it reaches the end of the i
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO
 
-from .common import (PROMPT, WHITESPACE, AnsiRand, DataError, Option, Token, UsageError,
-                     data_failure, file_failure, fix, handle_action, open_input, out,
-                     parse_args, parse_count, parse_int_token, parse_seed, prompt,
+from .common import (PROMPT, AnsiRand, DataError, InputError, InputStream, Option,
+                     UsageError, data_failure, file_failure, fix, handle_action, open_input,
+                     out, parse_args, parse_count, parse_int_token, parse_seed, prompt,
                      usage_failure, write)
 
 TOOL = "dp-perc"
@@ -22,7 +21,6 @@ MAX_SIZE = 78
 DENSITY_PROMPT = "Enter density (1-100): "
 AGAIN_PROMPT = "Again? (y/n) "
 TREE, NO_TREE, BURNING = "T", " ", "*"
-CTRL_Z = b"\x1a"
 HELP_TEXT = """\
 Usage: dp-perc [OPTION]... [FILE]
 Simulate a forest fire spreading through a randomly planted square forest.
@@ -47,73 +45,6 @@ OPTIONS = [
     Option("size", short="s", long="size", takes_value=True),
     Option("seed", long="seed", takes_value=True),
 ]
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-class TokenReader:
-    """CONV-32 tokens read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1  # 1 + LF bytes consumed so far
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""  # the run reaches the end of the input: ignored
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def token(self) -> Token | None:
-        """The next token, or None at the end of the input."""
-        byte = self._byte()
-        while byte and byte in WHITESPACE:
-            if byte == b"\n":
-                self.line += 1
-            byte = self._byte()
-        if not byte:
-            return None
-        start_line, text = self.line, byte
-        while True:
-            byte = self._byte()
-            if not byte:
-                break
-            if byte in WHITESPACE:
-                if byte == b"\n":
-                    self.line += 1
-                break
-            text += byte
-        return Token(text, start_line)
-
-    def require(self, source: str) -> Token:
-        token = self.token()
-        if token is None:
-            raise DataError(source, self.line, "unexpected end of input")
-        return token
 
 
 Forest = list[list[str]]
@@ -160,7 +91,7 @@ def simulate(size: int, density: int, rand: AnsiRand) -> str:
             + f"Trees surviving: {count_trees(after)}\n")
 
 
-def session(reader: TokenReader, source: str, prompts: bool, size: int,
+def session(reader: InputStream, source: str, prompts: bool, size: int,
             rand: AnsiRand) -> None:
     while True:
         prompt(prompts, DENSITY_PROMPT)
@@ -197,7 +128,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(TokenReader(stream), source, bool(parsed.values.get("prompt")), size,
+        session(InputStream(stream), source, bool(parsed.values.get("prompt")), size,
                 AnsiRand(seed))
     except DataError as error:
         return data_failure(TOOL, error)

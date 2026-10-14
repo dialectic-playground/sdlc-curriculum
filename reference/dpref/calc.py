@@ -7,11 +7,10 @@ on a copy of the accumulator, which is committed only when the whole line is val
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
-from .common import (INT64_MAX, INT64_MIN, PROMPT, Option, UsageError, WHITESPACE, encode_arg,
-                     file_failure, handle_action, open_input, parse_args, prompt, usage_failure)
+from .common import (INT64_MAX, INT64_MIN, PROMPT, InputError, InputStream, Option, UsageError,
+                     WHITESPACE, encode_arg, file_failure, handle_action, open_input, parse_args,
+                     prompt, usage_failure)
 
 TOOL = "dp-calc"
 BANNER = b" **** End of Calculation ****\n"
@@ -45,21 +44,6 @@ class LineError(Exception):
     def __init__(self, message: bytes):
         super().__init__(message)
         self.message = message
-
-
-def read_lines(handle: BinaryIO) -> Iterator[bytes]:
-    """Yield lines without their LF; a trailing run of 0x1A bytes is ignored (CONV-37)."""
-    while True:
-        line = handle.readline()
-        if not line:
-            return
-        if line.endswith(b"\n"):
-            yield line[:-1]
-            continue
-        line = line.rstrip(b"\x1a")
-        if line:
-            yield line
-        return
 
 
 def split_tokens(line: bytes) -> list[bytes]:
@@ -141,21 +125,19 @@ def main(argv: list[str]) -> int:
     accumulator = 0
     status = 0
     try:
-        lines = read_lines(handle)
-        line_number = 0
+        lines = InputStream(handle)
         while True:
             prompt(prompting, f"{accumulator} ")
-            line = next(lines, None)
+            line = lines.read_line()
             if line is None:
                 return status
-            line_number += 1
-            tokens = split_tokens(line)
+            tokens = split_tokens(line.text)
             if not tokens:
                 continue
             try:
                 result, used, stop = evaluate(accumulator, tokens)
             except LineError as error:
-                common.err.write(encode_arg(f"{TOOL}: {source}:{line_number}: ")
+                common.err.write(encode_arg(f"{TOOL}: {source}:{line.line}: ")
                                  + error.message + b"\n")
                 common.err.flush()
                 status = 1
@@ -169,8 +151,8 @@ def main(argv: list[str]) -> int:
                 common.out.flush()
                 return status
             common.out.flush()
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as error:
+        file_failure(TOOL, source, error.error)
         return 1
     finally:
         if source != "-":

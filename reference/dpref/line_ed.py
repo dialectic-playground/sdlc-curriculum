@@ -11,11 +11,11 @@ from __future__ import annotations
 import os
 import re
 import sys
-from typing import BinaryIO, Iterator
 
 from . import common
-from .common import (INT64_MAX, PROMPT, DataError, Option, UsageError, data_failure,
-                     file_failure, handle_action, parse_args, prompt, usage_failure)
+from .common import (INT64_MAX, PROMPT, DataError, InputError, InputStream, Option, Token,
+                     UsageError, data_failure, file_failure, handle_action, parse_args, prompt,
+                     usage_failure)
 
 TOOL = "dp-line-ed"
 SOURCE = "-"
@@ -61,32 +61,12 @@ class CommandError(Exception):
         self.message = message if isinstance(message, bytes) else message.encode()
 
 
-class LineReader:
-    """Standard input as lines (LF removed, then one final CR), with CONV-37 at the end."""
-
-    def __init__(self, handle: BinaryIO):
-        self.handle = handle
-        self.number = 0  # line number of the last line returned
-        self.lf_count = 0
-
-    def next(self) -> bytes | None:
-        line = self.handle.readline()
-        if not line:
-            return None
-        if line.endswith(b"\n"):
-            self.lf_count += 1
-            line = line[:-1]
-        else:
-            line = line.rstrip(b"\x1a")
-            if not line:
-                return None
-        self.number += 1
-        if line.endswith(b"\r"):
-            line = line[:-1]
-        return line
-
-    def end_line(self) -> int:
-        return self.lf_count + 1
+def read_line(reader: InputStream) -> Token | None:
+    """The next line of standard input (LF removed, then one final CR); None at end of input."""
+    line = reader.read_line()
+    if line is not None and line.text.endswith(b"\r"):
+        line = Token(line.text[:-1], line.line)
+    return line
 
 
 def load(path: str) -> list[bytes]:
@@ -160,15 +140,15 @@ class Editor:
     def last(self) -> int:
         return len(self.lines)
 
-    def insert(self, reader: LineReader) -> None:
+    def insert(self, reader: InputStream) -> None:
         while True:
-            line = reader.next()
-            if line is None or line == b".":
+            line = read_line(reader)
+            if line is None or line.text == b".":
                 return
-            self.lines.insert(self.current, line)
+            self.lines.insert(self.current, line.text)
             self.current += 1
 
-    def run(self, word: bytes, rest: bytes, reader: LineReader) -> bool:
+    def run(self, word: bytes, rest: bytes, reader: InputStream) -> bool:
         """Execute one command; return True for q."""
         if word in (b"i", b"q"):
             no_more(rest)
@@ -234,19 +214,19 @@ class Editor:
         return False
 
 
-def edit(path: str, editor: Editor, reader: LineReader, prompting: bool) -> int:
+def edit(path: str, editor: Editor, reader: InputStream, prompting: bool) -> int:
     status = 0
     while True:
         prompt(prompting, COMMAND_PROMPT)
-        line = reader.next()
+        line = read_line(reader)
         if line is None:
-            raise DataError(SOURCE, reader.end_line(), "unexpected end of input")
-        text = line.strip(BLANKS)
+            raise reader.unexpected_end(SOURCE)
+        text = line.text.strip(BLANKS)
         if not text:
             continue
         match = _COMMAND.match(text)
         word, rest = match.group(1), match.group(2)
-        number = reader.number
+        number = line.line
         try:
             quit_now = editor.run(word, rest, reader)
         except CommandError as error:
@@ -282,13 +262,11 @@ def main(argv: list[str]) -> int:
     except OSError as error:
         file_failure(TOOL, path, error)
         return 1
-    reader = LineReader(sys.stdin.buffer)
+    reader = InputStream(sys.stdin.buffer)
     try:
         return edit(path, editor, reader, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
-    except BrokenPipeError:
-        raise
-    except OSError as error:  # standard input could not be read
-        file_failure(TOOL, SOURCE, error)
+    except InputError as error:
+        file_failure(TOOL, SOURCE, error.error)
         return 1

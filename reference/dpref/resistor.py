@@ -7,10 +7,9 @@ standard output flushed, as soon as the third code of a resistor is complete.
 from __future__ import annotations
 
 from . import common
-from ._dialog import TokenStream
-from .common import (PROMPT, DataError, Option, Token, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, prompt, usage_failure)
+from .common import (PROMPT, DataError, InputError, InputStream, Option, Token,
+                     UsageError, data_failure, file_failure, handle_action, open_input,
+                     parse_args, parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-resistor"
 CODES_PROMPT = "Enter the three color codes: "
@@ -57,20 +56,17 @@ def resistance_text(d1: int, d2: int, d3: int) -> str:
     return common.fix(float(ohms), 6) + " ohms"
 
 
-def dialog(tokens: TokenStream, source: str, prompting: bool) -> int:
+def dialog(tokens: InputStream, source: str, prompting: bool) -> int:
     rejected = False
     while True:
         common.out.flush()
         prompt(prompting, CODES_PROMPT)
-        first = tokens.next()
+        first = tokens.token()
         if first is None:
             break
         bands = [first]
         for _ in range(2):
-            token = tokens.next()
-            if token is None:
-                raise tokens.unexpected_end(source)
-            bands.append(token)
+            bands.append(tokens.require(source))
         values = [code_value(token) for token in bands]
         if None in values:
             rejected = True
@@ -84,7 +80,7 @@ def dialog(tokens: TokenStream, source: str, prompting: bool) -> int:
         common.write(f"Resistance of {letters} = {resistance_text(*values)}\n")  # type: ignore[arg-type]
         common.out.flush()
         prompt(prompting, ANSWER_PROMPT)
-        token = tokens.next()
+        token = tokens.token()
         if token is None or parse_int_token(token, source, 0, 1) == 0:
             break
     return 1 if rejected else 0
@@ -108,13 +104,13 @@ def main(argv: list[str]) -> int:
         return 1
     try:
         common.write(GUIDE)
-        return dialog(TokenStream(handle), source, bool(parsed.values.get("prompt")))
+        return dialog(InputStream(handle), source, bool(parsed.values.get("prompt")))
     except DataError as error:
         common.out.flush()
         return data_failure(TOOL, error)
-    except OSError as error:
+    except InputError as failure:
         common.out.flush()
-        file_failure(TOOL, source, error)
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

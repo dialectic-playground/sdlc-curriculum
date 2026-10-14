@@ -6,16 +6,15 @@ time, so the calendar appears as soon as a valid pair has been typed.
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
+from typing import BinaryIO
 
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
                      data_failure, file_failure, handle_action, open_input,
                      parse_args, parse_count, parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-calendar"
 PROMPT_TEXT = "Enter day and leap year codes: "
-CHUNK_SIZE = 64 * 1024
 MONTHS = ("January", "February", "March", "April", "May", "June", "July", "August",
           "September", "October", "November", "December")
 DAYS_IN_MONTH = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
@@ -41,36 +40,6 @@ Options:
 """
 
 OPTIONS: list[Option] = [PROMPT, Option("year", short="y", long="year", takes_value=True)]
-
-
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end.
-
-    At the end of the input an empty token carrying the end-of-input line number is yielded.
-    """
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
-    while True:
-        yield Token(b"", line)
 
 
 def year_codes(year: int) -> tuple[int, int]:
@@ -104,19 +73,12 @@ def calendar(day_code: int, leap: int) -> bytes:
 
 
 def read_codes(handle: BinaryIO, source: str, prompting: bool) -> tuple[int, int]:
-    tokens = stream_tokens(handle)
-
-    def expect() -> Token:
-        token = next(tokens)
-        if not token.text:
-            raise DataError(source, token.line, "unexpected end of input")
-        return token
-
+    stream = InputStream(handle)
     while True:
         prompt(prompting, PROMPT_TEXT)
-        day_token = expect()
+        day_token = stream.require(source)
         day = parse_int_token(day_token, source)
-        leap_token = expect()
+        leap_token = stream.require(source)
         leap = parse_int_token(leap_token, source)
         if not 0 <= day <= 6:
             common.err.write(f"{TOOL}: {source}:{day_token.line}: ".encode()
@@ -158,8 +120,8 @@ def main(argv: list[str]) -> int:
         codes = read_codes(handle, source, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

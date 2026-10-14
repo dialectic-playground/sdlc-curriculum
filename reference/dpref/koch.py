@@ -9,12 +9,12 @@ conforming implementation prints the same digits. Dialog tokens are read increme
 from __future__ import annotations
 
 import math
-from typing import BinaryIO, Iterator
+from typing import Iterator
 
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE, data_failure,
-                     file_failure, fix, handle_action, open_input, parse_args, parse_count,
-                     parse_int_token, prompt, usage_failure)
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, fix, handle_action, open_input, parse_args,
+                     parse_count, parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-koch"
 LEVEL_PROMPT = "Enter level (0-6): "
@@ -23,7 +23,6 @@ MAX_LEVEL = 6
 DEFAULT_LENGTH = 729
 MAX_LENGTH = 1_000_000
 SNOWFLAKE_SIDES = (0, 4, 2)
-CHUNK_SIZE = 64 * 1024
 DIGITS = 6
 HELP_TEXT = """\
 Usage: dp-koch [OPTION]... [FILE]
@@ -120,51 +119,14 @@ def draw(level: int, length: int, snowflake: bool, svg: bool) -> None:
     common.out.flush()
 
 
-class TokenStream:
-    """CONV-32 tokens yielded as soon as each is complete; CONV-37 applies at the end."""
-
-    def __init__(self, handle: BinaryIO):
-        self.handle = handle
-        self.line = 1
-        self._pending: list[Token] = []
-        self._current = bytearray()
-        self._token_line = 1
-        self._done = False
-
-    def next(self) -> Token | None:
-        while not self._pending and not self._done:
-            chunk = self.handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-            if not chunk:
-                self._done = True
-                text = bytes(self._current).rstrip(b"\x1a")
-                if text:
-                    self._pending.append(Token(text, self._token_line))
-                break
-            for byte in chunk:
-                if byte in WHITESPACE:
-                    if self._current:
-                        self._pending.append(Token(bytes(self._current), self._token_line))
-                        self._current.clear()
-                    if byte == 0x0A:
-                        self.line += 1
-                else:
-                    if not self._current:
-                        self._token_line = self.line
-                    self._current.append(byte)
-        return self._pending.pop(0) if self._pending else None
-
-
-def dialog(stream: TokenStream, source: str, prompting: bool, length: int, snowflake: bool,
+def dialog(stream: InputStream, source: str, prompting: bool, length: int, snowflake: bool,
            svg: bool) -> int:
     while True:
         prompt(prompting, LEVEL_PROMPT)
-        token = stream.next()
-        if token is None:
-            raise DataError(source, stream.line, "unexpected end of input")
-        level = parse_int_token(token, source, 0, MAX_LEVEL)
+        level = parse_int_token(stream.require(source), source, 0, MAX_LEVEL)
         draw(level, length, snowflake, svg)
         prompt(prompting, ANOTHER_PROMPT)
-        token = stream.next()
+        token = stream.token()
         if token is None or token.text in (b"n", b"N"):
             return 0
         if token.text not in (b"y", b"Y"):
@@ -205,11 +167,11 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        return dialog(TokenStream(handle), source, prompting, length, snowflake, svg)
+        return dialog(InputStream(handle), source, prompting, length, snowflake, svg)
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as error:
+        file_failure(TOOL, source, error.error)
         return 1
     finally:
         if source != "-":

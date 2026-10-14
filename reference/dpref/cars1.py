@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import sys
 
-from ._cars import InputError, TokenReader, read_day, render_report
-from .common import (PROMPT, DataError, UsageError, data_failure, file_failure,
-                     handle_action, open_input, parse_args, usage_failure, write)
+from ._cars import read_day, render_report
+from .common import (PROMPT, DataError, InputError, InputStream, UsageError, data_failure,
+                     file_failure, handle_action, open_input, parse_args, usage_failure,
+                     write)
 
 TOOL = "dp-cars1"
 HELP_TEXT = """\
@@ -48,7 +49,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        stock, sales, rejected = read_day(TokenReader(stream), source,
+        stock, sales, rejected = read_day(InputStream(stream), source,
                                           bool(parsed.values.get("prompt")), TOOL)
     except DataError as error:
         return data_failure(TOOL, error)

@@ -12,82 +12,15 @@ from __future__ import annotations
 import re
 import sys
 from dataclasses import dataclass
-from typing import BinaryIO, Iterator
+from typing import Iterator
 
-from .common import (PROMPT, WHITESPACE, DataError, Token, UsageError, data_failure,
-                     file_failure, handle_action, open_input, out, parse_args,
+from .common import (PROMPT, DataError, InputError, InputStream, Token, UsageError,
+                     data_failure, file_failure, handle_action, open_input, out, parse_args,
                      parse_int_token, prompt, usage_failure, write, INT64_MAX)
 
 CAPACITY = 100
-CTRL_Z = b"\x1a"
 _AMOUNT = re.compile(rb"([+-]?)([0-9]+)(?:\.([0-9]{1,2}))?\Z")
 MAX_CENTS = 99_999_999_999_999_999  # 999999999999999.99
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-class TokenReader:
-    """CONV-32 tokens read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def token(self) -> Token | None:
-        byte = self._byte()
-        while byte and byte in WHITESPACE:
-            if byte == b"\n":
-                self.line += 1
-            byte = self._byte()
-        if not byte:
-            return None
-        start_line, text = self.line, byte
-        while True:
-            byte = self._byte()
-            if not byte:
-                break
-            if byte in WHITESPACE:
-                if byte == b"\n":
-                    self.line += 1
-                break
-            text += byte
-        return Token(text, start_line)
-
-    def require(self, source: str) -> Token:
-        token = self.token()
-        if token is None:
-            raise DataError(source, self.line, "unexpected end of input")
-        return token
 
 
 def parse_amount(token: Token, source: str) -> int:
@@ -265,7 +198,7 @@ STACK = Kind("Enter 1 (push), 2 (pop), 3 (display), 0 (quit): ",
              b"Popped: ", b"STACK FULL", b"STACK EMPTY", False)
 
 
-def read_record(kind: Kind, reader: TokenReader, source: str) -> object:
+def read_record(kind: Kind, reader: InputStream, source: str) -> object:
     if kind.is_queue:
         last = reader.require(source).text
         first = reader.require(source).text
@@ -277,7 +210,7 @@ def read_record(kind: Kind, reader: TokenReader, source: str) -> object:
     return Tray(color, ident)
 
 
-def session(kind: Kind, adt: object, reader: TokenReader, source: str, prompts: bool) -> None:
+def session(kind: Kind, adt: object, reader: InputStream, source: str, prompts: bool) -> None:
     while True:
         prompt(prompts, kind.menu_prompt)
         token = reader.token()
@@ -324,7 +257,7 @@ def run_tool(tool: str, help_text: str, kind: Kind, adt_class: type, argv: list[
         file_failure(tool, source, error)
         return 1
     try:
-        session(kind, adt_class(), TokenReader(stream), source,
+        session(kind, adt_class(), InputStream(stream), source,
                 bool(parsed.values.get("prompt")))
     except DataError as error:
         out.flush()

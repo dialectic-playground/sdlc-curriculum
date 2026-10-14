@@ -375,3 +375,113 @@ def read_all(path: str) -> bytes:
     finally:
         if handle is not sys.stdin.buffer:
             handle.close()
+
+
+class InputError(Exception):
+    """A failure while *reading* an input, kept apart from output failures (CONV-25)."""
+
+    def __init__(self, error: OSError):
+        super().__init__(error)
+        self.error = error
+
+
+class InputStream:
+    """Incremental reader of tokens (CONV-32) and lines from one input.
+
+    Data is requested with ``read1``, so a token or line is returned as soon as it is complete
+    and an interactive dialog never waits for input it does not need. With ``eof_marker``
+    (the default), a run of 0x1A bytes that reaches the end of the input is ignored (CONV-37).
+    :attr:`line` is 1 plus the number of LF bytes consumed so far; once the input is
+    exhausted it is the end-of-input line number. Read failures raise :class:`InputError`.
+    """
+
+    CHUNK_SIZE = 65536
+
+    def __init__(self, handle: BinaryIO, *, eof_marker: bool = True):
+        self.handle = handle
+        self.eof_marker = eof_marker
+        self.buffer = bytearray()
+        self.position = 0
+        self.at_eof = False
+        self.line = 1
+
+    def _fill(self) -> bool:
+        """Read more data; False (and CONV-37 applied) once the input is exhausted."""
+        if self.at_eof:
+            return False
+        try:
+            chunk = self.handle.read1(self.CHUNK_SIZE)  # type: ignore[attr-defined]
+        except OSError as error:
+            raise InputError(error) from error
+        if chunk:
+            del self.buffer[:self.position]
+            self.position = 0
+            self.buffer += chunk
+            return True
+        self.at_eof = True
+        if self.eof_marker:
+            end = len(self.buffer)
+            while end > self.position and self.buffer[end - 1] == 0x1A:
+                end -= 1
+            del self.buffer[end:]
+        return False
+
+    def token(self) -> Token | None:
+        """The next whitespace-delimited token, or None at the end of the input."""
+        while True:
+            while self.position < len(self.buffer) and self.buffer[self.position] in WHITESPACE:
+                if self.buffer[self.position] == 0x0A:
+                    self.line += 1
+                self.position += 1
+            if self.position < len(self.buffer) or not self._fill():
+                break
+        if self.position >= len(self.buffer):
+            return None
+        start, scan = self.position, self.position
+        while True:
+            while scan < len(self.buffer) and self.buffer[scan] not in WHITESPACE:
+                scan += 1
+            if scan < len(self.buffer):
+                break
+            offset = scan - self.position
+            if not self._fill():
+                scan = len(self.buffer)
+                break
+            start, scan = self.position, self.position + offset
+        if scan <= start:  # the token was a 0x1A run reaching the end of the input
+            self.position = len(self.buffer)
+            return None
+        text = bytes(self.buffer[start:scan])
+        self.position = scan
+        return Token(text, self.line)
+
+    def read_line(self) -> Token | None:
+        """The next line without its LF (any CR is kept), or None at the end of the input.
+
+        A final segment without LF is a line if it is not empty.
+        """
+        while True:
+            newline = self.buffer.find(b"\n", self.position)
+            if newline >= 0:
+                text = bytes(self.buffer[self.position:newline])
+                self.position = newline + 1
+                number = self.line
+                self.line += 1
+                return Token(text, number)
+            if not self._fill():
+                break
+        if self.position >= len(self.buffer):
+            return None
+        text = bytes(self.buffer[self.position:])
+        self.position = len(self.buffer)
+        return Token(text, self.line)
+
+    def require(self, source: str) -> Token:
+        """The next token; ``unexpected end of input`` (CONV-34) if there is none."""
+        token = self.token()
+        if token is None:
+            raise self.unexpected_end(source)
+        return token
+
+    def unexpected_end(self, source: str) -> DataError:
+        return DataError(source, self.line, "unexpected end of input")

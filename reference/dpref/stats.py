@@ -8,10 +8,9 @@ from __future__ import annotations
 
 import math
 
-from ._token_stream import stream_tokens
-from .common import (DataError, Option, UsageError, data_failure, file_failure, fix,
-                     handle_action, open_input, parse_args, parse_real_token, usage_failure,
-                     write)
+from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
+                     file_failure, fix, handle_action, open_input, parse_args,
+                     parse_real_token, usage_failure, write)
 
 TOOL = "dp-stats"
 HELP_TEXT = """\
@@ -55,7 +54,8 @@ def main(argv: list[str]) -> int:
     count = 0
     smallest = largest = total = squares = 0.0
     try:
-        for token in stream_tokens(handle):
+        stream = InputStream(handle)
+        while (token := stream.token()) is not None:
             x = parse_real_token(token, source)
             square = x * x
             if count == 0:
@@ -74,8 +74,8 @@ def main(argv: list[str]) -> int:
                 raise overflow(source, token)
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

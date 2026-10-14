@@ -9,17 +9,15 @@ point in main(), which writes the two recovery lines and ends the run with statu
 from __future__ import annotations
 
 import math
-from typing import BinaryIO, Iterator
 
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE, data_failure,
-                     file_failure, fix, handle_action, open_input, parse_args,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, fix, handle_action, open_input, parse_args,
                      parse_real_token, prompt, usage_failure)
 
 TOOL = "dp-divide"
 PROMPT_TEXT = "Two floats: "
 SIGNAL_STATUS = 8
-CHUNK_SIZE = 64 * 1024
 HELP_TEXT = """\
 Usage: dp-divide [OPTION]... [FILE]
 Divide pairs of numbers, recovering from an arithmetic fault.
@@ -58,44 +56,6 @@ def divide(dividend: float, divisor: float) -> float:
     return quotient
 
 
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end."""
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
-
-
-class LineCounter:
-    """Tracks the end-of-input line number while streaming (CONV-32)."""
-
-    def __init__(self, handle: BinaryIO):
-        self.handle = handle
-        self.newlines = 0
-
-    def read1(self, size: int) -> bytes:
-        chunk = self.handle.read1(size)  # type: ignore[attr-defined]
-        self.newlines += chunk.count(b"\n")
-        return chunk
-
-
 def main(argv: list[str]) -> int:
     try:
         parsed = parse_args(argv, OPTIONS)
@@ -113,18 +73,15 @@ def main(argv: list[str]) -> int:
     except OSError as error:
         file_failure(TOOL, source, error)
         return 1
-    counter = LineCounter(handle)
     try:
-        tokens = stream_tokens(counter)  # type: ignore[arg-type]
+        stream = InputStream(handle)
         while True:
             prompt(prompting, PROMPT_TEXT)
-            first = next(tokens, None)
+            first = stream.token()
             if first is None:
                 return 0
             dividend = parse_real_token(first, source)
-            second = next(tokens, None)
-            if second is None:
-                raise DataError(source, counter.newlines + 1, "unexpected end of input")
+            second = stream.require(source)
             divisor = parse_real_token(second, source)
             try:
                 quotient = divide(dividend, divisor)
@@ -138,8 +95,8 @@ def main(argv: list[str]) -> int:
             common.out.flush()
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

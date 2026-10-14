@@ -1,20 +1,17 @@
 """Reference implementation of dp-elephnt2 (projects/43-linked-list/specs/SRS.md).
 
-The dialog is line-oriented and read incrementally, one byte at a time, so prompts appear
-before each read at a keyboard. A run of 0x1A bytes is held back until the next byte shows
-whether it reaches the end of the input (CONV-37). The list is printed only after the dialog
-has ended without error.
+The dialog is line-oriented and read incrementally, so prompts appear before each read at a
+keyboard; a run of 0x1A bytes reaching the end of the input is ignored (CONV-37). The list is
+printed only after the dialog has ended without error.
 """
 
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO
-
 from ._linked_list_elephants import Node, print_elephants
-from .common import (PROMPT, WHITESPACE, DataError, Token, UsageError, data_failure,
-                     file_failure, handle_action, open_input, parse_args, parse_int_token,
-                     prompt, usage_failure)
+from .common import (PROMPT, WHITESPACE, DataError, InputError, InputStream, Token, UsageError,
+                     data_failure, file_failure, handle_action, open_input, parse_args,
+                     parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-elephnt2"
 HELP_TEXT = """\
@@ -33,70 +30,22 @@ Options:
 """
 NAME_PROMPT = "\n\tNAME:\t"
 ANSWER_PROMPT = "\n\tAdd another? (1 == yes, 0 == no)\t"
-CTRL_Z = b"\x1a"
 
 
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
+def read_trimmed(reader: InputStream) -> Token | None:
+    """The next line without its LF, trimmed of whitespace bytes; None at end of input."""
+    line = reader.read_line()
+    return None if line is None else Token(line.text.strip(WHITESPACE), line.line)
 
 
-class LineReader:
-    """Lines read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1  # 1 + LF bytes consumed so far
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""  # the run reaches the end of input: ignored
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def read_line(self) -> Token | None:
-        """The next line without its LF, trimmed of whitespace bytes; None at end of input."""
-        byte = self._byte()
-        if not byte:
-            return None
-        number, text = self.line, bytearray()
-        while byte and byte != b"\n":
-            text += byte
-            byte = self._byte()
-        if byte == b"\n":
-            self.line += 1
-        return Token(bytes(text).strip(WHITESPACE), number)
-
-
-def build_list(reader: LineReader, source: str, prompts: bool) -> Node | None:
+def build_list(reader: InputStream, source: str, prompts: bool) -> Node | None:
     head: Node | None = None
     tail: Node | None = None
     while True:
         prompt(prompts, NAME_PROMPT)
-        line = reader.read_line()
+        line = read_trimmed(reader)
         if line is None:
-            raise DataError(source, reader.line, "unexpected end of input")
+            raise reader.unexpected_end(source)
         if not line.text:
             raise DataError(source, line.line, "empty name")
         node = Node(line.text)
@@ -106,7 +55,7 @@ def build_list(reader: LineReader, source: str, prompts: bool) -> Node | None:
             tail.next = node
         tail = node
         prompt(prompts, ANSWER_PROMPT)
-        line = reader.read_line()
+        line = read_trimmed(reader)
         if line is None or parse_int_token(line, source, 0, 1) == 0:
             tail.next = None
             return head
@@ -129,7 +78,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        head = build_list(LineReader(stream), source, bool(parsed.values.get("prompt")))
+        head = build_list(InputStream(stream), source, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

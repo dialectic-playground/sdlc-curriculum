@@ -9,55 +9,12 @@ a trailing run of 0x1A bytes is ignored (CONV-37).
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO, Callable, Iterator
+from typing import Callable
 
 from . import common
-from .common import (PROMPT, WHITESPACE, DataError, Token, UsageError, data_failure,
-                     file_failure, handle_action, open_input, parse_args, prompt,
+from .common import (PROMPT, DataError, InputError, InputStream, Token, UsageError,
+                     data_failure, file_failure, handle_action, open_input, parse_args, prompt,
                      usage_failure)
-
-CHUNK_SIZE = 64 * 1024
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-def _read(handle: BinaryIO) -> bytes:
-    try:
-        return handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-    except OSError as error:
-        raise InputError(error) from error
-
-
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end."""
-    line = 1
-    token_line = 1
-    current = bytearray()
-    while True:
-        chunk = _read(handle)
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    # Only the last token can end in a run of 0x1A bytes that reaches the end of the input.
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
 
 
 def run_tool(argv: list[str], tool: str, help_text: str, prompt_text: str,
@@ -84,10 +41,10 @@ def run_tool(argv: list[str], tool: str, help_text: str, prompt_text: str,
         file_failure(tool, source, error)
         return 1
     try:
-        tokens = stream_tokens(handle)
+        stream = InputStream(handle)
         while True:
             prompt(prompting, prompt_text)
-            token = next(tokens, None)
+            token = stream.token()
             if token is None:
                 return 0
             answer(token, source)

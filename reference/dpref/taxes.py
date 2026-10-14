@@ -6,17 +6,14 @@ output flushed, as soon as the income's token is complete: the tool works intera
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
 from ._taxes_rule import MAX_INCOME, record
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
                      data_failure, file_failure, handle_action, open_input, parse_args,
                      parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-taxes"
 PROMPT_TEXT = "Enter income: "
-CHUNK_SIZE = 64 * 1024
 HELP_TEXT = """\
 Usage: dp-taxes [OPTION]... [FILE]
 Compute the progressive income tax for each income in FILE.
@@ -34,41 +31,6 @@ Options:
 """
 
 OPTIONS: list[Option] = [PROMPT]
-
-
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end."""
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    # A run of 0x1A bytes reaching the end of the input is ignored (CONV-37). Only the last
-    # token can contain it, because the run must not be followed by any other byte.
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
-
-
-class _WriteFailure(Exception):
-    """Carries a standard-output failure past the input-error handler to common.run."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
 
 
 def main(argv: list[str]) -> int:
@@ -89,24 +51,19 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        tokens = stream_tokens(handle)
+        stream = InputStream(handle)
         while True:
             prompt(prompting, PROMPT_TEXT)
-            token = next(tokens, None)
+            token = stream.token()
             if token is None:
                 return 0
             income = parse_int_token(token, source, 0, MAX_INCOME)
-            try:
-                common.write(record(income))
-                common.out.flush()
-            except OSError as error:
-                raise _WriteFailure(error) from error
+            common.write(record(income))  # write errors reach common.run (CONV-25)
+            common.out.flush()
     except DataError as error:
         return data_failure(TOOL, error)
-    except _WriteFailure as failure:
-        raise failure.error from None  # common.run: CONV-25 or `write error`
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

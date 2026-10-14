@@ -8,10 +8,9 @@ from __future__ import annotations
 
 import math
 
-from ._token_stream import stream_tokens
-from .common import (DataError, Option, UsageError, data_failure, file_failure, fix,
-                     handle_action, open_input, parse_args, parse_real_token, usage_failure,
-                     write)
+from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
+                     file_failure, fix, handle_action, open_input, parse_args,
+                     parse_real_token, usage_failure, write)
 
 TOOL = "dp-average"
 HELP_TEXT = """\
@@ -50,7 +49,8 @@ def main(argv: list[str]) -> int:
     count = 0
     total = 0.0
     try:
-        for token in stream_tokens(handle):
+        stream = InputStream(handle)
+        while (token := stream.token()) is not None:
             x = parse_real_token(token, source)
             if x > 0.0:
                 total = total + x
@@ -60,8 +60,8 @@ def main(argv: list[str]) -> int:
                                     b"arithmetic overflow at '" + token.text + b"'")
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

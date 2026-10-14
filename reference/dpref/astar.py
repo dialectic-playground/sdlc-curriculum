@@ -9,8 +9,8 @@ from __future__ import annotations
 import sys
 
 from . import common
-from .common import (PROMPT, WHITESPACE, DataError, Option, Token, UsageError, data_failure,
-                     file_failure, handle_action, invalid_argument, parse_args,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
+                     data_failure, file_failure, handle_action, invalid_argument, parse_args,
                      parse_int_token, prompt, read_all, strip_eof_marker, tokenize,
                      unexpected_end, usage_failure)
 
@@ -92,33 +92,6 @@ def parse_distances(data: bytes, source: str, count: int) -> list[list[int]]:
         extra = tokens[needed]
         raise DataError(source, extra.line, b"unexpected token '" + extra.text + b"'")
     return [values[row * count:(row + 1) * count] for row in range(count)]
-
-
-def read_start_token() -> tuple[Token | None, int]:
-    """The first token of standard input, read no further than needed (CONV-32, CONV-37).
-
-    Returns the token (None at the end of the input) and the line number reached.
-    """
-    handle = sys.stdin.buffer
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(65536)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    return Token(bytes(current), token_line), line
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    text = bytes(current).rstrip(b"\x1a")
-    return (Token(text, token_line) if text else None), line
 
 
 def display(name: bytes) -> bytes:
@@ -227,13 +200,14 @@ def main(argv: list[str]) -> int:
             return 1
     else:
         prompt(bool(parsed.values.get("prompt")), PROMPT_TEXT)
+        stream = InputStream(sys.stdin.buffer)  # read no further than the first token
         try:
-            token, line = read_start_token()
-        except OSError as error:
-            file_failure(TOOL, "-", error)
+            token = stream.require("-")
+        except InputError as error:
+            file_failure(TOOL, "-", error.error)
             return 1
-        if token is None:
-            return data_failure(TOOL, DataError("-", line, "unexpected end of input"))
+        except DataError as error:
+            return data_failure(TOOL, error)
         start = index.get(fold(token.text))
         if start is None:
             return data_failure(TOOL, DataError(

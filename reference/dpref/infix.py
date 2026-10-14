@@ -9,11 +9,10 @@ bad answer ends it.
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
-from .common import (PROMPT, DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, open_input, parse_args, prompt, usage_failure)
+from .common import (PROMPT, DataError, InputError, InputStream, Option, Token, UsageError,
+                     data_failure, file_failure, handle_action, open_input, parse_args, prompt,
+                     usage_failure)
 
 TOOL = "dp-infix"
 EXPRESSION_PROMPT = "Enter infix expression: "
@@ -48,23 +47,12 @@ class ExpressionError(Exception):
         self.message = message
 
 
-def read_lines(handle: BinaryIO) -> Iterator[tuple[bytes, int]]:
-    """Yield (line without LF and final CR, line number) one line at a time (CONV-37)."""
-    number = 0
-    while True:
-        line = handle.readline()
-        if not line:
-            return
-        number += 1
-        if line.endswith(b"\n"):
-            line = line[:-1]
-        else:  # the unterminated last line: a trailing 0x1A run is not data
-            line = line.rstrip(b"\x1a")
-            if not line:
-                return
-        if line.endswith(b"\r"):
-            line = line[:-1]
-        yield line, number
+def read_line(lines: InputStream) -> Token | None:
+    """The next line without its LF and final CR, as soon as it is complete (CONV-37)."""
+    line = lines.read_line()
+    if line is not None and line.text.endswith(b"\r"):
+        line = Token(line.text[:-1], line.line)
+    return line
 
 
 def is_operand_byte(byte: int) -> bool:
@@ -141,30 +129,28 @@ def record(expression: bytes, postfix: list[bytes]) -> bytes:
             + b"Postfix: " + b" ".join(postfix) + b"\n")
 
 
-def session(lines: Iterator[tuple[bytes, int]], source: str, prompting: bool) -> int:
+def session(lines: InputStream, source: str, prompting: bool) -> int:
     status = 0
     while True:
         prompt(prompting, EXPRESSION_PROMPT)
-        item = next(lines, None)
-        if item is None:
+        line = read_line(lines)
+        if line is None:
             return status
-        expression, number = item
         try:
-            common.write(record(expression, to_postfix(expression)))
+            common.write(record(line.text, to_postfix(line.text)))
             common.out.flush()
         except ExpressionError as error:
-            data_failure(TOOL, DataError(source, number, error.message))
+            data_failure(TOOL, DataError(source, line.line, error.message))
             status = 1
         prompt(prompting, ANSWER_PROMPT)
-        item = next(lines, None)
-        if item is None:
+        line = read_line(lines)
+        if line is None:
             return status
-        answer, number = item
-        word = answer.strip(BLANKS)
+        word = line.text.strip(BLANKS)
         if word in (b"n", b"N"):
             return status
         if word not in (b"y", b"Y"):
-            raise DataError(source, number, b"invalid answer '" + word + b"'")
+            raise DataError(source, line.line, b"invalid answer '" + word + b"'")
 
 
 def main(argv: list[str]) -> int:
@@ -184,13 +170,11 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        return session(read_lines(handle), source, bool(parsed.values.get("prompt")))
+        return session(InputStream(handle), source, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
-    except BrokenPipeError:
-        raise
-    except OSError as error:  # the input could not be read
-        file_failure(TOOL, source, error)
+    except InputError as error:
+        file_failure(TOOL, source, error.error)
         return 1
     finally:
         if source != "-":

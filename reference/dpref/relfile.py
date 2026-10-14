@@ -14,8 +14,8 @@ import sys
 from dataclasses import dataclass
 
 from . import common
-from .common import (PROMPT, Option, UsageError, handle_action, invalid_argument, parse_args,
-                     prompt, usage_failure)
+from .common import (PROMPT, InputStream, Option, UsageError, handle_action, invalid_argument,
+                     parse_args, prompt, usage_failure)
 
 TOOL = "dp-relfile"
 DEFAULT_FILE = "relative.dat"
@@ -105,18 +105,28 @@ class Located:
     insert: int | None  # slot an add would use (first tombstone or the free slot), if any
 
 
+class RelativeFileError(Exception):
+    """An I/O failure on the relative file itself, kept apart from standard-output failures."""
+
+
 class RelativeFile:
     def __init__(self, handle):
         self.handle = handle
 
     def read_record(self, slot: int) -> bytes:
-        self.handle.seek(slot * RECORD_SIZE)
-        return self.handle.read(RECORD_SIZE)
+        try:
+            self.handle.seek(slot * RECORD_SIZE)
+            return self.handle.read(RECORD_SIZE)
+        except OSError as error:
+            raise RelativeFileError() from error
 
     def write(self, slot: int, data: bytes) -> None:
-        self.handle.seek(slot * RECORD_SIZE)
-        self.handle.write(data)
-        self.handle.flush()
+        try:
+            self.handle.seek(slot * RECORD_SIZE)
+            self.handle.write(data)
+            self.handle.flush()
+        except OSError as error:
+            raise RelativeFileError() from error
 
     def locate(self, key: bytes) -> Located:
         first_tombstone = None
@@ -206,29 +216,20 @@ class Dialog:
     def __init__(self, session: Session, prompting: bool):
         self.session = session
         self.prompting = prompting
-        self.stream = sys.stdin.buffer
+        self.stream = InputStream(sys.stdin.buffer)
         self.line = 0  # line number of the last response read
-        self.line_feeds = 0  # LF bytes read so far
-        self.at_end = False
 
     def read_response(self, text: str) -> bytes | None:
         """Prompt, then read one line without its LF and one CR before it; None at the end."""
         prompt(self.prompting, text)
-        if self.at_end:
-            return None
         try:
-            raw = self.stream.readline()
-        except OSError:
+            response = self.stream.read_line()
+        except common.InputError:
             raise StdinError() from None
-        if raw.endswith(b"\n"):
-            self.line_feeds += 1
-            raw = raw[:-1]
-        else:
-            self.at_end = True
-            raw = raw.rstrip(b"\x1a")  # CONV-37: a trailing Ctrl-Z run is not a line
-            if not raw:
-                return None
-        self.line = self.line_feeds + (1 if self.at_end else 0)
+        if response is None:
+            return None
+        self.line = response.line
+        raw = response.text
         return raw[:-1] if raw.endswith(b"\r") else raw
 
     def data_error(self, line: int, message: bytes) -> int:
@@ -255,13 +256,13 @@ class Dialog:
             try:
                 key = self.read_response(KEY_PROMPT)
                 if key is None:
-                    return self.data_error(self.line_feeds + 1, b"unexpected end of input")
+                    return self.data_error(self.stream.line, b"unexpected end of input")
                 key = check_key(key.strip(b" \t"))
                 data = b""
                 if choice == b"1":
                     data = self.read_response(DATA_PROMPT)
                     if data is None:
-                        return self.data_error(self.line_feeds + 1, b"unexpected end of input")
+                        return self.data_error(self.stream.line, b"unexpected end of input")
                     data = check_data(data)
             except InputError as error:
                 return self.data_error(self.line, error.args[0])
@@ -343,6 +344,6 @@ def main(argv: list[str]) -> int:
             else:
                 session.slots()
             return 1 if session.failed else 0
-    except OSError:
+    except RelativeFileError:
         common.diagnose(TOOL, f"{path}: Input/output error")
         return 1

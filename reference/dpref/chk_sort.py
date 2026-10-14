@@ -8,9 +8,9 @@ failure exits with status 2, like ``sort -c`` (SRS-17 section 3.7).
 from __future__ import annotations
 
 from . import common
-from ._token_stream import stream_tokens
-from .common import (DataError, Option, UsageError, data_failure, diagnose, file_failure,
-                     handle_action, open_input, parse_args, parse_int_token, usage_failure)
+from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
+                     diagnose, file_failure, handle_action, open_input, parse_args,
+                     parse_int_token, usage_failure)
 
 TOOL = "dp-chk-sort"
 TROUBLE = 2
@@ -35,7 +35,8 @@ OPTIONS: list[Option] = []
 def check(handle, source: str) -> bool:
     """True if the tokens are non-decreasing; stops at the first inversion."""
     previous = None
-    for token in stream_tokens(handle):
+    stream = InputStream(handle)
+    while (token := stream.token()) is not None:
         value = parse_int_token(token, source)
         if previous is not None and value < previous:
             return False
@@ -64,8 +65,8 @@ def main(argv: list[str]) -> int:
     except DataError as error:
         data_failure(TOOL, error)
         return TROUBLE
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return TROUBLE
     finally:
         if source != "-":

@@ -8,10 +8,9 @@ CONV-38 generator: each roll draws the first die, then the second.
 from __future__ import annotations
 
 from . import common
-from ._dialog import TokenStream
-from .common import (PROMPT, AnsiRand, DataError, Option, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, parse_seed, prompt, usage_failure)
+from .common import (PROMPT, AnsiRand, DataError, InputError, InputStream, Option,
+                     UsageError, data_failure, file_failure, handle_action, open_input,
+                     parse_args, parse_int_token, parse_seed, prompt, usage_failure)
 
 TOOL = "dp-dice"
 PLAY_PROMPT = "Want to play? (1: yes, 0: no) "
@@ -55,14 +54,11 @@ def say(text: str) -> None:
     common.write(text + "\n")
 
 
-def read_bet(tokens: TokenStream, source: str, prompting: bool, bankroll: int) -> int:
+def read_bet(tokens: InputStream, source: str, prompting: bool, bankroll: int) -> int:
     while True:
         common.out.flush()
         prompt(prompting, BET_PROMPT)
-        token = tokens.next()
-        if token is None:
-            raise tokens.unexpected_end(source)
-        bet = parse_int_token(token, source)
+        bet = parse_int_token(tokens.require(source), source)
         if bet < 1:
             say("Bet refused: the minimum bet is $1.")
         elif bet > LIMIT:
@@ -92,13 +88,13 @@ def play_round(dice: Dice, bet: int) -> int:
             return -bet
 
 
-def game(tokens: TokenStream, source: str, prompting: bool, dice: Dice) -> int:
+def game(tokens: InputStream, source: str, prompting: bool, dice: Dice) -> int:
     bankroll = NEST_EGG
     say(f"Your bankroll is ${bankroll}.")
     while True:
         common.out.flush()
         prompt(prompting, PLAY_PROMPT)
-        token = tokens.next()
+        token = tokens.token()
         if token is None or parse_int_token(token, source, 0, 1) == 0:
             break
         bet = read_bet(tokens, source, prompting, bankroll)
@@ -130,14 +126,14 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        return game(TokenStream(handle), source, bool(parsed.values.get("prompt")),
+        return game(InputStream(handle), source, bool(parsed.values.get("prompt")),
                     Dice(seed))
     except DataError as error:
         common.out.flush()
         return data_failure(TOOL, error)
-    except OSError as error:
+    except InputError as failure:
         common.out.flush()
-        file_failure(TOOL, source, error)
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

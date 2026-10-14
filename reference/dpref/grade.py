@@ -8,9 +8,8 @@ back until the next byte shows whether it reaches the end of the input (CONV-37)
 from __future__ import annotations
 
 import sys
-from typing import BinaryIO
 
-from .common import (PROMPT, WHITESPACE, DataError, Token, UsageError, data_failure,
+from .common import (PROMPT, DataError, InputError, InputStream, UsageError, data_failure,
                      file_failure, fix, handle_action, open_input, out, parse_args,
                      parse_int_token, parse_real_token, prompt, usage_failure, write)
 
@@ -35,74 +34,6 @@ ANSWER_PROMPT = "Compute another grade (1 = Yes, 0 = No)? "
 RECORD_PROMPT = "Enter mid term, final, weight: "
 MIN_SCORE, MAX_SCORE = 0, 10
 PASS_THOUSANDTHS = 7000  # an average of 7 in thousandths of a point
-CTRL_Z = b"\x1a"
-
-
-class InputError(Exception):
-    """A read failure on the input (as opposed to a write failure on standard output)."""
-
-    def __init__(self, error: OSError):
-        super().__init__(error)
-        self.error = error
-
-
-class TokenReader:
-    """CONV-32 tokens read one byte at a time, with CONV-37 applied on the fly."""
-
-    def __init__(self, stream: BinaryIO):
-        self.stream = stream
-        self.pushback = b""
-        self.line = 1  # 1 + LF bytes consumed so far
-
-    def _raw(self) -> bytes:
-        if self.pushback:
-            byte, self.pushback = self.pushback[:1], self.pushback[1:]
-            return byte
-        try:
-            return self.stream.read(1)
-        except OSError as error:
-            raise InputError(error) from error
-
-    def _byte(self) -> bytes:
-        byte = self._raw()
-        if byte != CTRL_Z:
-            return byte
-        run = byte
-        while True:
-            following = self._raw()
-            if following == b"":
-                return b""  # the run reaches the end of input: ignored
-            if following != CTRL_Z:
-                self.pushback = run[1:] + following + self.pushback
-                return CTRL_Z
-            run += following
-
-    def token(self) -> Token | None:
-        """The next token, or None at the end of input."""
-        byte = self._byte()
-        while byte and byte in WHITESPACE:
-            if byte == b"\n":
-                self.line += 1
-            byte = self._byte()
-        if not byte:
-            return None
-        start_line, text = self.line, byte
-        while True:
-            byte = self._byte()
-            if not byte:
-                break
-            if byte in WHITESPACE:
-                if byte == b"\n":
-                    self.line += 1
-                break
-            text += byte
-        return Token(text, start_line)
-
-    def require(self, source: str) -> Token:
-        token = self.token()
-        if token is None:
-            raise DataError(source, self.line, "unexpected end of input")
-        return token
 
 
 def weight_thousandths(weight: float) -> int:
@@ -116,7 +47,7 @@ def grade(mid_term: int, final: int, thousandths: int) -> str:
     return "P" if average > PASS_THOUSANDTHS else "F"
 
 
-def session(reader: TokenReader, source: str, prompts: bool) -> None:
+def session(reader: InputStream, source: str, prompts: bool) -> None:
     while True:
         prompt(prompts, ANSWER_PROMPT)
         token = reader.token()
@@ -152,7 +83,7 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(TokenReader(stream), source, bool(parsed.values.get("prompt")))
+        session(InputStream(stream), source, bool(parsed.values.get("prompt")))
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

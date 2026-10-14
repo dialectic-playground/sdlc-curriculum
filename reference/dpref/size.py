@@ -13,8 +13,8 @@ import os
 import sys
 
 from . import common
-from .common import (PROMPT, Option, UsageError, encode_arg, handle_action, invalid_argument,
-                     parse_args, prompt, usage_failure)
+from .common import (PROMPT, InputError, InputStream, Option, UsageError, encode_arg,
+                     handle_action, invalid_argument, parse_args, prompt, usage_failure)
 
 TOOL = "dp-size"
 DEFAULT_EXTENSION = ".c"
@@ -48,7 +48,7 @@ class Session:
         self.extension = extension
         self.prompting = prompting
         self.failed = False
-        self.stdin_line = 0  # lines of standard input consumed so far
+        self.stdin: InputStream | None = None  # opened by the first read of names (FR-01)
 
     def measure(self, name: bytes) -> None:
         path = name + self.extension
@@ -92,33 +92,25 @@ class Session:
         common.err.write(f"{TOOL}: -:{line}: {message}\n".encode())
 
     def read_stdin_names(self) -> None:
-        stream = sys.stdin.buffer
+        if self.stdin is None:
+            self.stdin = InputStream(sys.stdin.buffer)
         while True:
             prompt(self.prompting, PROMPT_TEXT)
             try:
-                raw = stream.readline()
-            except OSError:
+                line = self.stdin.read_line()
+            except InputError:
                 self.failed = True
                 common.diagnose(TOOL, "-: Input/output error")
                 return
-            if not raw:
+            if line is None:
                 return
-            self.stdin_line += 1
-            if raw.endswith(b"\n"):
-                name = raw[:-1]
-            else:
-                name = raw.rstrip(b"\x1a")  # CONV-37: trailing Ctrl-Z run at end of input
-                if not name:
-                    return
-            if name.endswith(b"\r"):
-                name = name[:-1]
+            name = line.text[:-1] if line.text.endswith(b"\r") else line.text
             if not name:
-                self.fail_line(self.stdin_line, "empty file name")
+                self.fail_line(line.line, "empty file name")
             elif b"\x00" in name:
-                self.fail_line(self.stdin_line, "file name contains a NUL byte")
+                self.fail_line(line.line, "file name contains a NUL byte")
             else:
                 self.measure(name)
-
 
 def main(argv: list[str]) -> int:
     try:

@@ -6,17 +6,14 @@ tool answers as soon as n has been typed, without waiting for the end of the inp
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
                      data_failure, file_failure, handle_action, open_input, parse_args,
                      parse_int_token, prompt, usage_failure)
 
 TOOL = "dp-primes"
 MAX_N = 10_000_000
 PROMPT_TEXT = "\tThis program lists all primes <= n\n\nInput n: "
-CHUNK_SIZE = 64 * 1024
 HELP_TEXT = """\
 Usage: dp-primes [OPTION]... [FILE]
 List every prime number less than or equal to n.
@@ -36,33 +33,6 @@ Options:
 """
 
 OPTIONS: list[Option] = [Option("count", short="c", long="count"), PROMPT]
-
-
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end."""
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
-    else:
-        yield Token(b"", line)  # end of input; the line is the end-of-input line number
 
 
 def primes_up_to(n: int) -> list[int]:
@@ -105,14 +75,12 @@ def main(argv: list[str]) -> int:
         return 1
     try:
         prompt(bool(parsed.values.get("prompt")), PROMPT_TEXT)
-        token = next(stream_tokens(handle))
-        if not token.text:
-            raise DataError(source, token.line, "unexpected end of input")
+        token = InputStream(handle).require(source)
         n = parse_int_token(token, source, maximum=MAX_N)
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":

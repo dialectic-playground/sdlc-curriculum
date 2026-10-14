@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from . import common
 from ._parallel_sort_worker import read_request, reply_lines, selection_sort
-from .common import (DataError, Option, UsageError, data_failure, file_failure, handle_action,
-                     open_input, parse_args, usage_failure)
+from .common import (DataError, InputError, Option, UsageError, data_failure, file_failure,
+                     handle_action, open_input, parse_args, usage_failure)
 
 TOOL = "dp-sort-child"
 HELP_TEXT = """\
@@ -45,8 +45,8 @@ def main(argv: list[str]) -> int:
         values = read_request(handle, source)
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as error:
+        file_failure(TOOL, source, error.error)
         return 1
     finally:
         if source != "-":

@@ -6,10 +6,8 @@ output flushed, as soon as the length's token is complete; nothing after the sen
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
-
 from . import common
-from .common import (PROMPT, DataError, Option, Token, UsageError, WHITESPACE,
+from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
                      data_failure, file_failure, handle_action, open_input, parse_args,
                      parse_int_token, prompt, usage_failure)
 
@@ -19,7 +17,6 @@ END_BANNER = b"*** END OF PROGRAM ***\n"
 FEET_PER_YARD = 3
 INCHES_PER_YARD = 36
 MAX_YARDS = (2 ** 63 - 1) // INCHES_PER_YARD  # 256204778801521550
-CHUNK_SIZE = 64 * 1024
 HELP_TEXT = """\
 Usage: dp-convert [OPTION]... [FILE]
 Convert lengths in yards to feet and inches.
@@ -37,44 +34,6 @@ Options:
 """
 
 OPTIONS: list[Option] = [PROMPT]
-
-
-class EndOfInput(Exception):
-    """The input ended before the sentinel; carries the end-of-input line number."""
-
-    def __init__(self, line: int):
-        super().__init__(line)
-        self.line = line
-
-
-def stream_tokens(handle: BinaryIO) -> Iterator[Token]:
-    """Yield CONV-32 tokens as soon as each is complete; CONV-37 applies at the end.
-
-    When the input is exhausted, raises EndOfInput with the end-of-input line number.
-    """
-    line = 1
-    current = bytearray()
-    token_line = 1
-    while True:
-        chunk = handle.read1(CHUNK_SIZE)  # type: ignore[attr-defined]
-        if not chunk:
-            break
-        for byte in chunk:
-            if byte in WHITESPACE:
-                if current:
-                    yield Token(bytes(current), token_line)
-                    current.clear()
-                if byte == 0x0A:
-                    line += 1
-            else:
-                if not current:
-                    token_line = line
-                current.append(byte)
-    # A trailing run of 0x1A bytes contains no LF, so it never changes the line count.
-    text = bytes(current).rstrip(b"\x1a")
-    if text:
-        yield Token(text, token_line)
-    raise EndOfInput(line)
 
 
 def block(yards: int) -> bytes:
@@ -102,13 +61,10 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        tokens = stream_tokens(handle)
+        stream = InputStream(handle)
         while True:
             prompt(prompting, PROMPT_TEXT)
-            try:
-                token = next(tokens)
-            except EndOfInput as end:
-                raise DataError(source, end.line, "unexpected end of input") from None
+            token = stream.require(source)
             yards = parse_int_token(token, source)
             if yards < 0:
                 common.write(END_BANNER)
@@ -120,8 +76,8 @@ def main(argv: list[str]) -> int:
             common.out.flush()
     except DataError as error:
         return data_failure(TOOL, error)
-    except OSError as error:
-        file_failure(TOOL, source, error)
+    except InputError as failure:
+        file_failure(TOOL, source, failure.error)
         return 1
     finally:
         if source != "-":
