@@ -10,9 +10,23 @@ from __future__ import annotations
 import math
 
 from . import common
-from .common import (DataError, Option, Token, UsageError, data_failure, file_failure, gen,
-                     handle_action, parse_args, parse_int_token, parse_real_token, read_all,
-                     strip_eof_marker, tokenize, usage_failure)
+from .common import (
+    DataError,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    gen,
+    handle_action,
+    parse_args,
+    parse_int_token,
+    parse_real_token,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    usage_failure,
+)
 
 TOOL = "dp-ship"
 PRECISION = 6
@@ -52,8 +66,14 @@ ARITY = {b"adjust": (2,), b"print": (1,), b"trip": (1,), b"new": (1, 6)}
 class Spacecraft:
     """A spacecraft whose state is reachable only through its operations."""
 
-    def __init__(self, mass: float = 0.0, velocity: float = 0.0, distance: float = 0.0,
-                 capacity: int = 0, name: bytes = b"???"):
+    def __init__(
+        self,
+        mass: float = 0.0,
+        velocity: float = 0.0,
+        distance: float = 0.0,
+        capacity: int = 0,
+        name: bytes = b"???",
+    ):
         self._mass = mass
         self._velocity = velocity
         self._distance = distance
@@ -96,17 +116,27 @@ class Spacecraft:
         return hours if math.isfinite(hours) else None
 
     def basics(self) -> bytes:
-        return (self._name + f" has a mass of {gen(self._mass, PRECISION)}\n"
-                f"and a velocity of {gen(self._velocity, PRECISION)} and holds "
-                f"{self._capacity} astronauts for a trip of "
-                f"{gen(self._distance, PRECISION)} kilometers.\n\n".encode())
+        return (
+            self._name
+            + f" has a mass of {gen(self._mass, PRECISION)}\n"
+            f"and a velocity of {gen(self._velocity, PRECISION)} and holds "
+            f"{self._capacity} astronauts for a trip of "
+            f"{gen(self._distance, PRECISION)} kilometers.\n\n".encode()
+        )
 
     def trip_report(self) -> bytes:
         hours = self.trip_time()
         if hours is None:
-            return self._name + (" cannot make the trip at a velocity of "
-                                 f"{gen(self._velocity, PRECISION)}.\n").encode()
-        return self._name + f" requires {gen(hours, PRECISION)} hours for trip.\n".encode()
+            return (
+                self._name
+                + (
+                    " cannot make the trip at a velocity of "
+                    f"{gen(self._velocity, PRECISION)}.\n"
+                ).encode()
+            )
+        return (
+            self._name + f" requires {gen(hours, PRECISION)} hours for trip.\n".encode()
+        )
 
 
 def non_negative_real(token: Token, source: str) -> float:
@@ -123,7 +153,9 @@ def execute(fields: list[Token], ships: dict[bytes, Spacecraft], source: str) ->
     if arity is None:
         raise DataError(source, line, b"unknown command '" + command.text + b"'")
     if len(arguments) > max(arity):
-        raise DataError(source, line, b"extra argument '" + arguments[max(arity)].text + b"'")
+        raise DataError(
+            source, line, b"extra argument '" + arguments[max(arity)].text + b"'"
+        )
     if len(arguments) not in arity:
         raise DataError(source, line, b"missing argument for '" + command.text + b"'")
     ident = arguments[0].text
@@ -133,7 +165,9 @@ def execute(fields: list[Token], ships: dict[bytes, Spacecraft], source: str) ->
         if len(arguments) == 1:
             ships[ident] = Spacecraft()
             return
-        mass, velocity, distance = (non_negative_real(t, source) for t in arguments[1:4])
+        mass, velocity, distance = (
+            non_negative_real(t, source) for t in arguments[1:4]
+        )
         capacity = parse_int_token(arguments[4], source, 0)
         ships[ident] = Spacecraft(mass, velocity, distance, capacity, arguments[5].text)
         return
@@ -143,8 +177,9 @@ def execute(fields: list[Token], ships: dict[bytes, Spacecraft], source: str) ->
     if command.text == b"adjust":
         difference = parse_real_token(arguments[1], source)
         if not ship.adjust_velocity(difference):
-            raise DataError(source, line,
-                            b"value out of range '" + arguments[1].text + b"'")
+            raise DataError(
+                source, line, b"value out of range '" + arguments[1].text + b"'"
+            )
     elif command.text == b"print":
         common.write(ship.basics())
     else:

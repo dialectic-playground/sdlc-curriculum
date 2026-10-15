@@ -10,8 +10,16 @@ from __future__ import annotations
 import time
 
 from . import common
-from .common import (AnsiRand, Option, UsageError, handle_action, invalid_argument,
-                     parse_args, parse_seed, usage_failure)
+from .common import (
+    AnsiRand,
+    Option,
+    UsageError,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_seed,
+    usage_failure,
+)
 
 TOOL = "dp-sort-bench"
 DEFAULT_SIZES = (1000, 2000, 4000)
@@ -103,8 +111,11 @@ def main(argv: list[str]) -> int:
         parsed = parse_args(argv, OPTIONS)
         if handle_action(TOOL, parsed, HELP_TEXT):
             return 0
-        sizes = (parse_sizes(str(parsed.values["sizes"]), parsed.spelled["sizes"])
-                 if "sizes" in parsed.values else list(DEFAULT_SIZES))
+        sizes = (
+            parse_sizes(str(parsed.values["sizes"]), parsed.spelled["sizes"])
+            if "sizes" in parsed.values
+            else list(DEFAULT_SIZES)
+        )
         seed = parse_seed(parsed)
         if parsed.operands:
             raise UsageError(f"extra operand '{parsed.operands[0]}'")

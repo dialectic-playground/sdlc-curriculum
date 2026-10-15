@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 07 — Line-by-Line File Comparison (`dp-diff`)](#project-07--line-by-line-file-comparison-dp-diff)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 07 — Line-by-Line File Comparison (`dp-diff`)
 
 > Compare two files line by line and print the differences in normal or unified format, with
@@ -17,20 +33,20 @@ control over CRLF versus LF line endings.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Line-by-line comparison of two files, or a file and stdin (`-`) | Directory comparison |
-| Canonical shortest edit script (LCS-based definition) | Whitespace/case-insensitive comparison |
-| Normal format (`NaM`, `NdM`, `NcM`) | Context (`-c`) and side-by-side formats |
-| Unified format (`-u`, `-U NUM`, `--unified[=NUM]`) with hunk merging | Timestamps in headers, colors |
-| `\ No newline at end of file` markers | Binary-file detection |
-| `-q` / `--brief`, `--strip-trailing-cr` | Applying patches |
-| Exit status 0 / 1 / 2 (same / different / trouble) | Heuristics that give up minimality |
+| In scope                                                             | Out of scope                            |
+| :------------------------------------------------------------------- | :-------------------------------------- |
+| Line-by-line comparison of two files, or a file and stdin (`-`)      | Directory comparison                    |
+| Canonical shortest edit script (LCS-based definition)                | Whitespace/case-insensitive comparison  |
+| Normal format (`NaM`, `NdM`, `NcM`)                                  | Context (`-c`) and side-by-side formats |
+| Unified format (`-u`, `-U NUM`, `--unified[=NUM]`) with hunk merging | Timestamps in headers, colors           |
+| `\ No newline at end of file` markers                                | Binary-file detection                   |
+| `-q` / `--brief`, `--strip-trailing-cr`                              | Applying patches                        |
+| Exit status 0 / 1 / 2 (same / different / trouble)                   | Heuristics that give up minimality      |
 
 ## Learning objectives
 
 1. Implement the longest-common-subsequence recurrence and derive an edit script from it.
-2. Understand why an *underspecified* output ("any shortest diff") cannot be tested byte for
+2. Understand why an _underspecified_ output ("any shortest diff") cannot be tested byte for
    byte, and how a mathematical definition with explicit tie-breaking fixes that.
 3. Optionally, implement Myers' algorithm (or another fast method) and prove that it produces
    exactly the canonical script — and learn why tempting shortcuts such as common-suffix
@@ -42,14 +58,14 @@ control over CRLF versus LF line endings.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-19, NFR-01 … NFR-10), canonical edit script definition |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs and fixture files |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                               |
+| :--------------------- | :------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                      |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-19, NFR-01 … NFR-10), canonical edit script definition |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs and fixture files               |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                   |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates    |
 
 ## What you deliver (in your language repository)
 
@@ -75,4 +91,4 @@ A good first milestone is the full L table of SRS FR-05 plus normal format (test
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, NFR-03 is met, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, NFR-03 is met, and every RTM row is _Verified_.

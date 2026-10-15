@@ -9,8 +9,18 @@ from __future__ import annotations
 import re
 
 from . import common
-from .common import (DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, parse_args, read_all, strip_eof_marker, usage_failure)
+from .common import (
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    parse_args,
+    read_all,
+    strip_eof_marker,
+    usage_failure,
+)
 
 TOOL = "dp-sched"
 LINE_SIZE = 10
@@ -60,8 +70,9 @@ def load_activities(data: bytes, source: str) -> list[tuple[int, int, bytes]]:
     for number, raw in enumerate(lines, start=1):
         text = raw[:-1] if raw.endswith(b"\r") else raw
         if len(text) != LINE_SIZE:
-            raise DataError(source, number,
-                            f"invalid line length {len(text)}, expected {LINE_SIZE}")
+            raise DataError(
+                source, number, f"invalid line length {len(text)}, expected {LINE_SIZE}"
+            )
         start = parse_field(text[:FIELD_SIZE], source, number, "start")
         finish = parse_field(text[FIELD_SIZE:], source, number, "finish")
         if finish <= start:
@@ -104,6 +115,8 @@ def main(argv: list[str]) -> int:
         activities = load_activities(data, source)
     except DataError as error:
         return data_failure(TOOL, error)
-    report = b"Optimal schedule:\n\n" + b"".join(text + b"\n" for text in select(activities))
+    report = b"Optimal schedule:\n\n" + b"".join(
+        text + b"\n" for text in select(activities)
+    )
     common.write(report)
     return 0

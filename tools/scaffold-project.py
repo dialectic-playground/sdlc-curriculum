@@ -45,7 +45,7 @@ def project_variables(project: dict[str, object]) -> dict[str, str]:
     return {
         "SLUG": str(project["slug"]),
         "TITLE": str(project["title"]),
-        "TOOLS": " ".join(str(t) for t in project["tools"]),  # type: ignore[attr-defined]
+        "TOOLS": " ".join(str(t) for t in project["tools"]),  # type: ignore
     }
 
 
@@ -72,14 +72,19 @@ def scaffold(project: dict[str, object], force: bool) -> list[str]:
 
 
 def main(argv: list[str]) -> int:
-    parser = argparse.ArgumentParser(description="Scaffold projects/<slug>/assignment/.")
+    parser = argparse.ArgumentParser(
+        description="Scaffold projects/<slug>/assignment/."
+    )
     parser.add_argument("slugs", nargs="*", help="project slugs (default: all)")
     parser.add_argument("--force", action="store_true", help="overwrite existing files")
     args = parser.parse_args(argv)
     projects = {str(p["slug"]): p for p in load_projects()}
     unknown = [slug for slug in args.slugs if slug not in projects]
     if unknown:
-        print(f"scaffold-project: unknown project(s): {', '.join(unknown)}", file=sys.stderr)
+        print(
+            f"scaffold-project: unknown project(s): {', '.join(unknown)}",
+            file=sys.stderr,
+        )
         return 2
     for slug in args.slugs or list(projects):
         print("\n".join(scaffold(projects[slug], args.force)))

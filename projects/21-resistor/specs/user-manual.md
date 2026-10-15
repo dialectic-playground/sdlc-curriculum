@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-resistor — User Manual](#dp-resistor--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The codes](#the-codes)
+    - [The resistance](#the-resistance)
+    - [Mistakes](#mistakes)
+    - [Ending the session](#ending-the-session)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-resistor — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-resistor` 1.0.0 |
-| Project | `21-resistor` — Resistor 3-Band Color Code Decoder |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-21), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                              |
+| :------------ | :------------------------------------------------- |
+| Product       | `dp-resistor` 1.0.0                                |
+| Project       | `21-resistor` — Resistor 3-Band Color Code Decoder |
+| Applies to    | Linux, macOS, Windows                              |
+| Specification | `SRS.md` (SRS-21), `shared/CLI-CONVENTIONS.md`     |
 
 ---
 
@@ -40,8 +68,8 @@ A     Gray    8
 W     White   9
 ```
 
-It then reads the codes of resistors from *FILE*, or from standard input when there is no
-*FILE* or *FILE* is `-`. For each resistor it reads the codes of its three bands and writes
+It then reads the codes of resistors from _FILE_, or from standard input when there is no
+_FILE_ or _FILE_ is `-`. For each resistor it reads the codes of its three bands and writes
 the resistance:
 
 ```text
@@ -64,11 +92,11 @@ The first two bands are the digits of a two-digit number and the third band is t
 ten it is multiplied by: yellow (4), violet (7), red (2) is 47 × 10² = 4700 ohms. The
 resistance is written with six decimals in the largest unit that keeps it at least 1:
 
-| Resistance | Written as | Example |
-| :-- | :-- | :-- |
-| below 1000 ohms | ohms | `R R B` → `22.000000 ohms` |
-| 1000 up to 999 999 ohms | kilo-ohms | `B N O` → `1.000000 kilo-ohms` |
-| 1 000 000 ohms and above | mega-ohms | `N B E` → `10.000000 mega-ohms` |
+| Resistance               | Written as | Example                         |
+| :----------------------- | :--------- | :------------------------------ |
+| below 1000 ohms          | ohms       | `R R B` → `22.000000 ohms`      |
+| 1000 up to 999 999 ohms  | kilo-ohms  | `B N O` → `1.000000 kilo-ohms`  |
+| 1 000 000 ohms and above | mega-ohms  | `N B E` → `10.000000 mega-ohms` |
 
 The smallest resistance is `B B B`, `0.000000 ohms`; the largest is `W W W`,
 `99000.000000 mega-ohms`. The values are exact.
@@ -115,7 +143,7 @@ guide and the resistances.
 
 **`-p`, `--prompt`**
 : Write `Enter the three color codes: ` to standard error before the codes of each resistor are
-  read, and `Decode another resistor (1 = yes, 0 = no)? ` before each answer is read.
+read, and `Decode another resistor (1 = yes, 0 = no)? ` before each answer is read.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -135,11 +163,11 @@ guide and the resistances.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the session ended normally and every code was valid (an empty input is fine), or help or version was printed |
-| 1 | A code was rejected, an answer was invalid, the input ended in the middle of a resistor, or the input could not be read |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                 |
+| :----- | :---------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the session ended normally and every code was valid (an empty input is fine), or help or version was printed   |
+| 1      | A code was rejected, an answer was invalid, the input ended in the middle of a resistor, or the input could not be read |
+| 2      | Usage error: an invalid option or more than one file                                                                    |
 
 ## DIAGNOSTICS
 
@@ -156,18 +184,18 @@ dp-resistor: invalid.txt:1: invalid color code 'Q'
 dp-resistor: invalid.txt:2: invalid color code 'YVR'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid color code 'K'` | Entry *K* on line *L* is not one of the letters in the guide (the session continues) | Type one letter per band, separated by spaces |
-| `S:L: invalid integer 'K'` | The answer *K* on line *L* is not a whole number | Answer `1` or `0` |
-| `S:L: value out of range 'K'` | The answer *K* on line *L* is a number other than 1 and 0 | Answer `1` or `0` |
-| `S:L: unexpected end of input` | The input ended after only one or two codes of a resistor | Give all three codes |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                                | Fix                                           |
+| :----------------------------- | :----------------------------------------------------------------------------------- | :-------------------------------------------- |
+| `S:L: invalid color code 'K'`  | Entry _K_ on line _L_ is not one of the letters in the guide (the session continues) | Type one letter per band, separated by spaces |
+| `S:L: invalid integer 'K'`     | The answer _K_ on line _L_ is not a whole number                                     | Answer `1` or `0`                             |
+| `S:L: value out of range 'K'`  | The answer _K_ on line _L_ is a number other than 1 and 0                            | Answer `1` or `0`                             |
+| `S:L: unexpected end of input` | The input ended after only one or two codes of a resistor                            | Give all three codes                          |
+| `F: No such file or directory` | _F_ does not exist                                                                   | Check the spelling and the current directory  |
+| `F: Permission denied`         | You may not read _F_                                                                 | Check the file's permissions                  |
+| `F: Is a directory`            | _F_ is a directory                                                                   | Name a file instead                           |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                      | Correct the path                              |
+| `F: Input/output error`        | Any other read failure                                                               | Check the device or file system               |
+| `write error`                  | The output could not be written (for example, the disk is full)                      | Free space or redirect the output elsewhere   |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -178,12 +206,12 @@ dp-resistor: extra operand 'mixed.txt'
 Try 'dp-resistor --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-resistor` once per file |
+| Message                                       | Cause                                                   | Fix                             |
+| :-------------------------------------------- | :------------------------------------------------------ | :------------------------------ |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                        |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full        |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                 |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-resistor` once per file |
 
 ## EXAMPLES
 

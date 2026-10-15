@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 46 — Shunting-Yard Infix to Postfix Conversion (`dp-infix`)](#project-46--shunting-yard-infix-to-postfix-conversion-dp-infix)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 46 — Shunting-Yard Infix to Postfix Conversion (`dp-infix`)
 
 > Convert arithmetic expressions from infix to postfix notation with an explicit operator
@@ -7,29 +23,29 @@
 
 ## Purpose
 
-Project 46 is adapted from §10.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 46 is adapted from §10.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads an infix expression, converts it to postfix (reverse Polish) notation with
 Dijkstra's shunting-yard algorithm, prints the result, and asks `Another? (y/n)`. The textbook
 version trusts its input: an unbalanced parenthesis or a stray operator produces a wrong answer
 or none. This project keeps the algorithm, the precedence table, and the report layout, and
 turns the program into a well-behaved command-line tool. The engineering focus is a stack-based
-converter that *validates* while it converts — every malformed expression is rejected with the
+converter that _validates_ while it converts — every malformed expression is rejected with the
 first error found, scanning left to right — and an interactive dialog that reads the same
 sequence of answers from a keyboard, a pipe, or a file.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Operands that are runs of ASCII letters and digits (`A`, `x1`, `40`) | Unary operators, functions, exponentiation, real-number syntax |
-| Operators `+ - * / %` (left-associative, `* / %` before `+ -`) and parentheses | Evaluating the expression |
-| One expression per line, alternating with `y`/`n` answers to `Another? (y/n)` | Several expressions on one line |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files, writing files |
-| `Infix:` / `Postfix:` report with single-space-separated postfix tokens | Other output notations (prefix, trees) |
-| Diagnostics for malformed expressions (the dialog continues) and bad answers (it stops) | Error recovery inside an expression |
-| Optional prompts on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| `--help`, `--version`, CONV-13 usage errors, CONV-16 file errors | Configuration files, environment variables |
+| In scope                                                                                | Out of scope                                                   |
+| :-------------------------------------------------------------------------------------- | :------------------------------------------------------------- |
+| Operands that are runs of ASCII letters and digits (`A`, `x1`, `40`)                    | Unary operators, functions, exponentiation, real-number syntax |
+| Operators `+ - * / %` (left-associative, `* / %` before `+ -`) and parentheses          | Evaluating the expression                                      |
+| One expression per line, alternating with `y`/`n` answers to `Another? (y/n)`           | Several expressions on one line                                |
+| Standard input or one `FILE` operand (`-` is standard input)                            | Several input files, writing files                             |
+| `Infix:` / `Postfix:` report with single-space-separated postfix tokens                 | Other output notations (prefix, trees)                         |
+| Diagnostics for malformed expressions (the dialog continues) and bad answers (it stops) | Error recovery inside an expression                            |
+| Optional prompts on standard error (`-p`, `--prompt`, CONV-36)                          | Prompts on standard output                                     |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                           | Other legacy encodings                                         |
+| `--help`, `--version`, CONV-13 usage errors, CONV-16 file errors                        | Configuration files, environment variables                     |
 
 ## Learning objectives
 
@@ -47,15 +63,15 @@ sequence of answers from a keyboard, a pipe, or a file.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-14, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`readme.txt`, `mixed.txt`, `errors.txt`, `stop.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-14, NFR-01 … NFR-08)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`readme.txt`, `mixed.txt`, `errors.txt`, `stop.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -79,4 +95,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

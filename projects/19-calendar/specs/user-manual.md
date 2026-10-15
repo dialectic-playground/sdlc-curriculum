@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-calendar — User Manual](#dp-calendar--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Trying again after a wrong day code](#trying-again-after-a-wrong-day-code)
+    - [Working interactively](#working-interactively)
+    - [Calendar of a given year](#calendar-of-a-given-year)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-calendar — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-calendar` 1.0.0 |
-| Project | `19-calendar` — Formatted Annual Calendar Generator |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-19), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                               |
+| :------------ | :-------------------------------------------------- |
+| Product       | `dp-calendar` 1.0.0                                 |
+| Project       | `19-calendar` — Formatted Annual Calendar Generator |
+| Applies to    | Linux, macOS, Windows                               |
+| Specification | `SRS.md` (SRS-19), `shared/CLI-CONVENTIONS.md`      |
 
 ---
 
@@ -24,8 +50,8 @@ dp-calendar --version
 
 ## DESCRIPTION
 
-`dp-calendar` reads two codes from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`, and prints a calendar of the twelve months of the year they describe:
+`dp-calendar` reads two codes from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`, and prints a calendar of the twelve months of the year they describe:
 
 - the **day code**, the weekday of January 1: `0` Sunday, `1` Monday, `2` Tuesday,
   `3` Wednesday, `4` Thursday, `5` Friday, `6` Saturday;
@@ -102,12 +128,12 @@ dp-calendar` prints. The calendar does not show the year. Years before the Grego
 ## OPTIONS
 
 **`-p`, `--prompt`**
-: Before each pair of codes is read, write `Enter day and leap year codes: ` to standard error.
-  A last prompt appears before the end of the input is noticed. It has no effect with `--year`.
+: Before each pair of codes is read, write `Enter day and leap year codes:o standard error.
+A last prompt appears before the end of the input is noticed. It has no effect with `--year`.
 
-**`-y` *YEAR*, `--year=`*YEAR***
-: Print the calendar of the Gregorian year *YEAR* instead of reading codes. *YEAR* is written
-  in digits only (no sign) and lies between 1 and 9999. No *FILE* may be given.
+**`-y` _YEAR_, `--year=`_YEAR_**
+: Print the calendar of the Gregorian year _YEAR_ instead of reading codes. _YEAR_ is written
+in digits only (no sign) and lies between 1 and 9999. No _FILE_ may be given.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -129,11 +155,11 @@ dp-calendar` prints. The calendar does not show the year. Years before the Grego
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the calendar was printed (also after wrong day codes were skipped), or help or version was printed |
-| 1 | The input could not be read, or it ended or contained an invalid entry before a valid pair of codes |
-| 2 | Usage error: an invalid option, an invalid year, or too many operands |
+| Status | Meaning                                                                                                     |
+| :----- | :---------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the calendar was printed (also after wrong day codes were skipped), or help or version was printed |
+| 1      | The input could not be read, or it ended or contained an invalid entry before a valid pair of codes         |
+| 2      | Usage error: an invalid option, an invalid year, or too many operands                                       |
 
 ## DIAGNOSTICS
 
@@ -144,18 +170,18 @@ $ dp-calendar bad.txt
 dp-calendar: bad.txt:2: invalid integer 'zero'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid day code 'K'` | The day code *K* on line *L* is not between 0 and 6. The pair is skipped and the next one is read; this alone does not make the run fail | Enter a day code from 0 to 6 |
-| `S:L: unexpected end of input` | The input ends before a valid pair of codes; *L* is the last line | Supply both codes |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number | Write the codes in digits only |
-| `S:L: value out of range 'K'` | The leap year code *K* on line *L* is neither 0 nor 1 | Enter 1 for a leap year, 0 otherwise |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The calendar could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                                                                                    | Fix                                          |
+| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: invalid day code 'K'`    | The day code _K_ on line _L_ is not between 0 and 6. The pair is skipped and the next one is read; this alone does not make the run fail | Enter a day code from 0 to 6                 |
+| `S:L: unexpected end of input` | The input ends before a valid pair of codes; _L_ is the last line                                                                        | Supply both codes                            |
+| `S:L: invalid integer 'K'`     | Entry _K_ on line _L_ is not a whole number                                                                                              | Write the codes in digits only               |
+| `S:L: value out of range 'K'`  | The leap year code _K_ on line _L_ is neither 0 nor 1                                                                                    | Enter 1 for a leap year, 0 otherwise         |
+| `F: No such file or directory` | _F_ does not exist                                                                                                                       | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                                                                                                                     | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                                                                                                                       | Name a file instead                          |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                                                                          | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                                                                                                                   | Check the device or file system              |
+| `write error`                  | The calendar could not be written (for example, the disk is full)                                                                        | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -166,14 +192,14 @@ dp-calendar: invalid argument '0' for '--year'
 Try 'dp-calendar --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` or `-y` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `option requires an argument -- 'y'` | `-y` (or `--year`) was given without a year | Add the year |
-| `invalid argument 'V' for '--year'` | The year *V* is not a number from 1 to 9999 in plain digits | Use a year from 1 to 9999 |
-| `extra operand 'F'` | A file was named together with `--year`, or more than one file was named | Use either codes or `--year`, and one file |
+| Message                                       | Cause                                                                    | Fix                                        |
+| :-------------------------------------------- | :----------------------------------------------------------------------- | :----------------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                                                | Use `-p` or `-y`                           |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                       | Spell the option in full                   |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none                  | Remove the `=…`                            |
+| `option requires an argument -- 'y'`          | `-y` (or `--year`) was given without a year                              | Add the year                               |
+| `invalid argument 'V' for '--year'`           | The year _V_ is not a number from 1 to 9999 in plain digits              | Use a year from 1 to 9999                  |
+| `extra operand 'F'`                           | A file was named together with `--year`, or more than one file was named | Use either codes or `--year`, and one file |
 
 ## EXAMPLES
 

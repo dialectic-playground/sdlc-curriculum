@@ -7,9 +7,23 @@ from __future__ import annotations
 
 import sys
 
-from .common import (PROMPT, DataError, UsageError, data_failure, file_failure, handle_action,
-                     open_input, parse_args, parse_int_token, prompt, strip_eof_marker,
-                     tokenize, unexpected_end, usage_failure, write)
+from .common import (
+    PROMPT,
+    DataError,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    strip_eof_marker,
+    tokenize,
+    unexpected_end,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-max"
 HELP_TEXT = """\
@@ -33,8 +47,7 @@ def maximum(first: int, *rest: int) -> int:
     """The largest of one or more integers (the variadic function of SRS-25 NFR-05)."""
     largest = first
     for value in rest:
-        if value > largest:
-            largest = value
+        largest = max(largest, value)
     return largest
 
 
@@ -70,7 +83,9 @@ def main(argv: list[str]) -> int:
         values = [parse_int_token(token, source) for token in tokens[:MAX_VALUES]]
         if len(tokens) > MAX_VALUES:
             extra = tokens[MAX_VALUES]
-            raise DataError(source, extra.line, b"too many values '" + extra.text + b"'")
+            raise DataError(
+                source, extra.line, b"too many values '" + extra.text + b"'"
+            )
         if not values:
             raise unexpected_end(source, data)
     except DataError as error:

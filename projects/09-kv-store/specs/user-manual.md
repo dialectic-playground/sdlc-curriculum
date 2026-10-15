@@ -1,11 +1,41 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-kv — User Manual](#dp-kv--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Commands](#commands)
+    - [Safety](#safety)
+  - [OPTIONS](#options)
+    - [Global options (before COMMAND)](#global-options-before-command)
+    - [Command options (after COMMAND)](#command-options-after-command)
+    - [Option syntax](#option-syntax)
+  - [STORE FILE FORMAT](#store-file-format)
+  - [HTTP API](#http-api)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [FILES](#files)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-kv — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-kv` 1.0.0 |
-| Project | `09-kv-store` — Local Key-Value Storage Engine (CLI + API) |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-09), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                      |
+| :------------ | :--------------------------------------------------------- |
+| Product       | `dp-kv` 1.0.0                                              |
+| Project       | `09-kv-store` — Local Key-Value Storage Engine (CLI + API) |
+| Applies to    | Linux, macOS, Windows                                      |
+| Specification | `SRS.md` (SRS-09), `shared/CLI-CONVENTIONS.md`             |
 
 ---
 
@@ -29,8 +59,8 @@ dp-kv --version
 
 ## DESCRIPTION
 
-`dp-kv` is a small key-value store kept in a single JSON file, the *store*. Each entry is a
-*key*, such as `user:1001`, and a text *value*, such as `Ada Lovelace`.
+`dp-kv` is a small key-value store kept in a single JSON file, the _store_. Each entry is a
+_key_, such as `user:1001`, and a text _value_, such as `Ada Lovelace`.
 
 The store is the file named by `--store`; if that option is not given, the file named by the
 environment variable `DP_KV_STORE`; and otherwise `kv.json` in the current directory. A store
@@ -49,39 +79,39 @@ is allowed.
 ### Commands
 
 **`set KEY VALUE`**
-: Store *VALUE* under *KEY*, replacing any previous value. Prints nothing.
+: Store _VALUE_ under _KEY_, replacing any previous value. Prints nothing.
 
 **`get KEY`**
-: Print the value stored under *KEY*, followed by a line feed. If *KEY* is not in the store,
-  print `dp-kv: key not found: KEY` on standard error and exit with status 1.
+: Print the value stored under _KEY_, followed by a line feed. If _KEY_ is not in the store,
+print `dp-kv: key not found: KEY` on standard error and exit with status 1.
 
 **`del KEY`**
-: Remove *KEY* and its value. Prints nothing. If *KEY* is not in the store, report
-  `key not found` and exit with status 1.
+: Remove _KEY_ and its value. Prints nothing. If _KEY_ is not in the store, report
+`key not found` and exit with status 1.
 
 **`list [--prefix=PREFIX]`**
 : Print every key, one per line, in byte order (uppercase letters before lowercase ones, as in
-  ASCII). With `--prefix`, print only the keys that start with *PREFIX*.
+ASCII). With `--prefix`, print only the keys that start with _PREFIX_.
 
 **`export`**
 : Print the whole store as a canonical JSON document — exactly the bytes `dp-kv` writes to the
-  store file (see **STORE FILE FORMAT**). Redirect it to a file to make a backup.
+store file (see **STORE FILE FORMAT**). Redirect it to a file to make a backup.
 
 **`import [--replace] FILE`**
-: Read a store document from *FILE* (or from standard input if *FILE* is `-`) and *merge* it
-  into the store: imported keys are added, existing keys with the same name are overwritten,
-  and other keys are kept. With `--replace`, the store's contents become exactly the imported
-  keys. *FILE* may be any valid store document — an `export`, a store file, or hand-written JSON
-  in the same format — formatted in any way. If *FILE* is invalid, nothing is changed.
+: Read a store document from _FILE_ (or from standard input if _FILE_ is `-`) and _merge_ it
+into the store: imported keys are added, existing keys with the same name are overwritten,
+and other keys are kept. With `--replace`, the store's contents become exactly the imported
+keys. _FILE_ may be any valid store document — an `export`, a store file, or hand-written JSON
+in the same format — formatted in any way. If _FILE_ is invalid, nothing is changed.
 
 **`serve [--host=ADDR] [--port=N]`**
 : Serve the store over HTTP (see **HTTP API**) until interrupted with Ctrl+C (or SIGTERM).
-  On startup it prints one line on standard error, such as
-  `dp-kv: listening on http://127.0.0.1:7700`.
+On startup it prints one line on standard error, such as
+`dp-kv: listening on http://127.0.0.1:7700`.
 
 ### Safety
 
-Every change is *atomic* and *durable*: `dp-kv` writes the new contents to a temporary file
+Every change is _atomic_ and _durable_: `dp-kv` writes the new contents to a temporary file
 next to the store (`PATH.tmp`), flushes it to disk, and then renames it over the store. A crash
 or power failure therefore leaves either the old or the new store, never a damaged one.
 
@@ -101,31 +131,31 @@ hand.
 ### Global options (before COMMAND)
 
 **`-s PATH`, `--store=PATH`**
-: Use the store file *PATH*. *PATH* must not be empty.
+: Use the store file _PATH_. _PATH_ must not be empty.
 
 **`--help`**
-: Display the help text below and exit with status 0. It is also accepted after *COMMAND*.
+: Display the help text below and exit with status 0. It is also accepted after _COMMAND_.
 
 **`--version`**
-: Display the version line and exit with status 0. It is also accepted after *COMMAND*.
+: Display the version line and exit with status 0. It is also accepted after _COMMAND_.
 
 ### Command options (after COMMAND)
 
 **`-p PREFIX`, `--prefix=PREFIX`** (`list`)
-: List only the keys that start with *PREFIX*. *PREFIX* must be empty or follow the same rules
-  as a key.
+: List only the keys that start with _PREFIX_. _PREFIX_ must be empty or follow the same rules
+as a key.
 
 **`-r`, `--replace`** (`import`)
 : Replace the store's contents with the imported keys instead of merging.
 
 **`--host=ADDR`** (`serve`)
-: Listen on the IP address *ADDR*, written numerically (for example `127.0.0.1`, `::1`, or
-  `0.0.0.0`). Host names such as `localhost` are not accepted. The default `127.0.0.1` accepts
-  connections from this computer only.
+: Listen on the IP address _ADDR_, written numerically (for example `127.0.0.1`, `::1`, or
+`0.0.0.0`). Host names such as `localhost` are not accepted. The default `127.0.0.1` accepts
+connections from this computer only.
 
 **`--port=N`** (`serve`)
-: Listen on TCP port *N*, from 0 to 65535 (default 7700). With `--port=0`, the system picks a
-  free port; the startup line shows which one.
+: Listen on TCP port _N_, from 0 to 65535 (default 7700). With `--port=0`, the system picks a
+free port; the startup line shows which one.
 
 ### Option syntax
 
@@ -176,39 +206,39 @@ invalid.
 (`Content-Type: application/json; charset=utf-8`), and the server closes the connection after
 each response.
 
-| Method and path | Request body | Success response |
-| :-- | :-- | :-- |
-| `GET /v1/health` | — | `200` `{"status":"ok"}` |
-| `GET /v1/keys` or `GET /v1/keys?prefix=P` | — | `200` `{"keys":["a","b"]}` |
-| `GET /v1/keys/KEY` | — | `200` `{"key":"KEY","value":"..."}` |
-| `PUT /v1/keys/KEY` | `{"value":"..."}` | `201` (new key, with `Location`) or `200` (replaced), `{"key":"KEY","value":"..."}` |
-| `DELETE /v1/keys/KEY` | — | `204`, no body |
+| Method and path                           | Request body      | Success response                                                                    |
+| :---------------------------------------- | :---------------- | :---------------------------------------------------------------------------------- |
+| `GET /v1/health`                          | —                 | `200` `{"status":"ok"}`                                                             |
+| `GET /v1/keys` or `GET /v1/keys?prefix=P` | —                 | `200` `{"keys":["a","b"]}`                                                          |
+| `GET /v1/keys/KEY`                        | —                 | `200` `{"key":"KEY","value":"..."}`                                                 |
+| `PUT /v1/keys/KEY`                        | `{"value":"..."}` | `201` (new key, with `Location`) or `200` (replaced), `{"key":"KEY","value":"..."}` |
+| `DELETE /v1/keys/KEY`                     | —                 | `204`, no body                                                                      |
 
 Errors have the body `{"error":{"code":"CODE","message":"MESSAGE"}}`:
 
-| Status | Code | Meaning |
-| :-- | :-- | :-- |
-| 400 | `invalid_key`, `invalid_prefix` | The key or prefix breaks the key rules |
-| 400 | `invalid_json`, `invalid_body` | The `PUT` body is not JSON, or not `{"value": "<text>"}` |
-| 400 | `bad_request` | The request is not valid HTTP |
-| 404 | `key_not_found` | The key is not in the store |
-| 404 | `not_found` | Unknown path |
-| 405 | `method_not_allowed` | Unsupported method; see the `Allow` header |
-| 411 | `length_required` | A `PUT` without `Content-Length` |
-| 413 | `payload_too_large`, `value_too_long` | Body over 524288 bytes, or value over 65536 bytes |
-| 500 | `store_error` | The store file is invalid or unreadable |
-| 503 | `store_locked` | The store stayed locked for 5 seconds |
+| Status | Code                                  | Meaning                                                  |
+| :----- | :------------------------------------ | :------------------------------------------------------- |
+| 400    | `invalid_key`, `invalid_prefix`       | The key or prefix breaks the key rules                   |
+| 400    | `invalid_json`, `invalid_body`        | The `PUT` body is not JSON, or not `{"value": "<text>"}` |
+| 400    | `bad_request`                         | The request is not valid HTTP                            |
+| 404    | `key_not_found`                       | The key is not in the store                              |
+| 404    | `not_found`                           | Unknown path                                             |
+| 405    | `method_not_allowed`                  | Unsupported method; see the `Allow` header               |
+| 411    | `length_required`                     | A `PUT` without `Content-Length`                         |
+| 413    | `payload_too_large`, `value_too_long` | Body over 524288 bytes, or value over 65536 bytes        |
+| 500    | `store_error`                         | The store file is invalid or unreadable                  |
+| 503    | `store_locked`                        | The store stayed locked for 5 seconds                    |
 
 The API has no authentication. Do not use `--host=0.0.0.0` (or another non-loopback address)
 on a network you do not trust.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success; `serve` was stopped with Ctrl+C or SIGTERM |
-| 1 | Key not found, invalid store or import file, file error, store locked, or cannot listen |
-| 2 | Usage error: invalid option, command, operand, key, or value |
+| Status | Meaning                                                                                 |
+| :----- | :-------------------------------------------------------------------------------------- |
+| 0      | Success; `serve` was stopped with Ctrl+C or SIGTERM                                     |
+| 1      | Key not found, invalid store or import file, file error, store locked, or cannot listen |
+| 2      | Usage error: invalid option, command, operand, key, or value                            |
 
 ## DIAGNOSTICS
 
@@ -221,27 +251,27 @@ dp-kv: unknown command 'fetch'
 Try 'dp-kv --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `missing command` | No command word | Add `set`, `get`, `del`, `list`, `export`, `import`, or `serve` |
-| `unknown command 'fetch'` | Misspelled command | Check the command list in `--help` |
-| `missing operand` / `extra operand 'x'` | Wrong number of KEY/VALUE/FILE operands | See SYNOPSIS; quote values containing spaces |
-| `unrecognized option '--store=x'` | Option in the wrong part of the line, or unknown | Put `--store` before the command |
-| `invalid argument '' for '--store'` | Empty store path | Give a file name |
-| `invalid key 'bad key'` | Key breaks the key rules | Use only `A-Z a-z 0-9 . _ : -`, at most 256 characters |
-| `value is not valid UTF-8` | Value bytes are not UTF-8 text | Convert the text to UTF-8 |
-| `value too long (maximum 65536 bytes)` | Value exceeds 64 KiB | Store a shorter value |
-| `invalid argument 'user 1' for '--prefix'` | Prefix breaks the key rules | Use key characters only |
-| `invalid argument 'localhost' for '--host'` | Host name or malformed address | Use a numeric address such as `127.0.0.1` |
-| `invalid argument '70000' for '--port'` | Port not a number from 0 to 65535 | Choose another port |
-| `key not found: colour` | `get` or `del` of a key that is not stored | Check `dp-kv list` |
-| `kv.json: not a valid dp-kv store file` | Store damaged or not a dp-kv file | Restore it from an export, or fix it by hand |
-| `backup.json: not a valid dp-kv store file` | Import file invalid | Check the file's format; the store is unchanged |
-| `kv.json: store is locked` | Another process held the lock for 5 seconds | Retry; look for a stuck process |
-| `kv.json: Is a directory` | The store path names a directory | Choose a file name |
-| `kv.json: Permission denied` | No permission to read or replace the store | Check file and directory permissions |
-| `kv.json.lock: Permission denied` | The lock file cannot be created | Make the directory writable |
-| `127.0.0.1:7700: cannot listen: Address already in use` | Another program uses the port | Use `--port` with another port, or `--port=0` |
+| Message                                                 | Cause                                            | Fix                                                             |
+| :------------------------------------------------------ | :----------------------------------------------- | :-------------------------------------------------------------- |
+| `missing command`                                       | No command word                                  | Add `set`, `get`, `del`, `list`, `export`, `import`, or `serve` |
+| `unknown command 'fetch'`                               | Misspelled command                               | Check the command list in `--help`                              |
+| `missing operand` / `extra operand 'x'`                 | Wrong number of KEY/VALUE/FILE operands          | See SYNOPSIS; quote values containing spaces                    |
+| `unrecognized option '--store=x'`                       | Option in the wrong part of the line, or unknown | Put `--store` before the command                                |
+| `invalid argument '' for '--store'`                     | Empty store path                                 | Give a file name                                                |
+| `invalid key 'bad key'`                                 | Key breaks the key rules                         | Use only `A-Z a-z 0-9 . _ : -`, at most 256 characters          |
+| `value is not valid UTF-8`                              | Value bytes are not UTF-8 text                   | Convert the text to UTF-8                                       |
+| `value too long (maximum 65536 bytes)`                  | Value exceeds 64 KiB                             | Store a shorter value                                           |
+| `invalid argument 'user 1' for '--prefix'`              | Prefix breaks the key rules                      | Use key characters only                                         |
+| `invalid argument 'localhost' for '--host'`             | Host name or malformed address                   | Use a numeric address such as `127.0.0.1`                       |
+| `invalid argument '70000' for '--port'`                 | Port not a number from 0 to 65535                | Choose another port                                             |
+| `key not found: colour`                                 | `get` or `del` of a key that is not stored       | Check `dp-kv list`                                              |
+| `kv.json: not a valid dp-kv store file`                 | Store damaged or not a dp-kv file                | Restore it from an export, or fix it by hand                    |
+| `backup.json: not a valid dp-kv store file`             | Import file invalid                              | Check the file's format; the store is unchanged                 |
+| `kv.json: store is locked`                              | Another process held the lock for 5 seconds      | Retry; look for a stuck process                                 |
+| `kv.json: Is a directory`                               | The store path names a directory                 | Choose a file name                                              |
+| `kv.json: Permission denied`                            | No permission to read or replace the store       | Check file and directory permissions                            |
+| `kv.json.lock: Permission denied`                       | The lock file cannot be created                  | Make the directory writable                                     |
+| `127.0.0.1:7700: cannot listen: Address already in use` | Another program uses the port                    | Use `--port` with another port, or `--port=0`                   |
 
 ## EXAMPLES
 
@@ -372,12 +402,12 @@ All other environment variables, including locale settings (`LANG`, `LC_ALL`), a
 : The default store, in the current directory.
 
 **`PATH.lock`**
-: Lock file next to the store *PATH*. Created on first use and never removed. Delete it only
-  when no `dp-kv` process is running.
+: Lock file next to the store _PATH_. Created on first use and never removed. Delete it only
+when no `dp-kv` process is running.
 
 **`PATH.tmp`**
 : Temporary file used while a change is written. It exists only briefly; a leftover one from a
-  crash is harmless and is overwritten by the next change.
+crash is harmless and is overwritten by the next change.
 
 ## PLATFORM NOTES
 

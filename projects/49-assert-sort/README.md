@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 49 — Formal Program Verification via Assertions & Loop Invariants (`dp-assert-sort`)](#project-49--formal-program-verification-via-assertions--loop-invariants-dp-assert-sort)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 49 — Formal Program Verification via Assertions & Loop Invariants (`dp-assert-sort`)
 
 > Sort a list of integers by selection sort while the program checks its own correctness: a
@@ -7,30 +23,30 @@
 
 ## Purpose
 
-Project 49 is adapted from §11.1 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 49 is adapted from §11.1 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a selection sort of the array 5 4 3 2 1, instrumented with an assertion that the index of the
-minimum lies inside the array and with an assertion of the loop invariant — after pass *i*,
+minimum lies inside the array and with an assertion of the loop invariant — after pass _i_,
 a[0..i] is sorted and no later element is smaller than a[i]. The textbook program sorts one
 built-in array, and its assertions disappear when the program is compiled for release. This
 project keeps the algorithm, the two assertions, and the invariant exactly, and turns them into
 a command-line tool that sorts any list of 64-bit integers. The engineering focus is
-*verification you can observe*: checks that are always compiled in, a trace that shows each
+_verification you can observe_: checks that are always compiled in, a trace that shows each
 invariant holding, and a fault-injection option that corrupts one precisely defined step of
 the algorithm so that the learner can watch the right assertion catch it in the right pass.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Integers as whitespace-separated tokens, −2⁶³ … 2⁶³−1 (CONV-32, CONV-33) | Reals, strings, other orderings |
-| Selection sort with the bounds assertion and the invariant checked after every pass | Other sorting algorithms, stability, sorting in O(*n* log *n*) |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files, writing files |
-| Sorted output, one integer per line | Column or single-line layouts |
-| Optional trace of every invariant check on standard error (`-t`, `--trace`) | Timing or comparison counts |
-| Three deterministic faults, in every pass or in one pass (`-f`, `--fault`) | Random faults, faults in the checks themselves |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Recovering after an invalid integer |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                            | Out of scope                                                   |
+| :---------------------------------------------------------------------------------- | :------------------------------------------------------------- |
+| Integers as whitespace-separated tokens, −2⁶³ … 2⁶³−1 (CONV-32, CONV-33)            | Reals, strings, other orderings                                |
+| Selection sort with the bounds assertion and the invariant checked after every pass | Other sorting algorithms, stability, sorting in O(_n_ log _n_) |
+| Standard input or one `FILE` operand (`-` is standard input)                        | Several input files, writing files                             |
+| Sorted output, one integer per line                                                 | Column or single-line layouts                                  |
+| Optional trace of every invariant check on standard error (`-t`, `--trace`)         | Timing or comparison counts                                    |
+| Three deterministic faults, in every pass or in one pass (`-f`, `--fault`)          | Random faults, faults in the checks themselves                 |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                       | Other legacy encodings                                         |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                   | Recovering after an invalid integer                            |
+| `--help`, `--version`, CONV-13 usage errors                                         | Configuration files, environment variables                     |
 
 ## Learning objectives
 
@@ -48,15 +64,15 @@ the algorithm so that the learner can watch the right assertion catch it in the 
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-15, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites: `textbook.txt` (the textbook's array 5 4 3 2 1), `mixed.txt`, `bad.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                   |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                          |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-15, NFR-01 … NFR-08)                                                       |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                    |
+| `tests/fixtures/`      | Input files shared by both suites: `textbook.txt` (the textbook's array 5 4 3 2 1), `mixed.txt`, `bad.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                     |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                    |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                        |
 
 The textbook section has no companion data file; `textbook.txt` holds the array that the
 textbook program sorts, and every other fixture was written for this project.
@@ -81,4 +97,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

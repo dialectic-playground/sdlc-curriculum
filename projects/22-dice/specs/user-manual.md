@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-dice — User Manual](#dp-dice--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The rules](#the-rules)
+    - [The transcript](#the-transcript)
+    - [The dice](#the-dice)
+    - [Responses](#responses)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-dice — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-dice` 1.0.0 |
-| Project | `22-dice` — Roll Them Bones Dice Simulation Game |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-22), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                            |
+| :------------ | :----------------------------------------------- |
+| Product       | `dp-dice` 1.0.0                                  |
+| Project       | `22-dice` — Roll Them Bones Dice Simulation Game |
+| Applies to    | Linux, macOS, Windows                            |
+| Specification | `SRS.md` (SRS-22), `shared/CLI-CONVENTIONS.md`   |
 
 ---
 
@@ -25,14 +53,14 @@ dp-dice --version
 
 `dp-dice` plays "Roll Them Bones" against the house. You start with a bankroll of $500.
 Before each round you answer **1** to play or **0** to quit, and then you bet a whole number of
-dollars. The responses are read from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`.
+dollars. The responses are read from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`.
 
 ### The rules
 
 - A bet must be at least $1, at most the table limit of $250, and no more than your bankroll.
   A bet that breaks a rule is refused with the reason, and you are asked for the bet again.
-- Two dice are rolled. If the first roll of the round is **7 or 11** (a *natural*), you win
+- Two dice are rolled. If the first roll of the round is **7 or 11** (a _natural_), you win
   your bet at once.
 - Any other first roll is your **mark**. The dice are rolled again until either the mark comes
   up again, and you win your bet, or a **7 or 11** comes up, and you lose it.
@@ -65,7 +93,7 @@ money is gone, `You're broke! Better luck next time.`
 ### The dice
 
 The dice come from the portable pseudo-random generator of the curriculum's conventions
-(CONV-38), started from a *seed*. The same seed and the same responses always give the same
+(CONV-38), started from a _seed_. The same seed and the same responses always give the same
 game, on every computer; the default seed is 1. Use `--seed` to play a different game.
 
 ### Responses
@@ -111,11 +139,11 @@ transcript.
 
 **`-p`, `--prompt`**
 : Write `Want to play? (1: yes, 0: no) ` to standard error before each answer is read, and
-  `Enter your bet: ` before each bet is read.
+`Enter your bet: ` before each bet is read.
 
 **`--seed=SEED`**
-: Start the dice generator from *SEED*, a whole number from 0 to 4294967295 written in digits.
-  The default is 1.
+: Start the dice generator from _SEED_, a whole number from 0 to 4294967295 written in digits.
+The default is 1.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -136,11 +164,11 @@ transcript.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | The game ended: you quit, the responses ran out before a round, or you went broke; or help or version was printed |
-| 1 | A response was malformed, the responses ran out when a bet was expected, or the input could not be read |
-| 2 | Usage error: an invalid option, an invalid seed, or more than one file |
+| Status | Meaning                                                                                                           |
+| :----- | :---------------------------------------------------------------------------------------------------------------- |
+| 0      | The game ended: you quit, the responses ran out before a round, or you went broke; or help or version was printed |
+| 1      | A response was malformed, the responses ran out when a bet was expected, or the input could not be read           |
+| 2      | Usage error: an invalid option, an invalid seed, or more than one file                                            |
 
 ## DIAGNOSTICS
 
@@ -153,17 +181,17 @@ Your bankroll is $500.
 dp-dice: badbet.txt:2: invalid integer '12.50'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Response *K* on line *L* is not a whole number (or is far too large) | Write the response in digits only |
-| `S:L: value out of range 'K'` | The answer *K* on line *L* to "Want to play?" is a number other than 1 and 0 | Answer `1` or `0` |
-| `S:L: unexpected end of input` | The responses ran out when a bet was expected | Give a bet after every `1` |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The transcript could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                        | Fix                                          |
+| :----------------------------- | :--------------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Response _K_ on line _L_ is not a whole number (or is far too large)         | Write the response in digits only            |
+| `S:L: value out of range 'K'`  | The answer _K_ on line _L_ to "Want to play?" is a number other than 1 and 0 | Answer `1` or `0`                            |
+| `S:L: unexpected end of input` | The responses ran out when a bet was expected                                | Give a bet after every `1`                   |
+| `F: No such file or directory` | _F_ does not exist                                                           | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                                                         | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                                                           | Name a file instead                          |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                              | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                                                       | Check the device or file system              |
+| `write error`                  | The transcript could not be written (for example, the disk is full)          | Free space or redirect the output elsewhere  |
 
 A refused bet is not an error: the reason is part of the transcript and the game goes on.
 
@@ -176,14 +204,14 @@ dp-dice: invalid argument 'abc' for '--seed'
 Try 'dp-dice --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--seed' requires an argument` | `--seed` was the last argument | Give a seed: `--seed=14` |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument 'V' for '--seed'` | The seed is not a number from 0 to 4294967295 | Give digits only, within that range |
-| `extra operand 'F'` | More than one file was named | Name one file of responses |
+| Message                                       | Cause                                                   | Fix                                 |
+| :-------------------------------------------- | :------------------------------------------------------ | :---------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                            |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full            |
+| `option '--seed' requires an argument`        | `--seed` was the last argument                          | Give a seed: `--seed=14`            |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                     |
+| `invalid argument 'V' for '--seed'`           | The seed is not a number from 0 to 4294967295           | Give digits only, within that range |
+| `extra operand 'F'`                           | More than one file was named                            | Name one file of responses          |
 
 ## EXAMPLES
 

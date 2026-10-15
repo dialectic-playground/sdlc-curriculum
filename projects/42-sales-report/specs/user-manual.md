@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-sales — User Manual](#dp-sales--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The accounts file](#the-accounts-file)
+    - [The salesperson file](#the-salesperson-file)
+    - [Fields](#fields)
+    - [The report](#the-report)
+    - [All or nothing](#all-or-nothing)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-sales — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-sales` 1.0.0 |
-| Project | `42-sales-report` — Enterprise Sales Reporting & Relational Data Integration |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-42), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                        |
+| :------------ | :--------------------------------------------------------------------------- |
+| Product       | `dp-sales` 1.0.0                                                             |
+| Project       | `42-sales-report` — Enterprise Sales Reporting & Relational Data Integration |
+| Applies to    | Linux, macOS, Windows                                                        |
+| Specification | `SRS.md` (SRS-42), `shared/CLI-CONVENTIONS.md`                               |
 
 ---
 
@@ -76,7 +104,7 @@ Sales report by salesperson:
         Sales coach:  Cruz
         Sales region: TX
         Base salary and bonus:  102300.00  15671.90
-        2 Account(s): 
+        2 Account(s):
 
                 Name:       PetRocks
                 Id:         245
@@ -99,10 +127,10 @@ problem with its file and line number and prints no report at all.
 ## OPTIONS
 
 **`-a FILE`, `--accounts=FILE`**
-: Read the accounts from *FILE* instead of `sales.dat`. `-` means standard input.
+: Read the accounts from _FILE_ instead of `sales.dat`. `-` means standard input.
 
 **`-s FILE`, `--salespeople=FILE`**
-: Read the salespeople from *FILE* instead of `sper.dat`. `-` means standard input.
+: Read the salespeople from _FILE_ instead of `sper.dat`. `-` means standard input.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -124,11 +152,11 @@ problem with its file and line number and prints no report at all.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report, help, or version was printed |
-| 1 | A file could not be read, or contains an invalid line; no report was printed |
-| 2 | Usage error: an invalid option or option value, or an operand |
+| Status | Meaning                                                                      |
+| :----- | :--------------------------------------------------------------------------- |
+| 0      | Success: the report, help, or version was printed                            |
+| 1      | A file could not be read, or contains an invalid line; no report was printed |
+| 2      | Usage error: an invalid option or option value, or an operand                |
 
 ## DIAGNOSTICS
 
@@ -140,25 +168,25 @@ $ dp-sales -s unknown.dat
 dp-sales: unknown.dat:2: unknown account '999'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `F:L: incomplete record` | Line *L* lacks a field | Complete the line |
-| `F:L: unexpected field 'K'` | An account line has more than four fields (perhaps a name with a space) | Remove the field, or join the name into one word |
-| `F:L: invalid integer 'K'` | An id *K* is not a whole number | Write the id in digits |
-| `F:L: value out of range 'K'` | An id is negative, or an amount is larger than 92233720368547758.07 | Correct the value |
-| `F:L: invalid amount 'K'` | An amount is not digits with at most two decimals | Write it like `1234.50` |
-| `F:L: duplicate account id 'K'` | Two accounts have the same id | Give each account its own id |
-| `F:L: expected '#' but found 'K'` | The sixth field of a salesperson line is not `#` | Insert the `#` before the account ids |
-| `F:L: unknown account 'K'` | A salesperson lists an id that no account has | Add the account, or correct the id |
-| `F:L: account listed twice 'K'` | A salesperson lists the same account twice | Remove the repetition |
-| `F:L: too many accounts (limit 100)` | The accounts file has more than 100 accounts | Split the data |
-| `F:L: too many salespeople (limit 100)` | The salesperson file has more than 100 salespeople | Split the data |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                 | Cause                                                                   | Fix                                              |
+| :-------------------------------------- | :---------------------------------------------------------------------- | :----------------------------------------------- |
+| `F:L: incomplete record`                | Line _L_ lacks a field                                                  | Complete the line                                |
+| `F:L: unexpected field 'K'`             | An account line has more than four fields (perhaps a name with a space) | Remove the field, or join the name into one word |
+| `F:L: invalid integer 'K'`              | An id _K_ is not a whole number                                         | Write the id in digits                           |
+| `F:L: value out of range 'K'`           | An id is negative, or an amount is larger than 92233720368547758.07     | Correct the value                                |
+| `F:L: invalid amount 'K'`               | An amount is not digits with at most two decimals                       | Write it like `1234.50`                          |
+| `F:L: duplicate account id 'K'`         | Two accounts have the same id                                           | Give each account its own id                     |
+| `F:L: expected '#' but found 'K'`       | The sixth field of a salesperson line is not `#`                        | Insert the `#` before the account ids            |
+| `F:L: unknown account 'K'`              | A salesperson lists an id that no account has                           | Add the account, or correct the id               |
+| `F:L: account listed twice 'K'`         | A salesperson lists the same account twice                              | Remove the repetition                            |
+| `F:L: too many accounts (limit 100)`    | The accounts file has more than 100 accounts                            | Split the data                                   |
+| `F:L: too many salespeople (limit 100)` | The salesperson file has more than 100 salespeople                      | Split the data                                   |
+| `F: No such file or directory`          | _F_ does not exist                                                      | Check the spelling and the current directory     |
+| `F: Permission denied`                  | You may not read _F_                                                    | Check the file's permissions                     |
+| `F: Is a directory`                     | _F_ is a directory                                                      | Name a file instead                              |
+| `F: Not a directory`                    | Part of the path _F_ is a file, not a directory                         | Correct the path                                 |
+| `F: Input/output error`                 | Any other read failure                                                  | Check the device or file system                  |
+| `write error`                           | The report could not be written (for example, the disk is full)         | Free space or redirect the output elsewhere      |
 
 The accounts file is read and checked first; the salesperson file is read only if the accounts
 file is valid.
@@ -172,16 +200,16 @@ dp-sales: extra operand 'sales.dat'
 Try 'dp-sales --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-a` or `-s` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'a'` | `-a` or `-s` given without a file name | Supply a file name |
-| `option '--accounts' requires an argument` | `--accounts` or `--salespeople` given without a file name | Supply a file name |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `invalid argument '' for '-a'` | An empty file name | Give a file name |
-| `invalid argument '-' for '-s'` | Both files would be read from standard input | Name a file for one of them |
-| `extra operand 'F'` | A file was named without `-a` or `-s` | Use `-a F` or `-s F` |
+| Message                                     | Cause                                                     | Fix                         |
+| :------------------------------------------ | :-------------------------------------------------------- | :-------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                                 | Use `-a` or `-s`            |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                        | Spell the option in full    |
+| `option requires an argument -- 'a'`        | `-a` or `-s` given without a file name                    | Supply a file name          |
+| `option '--accounts' requires an argument`  | `--accounts` or `--salespeople` given without a file name | Supply a file name          |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`                               | Remove the `=…`             |
+| `invalid argument '' for '-a'`              | An empty file name                                        | Give a file name            |
+| `invalid argument '-' for '-s'`             | Both files would be read from standard input              | Name a file for one of them |
+| `extra operand 'F'`                         | A file was named without `-a` or `-s`                     | Use `-a F` or `-s F`        |
 
 ## EXAMPLES
 
@@ -210,7 +238,7 @@ A salesperson who manages no accounts:
         Sales coach:  Epp
         Sales region: IL
         Base salary and bonus:  75000.00  0.00
-        0 Account(s): 
+        0 Account(s):
 
 ```
 

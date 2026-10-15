@@ -1,11 +1,34 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-hello — User Manual](#dp-hello--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-hello — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-hello` 1.0.0 |
-| Project | `00-hello-world` — Standard Terminal Hello World |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-00), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                            |
+| :------------ | :----------------------------------------------- |
+| Product       | `dp-hello` 1.0.0                                 |
+| Project       | `00-hello-world` — Standard Terminal Hello World |
+| Applies to    | Linux, macOS, Windows                            |
+| Specification | `SRS.md` (SRS-00), `shared/CLI-CONVENTIONS.md`   |
 
 ---
 
@@ -35,12 +58,12 @@ characters such as `Zoë`, and are encoded in UTF-8.
 ## OPTIONS
 
 **`-n NAME`, `--name=NAME`**
-: Greet *NAME* instead of `World`. The name may contain any characters but must not be empty.
-  Quote names that contain spaces or shell metacharacters: `--name 'Ada Lovelace'`.
+: Greet _NAME_ instead of `World`. The name may contain any characters but must not be empty.
+Quote names that contain spaces or shell metacharacters: `--name 'Ada Lovelace'`.
 
 **`-c COUNT`, `--count=COUNT`**
-: Print the greeting *COUNT* times. *COUNT* must be a whole number from 1 to 1000, written with
-  the digits `0`–`9` only (no sign, spaces, or decimal point). Leading zeros are allowed.
+: Print the greeting _COUNT_ times. _COUNT_ must be a whole number from 1 to 1000, written with
+the digits `0`–`9` only (no sign, spaces, or decimal point). Leading zeros are allowed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -64,10 +87,10 @@ characters such as `Zoë`, and are encoded in UTF-8.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the greeting, help, or version was printed |
-| 2 | Usage error: invalid option, invalid value, or an unexpected operand |
+| Status | Meaning                                                              |
+| :----- | :------------------------------------------------------------------- |
+| 0      | Success: the greeting, help, or version was printed                  |
+| 2      | Usage error: invalid option, invalid value, or an unexpected operand |
 
 ## DIAGNOSTICS
 
@@ -80,16 +103,16 @@ dp-hello: unrecognized option '--nme'
 Try 'dp-hello --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Check the option letter (`-n`, `-c`) |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'n'` | `-n` or `-c` given without a value | Supply a value |
-| `option '--name' requires an argument` | `--name` or `--count` given without a value | Supply a value |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `invalid argument '' for '--name'` | Empty name | Give a non-empty name |
-| `invalid argument '0' for '--count'` | Count not in 1–1000 or not all digits | Use a whole number from 1 to 1000 |
-| `extra operand 'foo'` | A word that is not an option | Remove it, or use `--name foo` |
+| Message                                     | Cause                                       | Fix                                  |
+| :------------------------------------------ | :------------------------------------------ | :----------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                   | Check the option letter (`-n`, `-c`) |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option          | Spell the option in full             |
+| `option requires an argument -- 'n'`        | `-n` or `-c` given without a value          | Supply a value                       |
+| `option '--name' requires an argument`      | `--name` or `--count` given without a value | Supply a value                       |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`                 | Remove the `=…`                      |
+| `invalid argument '' for '--name'`          | Empty name                                  | Give a non-empty name                |
+| `invalid argument '0' for '--count'`        | Count not in 1–1000 or not all digits       | Use a whole number from 1 to 1000    |
+| `extra operand 'foo'`                       | A word that is not an option                | Remove it, or use `--name foo`       |
 
 ## EXAMPLES
 

@@ -1,3 +1,17 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Contributing to the SDLC curriculum](#contributing-to-the-sdlc-curriculum)
+  - [Ground rules](#ground-rules)
+  - [Changing a specification](#changing-a-specification)
+  - [Adding or changing tests](#adding-or-changing-tests)
+  - [Changing shared templates or tooling](#changing-shared-templates-or-tooling)
+  - [Adding a project](#adding-a-project)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Contributing to the SDLC curriculum
 
 This file adds curriculum-specific rules to the

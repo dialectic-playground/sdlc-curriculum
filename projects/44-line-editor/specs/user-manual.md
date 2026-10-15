@@ -1,11 +1,42 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-line-ed — User Manual](#dp-line-ed--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The current line and `[BOF]`](#the-current-line-and-bof)
+    - [Commands](#commands)
+    - [Patterns and delimiters](#patterns-and-delimiters)
+    - [Insert mode](#insert-mode)
+    - [Saving and quitting](#saving-and-quitting)
+    - [Mistakes](#mistakes)
+    - [File contents](#file-contents)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-line-ed — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-line-ed` 1.0.0 |
-| Project | `44-line-editor` — Modal Line-Oriented Text Editor |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-44), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                              |
+| :------------ | :------------------------------------------------- |
+| Product       | `dp-line-ed` 1.0.0                                 |
+| Project       | `44-line-editor` — Modal Line-Oriented Text Editor |
+| Applies to    | Linux, macOS, Windows                              |
+| Specification | `SRS.md` (SRS-44), `shared/CLI-CONVENTIONS.md`     |
 
 ---
 
@@ -23,14 +54,14 @@ dp-line-ed --version
 
 ## DESCRIPTION
 
-`dp-line-ed` loads *FILE* into a buffer of lines and then reads commands from standard input,
-one per line. If *FILE* does not exist, the buffer starts empty, and *FILE* is created when you
-quit with `q`. Nothing is written to *FILE* until then.
+`dp-line-ed` loads _FILE_ into a buffer of lines and then reads commands from standard input,
+one per line. If _FILE_ does not exist, the buffer starts empty, and _FILE_ is created when you
+quit with `q`. Nothing is written to _FILE_ until then.
 
 ### The current line and `[BOF]`
 
 The buffer begins with a special position, `[BOF]` ("beginning of file"), before the first
-line. It is never written to the file. Most commands work from the *current line*, which is
+line. It is never written to the file. Most commands work from the _current line_, which is
 either `[BOF]` or one of the lines. When the editor starts, the current line is `[BOF]`, so text
 inserted straight away goes at the top of the file. Typing `[BOF]` itself shows the text
 `[BOF]`.
@@ -40,25 +71,25 @@ stops there.
 
 ### Commands
 
-| Command | Effect |
-| :-- | :-- |
-| `i` | Insert mode: every following line is inserted after the current line, which moves to it, until a line consisting of a single `.` |
-| `d` | Delete the line after the current line |
-| `d N` | Delete the *N* lines after the current line (as many as there are) |
-| `t .` | Type the current line |
-| `t b` | Go to `[BOF]` and type the first line |
-| `t e` | Go to the last line and type it |
-| `t N` | Type the *N* lines after the current line, without moving |
-| `m N` | Move forward *N* lines (stopping at the last line) and type the new current line |
-| `f 'PAT'` | Find the next line after the current line that contains *PAT*, go to it, and type it |
-| `s 'OLD' 'NEW'` | Replace the first *OLD* in the current line by *NEW*, and type the line |
-| `q` | Write the buffer to *FILE* and quit |
+| Command         | Effect                                                                                                                           |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| `i`             | Insert mode: every following line is inserted after the current line, which moves to it, until a line consisting of a single `.` |
+| `d`             | Delete the line after the current line                                                                                           |
+| `d N`           | Delete the _N_ lines after the current line (as many as there are)                                                               |
+| `t .`           | Type the current line                                                                                                            |
+| `t b`           | Go to `[BOF]` and type the first line                                                                                            |
+| `t e`           | Go to the last line and type it                                                                                                  |
+| `t N`           | Type the _N_ lines after the current line, without moving                                                                        |
+| `m N`           | Move forward _N_ lines (stopping at the last line) and type the new current line                                                 |
+| `f 'PAT'`       | Find the next line after the current line that contains _PAT_, go to it, and type it                                             |
+| `s 'OLD' 'NEW'` | Replace the first _OLD_ in the current line by _NEW_, and type the line                                                          |
+| `q`             | Write the buffer to _FILE_ and quit                                                                                              |
 
 Details:
 
 - Commands are lowercase letters separated from their arguments by spaces or tabs. Blanks at the
   start and end of a command line are ignored, and empty lines are skipped.
-- *N* is a whole number of at least 1, written in digits (a leading `+` and leading zeros are
+- _N_ is a whole number of at least 1, written in digits (a leading `+` and leading zeros are
   allowed).
 - `t N` and `d N` work on the same lines, so `t 3` shows exactly what `d 3` would delete.
   Because `t b` leaves the current line at `[BOF]`, `t b` followed by `t 1000000` types the
@@ -71,25 +102,25 @@ Details:
 
 ### Patterns and delimiters
 
-*PAT*, *OLD*, and *NEW* are written between a pair of identical punctuation characters, the
-*delimiter*: `'cat'`, `"cat"`, `/cat/`, and `|cat|` are all the same pattern. Choose a delimiter
+_PAT_, _OLD_, and _NEW_ are written between a pair of identical punctuation characters, the
+_delimiter_: `'cat'`, `"cat"`, `/cat/`, and `|cat|` are all the same pattern. Choose a delimiter
 that does not occur in the text: `s "it's" 'it is'`. Each string has its own pair of
-delimiters, so the `ed` form `s/old/new/` is not accepted; write `s /old/ /new/`. *PAT* and
-*OLD* must not be empty; *NEW* may be (`s 'very ' ''` deletes a word). Letters and digits cannot
+delimiters, so the `ed` form `s/old/new/` is not accepted; write `s /old/ /new/`. _PAT_ and
+_OLD_ must not be empty; _NEW_ may be (`s 'very ' ''` deletes a word). Letters and digits cannot
 be delimiters.
 
 ### Insert mode
 
 After `i`, every line you type is added to the buffer exactly as typed, including leading
-spaces, until you type a line consisting of a single `.`. A line such as ` .` or `..` is
-inserted as text; a line that is exactly `.` cannot be inserted. No prompt is shown in insert
+spaces, until you type a line consisting of a single `.`. A line such as `or `..`is
+inserted as text; a line that is exactly`.` cannot be inserted. No prompt is shown in insert
 mode.
 
 ### Saving and quitting
 
-`q` writes every line to *FILE*, each followed by a line feed, and quits. If the input ends
+`q` writes every line to _FILE_, each followed by a line feed, and quits. If the input ends
 without `q` — the end of a script, or Ctrl-D — the editor reports
-`unexpected end of input`, leaves *FILE* exactly as it was, and exits with status 1.
+`unexpected end of input`, leaves _FILE_ exactly as it was, and exits with status 1.
 
 ### Mistakes
 
@@ -125,7 +156,7 @@ The prompt goes to standard error, so typed lines are the only content of standa
 
 **`-p`, `--prompt`**
 : Write the prompt `*` to standard error before each command is read (not in insert mode). A
-  last prompt appears before the end of the input is noticed.
+last prompt appears before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -147,11 +178,11 @@ The prompt goes to standard error, so typed lines are the only content of standa
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | `q` wrote the file and every command succeeded, or help or version was printed |
-| 1 | A command failed (the file is still written by a later `q`), the input ended without `q` (the file is not written), or the file could not be read or written |
-| 2 | Usage error: an invalid option, or no file or more than one file named |
+| Status | Meaning                                                                                                                                                      |
+| :----- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | `q` wrote the file and every command succeeded, or help or version was printed                                                                               |
+| 1      | A command failed (the file is still written by a later `q`), the input ended without `q` (the file is not written), or the file could not be read or written |
+| 2      | Usage error: an invalid option, or no file or more than one file named                                                                                       |
 
 ## DIAGNOSTICS
 
@@ -165,31 +196,31 @@ dp-line-ed: -:2: value out of range '0'
 dp-line-ed: -:3: pattern not found
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `-:L: unknown command 'W'` | *W* is not one of `i d t m f s q` (commands are lowercase and separated from their arguments by a blank) | Check the command letter |
-| `-:L: missing argument` | `t`, `m`, `f`, or `s` without its argument(s) | Supply the argument |
-| `-:L: extra argument 'X'` | Something follows the last argument | Remove it; one command per line |
-| `-:L: invalid integer 'K'` | *K* is not a whole number, or is far too large | Write the count in digits |
-| `-:L: value out of range 'K'` | *K* is zero or negative | Use a count of at least 1 |
-| `-:L: missing delimiter` | A pattern does not start with a punctuation character | Enclose it: `f 'cat'` |
-| `-:L: unterminated string` | The closing delimiter is missing | Add it |
-| `-:L: empty pattern` | `f ''` or `s '' '…'` | Give a non-empty pattern |
-| `-:L: no current line` | `s` while the current line is `[BOF]` | Move to a line first (`m 1`, `f`) |
-| `-:L: pattern not found` | `f` found no later line with the pattern; `s` found no *OLD* in the current line | Check the text; use `t b` to search from the top |
+| Message                       | Cause                                                                                                    | Fix                                              |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
+| `-:L: unknown command 'W'`    | _W_ is not one of `i d t m f s q` (commands are lowercase and separated from their arguments by a blank) | Check the command letter                         |
+| `-:L: missing argument`       | `t`, `m`, `f`, or `s` without its argument(s)                                                            | Supply the argument                              |
+| `-:L: extra argument 'X'`     | Something follows the last argument                                                                      | Remove it; one command per line                  |
+| `-:L: invalid integer 'K'`    | _K_ is not a whole number, or is far too large                                                           | Write the count in digits                        |
+| `-:L: value out of range 'K'` | _K_ is zero or negative                                                                                  | Use a count of at least 1                        |
+| `-:L: missing delimiter`      | A pattern does not start with a punctuation character                                                    | Enclose it: `f 'cat'`                            |
+| `-:L: unterminated string`    | The closing delimiter is missing                                                                         | Add it                                           |
+| `-:L: empty pattern`          | `f ''` or `s '' '…'`                                                                                     | Give a non-empty pattern                         |
+| `-:L: no current line`        | `s` while the current line is `[BOF]`                                                                    | Move to a line first (`m 1`, `f`)                |
+| `-:L: pattern not found`      | `f` found no later line with the pattern; `s` found no _OLD_ in the current line                         | Check the text; use `t b` to search from the top |
 
 Problems that end the session (exit status 1):
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `-:L: unexpected end of input` | The input ended without `q`; the file was not written | End the commands with `q` |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Permission denied` | You may not read or write *F* | Check the file's permissions |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: No such file or directory` | At `q`: a directory on the path *F* does not exist | Create the directory or correct the path |
-| `F: Input/output error` | Any other read or write failure | Check the device or file system |
-| `-: Input/output error` | Standard input could not be read | Check the pipe or terminal |
-| `write error` | Typed lines could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                            | Fix                                         |
+| :----------------------------- | :--------------------------------------------------------------- | :------------------------------------------ |
+| `-:L: unexpected end of input` | The input ended without `q`; the file was not written            | End the commands with `q`                   |
+| `F: Is a directory`            | _F_ is a directory                                               | Name a file instead                         |
+| `F: Permission denied`         | You may not read or write _F_                                    | Check the file's permissions                |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                  | Correct the path                            |
+| `F: No such file or directory` | At `q`: a directory on the path _F_ does not exist               | Create the directory or correct the path    |
+| `F: Input/output error`        | Any other read or write failure                                  | Check the device or file system             |
+| `-: Input/output error`        | Standard input could not be read                                 | Check the pipe or terminal                  |
+| `write error`                  | Typed lines could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
 
 Usage errors are written to standard error as two lines; nothing is read, the file is not
 touched, and nothing is written to standard output:
@@ -200,13 +231,13 @@ dp-line-ed: missing operand
 Try 'dp-line-ed --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `missing operand` | No file was named | Name the file to edit |
-| `extra operand 'F'` | More than one file was named | Edit one file at a time |
+| Message                                       | Cause                                                   | Fix                      |
+| :-------------------------------------------- | :------------------------------------------------------ | :----------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                 |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`          |
+| `missing operand`                             | No file was named                                       | Name the file to edit    |
+| `extra operand 'F'`                           | More than one file was named                            | Edit one file at a time  |
 
 ## EXAMPLES
 

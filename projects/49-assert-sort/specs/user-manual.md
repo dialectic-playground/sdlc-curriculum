@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-assert-sort — User Manual](#dp-assert-sort--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [How the numbers are sorted](#how-the-numbers-are-sorted)
+    - [What is checked](#what-is-checked)
+    - [Watching the checks](#watching-the-checks)
+    - [Injecting faults](#injecting-faults)
+    - [Numbers](#numbers)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-assert-sort — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-assert-sort` 1.0.0 |
-| Project | `49-assert-sort` — Formal Program Verification via Assertions & Loop Invariants |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-49), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                           |
+| :------------ | :------------------------------------------------------------------------------ |
+| Product       | `dp-assert-sort` 1.0.0                                                          |
+| Project       | `49-assert-sort` — Formal Program Verification via Assertions & Loop Invariants |
+| Applies to    | Linux, macOS, Windows                                                           |
+| Specification | `SRS.md` (SRS-49), `shared/CLI-CONVENTIONS.md`                                  |
 
 ---
 
@@ -23,8 +51,8 @@ dp-assert-sort --version
 
 ## DESCRIPTION
 
-`dp-assert-sort` reads whole numbers from *FILE*, or from standard input when there is no
-*FILE* or *FILE* is `-`, sorts them in ascending order, and prints them one per line.
+`dp-assert-sort` reads whole numbers from _FILE_, or from standard input when there is no
+_FILE_ or _FILE_ is `-`, sorts them in ascending order, and prints them one per line.
 
 ```text
 $ echo 5 4 3 2 1 | dp-assert-sort
@@ -37,14 +65,13 @@ $ echo 5 4 3 2 1 | dp-assert-sort
 
 ### How the numbers are sorted
 
-`dp-assert-sort` uses selection sort. For *n* numbers it makes *n* − 1 passes, numbered from
-0. In pass *i* it finds the smallest of the numbers at positions *i* to *n* − 1 (the leftmost
-one if several are equal), and swaps it with the number at position *i*. Positions are
+`dp-assert-sort` uses selection sort. For _n_ numbers it makes _n_ − 1 passes, numbered from 0. In pass _i_ it finds the smallest of the numbers at positions _i_ to _n_ − 1 (the leftmost
+one if several are equal), and swaps it with the number at position _i_. Positions are
 counted from 0.
 
 ### What is checked
 
-After finding the minimum in pass *i*, and before swapping, the tool asserts that its position
+After finding the minimum in pass _i_, and before swapping, the tool asserts that its position
 `min_ind` lies inside the array:
 
 ```text
@@ -53,8 +80,8 @@ min_ind >= 0 && min_ind < n
 
 After the swap it asserts the **loop invariant** `sorted(a, i, n)`:
 
-1. the numbers at positions 0 to *i* are in ascending order, and
-2. no number after position *i* is smaller than the number at position *i*.
+1. the numbers at positions 0 to _i_ are in ascending order, and
+2. no number after position _i_ is smaller than the number at position _i_.
 
 After the last pass, the invariant says that the whole list is sorted. The checks are made on
 the actual numbers, in every pass, every time the tool runs.
@@ -95,13 +122,13 @@ differently from what is shown here.)
 ### Injecting faults
 
 `--fault=FAULT` breaks one step of the algorithm on purpose, so you can see the checks catch
-it. *FAULT* is a fault *KIND*, optionally followed by `:` and a pass number:
+it. _FAULT_ is a fault _KIND_, optionally followed by `:` and a pass number:
 
-| KIND | What goes wrong |
-| :-- | :-- |
-| `skip-swap` | The swap is left out. |
-| `off-by-one` | The position one after the minimum is used instead of the minimum's own. |
-| `search-from-next` | The search for the minimum starts at position *i* + 1 instead of *i*. |
+| KIND               | What goes wrong                                                          |
+| :----------------- | :----------------------------------------------------------------------- |
+| `skip-swap`        | The swap is left out.                                                    |
+| `off-by-one`       | The position one after the minimum is used instead of the minimum's own. |
+| `search-from-next` | The search for the minimum starts at position _i_ + 1 instead of _i_.    |
 
 `--fault=off-by-one` injects the fault in every pass; `--fault=off-by-one:2` only in pass 2.
 A pass number beyond the last pass injects nothing. The same fault on the same input always
@@ -137,8 +164,8 @@ of the input (the end-of-file mark of old MS-DOS data files) are ignored.
 : After every invariant check that holds, write a trace line to standard error.
 
 **`-f FAULT`, `--fault=FAULT`**
-: Inject the fault *FAULT* (`KIND` or `KIND:PASS`; see "Injecting faults"). If the option is
-  given more than once, the last one counts.
+: Inject the fault _FAULT_ (`KIND` or `KIND:PASS`; see "Injecting faults"). If the option is
+given more than once, the last one counts.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -159,11 +186,11 @@ of the input (the end-of-file mark of old MS-DOS data files) are ignored.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the numbers were sorted with every check holding (an empty input is fine), or help or version was printed |
-| 1 | An assertion failed, the input contained an invalid number, or the input could not be read |
-| 2 | Usage error: an invalid option or fault, or more than one file |
+| Status | Meaning                                                                                                            |
+| :----- | :----------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the numbers were sorted with every check holding (an empty input is fine), or help or version was printed |
+| 1      | An assertion failed, the input contained an invalid number, or the input could not be read                         |
+| 2      | Usage error: an invalid option or fault, or more than one file                                                     |
 
 ## DIAGNOSTICS
 
@@ -181,17 +208,17 @@ $ dp-assert-sort bad.txt
 dp-assert-sort: bad.txt:3: invalid integer '0x9'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `assertion failed in pass I: min_ind >= 0 && min_ind < n (…)` | The position used in pass *I* is outside the list (only with `--fault`) | This is what the fault demonstrates |
-| `assertion failed in pass I: sorted(a, I, N) (…)` | After pass *I* the invariant does not hold (only with `--fault`) | This is what the fault demonstrates |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or is outside the 64-bit range | Write the number in digits only, without separators or decimals |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                                       | Cause                                                                       | Fix                                                             |
+| :------------------------------------------------------------ | :-------------------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `assertion failed in pass I: min_ind >= 0 && min_ind < n (…)` | The position used in pass _I_ is outside the list (only with `--fault`)     | This is what the fault demonstrates                             |
+| `assertion failed in pass I: sorted(a, I, N) (…)`             | After pass _I_ the invariant does not hold (only with `--fault`)            | This is what the fault demonstrates                             |
+| `S:L: invalid integer 'K'`                                    | Entry _K_ on line _L_ is not a whole number, or is outside the 64-bit range | Write the number in digits only, without separators or decimals |
+| `F: No such file or directory`                                | _F_ does not exist                                                          | Check the spelling and the current directory                    |
+| `F: Permission denied`                                        | You may not read _F_                                                        | Check the file's permissions                                    |
+| `F: Is a directory`                                           | _F_ is a directory                                                          | Name a file instead                                             |
+| `F: Not a directory`                                          | Part of the path _F_ is a file, not a directory                             | Correct the path                                                |
+| `F: Input/output error`                                       | Any other read failure                                                      | Check the device or file system                                 |
+| `write error`                                                 | The results could not be written (for example, the disk is full)            | Free space or redirect the output elsewhere                     |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -202,15 +229,15 @@ dp-assert-sort: invalid argument 'bogus' for '--fault'
 Try 'dp-assert-sort --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-t` or `-f` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'f'` | `-f` was the last argument | Give a fault after `-f` |
-| `option '--fault' requires an argument` | `--fault` was the last argument | Give a fault after `--fault` |
-| `option '--trace' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument 'V' for '--fault'` | *V* is not `KIND` or `KIND:PASS` with a known kind | Use `skip-swap`, `off-by-one`, or `search-from-next`, optionally with `:` and a pass number |
-| `extra operand 'F'` | More than one file was named | Run `dp-assert-sort` once per file |
+| Message                                      | Cause                                                   | Fix                                                                                         |
+| :------------------------------------------- | :------------------------------------------------------ | :------------------------------------------------------------------------------------------ |
+| `invalid option -- 'x'`                      | Unknown short option `-x`                               | Use `-t` or `-f`                                                                            |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                      | Spell the option in full                                                                    |
+| `option requires an argument -- 'f'`         | `-f` was the last argument                              | Give a fault after `-f`                                                                     |
+| `option '--fault' requires an argument`      | `--fault` was the last argument                         | Give a fault after `--fault`                                                                |
+| `option '--trace' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                                                                             |
+| `invalid argument 'V' for '--fault'`         | _V_ is not `KIND` or `KIND:PASS` with a known kind      | Use `skip-swap`, `off-by-one`, or `search-from-next`, optionally with `:` and a pass number |
+| `extra operand 'F'`                          | More than one file was named                            | Run `dp-assert-sort` once per file                                                          |
 
 ## EXAMPLES
 

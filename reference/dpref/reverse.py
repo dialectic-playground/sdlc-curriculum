@@ -9,9 +9,21 @@ from __future__ import annotations
 
 from . import common
 from ._strings import char_length, length, lines
-from .common import (PROMPT, DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, parse_args, prompt, read_all, strip_eof_marker, tokenize,
-                     usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    parse_args,
+    prompt,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    usage_failure,
+)
 
 TOOL = "dp-reverse"
 PROMPT_TEXT = "Enter a string:\t"
@@ -82,7 +94,9 @@ def main(argv: list[str]) -> int:
     if parsed.values.get("lines"):
         strings = lines(data)
     else:
-        strings = [(token.text, token.line) for token in tokenize(strip_eof_marker(data))]
+        strings = [
+            (token.text, token.line) for token in tokenize(strip_eof_marker(data))
+        ]
     unit = "bytes" if use_bytes else "characters"
     try:
         for text, line in strings:

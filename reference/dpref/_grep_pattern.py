@@ -15,14 +15,16 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-MAX_BOUND = 255             # largest m or n in {m}, {m,}, {m,n}
-MAX_REPEAT_PRODUCT = 1000   # largest product of nested repetition weights
-MAX_DEPTH = 100             # deepest permitted group nesting
+MAX_BOUND = 255  # largest m or n in {m}, {m,}, {m,n}
+MAX_REPEAT_PRODUCT = 1000  # largest product of nested repetition weights
+MAX_DEPTH = 100  # deepest permitted group nesting
 
 METACHARACTERS = frozenset(b"^.[]$()|*+?{}\\")
 QUANTIFIER_STARTS = frozenset(b"*+?{")
 INTERVAL = re.compile(rb"\{([0-9]+)(?:(,)([0-9]*))?\}")
-WORD_BYTES = frozenset(b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_")
+WORD_BYTES = frozenset(
+    b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+)
 
 
 def _byte_range(first: int, last: int) -> frozenset[int]:
@@ -40,8 +42,12 @@ CHARACTER_CLASSES: dict[bytes, frozenset[int]] = {
     b"lower": _LOWER,
     b"space": _byte_range(0x09, 0x0D) | {0x20},
     b"blank": frozenset({0x09, 0x20}),
-    b"punct": (_byte_range(0x21, 0x2F) | _byte_range(0x3A, 0x40)
-               | _byte_range(0x5B, 0x60) | _byte_range(0x7B, 0x7E)),
+    b"punct": (
+        _byte_range(0x21, 0x2F)
+        | _byte_range(0x3A, 0x40)
+        | _byte_range(0x5B, 0x60)
+        | _byte_range(0x7B, 0x7E)
+    ),
     b"print": _byte_range(0x20, 0x7E),
     b"graph": _byte_range(0x21, 0x7E),
     b"cntrl": _byte_range(0x00, 0x1F) | {0x7F},
@@ -59,9 +65,11 @@ class PatternError(Exception):
 
 # --- syntax tree ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Char:
     """One literal character: a single byte, or the bytes of one UTF-8 encoded character."""
+
     data: bytes
 
 
@@ -83,7 +91,7 @@ class Anchor:
 
 @dataclass(frozen=True)
 class Group:
-    body: "Alternation"
+    body: Alternation
 
 
 @dataclass(frozen=True)
@@ -100,6 +108,7 @@ class Alternation:
 
 # --- parsing -------------------------------------------------------------------------------
 
+
 def utf8_length(data: bytes, index: int) -> int:
     """Length of the valid UTF-8 character starting at ``index``, or 1 for an invalid byte."""
     lead = data[index]
@@ -112,7 +121,7 @@ def utf8_length(data: bytes, index: int) -> int:
     else:
         return 1
     try:  # a truncated, overlong, or surrogate sequence fails to decode
-        data[index:index + size].decode("utf-8", "strict")
+        data[index : index + size].decode("utf-8", "strict")
     except UnicodeDecodeError:
         return 1
     return size
@@ -174,7 +183,11 @@ class _Parser:
         byte = self.data[self.pos]
         if byte != ord("{"):
             self.pos += 1
-            return {ord("*"): (0, None, 1), ord("+"): (1, None, 1), ord("?"): (0, 1, 1)}[byte]
+            return {
+                ord("*"): (0, None, 1),
+                ord("+"): (1, None, 1),
+                ord("?"): (0, 1, 1),
+            }[byte]
         match = INTERVAL.match(self.data, self.pos)
         if match is None:
             raise PatternError(b"invalid interval")
@@ -185,8 +198,9 @@ class _Parser:
             maximum = int(match.group(3))
         else:
             maximum = None
-        if minimum > MAX_BOUND or (maximum is not None and
-                                   (maximum > MAX_BOUND or minimum > maximum)):
+        if minimum > MAX_BOUND or (
+            maximum is not None and (maximum > MAX_BOUND or minimum > maximum)
+        ):
             raise PatternError(b"invalid interval")
         self.pos = match.end()
         return minimum, maximum, max(minimum if maximum is None else maximum, 1)
@@ -217,12 +231,14 @@ class _Parser:
             escaped = data[self.pos + 1]
             if escaped not in METACHARACTERS:
                 size = utf8_length(data, self.pos + 1)
-                raise PatternError(b"unsupported escape \\" + data[self.pos + 1:self.pos + 1 + size])
+                raise PatternError(
+                    b"unsupported escape \\" + data[self.pos + 1 : self.pos + 1 + size]
+                )
             self.pos += 2
             return Char(bytes([escaped])), 1, True
         size = utf8_length(data, self.pos)
         self.pos += size
-        return Char(data[self.pos - size:self.pos]), 1, True
+        return Char(data[self.pos - size : self.pos]), 1, True
 
     # bracket expressions
 
@@ -243,13 +259,19 @@ class _Parser:
                 return ByteSet(frozenset(members), negated)
             first = False
             element = self.bracket_element()
-            if (self.peek() == ord("-") and self.pos + 1 < len(data)
-                    and data[self.pos + 1] != ord("]")):
+            if (
+                self.peek() == ord("-")
+                and self.pos + 1 < len(data)
+                and data[self.pos + 1] != ord("]")
+            ):
                 if isinstance(element, frozenset):
                     raise PatternError(b"invalid range")
                 self.pos += 1  # '-'
-                if data[self.pos] == ord("[") and self.pos + 1 < len(data) \
-                        and data[self.pos + 1] in b":.=":
+                if (
+                    data[self.pos] == ord("[")
+                    and self.pos + 1 < len(data)
+                    and data[self.pos + 1] in b":.="
+                ):
                     raise PatternError(b"invalid range")
                 last = self.bracket_element()
                 assert isinstance(last, int)
@@ -266,13 +288,17 @@ class _Parser:
         data, byte = self.data, self.data[self.pos]
         if byte >= 0x80:
             raise PatternError(b"non-ASCII character in bracket expression")
-        if byte == ord("[") and self.pos + 1 < len(data) and data[self.pos + 1] in b":.=":
+        if (
+            byte == ord("[")
+            and self.pos + 1 < len(data)
+            and data[self.pos + 1] in b":.="
+        ):
             if data[self.pos + 1] != ord(":"):
                 raise PatternError(b"unsupported bracket construct")
             end = data.find(b":]", self.pos + 2)
             if end < 0:
                 raise PatternError(b"unmatched [")
-            name = data[self.pos + 2:end]
+            name = data[self.pos + 2 : end]
             if name not in CHARACTER_CLASSES:
                 raise PatternError(b"invalid character class")
             self.pos = end + 2
@@ -293,6 +319,7 @@ def literal(pattern: bytes) -> Alternation:
 
 # --- translation to Python re ------------------------------------------------------------
 
+
 def _fold(byte: int) -> int:
     if 0x41 <= byte <= 0x5A or 0x61 <= byte <= 0x7A:
         return byte ^ 0x20
@@ -307,15 +334,19 @@ def _byte_class(members: set[int] | frozenset[int]) -> bytes:
         while index + 1 < len(ordered) and ordered[index + 1] == end + 1:
             index += 1
             end = ordered[index]
-        parts.append(b"\\x%02x" % start if start == end else b"\\x%02x-\\x%02x" % (start, end))
+        parts.append(
+            b"\\x%02x" % start if start == end else b"\\x%02x-\\x%02x" % (start, end)
+        )
         index += 1
     return b"[" + b"".join(parts) + b"]"
 
 
 def _translate(node: object, ignore_case: bool) -> bytes:
     if isinstance(node, Alternation):
-        return b"|".join(b"".join(_translate(piece, ignore_case) for piece in branch)
-                         for branch in node.branches)
+        return b"|".join(
+            b"".join(_translate(piece, ignore_case) for piece in branch)
+            for branch in node.branches
+        )
     if isinstance(node, Char):
         if ignore_case and len(node.data) == 1 and _fold(node.data[0]) != node.data[0]:
             return _byte_class({node.data[0], _fold(node.data[0])})
@@ -334,8 +365,11 @@ def _translate(node: object, ignore_case: bool) -> bytes:
     if isinstance(node, Group):
         return b"(?:" + _translate(node.body, ignore_case) + b")"
     if isinstance(node, Repeat):
-        bounds = (b"{%d,}" % node.minimum if node.maximum is None
-                  else b"{%d,%d}" % (node.minimum, node.maximum))
+        bounds = (
+            b"{%d,}" % node.minimum
+            if node.maximum is None
+            else b"{%d,%d}" % (node.minimum, node.maximum)
+        )
         return b"(?:" + _translate(node.node, ignore_case) + b")" + bounds
     raise TypeError(node)
 
@@ -346,14 +380,22 @@ _NON_WORD = _byte_class(set(range(256)) - WORD_BYTES)
 class LineMatcher:
     """Decides whether a line (bytes without its LF) matches any of the patterns."""
 
-    def __init__(self, trees: list[Alternation], *, ignore_case: bool, line_regexp: bool,
-                 word_regexp: bool):
+    def __init__(
+        self,
+        trees: list[Alternation],
+        *,
+        ignore_case: bool,
+        line_regexp: bool,
+        word_regexp: bool,
+    ):
         self.full = line_regexp
         compiled = []
         for tree in trees:
             body = b"(?:" + _translate(tree, ignore_case) + b")"
             if word_regexp and not line_regexp:
-                body = b"(?:\\A|" + _NON_WORD + b")" + body + b"(?:" + _NON_WORD + b"|\\Z)"
+                body = (
+                    b"(?:\\A|" + _NON_WORD + b")" + body + b"(?:" + _NON_WORD + b"|\\Z)"
+                )
             compiled.append(re.compile(body))
         self.regexes = compiled
 

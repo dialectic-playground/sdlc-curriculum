@@ -7,16 +7,29 @@ output flushed, as soon as the length's token is complete; nothing after the sen
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-convert"
 PROMPT_TEXT = "Enter next length "
 END_BANNER = b"*** END OF PROGRAM ***\n"
 FEET_PER_YARD = 3
 INCHES_PER_YARD = 36
-MAX_YARDS = (2 ** 63 - 1) // INCHES_PER_YARD  # 256204778801521550
+MAX_YARDS = (2**63 - 1) // INCHES_PER_YARD  # 256204778801521550
 HELP_TEXT = """\
 Usage: dp-convert [OPTION]... [FILE]
 Convert lengths in yards to feet and inches.
@@ -70,8 +83,9 @@ def main(argv: list[str]) -> int:
                 common.write(END_BANNER)
                 return 0
             if yards > MAX_YARDS:
-                raise DataError(source, token.line,
-                                b"value out of range '" + token.text + b"'")
+                raise DataError(
+                    source, token.line, b"value out of range '" + token.text + b"'"
+                )
             common.write(block(yards))
             common.out.flush()
     except DataError as error:

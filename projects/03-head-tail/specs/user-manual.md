@@ -1,10 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-head, dp-tail — User Manual](#dp-head-dp-tail--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Common options](#common-options)
+    - [dp-tail only](#dp-tail-only)
+    - [Numbers](#numbers)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-head, dp-tail — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Products | `dp-head` 1.0.0, `dp-tail` 1.0.0 |
-| Project | `03-head-tail` — Stream Slicing Utility |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Products      | `dp-head` 1.0.0, `dp-tail` 1.0.0               |
+| Project       | `03-head-tail` — Stream Slicing Utility        |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-03), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -26,15 +52,15 @@ dp-tail --help | --version
 
 ## DESCRIPTION
 
-`dp-head` prints the first 10 lines of each *FILE*; `dp-tail` prints the last 10. With `-n`
+`dp-head` prints the first 10 lines of each _FILE_; `dp-tail` prints the last 10. With `-n`
 you choose a different number of lines, and with `-c` you count bytes instead of lines.
 
-- `dp-head -n -NUM` prints everything **except** the last *NUM* lines (`-c -NUM`: bytes).
-- `dp-tail -n +NUM` prints everything **from** line *NUM* onward, counting from 1
-  (`-c +NUM`: from byte *NUM*).
+- `dp-head -n -NUM` prints everything **except** the last _NUM_ lines (`-c -NUM`: bytes).
+- `dp-tail -n +NUM` prints everything **from** line _NUM_ onward, counting from 1
+  (`-c +NUM`: from byte _NUM_).
 
-With no *FILE*, or when *FILE* is `-`, the tools read standard input. When you give more than
-one *FILE*, each file's output is preceded by a header such as `==> notes.txt <==`, and a blank
+With no _FILE_, or when _FILE_ is `-`, the tools read standard input. When you give more than
+one _FILE_, each file's output is preceded by a header such as `==> notes.txt <==`, and a blank
 line separates consecutive files. Standard input is labelled `standard input`.
 
 A **line** is everything up to and including a line feed (LF). If a file does not end with a
@@ -54,9 +80,9 @@ file, `dp-tail` reads backwards from the end, so `dp-tail` of a 40 GB log is as 
 ### Common options
 
 **`-n NUM`, `--lines=NUM`**
-: Count lines. `dp-head` prints the first *NUM* lines (`-NUM`: all but the last *NUM*).
-  `dp-tail` prints the last *NUM* lines (`+NUM`: starting with line *NUM*). The default is
-  `-n 10`.
+: Count lines. `dp-head` prints the first _NUM_ lines (`-NUM`: all but the last _NUM_).
+`dp-tail` prints the last _NUM_ lines (`+NUM`: starting with line _NUM_). The default is
+`-n 10`.
 
 **`-c NUM`, `--bytes=NUM`**
 : Count bytes instead of lines, with the same sign rules as `-n`.
@@ -77,22 +103,22 @@ file, `dp-tail` reads backwards from the end, so `dp-tail` of a 40 GB log is as 
 
 **`-f`, `--follow`**
 : After the initial output, keep checking each file for appended data and print it. Only
-  ordinary files are followed: standard input, pipes, directories, and files that could not be
-  opened are not. If no file can be followed, `dp-tail` exits right away. If a followed file
-  becomes shorter (for example, it was truncated), `dp-tail` reports `file truncated` and
-  continues from its new beginning.
+ordinary files are followed: standard input, pipes, directories, and files that could not be
+opened are not. If no file can be followed, `dp-tail` exits right away. If a followed file
+becomes shorter (for example, it was truncated), `dp-tail` reports `file truncated` and
+continues from its new beginning.
 
 **`-s SECONDS`, `--sleep-interval=SECONDS`**
-: With `-f`, wait *SECONDS* between checks. *SECONDS* is a whole number or a decimal such as
-  `0.5` (digits on both sides of the point), from 0 to 86400. The default is 1.
+: With `-f`, wait _SECONDS_ between checks. _SECONDS_ is a whole number or a decimal such as
+`0.5` (digits on both sides of the point), from 0 to 86400. The default is 1.
 
 **`--max-polls=N`**
-: With `-f`, check the files *N* times and then exit, instead of running until interrupted. *N*
-  is a whole number; 0 means exit right after the initial output.
+: With `-f`, check the files _N_ times and then exit, instead of running until interrupted. _N_
+is a whole number; 0 means exit right after the initial output.
 
 ### Numbers
 
-*NUM* is written with the digits `0`–`9`, optionally preceded by the sign described above and
+_NUM_ is written with the digits `0`–`9`, optionally preceded by the sign described above and
 optionally followed by one multiplier suffix: `K` (1024), `M` (1024×1024), or `G`
 (1024×1024×1024). For example, `-c 64K` means 65536 bytes. Suffixes are uppercase only. The
 largest allowed value is 9223372036854775807. Requesting more lines or bytes than a file has is
@@ -113,11 +139,11 @@ Both tools follow the curriculum's common conventions (`shared/CLI-CONVENTIONS.m
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every file was printed, or help or version was shown |
-| 1 | At least one file could not be opened or read (the other files were still printed) |
-| 2 | Usage error: invalid option or value; nothing was printed |
+| Status | Meaning                                                                            |
+| :----- | :--------------------------------------------------------------------------------- |
+| 0      | Success: every file was printed, or help or version was shown                      |
+| 1      | At least one file could not be opened or read (the other files were still printed) |
+| 2      | Usage error: invalid option or value; nothing was printed                          |
 
 `dp-tail -f` without `--max-polls` keeps running until you interrupt it (for example with
 Ctrl+C).
@@ -142,20 +168,20 @@ alpha
 dp-head: missing.txt: No such file or directory
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option, including the shorthand `-5` | Use `-n 5` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'n'` | `-n`, `-c`, or `-s` without a value | Supply a value |
-| `option '--lines' requires an argument` | A long option without its value | Supply a value |
-| `option '--quiet' doesn't allow an argument` | `=…` after a flag | Remove the `=…` |
-| `invalid argument '+3' for '--lines'` | A malformed or too-large *NUM*, or `+` given to `dp-head` | Use digits, an allowed sign, and `K`/`M`/`G` only |
-| `invalid argument '1.5.2' for '-s'` | Malformed or too-large *SECONDS* | Use a number such as `2` or `0.5`, at most 86400 |
-| `invalid argument '-1' for '--max-polls'` | *N* is not a whole number | Use digits only |
-| `missing.txt: No such file or directory` | The file does not exist | Check the name |
-| `logs: Is a directory` | A directory was named | Name a file inside it |
-| `notes.txt: Permission denied` | The file cannot be read | Check its permissions |
-| `app.log: file truncated` | A followed file became shorter (`dp-tail -f`) | Informational only |
+| Message                                      | Cause                                                     | Fix                                               |
+| :------------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------ |
+| `invalid option -- 'x'`                      | Unknown short option, including the shorthand `-5`        | Use `-n 5`                                        |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                        | Spell the option in full                          |
+| `option requires an argument -- 'n'`         | `-n`, `-c`, or `-s` without a value                       | Supply a value                                    |
+| `option '--lines' requires an argument`      | A long option without its value                           | Supply a value                                    |
+| `option '--quiet' doesn't allow an argument` | `=…` after a flag                                         | Remove the `=…`                                   |
+| `invalid argument '+3' for '--lines'`        | A malformed or too-large _NUM_, or `+` given to `dp-head` | Use digits, an allowed sign, and `K`/`M`/`G` only |
+| `invalid argument '1.5.2' for '-s'`          | Malformed or too-large _SECONDS_                          | Use a number such as `2` or `0.5`, at most 86400  |
+| `invalid argument '-1' for '--max-polls'`    | _N_ is not a whole number                                 | Use digits only                                   |
+| `missing.txt: No such file or directory`     | The file does not exist                                   | Check the name                                    |
+| `logs: Is a directory`                       | A directory was named                                     | Name a file inside it                             |
+| `notes.txt: Permission denied`               | The file cannot be read                                   | Check its permissions                             |
+| `app.log: file truncated`                    | A followed file became shorter (`dp-tail -f`)             | Informational only                                |
 
 ## EXAMPLES
 
@@ -294,7 +320,7 @@ Both tools ignore all environment variables, including locale settings (`LANG`, 
 - **All platforms:** follow mode checks for appended data by polling. A file that is renamed
   or replaced (log rotation) is not re-opened; `dp-tail -f` keeps reading the original file.
 - **Large files:** `dp-tail`, and `dp-head` with `-NUM`, find their slice from the end of an
-  ordinary file without reading the whole file. On pipes, they keep only the last *NUM* lines or
+  ordinary file without reading the whole file. On pipes, they keep only the last _NUM_ lines or
   bytes in memory.
 - **macOS / Linux:** quote file names that contain spaces or shell metacharacters.
 

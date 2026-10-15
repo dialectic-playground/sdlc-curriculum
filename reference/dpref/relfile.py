@@ -14,8 +14,17 @@ import sys
 from dataclasses import dataclass
 
 from . import common
-from .common import (PROMPT, InputStream, Option, UsageError, handle_action, invalid_argument,
-                     parse_args, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    InputStream,
+    Option,
+    UsageError,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-relfile"
 DEFAULT_FILE = "relative.dat"
@@ -28,12 +37,14 @@ DIVISOR = 97
 FREE, TAKEN, DELETED = b"0", b"1", b"2"
 STATUS_WORDS = {TAKEN: "taken", DELETED: "deleted"}
 
-MENU_PROMPT = ("\t\t\t1   -- add a record\n"
-               "\t\t\t2   -- find a record\n"
-               "\t\t\t3   -- remove a record\n"
-               "\t\t\t0   -- exit the program\n"
-               "\n"
-               "\t\t\tPlease pick a number:   ")
+MENU_PROMPT = (
+    "\t\t\t1   -- add a record\n"
+    "\t\t\t2   -- find a record\n"
+    "\t\t\t3   -- remove a record\n"
+    "\t\t\t0   -- exit the program\n"
+    "\n"
+    "\t\t\tPlease pick a number:   "
+)
 KEY_PROMPT = "\t\t\tEnter key (4 digits):   "
 DATA_PROMPT = "\t\t\tEnter data (up to 30 characters):   "
 
@@ -102,7 +113,9 @@ def home_slot(key: bytes) -> int:
 @dataclass
 class Located:
     found: int | None  # slot holding the key, if any
-    insert: int | None  # slot an add would use (first tombstone or the free slot), if any
+    insert: (
+        int | None
+    )  # slot an add would use (first tombstone or the free slot), if any
 
 
 class RelativeFileError(Exception):
@@ -135,8 +148,10 @@ class RelativeFile:
             record = self.read_record(slot)
             status = record[:1]
             if status == FREE:
-                return Located(None, first_tombstone if first_tombstone is not None else slot)
-            if status == TAKEN and record[1:1 + KEY_SIZE] == key:
+                return Located(
+                    None, first_tombstone if first_tombstone is not None else slot
+                )
+            if status == TAKEN and record[1 : 1 + KEY_SIZE] == key:
                 return Located(slot, None)
             if status == DELETED and first_tombstone is None:
                 first_tombstone = slot
@@ -146,16 +161,19 @@ class RelativeFile:
 
 def validate(data: bytes) -> None:
     if len(data) != FILE_SIZE:
-        raise CorruptFile(f"not a relative file (size {len(data)}, expected {FILE_SIZE})")
+        raise CorruptFile(
+            f"not a relative file (size {len(data)}, expected {FILE_SIZE})"
+        )
     for slot in range(SLOTS):
-        record = data[slot * RECORD_SIZE:(slot + 1) * RECORD_SIZE]
+        record = data[slot * RECORD_SIZE : (slot + 1) * RECORD_SIZE]
         status, rest = record[:1], record[1:]
         if status == FREE:
             ok = rest == b" " * (RECORD_SIZE - 1)
         elif status in (TAKEN, DELETED):
             key, value = rest[:KEY_SIZE], rest[KEY_SIZE:]
-            ok = (all(0x30 <= b <= 0x39 for b in key)
-                  and all(0x20 <= b <= 0x7E for b in value))
+            ok = all(0x30 <= b <= 0x39 for b in key) and all(
+                0x20 <= b <= 0x7E for b in value
+            )
         else:
             ok = False
         if not ok:
@@ -179,14 +197,16 @@ class Session:
             self.fail(b"cannot add " + key + b": file is full")
         else:
             self.rel.write(where.insert, TAKEN + key + data.ljust(DATA_SIZE, b" "))
-            common.write(b"Added " + key + b" in slot " + str(where.insert).encode() + b"\n")
+            common.write(
+                b"Added " + key + b" in slot " + str(where.insert).encode() + b"\n"
+            )
 
     def find(self, key: bytes) -> None:
         where = self.rel.locate(key)
         if where.found is None:
             self.fail(b"cannot find " + key + b": no such record")
             return
-        data = self.rel.read_record(where.found)[1 + KEY_SIZE:].rstrip(b" ")
+        data = self.rel.read_record(where.found)[1 + KEY_SIZE :].rstrip(b" ")
         line = b"Found " + key + b" in slot " + str(where.found).encode() + b":"
         common.write(line + (b" " + data if data else b"") + b"\n")
 
@@ -196,7 +216,9 @@ class Session:
             self.fail(b"cannot remove " + key + b": no such record")
             return
         self.rel.write(where.found, DELETED)
-        common.write(b"Removed " + key + b" from slot " + str(where.found).encode() + b"\n")
+        common.write(
+            b"Removed " + key + b" from slot " + str(where.found).encode() + b"\n"
+        )
 
     def slots(self) -> None:
         for slot in range(SLOTS):
@@ -204,8 +226,8 @@ class Session:
             word = STATUS_WORDS.get(record[:1])
             if word is None:
                 continue
-            key = record[1:1 + KEY_SIZE]
-            data = record[1 + KEY_SIZE:].rstrip(b" ")
+            key = record[1 : 1 + KEY_SIZE]
+            data = record[1 + KEY_SIZE :].rstrip(b" ")
             line = f"{slot} {word} ".encode() + key
             common.write(line + (b" " + data if data else b"") + b"\n")
 
@@ -262,7 +284,9 @@ class Dialog:
                 if choice == b"1":
                     data = self.read_response(DATA_PROMPT)
                     if data is None:
-                        return self.data_error(self.stream.line, b"unexpected end of input")
+                        return self.data_error(
+                            self.stream.line, b"unexpected end of input"
+                        )
                     data = check_data(data)
             except InputError as error:
                 return self.data_error(self.line, error.args[0])
@@ -283,7 +307,7 @@ def open_relative(path: str, writable: bool):
     if not os.path.exists(path):
         with open(path, "xb") as handle:
             handle.write((FREE + b" " * (RECORD_SIZE - 1)) * SLOTS)
-    handle = open(path, "r+b" if writable else "rb")
+    handle = open(path, "r+b" if writable else "rb")  # noqa: SIM115
     try:
         validate(handle.read())
     except BaseException:
@@ -317,7 +341,9 @@ def main(argv: list[str]) -> int:
                 if command == "add":
                     values[1] = check_data(values[1])
             except InputError as error:
-                raise UsageError(error.args[0].decode("utf-8", "surrogateescape")) from None
+                raise UsageError(
+                    error.args[0].decode("utf-8", "surrogateescape")
+                ) from None
     except UsageError as error:
         return usage_failure(TOOL, error)
 

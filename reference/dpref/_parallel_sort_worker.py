@@ -8,7 +8,8 @@ dp-sort-host reference serves it in a thread over a pipe pair.
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
+from collections.abc import Iterator
+from typing import BinaryIO
 
 from .common import InputStream, parse_int_token
 

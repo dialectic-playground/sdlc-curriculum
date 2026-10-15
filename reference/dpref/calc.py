@@ -8,9 +8,23 @@ on a copy of the accumulator, which is committed only when the whole line is val
 from __future__ import annotations
 
 from . import common
-from .common import (INT64_MAX, INT64_MIN, PROMPT, InputError, InputStream, Option, UsageError,
-                     WHITESPACE, encode_arg, file_failure, handle_action, open_input, parse_args,
-                     prompt, usage_failure)
+from .common import (
+    INT64_MAX,
+    INT64_MIN,
+    PROMPT,
+    WHITESPACE,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    encode_arg,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-calc"
 BANNER = b" **** End of Calculation ****\n"
@@ -137,14 +151,20 @@ def main(argv: list[str]) -> int:
             try:
                 result, used, stop = evaluate(accumulator, tokens)
             except LineError as error:
-                common.err.write(encode_arg(f"{TOOL}: {source}:{line.line}: ")
-                                 + error.message + b"\n")
+                common.err.write(
+                    encode_arg(f"{TOOL}: {source}:{line.line}: ")
+                    + error.message
+                    + b"\n"
+                )
                 common.err.flush()
                 status = 1
                 continue
             if used:
-                common.write(f"{accumulator} ".encode() + b" ".join(tokens[:used])
-                             + f" == {result}\n".encode())
+                common.write(
+                    f"{accumulator} ".encode()
+                    + b" ".join(tokens[:used])
+                    + f" == {result}\n".encode()
+                )
                 accumulator = result
             if stop:
                 common.write(BANNER)
@@ -157,4 +177,3 @@ def main(argv: list[str]) -> int:
     finally:
         if source != "-":
             handle.close()
-

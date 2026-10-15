@@ -10,9 +10,22 @@ from __future__ import annotations
 import re
 
 from . import common
-from .common import (DataError, Option, UsageError, data_failure, file_failure, handle_action,
-                     invalid_argument, parse_args, parse_int_token, read_all, strip_eof_marker,
-                     tokenize, usage_failure, INT64_MAX)
+from .common import (
+    INT64_MAX,
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_int_token,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    usage_failure,
+)
 
 TOOL = "dp-assert-sort"
 HELP_TEXT = """\
@@ -73,7 +86,9 @@ def check_invariant(a: list[int], i: int) -> str | None:
     return None
 
 
-def selection_sort(a: list[int], trace: bool, fault: tuple[str, int | None] | None) -> None:
+def selection_sort(
+    a: list[int], trace: bool, fault: tuple[str, int | None] | None
+) -> None:
     n = len(a)
     for i in range(n - 1):
         kind = None
@@ -87,18 +102,23 @@ def selection_sort(a: list[int], trace: bool, fault: tuple[str, int | None] | No
         if kind == "off-by-one":
             min_ind += 1
         if not (0 <= min_ind < n):
-            raise AssertionFailure(f"assertion failed in pass {i}: min_ind >= 0 && min_ind < n"
-                                   f" (min_ind = {min_ind}, n = {n})")
+            raise AssertionFailure(
+                f"assertion failed in pass {i}: min_ind >= 0 && min_ind < n"
+                f" (min_ind = {min_ind}, n = {n})"
+            )
         if kind != "skip-swap":
             a[i], a[min_ind] = a[min_ind], a[i]
         detail = check_invariant(a, i)
         if detail is not None:
-            raise AssertionFailure(f"assertion failed in pass {i}: sorted(a, {i}, {n})"
-                                   f" ({detail})")
+            raise AssertionFailure(
+                f"assertion failed in pass {i}: sorted(a, {i}, {n}) ({detail})"
+            )
         if trace:
             values = " ".join(str(v) for v in a)
-            common.err.write(f"pass {i}: min_ind = {min_ind} in bounds; a = {values};"
-                             f" sorted(a, {i}, {n}) holds\n".encode())
+            common.err.write(
+                f"pass {i}: min_ind = {min_ind} in bounds; a = {values};"
+                f" sorted(a, {i}, {n}) holds\n".encode()
+            )
 
 
 def main(argv: list[str]) -> int:

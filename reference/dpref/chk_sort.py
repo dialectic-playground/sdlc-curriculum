@@ -8,9 +8,21 @@ failure exits with status 2, like ``sort -c`` (SRS-17 section 3.7).
 from __future__ import annotations
 
 from . import common
-from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
-                     diagnose, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, usage_failure)
+from .common import (
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    diagnose,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    usage_failure,
+)
 
 TOOL = "dp-chk-sort"
 TROUBLE = 2

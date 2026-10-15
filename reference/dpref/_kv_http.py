@@ -15,8 +15,18 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qsl, unquote
 
-from ._kv_store import (MAX_VALUE_BYTES, Data, Store, StoreError, is_valid_key,
-                        is_valid_prefix, json_string, parse_json, sorted_keys, value_problem)
+from ._kv_store import (
+    MAX_VALUE_BYTES,
+    Data,
+    Store,
+    StoreError,
+    is_valid_key,
+    is_valid_prefix,
+    json_string,
+    parse_json,
+    sorted_keys,
+    value_problem,
+)
 
 MAX_BODY_BYTES = 524288
 REQUEST_TIMEOUT_SECONDS = 10
@@ -30,13 +40,21 @@ ERRORS = {  # code -> (status, message); key_not_found and store_* append detail
     "invalid_key": (400, "invalid key"),
     "invalid_prefix": (400, "invalid prefix"),
     "invalid_json": (400, "request body is not valid JSON"),
-    "invalid_body": (400, 'request body must be a JSON object with exactly one member, '
-                         '"value", whose value is a string'),
+    "invalid_body": (
+        400,
+        (
+            "request body must be a JSON object with exactly one member, "
+            '"value", whose value is a string'
+        ),
+    ),
     "key_not_found": (404, "key not found: "),
     "not_found": (404, "resource not found"),
     "method_not_allowed": (405, "method not allowed"),
     "length_required": (411, "Content-Length header required"),
-    "payload_too_large": (413, f"request body too large (maximum {MAX_BODY_BYTES} bytes)"),
+    "payload_too_large": (
+        413,
+        f"request body too large (maximum {MAX_BODY_BYTES} bytes)",
+    ),
     "value_too_long": (413, f"value too long (maximum {MAX_VALUE_BYTES} bytes)"),
     "store_error": (500, ""),
     "store_locked": (503, ""),
@@ -60,8 +78,11 @@ def compact_json(value: object) -> str:
     if isinstance(value, list):
         return "[" + ",".join(compact_json(item) for item in value) + "]"
     if isinstance(value, dict):
-        return "{" + ",".join(f"{json_string(k)}:{compact_json(v)}"
-                              for k, v in value.items()) + "}"
+        return (
+            "{"
+            + ",".join(f"{json_string(k)}:{compact_json(v)}" for k, v in value.items())
+            + "}"
+        )
     raise TypeError(type(value))
 
 
@@ -75,14 +96,15 @@ class KvRequestHandler(BaseHTTPRequestHandler):
             return self._dispatch
         raise AttributeError(name)
 
-    def log_message(self, format: str, *args: object) -> None:  # noqa: A002
+    def log_message(self, format: str, *args: object) -> None:
         """No per-request logging (SRS FR-33)."""
 
     def version_string(self) -> str:
         return "dp-kv/1.0.0"
 
-    def send_error(self, code: int, message: str | None = None,
-                   explain: str | None = None) -> None:
+    def send_error(
+        self, code: int, message: str | None = None, explain: str | None = None
+    ) -> None:
         """Protocol-level failures detected by http.server (bad request line, etc.)."""
         _, text = ERRORS["bad_request"]
         self._respond(code, {"error": {"code": "bad_request", "message": text}}, {})
@@ -109,7 +131,7 @@ class KvRequestHandler(BaseHTTPRequestHandler):
         if path.startswith(ITEM_PREFIX):
             self._require(ITEM_PREFIX, ("GET", "PUT", "DELETE"))
             try:
-                key = unquote(path[len(ITEM_PREFIX):], errors="strict")
+                key = unquote(path[len(ITEM_PREFIX) :], errors="strict")
             except UnicodeDecodeError:
                 raise ApiError("invalid_key") from None
             if not is_valid_key(key):
@@ -165,7 +187,11 @@ class KvRequestHandler(BaseHTTPRequestHandler):
 
     def _read_value(self) -> str:
         length_header = self.headers.get("Content-Length")
-        if length_header is None or not length_header.isascii() or not length_header.isdigit():
+        if (
+            length_header is None
+            or not length_header.isascii()
+            or not length_header.isdigit()
+        ):
             raise ApiError("length_required")
         length = int(length_header)
         if length > MAX_BODY_BYTES:
@@ -175,8 +201,11 @@ class KvRequestHandler(BaseHTTPRequestHandler):
             document = parse_json(raw)
         except ValueError:
             raise ApiError("invalid_json") from None
-        if (not isinstance(document, dict) or set(document) != {"value"}
-                or not isinstance(document["value"], str)):
+        if (
+            not isinstance(document, dict)
+            or set(document) != {"value"}
+            or not isinstance(document["value"], str)
+        ):
             raise ApiError("invalid_body")
         value = document["value"]
         problem = value_problem(value)
@@ -191,12 +220,15 @@ class KvRequestHandler(BaseHTTPRequestHandler):
         try:
             return operation()
         except StoreError as error:
-            raise ApiError("store_locked" if error.kind == "locked" else "store_error",
-                           str(error)) from None
+            raise ApiError(
+                "store_locked" if error.kind == "locked" else "store_error", str(error)
+            ) from None
 
     # --- response -----------------------------------------------------------------------
 
-    def _respond(self, status: int, body: object | None, headers: dict[str, str]) -> None:
+    def _respond(
+        self, status: int, body: object | None, headers: dict[str, str]
+    ) -> None:
         payload = b"" if body is None else (compact_json(body) + "\n").encode("utf-8")
         self.send_response(status)
         if body is not None:
@@ -234,17 +266,22 @@ def is_valid_host(host: str) -> bool:
 
 def listen_reason(error: OSError) -> str:
     import errno
+
     if error.errno in (errno.EADDRINUSE, getattr(errno, "WSAEADDRINUSE", -1)):
         return "Address already in use"
     if isinstance(error, PermissionError) or error.errno in (
-            errno.EACCES, getattr(errno, "WSAEACCES", -1)):
+        errno.EACCES,
+        getattr(errno, "WSAEACCES", -1),
+    ):
         return "Permission denied"
     return "Address not available"
 
 
 def make_server(store: Store, host: str, port: int) -> KvServer:
     handler = type("BoundKvRequestHandler", (KvRequestHandler,), {"store": store})
-    family = socket.AF_INET6 if ipaddress.ip_address(host).version == 6 else socket.AF_INET
+    family = (
+        socket.AF_INET6 if ipaddress.ip_address(host).version == 6 else socket.AF_INET
+    )
     server_class = type("BoundKvServer", (KvServer,), {"address_family": family})
     return server_class((host, port), handler)
 
@@ -270,8 +307,9 @@ def serve(store: Store, host: str, port: int, announce) -> int:  # type: ignore[
     for name in ("SIGINT", "SIGTERM", "SIGBREAK"):
         if hasattr(signal, name):
             previous[name] = signal.signal(getattr(signal, name), request_stop)
-    worker = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.1},
-                              daemon=True)
+    worker = threading.Thread(
+        target=server.serve_forever, kwargs={"poll_interval": 0.1}, daemon=True
+    )
     worker.start()
     try:
         while not stop.wait(0.2):

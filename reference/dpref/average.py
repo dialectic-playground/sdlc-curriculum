@@ -8,9 +8,22 @@ from __future__ import annotations
 
 import math
 
-from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
-                     file_failure, fix, handle_action, open_input, parse_args,
-                     parse_real_token, usage_failure, write)
+from .common import (
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_real_token,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-average"
 HELP_TEXT = """\
@@ -56,8 +69,11 @@ def main(argv: list[str]) -> int:
                 total = total + x
                 count += 1
                 if not math.isfinite(total):
-                    raise DataError(source, token.line,
-                                    b"arithmetic overflow at '" + token.text + b"'")
+                    raise DataError(
+                        source,
+                        token.line,
+                        b"arithmetic overflow at '" + token.text + b"'",
+                    )
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

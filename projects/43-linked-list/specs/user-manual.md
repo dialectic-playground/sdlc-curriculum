@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-elephnt1, dp-elephnt2 — User Manual](#dp-elephnt1-dp-elephnt2--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [dp-elephnt1](#dp-elephnt1)
+    - [dp-elephnt2](#dp-elephnt2)
+    - [Prompts](#prompts)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-elephnt1, dp-elephnt2 — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Products | `dp-elephnt1` 1.0.0, `dp-elephnt2` 1.0.0 |
-| Project | `43-linked-list` — Singly Linked List Foundations |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-43), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                             |
+| :------------ | :------------------------------------------------ |
+| Products      | `dp-elephnt1` 1.0.0, `dp-elephnt2` 1.0.0          |
+| Project       | `43-linked-list` — Singly Linked List Foundations |
+| Applies to    | Linux, macOS, Windows                             |
+| Specification | `SRS.md` (SRS-43), `shared/CLI-CONVENTIONS.md`    |
 
 ---
 
@@ -40,7 +66,7 @@ Elephant number 3 is Eloise.
 
 ### dp-elephnt2
 
-`dp-elephnt2` reads a dialog from *FILE*, or from standard input when *FILE* is absent or `-`.
+`dp-elephnt2` reads a dialog from _FILE_, or from standard input when _FILE_ is absent or `-`.
 The dialog is a sequence of lines that alternate between a **name** and an **answer**:
 
 1. A name: the whole line, so it may contain spaces (`Babar the Elephant`). Spaces, tabs, and a
@@ -70,10 +96,10 @@ With `-p` or `--prompt`, `dp-elephnt2` asks its questions on standard error, the
 textbook program did: each question starts on a new line after a blank line, is indented by a
 tab, and is followed by a tab.
 
-| Prompt | Written before |
-| :-- | :-- |
-| *(blank line)* `<TAB>NAME:<TAB>` | each name |
-| *(blank line)* `<TAB>Add another? (1 == yes, 0 == no)<TAB>` | each answer |
+| Prompt                                                      | Written before |
+| :---------------------------------------------------------- | :------------- |
+| _(blank line)_ `<TAB>NAME:<TAB>`                            | each name      |
+| _(blank line)_ `<TAB>Add another? (1 == yes, 0 == no)<TAB>` | each answer    |
 
 At a terminal (what you type is shown after each prompt; tabs are shown as spaces):
 
@@ -98,7 +124,7 @@ the list.
 
 **`-p`, `--prompt`** (dp-elephnt2 only)
 : Write the prompts shown above to standard error before each name and each answer is read. A
-  prompt is written even if the input then turns out to have ended.
+prompt is written even if the input then turns out to have ended.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -119,11 +145,11 @@ Both tools follow the curriculum's common conventions (`shared/CLI-CONVENTIONS.m
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the list was printed, or help or version was printed |
-| 1 | `dp-elephnt2`: the input could not be read, or the dialog contained an error |
-| 2 | Usage error: an invalid option, an operand for `dp-elephnt1`, or more than one file for `dp-elephnt2` |
+| Status | Meaning                                                                                               |
+| :----- | :---------------------------------------------------------------------------------------------------- |
+| 0      | Success: the list was printed, or help or version was printed                                         |
+| 1      | `dp-elephnt2`: the input could not be read, or the dialog contained an error                          |
+| 2      | Usage error: an invalid option, an operand for `dp-elephnt1`, or more than one file for `dp-elephnt2` |
 
 ## DIAGNOSTICS
 
@@ -135,16 +161,16 @@ $ dp-elephnt2 bad-answer.txt
 dp-elephnt2: bad-answer.txt:4: invalid integer 'yes'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `FILE:LINE: invalid integer 'TEXT'` | The answer on line *LINE* is not a whole number (or is blank) | Answer `1` or `0` |
-| `FILE:LINE: value out of range 'TEXT'` | The answer is a whole number other than 0 and 1 | Answer `1` or `0` |
-| `FILE:LINE: empty name` | The name line is blank | Type a name |
-| `FILE:LINE: unexpected end of input` | The input ended where a name was expected (for example right after the answer 1, or an empty input) | Add the missing name, or answer `0` instead of `1` |
-| `FILE: No such file or directory` | *FILE* does not exist | Check the name |
-| `FILE: Is a directory` | *FILE* is a directory | Name a file |
-| `FILE: Permission denied` | *FILE* cannot be read | Check its permissions |
-| `write error` | The list could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                | Cause                                                                                               | Fix                                                |
+| :------------------------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------- |
+| `FILE:LINE: invalid integer 'TEXT'`    | The answer on line _LINE_ is not a whole number (or is blank)                                       | Answer `1` or `0`                                  |
+| `FILE:LINE: value out of range 'TEXT'` | The answer is a whole number other than 0 and 1                                                     | Answer `1` or `0`                                  |
+| `FILE:LINE: empty name`                | The name line is blank                                                                              | Type a name                                        |
+| `FILE:LINE: unexpected end of input`   | The input ended where a name was expected (for example right after the answer 1, or an empty input) | Add the missing name, or answer `0` instead of `1` |
+| `FILE: No such file or directory`      | _FILE_ does not exist                                                                               | Check the name                                     |
+| `FILE: Is a directory`                 | _FILE_ is a directory                                                                               | Name a file                                        |
+| `FILE: Permission denied`              | _FILE_ cannot be read                                                                               | Check its permissions                              |
+| `write error`                          | The list could not be written (for example, the disk is full)                                       | Free space or redirect the output elsewhere        |
 
 With `--prompt`, the message follows the last prompt on the same line of standard error.
 
@@ -157,12 +183,12 @@ dp-elephnt1: extra operand 'extra'
 Try 'dp-elephnt1 --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option (`dp-elephnt1` has no `-p`) | Remove it |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version` | Remove the `=…` |
-| `extra operand 'X'` | An operand for `dp-elephnt1`, or a second *FILE* for `dp-elephnt2` | Remove it |
+| Message                                       | Cause                                                              | Fix                      |
+| :-------------------------------------------- | :----------------------------------------------------------------- | :----------------------- |
+| `invalid option -- 'x'`                       | Unknown short option (`dp-elephnt1` has no `-p`)                   | Remove it                |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                 | Spell the option in full |
+| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version`                    | Remove the `=…`          |
+| `extra operand 'X'`                           | An operand for `dp-elephnt1`, or a second _FILE_ for `dp-elephnt2` | Remove it                |
 
 ## EXAMPLES
 

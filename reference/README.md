@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [reference/ — maintainer fixture tooling (not an assignment solution)](#reference--maintainer-fixture-tooling-not-an-assignment-solution)
+  - [Why it exists](#why-it-exists)
+  - [Rules](#rules)
+  - [Usage (maintainers)](#usage-maintainers)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # reference/ — maintainer fixture tooling (not an assignment solution)
 
 > **This is not a language implementation of the curriculum.** Implementations live in

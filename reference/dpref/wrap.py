@@ -10,9 +10,24 @@ from __future__ import annotations
 
 from . import common
 from ._strings import length
-from .common import (INT64_MAX, DataError, Option, UsageError, data_failure, encode_arg,
-                     file_failure, handle_action, parse_args, parse_count, parse_int_token,
-                     read_all, strip_eof_marker, tokenize, unexpected_end, usage_failure)
+from .common import (
+    INT64_MAX,
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    encode_arg,
+    file_failure,
+    handle_action,
+    parse_args,
+    parse_count,
+    parse_int_token,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    unexpected_end,
+    usage_failure,
+)
 
 TOOL = "dp-wrap"
 HELP_TEXT = """\
@@ -46,8 +61,9 @@ def main(argv: list[str]) -> int:
             return 0
         width = None
         if "width" in parsed.values:
-            width = parse_count(str(parsed.values["width"]), parsed.spelled["width"], 1,
-                                INT64_MAX)
+            width = parse_count(
+                str(parsed.values["width"]), parsed.spelled["width"], 1, INT64_MAX
+            )
         if len(parsed.operands) > 1:
             raise UsageError(f"extra operand '{parsed.operands[1]}'")
     except UsageError as error:
@@ -76,8 +92,12 @@ def main(argv: list[str]) -> int:
     for token in tokens:
         size = length(token.text, use_bytes)
         if size > width:
-            common.err.write(encode_arg(f"{TOOL}: {source}:{token.line}: ")
-                             + b"word length exceeds line length '" + token.text + b"'\n")
+            common.err.write(
+                encode_arg(f"{TOOL}: {source}:{token.line}: ")
+                + b"word length exceeds line length '"
+                + token.text
+                + b"'\n"
+            )
             status = 1
         if current == 0:
             common.write(token.text)

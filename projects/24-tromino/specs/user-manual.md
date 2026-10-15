@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-tromino — User Manual](#dp-tromino--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Coordinates](#coordinates)
+    - [How the tiling is built](#how-the-tiling-is-built)
+    - [Drawing the board](#drawing-the-board)
+    - [Answers](#answers)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-tromino — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-tromino` 1.0.0 |
-| Project | `24-tromino` — Divide-and-Conquer Tromino Deficiency Tiling |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-24), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                       |
+| :------------ | :---------------------------------------------------------- |
+| Product       | `dp-tromino` 1.0.0                                          |
+| Project       | `24-tromino` — Divide-and-Conquer Tromino Deficiency Tiling |
+| Applies to    | Linux, macOS, Windows                                       |
+| Specification | `SRS.md` (SRS-24), `shared/CLI-CONVENTIONS.md`              |
 
 ---
 
@@ -23,8 +51,8 @@ dp-tromino --version
 
 ## DESCRIPTION
 
-`dp-tromino` reads answers from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`. Each round of answers is a board size — 2, 4, 8, 16, 32, or 64 — followed by the
+`dp-tromino` reads answers from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`. Each round of answers is a board size — 2, 4, 8, 16, 32, or 64 — followed by the
 x and y coordinates of the board's missing square. For each round, `dp-tromino` covers every
 other square of the board with L-shaped trominoes and lists them:
 
@@ -67,7 +95,7 @@ of the board, covering one square in each quarter that does not contain the miss
 Now each quarter has exactly one square that must stay free, so each quarter is tiled the same
 way, in the order upper left, upper right, lower right, lower left. A 2 × 2 board needs a
 single tromino. Every tromino is listed before the trominoes of the quarters inside it, so the
-first line is always the tromino at the center of the whole board. A board of size *n* takes
+first line is always the tromino at the center of the whole board. A board of size _n_ takes
 (*n*² − 1) / 3 trominoes: 1, 5, 21, 85, 341, or 1365.
 
 ### Drawing the board
@@ -123,12 +151,12 @@ the tilings.
 
 **`-d`, `--draw`**
 : After the list of each round, draw the board with every square numbered by the tromino that
-  covers it.
+covers it.
 
 **`-p`, `--prompt`**
 : Write `Enter size of board (0 to quit): ` to standard error before each board size is read,
-  and `Enter coordinates of missing square: ` before the two coordinates. A last size prompt
-  appears before the end of the input is noticed.
+and `Enter coordinates of missing square: ` before the two coordinates. A last size prompt
+appears before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -149,11 +177,11 @@ the tilings.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the session ended with a size of 0 or at the end of the input (an empty input is fine), or help or version was printed |
-| 1 | The input could not be read, it contained an invalid answer, or it ended in the middle of a round |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                         |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------ |
+| 0      | Success: the session ended with a size of 0 or at the end of the input (an empty input is fine), or help or version was printed |
+| 1      | The input could not be read, it contained an invalid answer, or it ended in the middle of a round                               |
+| 2      | Usage error: an invalid option or more than one file                                                                            |
 
 ## DIAGNOSTICS
 
@@ -172,18 +200,18 @@ Tiling
 dp-tromino: bad-size.txt:3: invalid board size '6'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Answer *K* on line *L* is not a whole number | Write the answer in digits only |
-| `S:L: invalid board size 'K'` | Board size *K* is not 0, 2, 4, 8, 16, 32, or 64 | Use a power of 2 from 2 to 64, or 0 to quit |
-| `S:L: value out of range 'K'` | Coordinate *K* is negative or not smaller than the board size | Use coordinates from 0 to size − 1 |
-| `S:L: unexpected end of input` | The input ended after a board size, before both coordinates | Complete the last round, or end the session with 0 |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                           | Fix                                                |
+| :----------------------------- | :-------------------------------------------------------------- | :------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Answer _K_ on line _L_ is not a whole number                    | Write the answer in digits only                    |
+| `S:L: invalid board size 'K'`  | Board size _K_ is not 0, 2, 4, 8, 16, 32, or 64                 | Use a power of 2 from 2 to 64, or 0 to quit        |
+| `S:L: value out of range 'K'`  | Coordinate _K_ is negative or not smaller than the board size   | Use coordinates from 0 to size − 1                 |
+| `S:L: unexpected end of input` | The input ended after a board size, before both coordinates     | Complete the last round, or end the session with 0 |
+| `F: No such file or directory` | _F_ does not exist                                              | Check the spelling and the current directory       |
+| `F: Permission denied`         | You may not read _F_                                            | Check the file's permissions                       |
+| `F: Is a directory`            | _F_ is a directory                                              | Name a file instead                                |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                 | Correct the path                                   |
+| `F: Input/output error`        | Any other read failure                                          | Check the device or file system                    |
+| `write error`                  | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere        |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -194,12 +222,12 @@ dp-tromino: extra operand 'boards.txt'
 Try 'dp-tromino --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-d` or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--draw' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-tromino` once per file |
+| Message                                     | Cause                                                   | Fix                            |
+| :------------------------------------------ | :------------------------------------------------------ | :----------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                               | Use `-d` or `-p`               |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                      | Spell the option in full       |
+| `option '--draw' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                |
+| `extra operand 'F'`                         | More than one file was named                            | Run `dp-tromino` once per file |
 
 ## EXAMPLES
 

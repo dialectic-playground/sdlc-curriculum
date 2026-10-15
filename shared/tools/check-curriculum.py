@@ -27,6 +27,7 @@ import subprocess
 import sys
 import tomllib
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER = ROOT / "shared" / "tools" / "run-tests.py"
@@ -50,7 +51,7 @@ EXPECTED_IDS = [f"{n:02d}" for n in range(1, 11)]
 HELP_BLOCK = re.compile(r"```text\n(Usage: .*?)```", re.DOTALL)
 
 
-def load_projects() -> list[dict[str, object]]:
+def load_projects() -> list[dict[str, Any]]:
     with open(ROOT / "curriculum.toml", "rb") as handle:
         return list(tomllib.load(handle)["project"])
 
@@ -75,8 +76,11 @@ def test_ids_and_tools(inputs: Path) -> tuple[list[str], set[str]]:
 
 
 def check_structure(project_dir: Path, tools: list[str]) -> list[str]:
-    problems = [f"missing {name}" for name in REQUIRED_FILES
-                if not (project_dir / name).is_file()]
+    problems = [
+        f"missing {name}"
+        for name in REQUIRED_FILES
+        if not (project_dir / name).is_file()
+    ]
     for suite, inputs_name in SUITES.items():
         suite_dir = project_dir / "tests" / suite
         inputs = suite_dir / inputs_name
@@ -90,15 +94,24 @@ def check_structure(project_dir: Path, tools: list[str]) -> list[str]:
             problems.append(f"{suite}: invokes tools outside this project: {foreign}")
         expected_dir = suite_dir / "expected-outputs"
         wanted = {f"{i}.{kind}" for i in ids for kind in ("stdout", "stderr", "exit")}
-        present = {p.name for p in expected_dir.glob("*")} if expected_dir.is_dir() else set()
-        problems += [f"{suite}: missing expected-outputs/{n}" for n in sorted(wanted - present)]
-        problems += [f"{suite}: orphan expected-outputs/{n}" for n in sorted(present - wanted)]
+        present = (
+            {p.name for p in expected_dir.glob("*")} if expected_dir.is_dir() else set()
+        )
+        problems += [
+            f"{suite}: missing expected-outputs/{n}" for n in sorted(wanted - present)
+        ]
+        problems += [
+            f"{suite}: orphan expected-outputs/{n}" for n in sorted(present - wanted)
+        ]
     return problems
 
 
 def reference_help(tool: str) -> str | None:
-    completed = subprocess.run([sys.executable, str(REFERENCE), tool, "--help"],
-                               capture_output=True, check=False)
+    completed = subprocess.run(
+        [sys.executable, str(REFERENCE), tool, "--help"],
+        capture_output=True,
+        check=False,
+    )
     if completed.returncode != 0:
         return None
     return completed.stdout.decode("utf-8")
@@ -115,7 +128,9 @@ def check_help_text(project_dir: Path, tools: list[str]) -> list[str]:
         if actual is None:
             problems.append(f"reference model for {tool} is missing or failed --help")
         elif actual not in blocks:
-            problems.append(f"user-manual HELP OUTPUT does not match `{tool} --help` verbatim")
+            problems.append(
+                f"user-manual HELP OUTPUT does not match `{tool} --help` verbatim"
+            )
     return problems
 
 
@@ -123,7 +138,9 @@ def check_fixtures(project_dir: Path) -> list[str]:
     suites = [str(project_dir / "tests" / suite) for suite in SUITES]
     completed = subprocess.run(
         [sys.executable, str(RUNNER), "--reference", "-q", *suites],
-        capture_output=True, text=True, check=False,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if completed.returncode == 0:
         return []
@@ -135,20 +152,26 @@ def check_fixtures(project_dir: Path) -> list[str]:
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Validate the curriculum repository.")
     parser.add_argument("slugs", nargs="*", help="projects to check (default: all)")
-    parser.add_argument("--structure-only", action="store_true",
-                        help="skip help-text and fixture verification")
+    parser.add_argument(
+        "--structure-only",
+        action="store_true",
+        help="skip help-text and fixture verification",
+    )
     args = parser.parse_args(argv)
 
     projects = {str(p["slug"]): p for p in load_projects()}
     unknown = [slug for slug in args.slugs if slug not in projects]
     if unknown:
-        print(f"check-curriculum: unknown project(s): {', '.join(unknown)}", file=sys.stderr)
+        print(
+            f"check-curriculum: unknown project(s): {', '.join(unknown)}",
+            file=sys.stderr,
+        )
         return 1
 
     failed = False
     for slug in args.slugs or list(projects):
         project_dir = ROOT / "projects" / slug
-        tools = [str(t) for t in projects[slug]["tools"]]  # type: ignore[attr-defined]
+        tools = [str(t) for t in projects[slug]["tools"]]
         problems = check_structure(project_dir, tools)
         if not args.structure_only and not problems:
             problems += check_help_text(project_dir, tools)

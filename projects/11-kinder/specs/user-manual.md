@@ -1,11 +1,34 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-kinder — User Manual](#dp-kinder--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-kinder — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-kinder` 1.0.0 |
-| Project | `11-kinder` — Console Output & Environment Verification |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-11), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                   |
+| :------------ | :------------------------------------------------------ |
+| Product       | `dp-kinder` 1.0.0                                       |
+| Project       | `11-kinder` — Console Output & Environment Verification |
+| Applies to    | Linux, macOS, Windows                                   |
+| Specification | `SRS.md` (SRS-11), `shared/CLI-CONVENTIONS.md`          |
 
 ---
 
@@ -24,8 +47,8 @@ dp-kinder --version
 ## DESCRIPTION
 
 `dp-kinder` writes the line `ANSI--A kinder and gentler C!` to standard output and exits with
-status 0. It is the first program of Johnsonbaugh & Kalin, *Applications Programming in ANSI
-C*, and it serves the same purpose here: if it builds, installs, runs, and passes its tests on
+status 0. It is the first program of Johnsonbaugh & Kalin, _Applications Programming in ANSI
+C_, and it serves the same purpose here: if it builds, installs, runs, and passes its tests on
 your system, your toolchain is ready for the projects that follow.
 
 The output is identical on every operating system: the message is followed by a single line
@@ -57,11 +80,11 @@ lone `--` is an error.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the message, help, or version was printed |
-| 1 | The output could not be written (for example, the disk is full) |
-| 2 | Usage error: an invalid option or an unexpected operand |
+| Status | Meaning                                                         |
+| :----- | :-------------------------------------------------------------- |
+| 0      | Success: the message, help, or version was printed              |
+| 1      | The output could not be written (for example, the disk is full) |
+| 2      | Usage error: an invalid option or an unexpected operand         |
 
 ## DIAGNOSTICS
 
@@ -74,13 +97,13 @@ dp-kinder: extra operand 'hello'
 Try 'dp-kinder --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | A short option such as `-x`; `dp-kinder` has none | Remove it |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Use `--help` or `--version`, spelled in full |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `extra operand 'foo'` | A word that is not an option, including `-` and anything after `--` | Remove it |
-| `write error` | The output could not be written | Free space or redirect the output elsewhere |
+| Message                                     | Cause                                                               | Fix                                          |
+| :------------------------------------------ | :------------------------------------------------------------------ | :------------------------------------------- |
+| `invalid option -- 'x'`                     | A short option such as `-x`; `dp-kinder` has none                   | Remove it                                    |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                                  | Use `--help` or `--version`, spelled in full |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`                                         | Remove the `=…`                              |
+| `extra operand 'foo'`                       | A word that is not an option, including `-` and anything after `--` | Remove it                                    |
+| `write error`                               | The output could not be written                                     | Free space or redirect the output elsewhere  |
 
 ## EXAMPLES
 

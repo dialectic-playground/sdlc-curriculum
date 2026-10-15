@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 37 — Interactive Accumulator Calculator (`dp-calc`)](#project-37--interactive-accumulator-calculator-dp-calc)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 37 — Interactive Accumulator Calculator (`dp-calc`)
 
 > Evaluate lines of operator-operand pairs strictly left to right on a running total, like a
@@ -8,31 +24,31 @@
 
 ## Purpose
 
-Project 37 is adapted from §7.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 37 is adapted from §7.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 an interactive calculator whose accumulator starts at 0 and to which each input line, such as
 `+ 5 * 10`, applies its operations in order, without operator precedence, printing
 `0 + 5 * 10 == 50`; the operator `!` ends the calculation. The textbook builds the program from
 separate modules for input/output and for evaluation. This project keeps its dialog and report
 word for word and turns it into a well-behaved command-line tool. The engineering focus is
-*transactional evaluation*: a line is evaluated on a copy of the accumulator and committed only
+_transactional evaluation_: a line is evaluated on a copy of the accumulator and committed only
 if every step succeeds, so a typo, a division by zero, or an overflow halfway along a line
 leaves the total exactly as it was — and every result an implementation could compute
 differently (negative division, the most negative 64-bit value) is pinned down.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
+| In scope                                                                                                         | Out of scope                                      |
+| :--------------------------------------------------------------------------------------------------------------- | :------------------------------------------------ |
 | Lines of whitespace-separated operator-operand pairs, evaluated left to right on an accumulator that starts at 0 | Operator precedence, parentheses, unary operators |
-| `+ - * / %` on 64-bit signed integers; `/` and `%` truncate toward zero | Real numbers, other bases, arbitrary precision |
-| Overflow and division by zero detected; the line is rejected and the accumulator kept | Wrapping or saturating arithmetic |
-| `!` ends the calculation with ` **** End of Calculation ****` | Undo, memory registers, variables |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files |
-| One result per line, flushed before the next line is read | Batch summaries |
-| Optional prompt (the accumulator) on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output, line editing |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Line diagnostics with line numbers (CONV-34), processing continues; CONV-16 file errors | Stopping at the first bad line |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| `+ - * / %` on 64-bit signed integers; `/` and `%` truncate toward zero                                          | Real numbers, other bases, arbitrary precision    |
+| Overflow and division by zero detected; the line is rejected and the accumulator kept                            | Wrapping or saturating arithmetic                 |
+| `!` ends the calculation with `* End of Calculation ****`                                                        | Undo, memory registers, variables                 |
+| Standard input or one `FILE` operand (`-` is standard input)                                                     | Several input files                               |
+| One result per line, flushed before the next line is read                                                        | Batch summaries                                   |
+| Optional prompt (the accumulator) on standard error (`-p`, `--prompt`, CONV-36)                                  | Prompts on standard output, line editing          |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                                                    | Other legacy encodings                            |
+| Line diagnostics with line numbers (CONV-34), processing continues; CONV-16 file errors                          | Stopping at the first bad line                    |
+| `--help`, `--version`, CONV-13 usage errors                                                                      | Configuration files, environment variables        |
 
 ## Learning objectives
 
@@ -51,15 +67,15 @@ differently (negative division, the most negative 64-bit value) is pinned down.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-17, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`session.txt`, `acs.txt`, `messy.txt`, `negative.txt`, `errors.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                |
+| :--------------------- | :------------------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-17, NFR-01 … NFR-08)                                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`session.txt`, `acs.txt`, `messy.txt`, `negative.txt`, `errors.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                 |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 `session.txt` replays the example dialog of the section's description.
@@ -84,4 +100,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

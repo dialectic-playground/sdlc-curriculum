@@ -7,13 +7,27 @@ neighbors are ordered (FR-06 and FR-07); everything else is common.
 from __future__ import annotations
 
 from collections import deque
-from typing import Callable
+from collections.abc import Callable
 
 from . import common
-from .common import (DataError, Option, Token, UsageError, data_failure, file_failure,
-                     handle_action, invalid_argument, parse_args, parse_count,
-                     parse_int_token, read_all, strip_eof_marker, tokenize, unexpected_end,
-                     usage_failure)
+from .common import (
+    DataError,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_count,
+    parse_int_token,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    unexpected_end,
+    usage_failure,
+)
 
 MAX_VERTICES = 1000
 MAX_START = MAX_VERTICES - 1
@@ -99,8 +113,12 @@ def bfs(neighbors: list[list[int]], start: int) -> list[int]:
     return order
 
 
-def run_bfs(tool: str, help_text: str, argv: list[str],
-            build: Callable[[Graph], list[list[int]]]) -> int:
+def run_bfs(
+    tool: str,
+    help_text: str,
+    argv: list[str],
+    build: Callable[[Graph], list[list[int]]],
+) -> int:
     try:
         parsed = parse_args(argv, OPTIONS)
         if handle_action(tool, parsed, help_text):
@@ -128,7 +146,9 @@ def run_bfs(tool: str, help_text: str, argv: list[str],
         except DataError as error:
             return data_failure(tool, error)
     if start >= len(graph.names):
-        common.diagnose(tool, f"start vertex '{start_text}' out of range 0-{len(graph.names) - 1}")
+        common.diagnose(
+            tool, f"start vertex '{start_text}' out of range 0-{len(graph.names) - 1}"
+        )
         return 1
     for vertex in bfs(build(graph), start):
         common.write(graph.names[vertex] + b" has been visited.\n")

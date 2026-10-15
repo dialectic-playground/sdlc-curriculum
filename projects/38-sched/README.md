@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 38 — Greedy Interval Activity Scheduling (`dp-sched`)](#project-38--greedy-interval-activity-scheduling-dp-sched)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 38 — Greedy Interval Activity Scheduling (`dp-sched`)
 
 > Read competing activities from a fixed-width file and print a largest set of them that do not
@@ -7,7 +23,7 @@
 
 ## Purpose
 
-Project 38 is adapted from §7.9 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 38 is adapted from §7.9 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads activities (a start time in columns 1–5 and a finish time in columns 6–10)
 from the file named on its command line, sorts them by finish time with a general-purpose
 sorting routine, and selects activities greedily, always taking the next compatible activity
@@ -16,21 +32,21 @@ choice depends on the sort's internals, and the section's own expected result fo
 file is not even a valid schedule. This project keeps the algorithm and the report and makes
 the result fully determined: a stable order by finish time, strict validation of the
 fixed-width lines, and a reference answer proven by the curriculum's model. The engineering
-focus is *deterministic ordering* — the same input must select the same lines whatever sort the
+focus is _deterministic ordering_ — the same input must select the same lines whatever sort the
 platform's library provides — and the classic argument for why the greedy choice is optimal.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| One required `FILE` operand (`-` is standard input) | Several input files, a default file name |
+| In scope                                                                         | Out of scope                                 |
+| :------------------------------------------------------------------------------- | :------------------------------------------- |
+| One required `FILE` operand (`-` is standard input)                              | Several input files, a default file name     |
 | Fixed-width lines: start in columns 1–5, finish in columns 6–10, times 0 … 99999 | Clock times, fractions, other column layouts |
-| Stable sort by finish time; greedy selection (start ≥ last finish is compatible) | Weighted activities, several resources |
-| The heading, a blank line, and the selected lines exactly as in the input | Listing rejected activities, counts |
-| Validation of every line before the report is written | Partial reports after a data error |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Prompts or any other interaction |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Repairing malformed lines |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| Stable sort by finish time; greedy selection (start ≥ last finish is compatible) | Weighted activities, several resources       |
+| The heading, a blank line, and the selected lines exactly as in the input        | Listing rejected activities, counts          |
+| Validation of every line before the report is written                            | Partial reports after a data error           |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                    | Prompts or any other interaction             |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                | Repairing malformed lines                    |
+| `--help`, `--version`, CONV-13 usage errors                                      | Configuration files, environment variables   |
 
 ## Learning objectives
 
@@ -47,15 +63,15 @@ platform's library provides — and the classic argument for why the greedy choi
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-13) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-11, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites: `sched.in` (from the textbook's companion disk), `ties.in`, `empty.in`, `bad.in` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                            |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-13)                                                                                   |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-11, NFR-01 … NFR-08)                                                                |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                             |
+| `tests/fixtures/`      | Input files shared by both suites: `sched.in` (from the textbook's companion disk), `ties.in`, `empty.in`, `bad.in` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                              |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                             |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                 |
 
 ## What you deliver (in your language repository)
 
@@ -77,4 +93,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

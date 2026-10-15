@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 10 — System Resource Telemetry Daemonic CLI (`dp-sysmon`)](#project-10--system-resource-telemetry-daemonic-cli-dp-sysmon)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 10 — System Resource Telemetry Daemonic CLI (`dp-sysmon`)
 
 > Report CPU, memory, disk, and process telemetry like `top` and `ps` — once, at an interval,
@@ -17,13 +33,13 @@ that can be fed recorded data (`--snapshot`) and verified byte for byte.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
+| In scope                                                                                         | Out of scope                                      |
+| :----------------------------------------------------------------------------------------------- | :------------------------------------------------ |
 | Live sampling of CPU %, logical CPU count, memory, disks, and processes on Linux, macOS, Windows | Interactive full-screen TUI, colors, key commands |
-| One-shot, N-sample, and unlimited ("daemonic") sampling with `--interval`, `--count` | Killing or renicing processes |
-| Replay of JSON Lines recordings from a file or stdin (`--snapshot`) with strict validation | Per-core, per-thread, network, GPU metrics |
-| Table and canonical JSON Lines output; `--sort`, `--top`, `--filter` | Remote hosts, alerting, configuration files |
-| Appending samples to a recording (`--output`) | Elevated-privilege collection |
+| One-shot, N-sample, and unlimited ("daemonic") sampling with `--interval`, `--count`             | Killing or renicing processes                     |
+| Replay of JSON Lines recordings from a file or stdin (`--snapshot`) with strict validation       | Per-core, per-thread, network, GPU metrics        |
+| Table and canonical JSON Lines output; `--sort`, `--top`, `--filter`                             | Remote hosts, alerting, configuration files       |
+| Appending samples to a recording (`--output`)                                                    | Elevated-privilege collection                     |
 
 ## Learning objectives
 
@@ -43,15 +59,15 @@ that can be fed recorded data (`--snapshot`) and verified byte for byte.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-16) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-22, NFR-01 … NFR-10), snapshot schema, numeric formatting, table and JSON layouts, live telemetry sources per OS |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/public/` | 10 visible black-box tests (replay mode) with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `tests/fixtures/` | Snapshot recordings shared by both suites |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                         |
+| :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-16)                                                                                                                |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-22, NFR-01 … NFR-10), snapshot schema, numeric formatting, table and JSON layouts, live telemetry sources per OS |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                                          |
+| `tests/public/`        | 10 visible black-box tests (replay mode) with exact expected outputs                                                                             |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                                                                             |
+| `tests/fixtures/`      | Snapshot recordings shared by both suites                                                                                                        |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                              |
 
 ## What you deliver (in your language repository)
 
@@ -83,4 +99,4 @@ dp-sysmon --snapshot=rec.jsonl --sort=name -n 5   # replay the recording
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, the live-mode integration checks of SRS section 7 pass on all three, `make lint`
-is clean, and every RTM row is *Verified*.
+is clean, and every RTM row is _Verified_.

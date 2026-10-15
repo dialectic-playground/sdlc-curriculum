@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-relfile — User Manual](#dp-relfile--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [How records are placed](#how-records-are-placed)
+    - [Keys and data](#keys-and-data)
+    - [Failed operations](#failed-operations)
+    - [The file](#the-file)
+  - [THE MENU DIALOG](#the-menu-dialog)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-relfile — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-relfile` 1.0.0 |
-| Project | `40-relative-file` — Direct-Access Hashed Relative File Storage Engine |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-40), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                  |
+| :------------ | :--------------------------------------------------------------------- |
+| Product       | `dp-relfile` 1.0.0                                                     |
+| Project       | `40-relative-file` — Direct-Access Hashed Relative File Storage Engine |
+| Applies to    | Linux, macOS, Windows                                                  |
+| Specification | `SRS.md` (SRS-40), `shared/CLI-CONVENTIONS.md`                         |
 
 ---
 
@@ -27,7 +55,7 @@ dp-relfile --version
 
 ## DESCRIPTION
 
-`dp-relfile` stores records in a *relative file*, `relative.dat` in the current directory
+`dp-relfile` stores records in a _relative file_, `relative.dat` in the current directory
 unless `-f` names another. Each record has a **key** of exactly four digits (`0000` to `9999`)
 and up to 30 characters of **data**. If the file does not exist, `dp-relfile` creates it, with
 room for 100 records.
@@ -47,14 +75,14 @@ or, with no command, through the textbook's numbered menu (see **THE MENU DIALOG
 
 ### How records are placed
 
-The file has 100 *slots*, numbered 0 to 99. A record's **home slot** is its key modulo 97: key
+The file has 100 _slots_, numbered 0 to 99. A record's **home slot** is its key modulo 97: key
 `1234` belongs in slot 70, because 1234 = 12 × 97 + 70. If the home slot is occupied by another
-record (a *collision*), the record goes into the next slot, then the next, and so on, wrapping
+record (a _collision_), the record goes into the next slot, then the next, and so on, wrapping
 from slot 99 back to slot 0. Finding a record follows the same path from the home slot until it
 finds the key or reaches a slot that has never been used. Slots 97, 98, and 99 are never a home
 slot; they are only reached this way.
 
-Removing a record does not empty its slot: it marks the slot **deleted** (a *tombstone*), so
+Removing a record does not empty its slot: it marks the slot **deleted** (a _tombstone_), so
 that searches for records stored further along the path keep going. A later add reuses the
 first tombstone on its path, after checking that the key is not already stored further on.
 
@@ -79,15 +107,15 @@ the file pads every data field with spaces; leading spaces are kept. Data may be
 ### Failed operations
 
 Adding a key that is already stored, adding when all 100 slots are taken, and finding or
-removing a key that is not stored are *failed operations*. Each is reported on standard error
+removing a key that is not stored are _failed operations_. Each is reported on standard error
 and makes the exit status 1; nothing in the file changes.
 
 ### The file
 
 The relative file is exactly 3500 bytes: 100 records of 35 bytes. Each record is one status
 byte (`0` free, `1` taken, `2` deleted), the four key digits, and the data padded with spaces
-to 30 bytes. A new file holds 100 records of `0` followed by 34 spaces. The record of slot *s*
-starts at byte 35 × *s*, and `dp-relfile` reads and writes single records at those positions.
+to 30 bytes. A new file holds 100 records of `0` followed by 34 spaces. The record of slot _s_
+starts at byte 35 × _s_, and `dp-relfile` reads and writes single records at those positions.
 Before doing anything, `dp-relfile` checks the whole file and refuses to use one with the wrong
 size or a damaged record; it never changes such a file.
 
@@ -117,7 +145,7 @@ error, so you can use the dialog at the keyboard:
 			3   -- remove a record
 			0   -- exit the program
 
-			Please pick a number:   
+			Please pick a number:
 ```
 
 The key prompt is `Enter key (4 digits):` and the data prompt is
@@ -126,11 +154,11 @@ The key prompt is `Enter key (4 digits):` and the data prompt is
 ## OPTIONS
 
 **`-f FILE`, `--file=FILE`**
-: Use the relative file *FILE* instead of `relative.dat`. It is created if it does not exist.
+: Use the relative file _FILE_ instead of `relative.dat`. It is created if it does not exist.
 
 **`-p`, `--prompt`**
 : In the menu dialog, write the menu before each choice and a prompt before each key and data,
-  to standard error. It has no effect with a command.
+to standard error. It has no effect with a command.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -154,36 +182,36 @@ The key prompt is `Enter key (4 digits):` and the data prompt is
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Every operation succeeded, or help or version was printed |
-| 1 | An operation failed, the menu input was malformed, the file is damaged, or a file could not be used |
-| 2 | Usage error: an invalid option, command, key, or data |
+| Status | Meaning                                                                                             |
+| :----- | :-------------------------------------------------------------------------------------------------- |
+| 0      | Every operation succeeded, or help or version was printed                                           |
+| 1      | An operation failed, the menu input was malformed, the file is damaged, or a file could not be used |
+| 2      | Usage error: an invalid option, command, key, or data                                               |
 
 ## DIAGNOSTICS
 
 Every problem is reported on standard error as one line.
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `cannot add K: duplicate key` | A record with key *K* is already stored | Remove it first, or use another key |
-| `cannot add K: file is full` | All 100 slots are taken | Remove records you no longer need |
-| `cannot find K: no such record` | No record with key *K* is stored | Check the key |
-| `cannot remove K: no such record` | No record with key *K* is stored | Check the key |
-| `F: not a relative file (size N, expected 3500)` | *F* is not 3500 bytes long | Check that *F* is the right file; restore it from a backup |
-| `F: slot S: invalid record` | Record *S* of *F* has an invalid status, key, or data | Restore *F* from a backup |
-| `F: No such file or directory` | A directory in the path *F* does not exist | Create the directory or correct the path |
-| `F: Permission denied` | You may not read or write *F*, or create it | Check the permissions (`add`, `remove`, and the menu need write access) |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other failure to use *F* | Check the device or file system |
-| `-:L: invalid choice 'C'` | Line *L* of the menu input is not 0, 1, 2, or 3 | Correct the input |
-| `-:L: invalid key 'K'` | Line *L* of the menu input is not a 4-digit key | Correct the input |
-| `-:L: invalid character in data` | The data on line *L* contains a TAB, a control character, or a non-ASCII character | Use printable ASCII only |
-| `-:L: data too long (maximum 30 characters)` | The data on line *L* is longer than 30 characters | Shorten it |
-| `-:L: unexpected end of input` | The menu input ended where a key or data was expected | Complete the input |
-| `-: Input/output error` | Standard input could not be read | Check what feeds standard input |
-| `write error` | The results could not be written to standard output | Free space or redirect the output elsewhere |
+| Message                                          | Cause                                                                              | Fix                                                                     |
+| :----------------------------------------------- | :--------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
+| `cannot add K: duplicate key`                    | A record with key _K_ is already stored                                            | Remove it first, or use another key                                     |
+| `cannot add K: file is full`                     | All 100 slots are taken                                                            | Remove records you no longer need                                       |
+| `cannot find K: no such record`                  | No record with key _K_ is stored                                                   | Check the key                                                           |
+| `cannot remove K: no such record`                | No record with key _K_ is stored                                                   | Check the key                                                           |
+| `F: not a relative file (size N, expected 3500)` | _F_ is not 3500 bytes long                                                         | Check that _F_ is the right file; restore it from a backup              |
+| `F: slot S: invalid record`                      | Record _S_ of _F_ has an invalid status, key, or data                              | Restore _F_ from a backup                                               |
+| `F: No such file or directory`                   | A directory in the path _F_ does not exist                                         | Create the directory or correct the path                                |
+| `F: Permission denied`                           | You may not read or write _F_, or create it                                        | Check the permissions (`add`, `remove`, and the menu need write access) |
+| `F: Is a directory`                              | _F_ is a directory                                                                 | Name a file instead                                                     |
+| `F: Not a directory`                             | Part of the path _F_ is a file, not a directory                                    | Correct the path                                                        |
+| `F: Input/output error`                          | Any other failure to use _F_                                                       | Check the device or file system                                         |
+| `-:L: invalid choice 'C'`                        | Line _L_ of the menu input is not 0, 1, 2, or 3                                    | Correct the input                                                       |
+| `-:L: invalid key 'K'`                           | Line _L_ of the menu input is not a 4-digit key                                    | Correct the input                                                       |
+| `-:L: invalid character in data`                 | The data on line _L_ contains a TAB, a control character, or a non-ASCII character | Use printable ASCII only                                                |
+| `-:L: data too long (maximum 30 characters)`     | The data on line _L_ is longer than 30 characters                                  | Shorten it                                                              |
+| `-:L: unexpected end of input`                   | The menu input ended where a key or data was expected                              | Complete the input                                                      |
+| `-: Input/output error`                          | Standard input could not be read                                                   | Check what feeds standard input                                         |
+| `write error`                                    | The results could not be written to standard output                                | Free space or redirect the output elsewhere                             |
 
 Usage errors are written to standard error as two lines; no file is created or changed:
 
@@ -193,20 +221,20 @@ dp-relfile: invalid key '123'
 Try 'dp-relfile --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-f` or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'f'` | `-f` given without a file name | Supply a file name |
-| `option '--file' requires an argument` | `--file` given without a file name | Supply a file name |
-| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…` | Remove the `=…` |
-| `invalid argument '' for '-f'` | An empty file name | Give a non-empty file name |
-| `unknown command 'W'` | *W* is not `add`, `find`, `remove`, or `slots` | Use one of the four commands |
-| `missing operand` | The command lacks its key or data | Supply them |
-| `extra operand 'X'` | The command was given too many arguments | Quote data that contains spaces |
-| `invalid key 'K'` | *K* is not exactly four digits | Write the key with four digits, for example `0042` |
-| `invalid character in data` | The data contains a TAB, a control character, or a non-ASCII character | Use printable ASCII only |
-| `data too long (maximum 30 characters)` | The data is longer than 30 characters | Shorten it |
+| Message                                       | Cause                                                                  | Fix                                                |
+| :-------------------------------------------- | :--------------------------------------------------------------------- | :------------------------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                                              | Use `-f` or `-p`                                   |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                     | Spell the option in full                           |
+| `option requires an argument -- 'f'`          | `-f` given without a file name                                         | Supply a file name                                 |
+| `option '--file' requires an argument`        | `--file` given without a file name                                     | Supply a file name                                 |
+| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…`                             | Remove the `=…`                                    |
+| `invalid argument '' for '-f'`                | An empty file name                                                     | Give a non-empty file name                         |
+| `unknown command 'W'`                         | _W_ is not `add`, `find`, `remove`, or `slots`                         | Use one of the four commands                       |
+| `missing operand`                             | The command lacks its key or data                                      | Supply them                                        |
+| `extra operand 'X'`                           | The command was given too many arguments                               | Quote data that contains spaces                    |
+| `invalid key 'K'`                             | _K_ is not exactly four digits                                         | Write the key with four digits, for example `0042` |
+| `invalid character in data`                   | The data contains a TAB, a control character, or a non-ASCII character | Use printable ASCII only                           |
+| `data too long (maximum 30 characters)`       | The data is longer than 30 characters                                  | Shorten it                                         |
 
 ## EXAMPLES
 

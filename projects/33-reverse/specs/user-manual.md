@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-reverse — User Manual](#dp-reverse--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [What a string is](#what-a-string-is)
+    - [Characters and bytes](#characters-and-bytes)
+    - [How the reversal works](#how-the-reversal-works)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-reverse — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-reverse` 1.0.0 |
-| Project | `33-reverse` — Two-Pointer In-Place Sequence Reversal |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-33), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                 |
+| :------------ | :---------------------------------------------------- |
+| Product       | `dp-reverse` 1.0.0                                    |
+| Project       | `33-reverse` — Two-Pointer In-Place Sequence Reversal |
+| Applies to    | Linux, macOS, Windows                                 |
+| Specification | `SRS.md` (SRS-33), `shared/CLI-CONVENTIONS.md`        |
 
 ---
 
@@ -23,8 +49,8 @@ dp-reverse --version
 
 ## DESCRIPTION
 
-`dp-reverse` reads strings from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`, until the end of the input. For each string it prints one line: the label
+`dp-reverse` reads strings from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`, until the end of the input. For each string it prints one line: the label
 `Reversed string:`, a tab, and the string written backwards.
 
 ```text
@@ -88,7 +114,7 @@ files) is ignored.
 
 **`-p`, `--prompt`**
 : Before each string is read, write `Enter a string:` and a tab to standard error. A last
-  prompt appears before the end of the input is noticed.
+prompt appears before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -109,11 +135,11 @@ files) is ignored.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every string was reversed (an empty input is fine), or help or version was printed |
-| 1 | A string was longer than 100 characters (or bytes, with `-b`), or the input could not be read |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                       |
+| :----- | :-------------------------------------------------------------------------------------------- |
+| 0      | Success: every string was reversed (an empty input is fine), or help or version was printed   |
+| 1      | A string was longer than 100 characters (or bytes, with `-b`), or the input could not be read |
+| 2      | Usage error: an invalid option or more than one file                                          |
 
 ## DIAGNOSTICS
 
@@ -126,16 +152,16 @@ Reversed string:	trohs
 dp-reverse: toolong.txt:2: string exceeds 100 characters
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: string exceeds 100 characters` | The string on line *L* is longer than 100 characters | Shorten it, or split it into several strings |
-| `S:L: string exceeds 100 bytes` | With `-b`, the string on line *L* is longer than 100 bytes | Shorten it, or reverse characters instead (no `-b`) |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                              | Cause                                                            | Fix                                                 |
+| :----------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------- |
+| `S:L: string exceeds 100 characters` | The string on line _L_ is longer than 100 characters             | Shorten it, or split it into several strings        |
+| `S:L: string exceeds 100 bytes`      | With `-b`, the string on line _L_ is longer than 100 bytes       | Shorten it, or reverse characters instead (no `-b`) |
+| `F: No such file or directory`       | _F_ does not exist                                               | Check the spelling and the current directory        |
+| `F: Permission denied`               | You may not read _F_                                             | Check the file's permissions                        |
+| `F: Is a directory`                  | _F_ is a directory                                               | Name a file instead                                 |
+| `F: Not a directory`                 | Part of the path _F_ is a file, not a directory                  | Correct the path                                    |
+| `F: Input/output error`              | Any other read failure                                           | Check the device or file system                     |
+| `write error`                        | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere         |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -146,12 +172,12 @@ dp-reverse: extra operand 'lines.txt'
 Try 'dp-reverse --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-l`, `-b`, or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-reverse` once per file |
+| Message                                       | Cause                                                   | Fix                            |
+| :-------------------------------------------- | :------------------------------------------------------ | :----------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-l`, `-b`, or `-p`        |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full       |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-reverse` once per file |
 
 ## EXAMPLES
 
@@ -173,7 +199,7 @@ Reverse whole lines:
 ```text
 $ dp-reverse -l lines.txt
 Reversed string:	!dlroW ,olleH
-Reversed string:	
+Reversed string:
 Reversed string:	stressed  desserts
 ```
 

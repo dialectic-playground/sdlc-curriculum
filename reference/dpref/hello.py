@@ -2,8 +2,16 @@
 
 from __future__ import annotations
 
-from .common import (Option, UsageError, handle_action, parse_args, parse_count,
-                     invalid_argument, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_count,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-hello"
 MAX_COUNT = 1000
@@ -40,8 +48,12 @@ def main(argv: list[str]) -> int:
             raise invalid_argument(name, parsed.spelled["name"])
         count = 1
         if "count" in parsed.values:
-            count = parse_count(str(parsed.values["count"]), parsed.spelled["count"],
-                                minimum=1, maximum=MAX_COUNT)
+            count = parse_count(
+                str(parsed.values["count"]),
+                parsed.spelled["count"],
+                minimum=1,
+                maximum=MAX_COUNT,
+            )
     except UsageError as error:
         return usage_failure(TOOL, error)
     write(build_greeting(name) * count)

@@ -4,8 +4,18 @@ from __future__ import annotations
 
 from . import common
 from ._parallel_sort_worker import read_request, reply_lines, selection_sort
-from .common import (DataError, InputError, Option, UsageError, data_failure, file_failure,
-                     handle_action, open_input, parse_args, usage_failure)
+from .common import (
+    DataError,
+    InputError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    usage_failure,
+)
 
 TOOL = "dp-sort-child"
 HELP_TEXT = """\

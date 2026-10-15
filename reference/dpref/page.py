@@ -10,8 +10,17 @@ from __future__ import annotations
 from typing import BinaryIO
 
 from . import common
-from .common import (INT64_MAX, Option, UsageError, file_failure, handle_action, open_input,
-                     parse_args, parse_count, usage_failure)
+from .common import (
+    INT64_MAX,
+    Option,
+    UsageError,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_count,
+    usage_failure,
+)
 
 TOOL = "dp-page"
 CHUNK_SIZE = 64 * 1024
@@ -58,7 +67,7 @@ class Paginator:
             if newline < 0:
                 common.write(data[start:])
                 return
-            common.write(data[start:newline + 1])
+            common.write(data[start : newline + 1])
             start = newline + 1
             self.lines_on_page += 1
             if self.lines_on_page == self.page_length:
@@ -86,8 +95,9 @@ def main(argv: list[str]) -> int:
             return 0
         page_length = DEFAULT_LINES
         if "lines" in parsed.values:
-            page_length = parse_count(str(parsed.values["lines"]), parsed.spelled["lines"],
-                                      1, INT64_MAX)
+            page_length = parse_count(
+                str(parsed.values["lines"]), parsed.spelled["lines"], 1, INT64_MAX
+            )
     except UsageError as error:
         return usage_failure(TOOL, error)
 

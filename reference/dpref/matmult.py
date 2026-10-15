@@ -10,10 +10,26 @@ from __future__ import annotations
 
 import sys
 
-from .common import (INT64_MAX, INT64_MIN, PROMPT, DataError, InputError, InputStream,
-                     UsageError, data_failure, diagnose, file_failure, handle_action,
-                     open_input, out, parse_args, parse_int_token, prompt, usage_failure,
-                     write)
+from .common import (
+    INT64_MAX,
+    INT64_MIN,
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    UsageError,
+    data_failure,
+    diagnose,
+    file_failure,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-matmult"
 MAX_SIZE = 20
@@ -51,8 +67,10 @@ Matrix = list[list[int]]
 
 def read_matrix(reader: InputStream, source: str, size: int) -> Matrix:
     """Read size*size integer elements in row-major order, validating each as it arrives."""
-    return [[parse_int_token(reader.require(source), source) for _ in range(size)]
-            for _ in range(size)]
+    return [
+        [parse_int_token(reader.require(source), source) for _ in range(size)]
+        for _ in range(size)
+    ]
 
 
 def format_matrix(title: str, matrix: Matrix) -> str:
@@ -119,8 +137,10 @@ def main(argv: list[str]) -> int:
     except DataError as error:
         return data_failure(TOOL, error)
     except OverflowFailure as failure:
-        diagnose(TOOL, f"integer overflow in product row {failure.row}, "
-                       f"column {failure.column}")
+        diagnose(
+            TOOL,
+            f"integer overflow in product row {failure.row}, column {failure.column}",
+        )
         return 1
     except InputError as failure:
         file_failure(TOOL, source, failure.error)

@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 39 — Binary File Byte Size Inspector (`dp-size`)](#project-39--binary-file-byte-size-inspector-dp-size)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 39 — Binary File Byte Size Inspector (`dp-size`)
 
 > Take a file name without its extension, append `.c`, and report the file's exact size in
@@ -7,10 +23,10 @@
 
 ## Purpose
 
-Project 39 is adapted from §8.3 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 39 is adapted from §8.3 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that asks for a file name without its extension, appends `.c`, opens the file in
 binary mode, and counts its bytes until end-of-file. The lesson is the difference between
-*binary* and *text* input. In text mode, a Windows C library turns each CRLF into LF and stops
+_binary_ and _text_ input. In text mode, a Windows C library turns each CRLF into LF and stops
 at the first Ctrl-Z byte, so the same file would have different sizes on different systems; in
 binary mode every byte is counted, everywhere. Around that core, the project adds what a real
 tool needs: names from arguments or standard input, a choice of extension, records that name
@@ -18,16 +34,16 @@ their file, and failures that are reported without stopping the other names.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Names as operands, or one per line on standard input (`-` reads standard input) | Measuring standard input itself, directory totals |
-| Extension `.c` appended by default; `-e`/`--extension` chooses another or none | Wildcards, recursive traversal |
-| Exact byte count by binary-mode reading: NUL, CR, and Ctrl-Z bytes counted | File-system metadata (`stat` size), human-readable units |
-| Two-line records (`File name:` / `Byte size:`) in the textbook's TAB layout | Other output formats, totals |
-| Optional prompt `File name (NO extension):` on standard error (`-p`, `--prompt`) | Interactive line editing |
-| CRLF names and a trailing Ctrl-Z in the name input (CONV-37) | CONV-37 applied to measured files (it never is) |
-| CONV-16 errors that name the constructed file, continuing with the next name | Configuration files, environment variables |
-| `--help`, `--version`, CONV-13 usage errors | |
+| In scope                                                                         | Out of scope                                             |
+| :------------------------------------------------------------------------------- | :------------------------------------------------------- |
+| Names as operands, or one per line on standard input (`-` reads standard input)  | Measuring standard input itself, directory totals        |
+| Extension `.c` appended by default; `-e`/`--extension` chooses another or none   | Wildcards, recursive traversal                           |
+| Exact byte count by binary-mode reading: NUL, CR, and Ctrl-Z bytes counted       | File-system metadata (`stat` size), human-readable units |
+| Two-line records (`File name:` / `Byte size:`) in the textbook's TAB layout      | Other output formats, totals                             |
+| Optional prompt `File name (NO extension):` on standard error (`-p`, `--prompt`) | Interactive line editing                                 |
+| CRLF names and a trailing Ctrl-Z in the name input (CONV-37)                     | CONV-37 applied to measured files (it never is)          |
+| CONV-16 errors that name the constructed file, continuing with the next name     | Configuration files, environment variables               |
+| `--help`, `--version`, CONV-13 usage errors                                      |                                                          |
 
 ## Learning objectives
 
@@ -43,15 +59,15 @@ their file, and failures that are reported without stopping the other names.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-13) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-14, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Files shared by both suites: `size.c` (562 bytes, the size in the textbook example), `binary.c` (every byte value, NUL bytes, CRLF pairs, Ctrl-Z bytes), `crlf.c`, `ctrlz.c`, `empty.c`, `notes.txt`, `license`, `sub/inner.c`, the directory `dir.c/`, and the name lists `size-name.txt` and `names.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                                                                                                                                                                                   |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-13)                                                                                                                                                                                                                                                                          |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-14, NFR-01 … NFR-08)                                                                                                                                                                                                                                                       |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                                                                                                                                                                                                    |
+| `tests/fixtures/`      | Files shared by both suites: `size.c` (562 bytes, the size in the textbook example), `binary.c` (every byte value, NUL bytes, CRLF pairs, Ctrl-Z bytes), `crlf.c`, `ctrlz.c`, `empty.c`, `notes.txt`, `license`, `sub/inner.c`, the directory `dir.c/`, and the name lists `size-name.txt` and `names.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                                                                                                                                                                                     |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                                                                                                                                                                                    |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                                                                                                                                                                        |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -74,4 +90,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

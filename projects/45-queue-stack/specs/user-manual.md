@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-queue1, dp-queue2, dp-stack1, dp-stack2 — User Manual](#dp-queue1-dp-queue2-dp-stack1-dp-stack2--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Commands](#commands)
+    - [Records](#records)
+    - [Results](#results)
+    - [Prompts](#prompts)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-queue1, dp-queue2, dp-stack1, dp-stack2 — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Products | `dp-queue1` 1.0.0, `dp-queue2` 1.0.0, `dp-stack1` 1.0.0, `dp-stack2` 1.0.0 |
-| Project | `45-queue-stack` — Comparative Queue & Stack ADT Implementations |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-45), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                      |
+| :------------ | :------------------------------------------------------------------------- |
+| Products      | `dp-queue1` 1.0.0, `dp-queue2` 1.0.0, `dp-stack1` 1.0.0, `dp-stack2` 1.0.0 |
+| Project       | `45-queue-stack` — Comparative Queue & Stack ADT Implementations           |
+| Applies to    | Linux, macOS, Windows                                                      |
+| Specification | `SRS.md` (SRS-45), `shared/CLI-CONVENTIONS.md`                             |
 
 ---
 
@@ -31,27 +58,27 @@ dp-stack2 [-p | --prompt] [FILE]
 
 ## DESCRIPTION
 
-The four tools read numbered commands from *FILE*, or from standard input when *FILE* is
+The four tools read numbered commands from _FILE_, or from standard input when _FILE_ is
 absent or `-`, and apply them to a collection of records:
 
-| Tool | Holds | Order | Stored in | Capacity |
-| :-- | :-- | :-- | :-- | :-- |
-| `dp-queue1` | bank customers | first in, first out | a circular array | 100 |
-| `dp-queue2` | bank customers | first in, first out | a linked list | no limit |
-| `dp-stack1` | cafeteria trays | last in, first out | an array | 100 |
-| `dp-stack2` | cafeteria trays | last in, first out | a linked list | no limit |
+| Tool        | Holds           | Order               | Stored in        | Capacity |
+| :---------- | :-------------- | :------------------ | :--------------- | :------- |
+| `dp-queue1` | bank customers  | first in, first out | a circular array | 100      |
+| `dp-queue2` | bank customers  | first in, first out | a linked list    | no limit |
+| `dp-stack1` | cafeteria trays | last in, first out  | an array         | 100      |
+| `dp-stack2` | cafeteria trays | last in, first out  | a linked list    | no limit |
 
 The array and linked tools of each kind give exactly the same results for the same commands,
 except that only the array tool can become full. You can switch between them freely.
 
 ### Commands
 
-| Command | Queue tools | Stack tools |
-| :-- | :-- | :-- |
-| `1` *record* | insert the customer at the rear | push the tray on top |
-| `2` | remove the customer at the front and show it | pop the tray on top and show it |
-| `3` | display the queue, front first | display the stack, top first |
-| `0` | quit | quit |
+| Command      | Queue tools                                  | Stack tools                     |
+| :----------- | :------------------------------------------- | :------------------------------ |
+| `1` _record_ | insert the customer at the rear              | push the tray on top            |
+| `2`          | remove the customer at the front and show it | pop the tray on top and show it |
+| `3`          | display the queue, front first               | display the stack, top first    |
+| `0`          | quit                                         | quit                            |
 
 The end of the input also quits. Commands and the fields of a record are separated by any
 spaces, tabs, or line breaks, so a record may be on the same line as its `1` or on lines of
@@ -68,20 +95,19 @@ valid; `12.345`, `.5`, and `1,000` are not. Its magnitude can be at most
 999999999999999.99. Balances are kept exactly, to the cent, and always shown with two decimal
 places.
 
-A **tray** is two fields: color (a single word) and id number (a whole number from 0 to
-9223372036854775807) — for example `1 red 7`.
+A **tray** is two fields: color (a single word) and id number (a whole number from 0 to 9223372036854775807) — for example `1 red 7`.
 
 ### Results
 
 Each result is printed as soon as its command has been read:
 
-| Event | Output line |
-| :-- | :-- |
-| Customer removed | `Removed: Smith, Ann; account 1001; balance 250.75` |
-| Tray popped | `Popped: color red, id 7` |
-| Display | one numbered line per record, for example `1: Smith, Ann; account 1001; balance 250.75` |
-| Remove or display with nothing held | `QUEUE EMPTY` or `STACK EMPTY` |
-| Insert into a full array tool | `QUEUE FULL` or `STACK FULL` (the record is discarded) |
+| Event                               | Output line                                                                             |
+| :---------------------------------- | :-------------------------------------------------------------------------------------- |
+| Customer removed                    | `Removed: Smith, Ann; account 1001; balance 250.75`                                     |
+| Tray popped                         | `Popped: color red, id 7`                                                               |
+| Display                             | one numbered line per record, for example `1: Smith, Ann; account 1001; balance 250.75` |
+| Remove or display with nothing held | `QUEUE EMPTY` or `STACK EMPTY`                                                          |
+| Insert into a full array tool       | `QUEUE FULL` or `STACK FULL` (the record is discarded)                                  |
 
 An insertion that succeeds prints nothing. `QUEUE FULL`, `QUEUE EMPTY`, `STACK FULL`, and
 `STACK EMPTY` are normal results: the session continues, and they do not change the exit
@@ -91,10 +117,10 @@ status.
 
 With `-p` or `--prompt`, the tools ask for each command and each record on standard error:
 
-| Tools | Before each command | Before each record |
-| :-- | :-- | :-- |
+| Tools | Before each command                                     | Before each record                                       |
+| :---- | :------------------------------------------------------ | :------------------------------------------------------- |
 | queue | `Enter 1 (insert), 2 (remove), 3 (display), 0 (quit): ` | `Enter last name, first name, account number, balance: ` |
-| stack | `Enter 1 (push), 2 (pop), 3 (display), 0 (quit): ` | `Enter color, id: ` |
+| stack | `Enter 1 (push), 2 (pop), 3 (display), 0 (quit): `      | `Enter color, id: `                                      |
 
 At a terminal:
 
@@ -116,7 +142,7 @@ results.
 
 **`-p`, `--prompt`**
 : Write the prompts shown above to standard error before each command and each record is read.
-  A last prompt appears before the end of the input is noticed.
+A last prompt appears before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -136,11 +162,11 @@ All four tools follow the curriculum's common conventions (`shared/CLI-CONVENTIO
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the session ended with `0` or at the end of the input (full and empty results included), or help or version was printed |
-| 1 | The input could not be read, it contained an invalid command or record, or memory ran out |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                          |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the session ended with `0` or at the end of the input (full and empty results included), or help or version was printed |
+| 1      | The input could not be read, it contained an invalid command or record, or memory ran out                                        |
+| 2      | Usage error: an invalid option or more than one file                                                                             |
 
 ## DIAGNOSTICS
 
@@ -153,17 +179,17 @@ $ dp-stack1 bad-command.txt
 dp-stack1: bad-command.txt:3: invalid integer 'pop'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `FILE:LINE: invalid integer 'TOKEN'` | A command, account number, or tray id is not a whole number | Write a whole number |
-| `FILE:LINE: value out of range 'TOKEN'` | A command other than 0–3, a negative account number or id, or a balance of 1000000000000000 or more | Use a value in range |
-| `FILE:LINE: invalid amount 'TOKEN'` | A balance is not a number with at most two decimal places | Write the balance like `250.75` |
-| `FILE:LINE: unexpected end of input` | The input ends in the middle of a record | Complete the record |
-| `FILE: No such file or directory` | *FILE* does not exist | Check the name |
-| `FILE: Is a directory` | *FILE* is a directory | Name a file |
-| `FILE: Permission denied` | *FILE* cannot be read | Check its permissions |
-| `out of memory` | `dp-queue2` or `dp-stack2` could not store another record | Remove records, or use smaller inputs |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                 | Cause                                                                                               | Fix                                         |
+| :-------------------------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| `FILE:LINE: invalid integer 'TOKEN'`    | A command, account number, or tray id is not a whole number                                         | Write a whole number                        |
+| `FILE:LINE: value out of range 'TOKEN'` | A command other than 0–3, a negative account number or id, or a balance of 1000000000000000 or more | Use a value in range                        |
+| `FILE:LINE: invalid amount 'TOKEN'`     | A balance is not a number with at most two decimal places                                           | Write the balance like `250.75`             |
+| `FILE:LINE: unexpected end of input`    | The input ends in the middle of a record                                                            | Complete the record                         |
+| `FILE: No such file or directory`       | _FILE_ does not exist                                                                               | Check the name                              |
+| `FILE: Is a directory`                  | _FILE_ is a directory                                                                               | Name a file                                 |
+| `FILE: Permission denied`               | _FILE_ cannot be read                                                                               | Check its permissions                       |
+| `out of memory`                         | `dp-queue2` or `dp-stack2` could not store another record                                           | Remove records, or use smaller inputs       |
+| `write error`                           | The results could not be written (for example, the disk is full)                                    | Free space or redirect the output elsewhere |
 
 With `--prompt`, the message follows the last prompt on the same line of standard error.
 
@@ -176,12 +202,12 @@ dp-queue1: extra operand 'b'
 Try 'dp-queue1 --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version` | Remove the `=…` |
-| `extra operand 'b'` | More than one *FILE* | Give one file |
+| Message                                       | Cause                                           | Fix                      |
+| :-------------------------------------------- | :---------------------------------------------- | :----------------------- |
+| `invalid option -- 'x'`                       | Unknown short option                            | Use `-p`                 |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option              | Spell the option in full |
+| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version` | Remove the `=…`          |
+| `extra operand 'b'`                           | More than one _FILE_                            | Give one file            |
 
 ## EXAMPLES
 

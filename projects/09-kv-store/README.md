@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 09 — Local Key-Value Storage Engine (CLI + API) (`dp-kv`)](#project-09--local-key-value-storage-engine-cli--api-dp-kv)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 09 — Local Key-Value Storage Engine (CLI + API) (`dp-kv`)
 
 > Build a tiny embedded database in the spirit of SQLite and a subset of Redis: text values
@@ -6,7 +22,7 @@
 
 ## Purpose
 
-Earlier projects read input and wrote output. Project 09 owns *persistent state* that several
+Earlier projects read input and wrote output. Project 09 owns _persistent state_ that several
 processes share. The algorithms are simple; the engineering is not: a correct store must never
 lose an update when two writers race, never expose a half-written file to a reader, never be
 left damaged by a crash, and must behave the same on Linux, macOS, and Windows even though their
@@ -16,16 +32,16 @@ storage engine, which forces a clean separation between the engine and its inter
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| `set`, `get`, `del`, `list [--prefix]` on a single JSON store file | Binary or typed values, TTL/expiry, multi-key transactions |
-| `export` and `import` (merge or `--replace`, file or stdin) | Replication, remote stores, network file systems |
-| Store selection via `--store`, `DP_KV_STORE`, or `./kv.json` | Configuration files |
-| Byte-exact canonical JSON store format; strict validation of stores and imports | Repairing damaged stores automatically |
-| Shared/exclusive locking on `PATH.lock` (flock / LockFileEx) with a 5 s timeout | Lock servers, daemons |
-| Atomic durable replacement (temp file + fsync + rename) | Write-ahead logs, partial updates |
-| `serve`: HTTP/1.x JSON API on loopback by default (`/v1/keys`, `/v1/health`) | TLS, authentication, keep-alive, HTTP/2 |
-| `--help`, `--version`, exact diagnostics and exit statuses | Localization, colors |
+| In scope                                                                        | Out of scope                                               |
+| :------------------------------------------------------------------------------ | :--------------------------------------------------------- |
+| `set`, `get`, `del`, `list [--prefix]` on a single JSON store file              | Binary or typed values, TTL/expiry, multi-key transactions |
+| `export` and `import` (merge or `--replace`, file or stdin)                     | Replication, remote stores, network file systems           |
+| Store selection via `--store`, `DP_KV_STORE`, or `./kv.json`                    | Configuration files                                        |
+| Byte-exact canonical JSON store format; strict validation of stores and imports | Repairing damaged stores automatically                     |
+| Shared/exclusive locking on `PATH.lock` (flock / LockFileEx) with a 5 s timeout | Lock servers, daemons                                      |
+| Atomic durable replacement (temp file + fsync + rename)                         | Write-ahead logs, partial updates                          |
+| `serve`: HTTP/1.x JSON API on loopback by default (`/v1/keys`, `/v1/health`)    | TLS, authentication, keep-alive, HTTP/2                    |
+| `--help`, `--version`, exact diagnostics and exit statuses                      | Localization, colors                                       |
 
 ## Learning objectives
 
@@ -45,15 +61,15 @@ storage engine, which forces a clean separation between the engine and its inter
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-19) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-33, NFR-01 … NFR-10), store format, HTTP API, required integration tests IT-01 … IT-08 |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Shared fixtures: canonical store `data.json`, import document `import.json`, damaged store `corrupt.json` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                               |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-19)                                                                                      |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-33, NFR-01 … NFR-10), store format, HTTP API, required integration tests IT-01 … IT-08 |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                |
+| `tests/fixtures/`      | Shared fixtures: canonical store `data.json`, import document `import.json`, damaged store `corrupt.json`              |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                 |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                                                   |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                    |
 
 ## What you deliver (in your language repository)
 
@@ -86,4 +102,4 @@ dp-kv serve --port=0      # in another terminal: curl http://127.0.0.1:PORT/v1/k
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI — including the integration tests for concurrency, crash safety, locking, and the
-HTTP API — `make lint` is clean, and every RTM row is *Verified*.
+HTTP API — `make lint` is clean, and every RTM row is _Verified_.

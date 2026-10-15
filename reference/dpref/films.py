@@ -8,20 +8,44 @@ flushed, as soon as the cast percentage's token is complete: the tool works inte
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, Token, UsageError,
-                     data_failure, end_line, file_failure, handle_action, invalid_argument,
-                     open_input, parse_args, parse_int_token, parse_real_token, prompt,
-                     read_all, strip_eof_marker, tokenize, unexpected_end, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    end_line,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    open_input,
+    parse_args,
+    parse_int_token,
+    parse_real_token,
+    prompt,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    unexpected_end,
+    usage_failure,
+)
 
 TOOL = "dp-films"
 DEFAULT_SAMPLE = "films.dat"
 MAX_FILMS = 100
-PROMPT_DIRECTOR = ("Enter the percentage of hits of the\n"
-                   "director of the film to be classified or\n"
-                   "generate EOF to terminate the program: ")
-PROMPT_CAST = ("Enter the percentage of hits of the\n"
-               "leading members of the cast of the film\n"
-               "to be classified: ")
+PROMPT_DIRECTOR = (
+    "Enter the percentage of hits of the\n"
+    "director of the film to be classified or\n"
+    "generate EOF to terminate the program: "
+)
+PROMPT_CAST = (
+    "Enter the percentage of hits of the\n"
+    "leading members of the cast of the film\n"
+    "to be classified: "
+)
 HIT = b"The film is a HIT!\n"
 FLOP = b"The film is a flop.\n"
 HELP_TEXT = """\
@@ -61,8 +85,10 @@ def load_sample(data: bytes, source: str) -> list[tuple[float, float, int]]:
     films: list[tuple[float, float, int]] = []
     for start in range(0, len(tokens), 3):
         if len(films) == MAX_FILMS:
-            raise DataError(source, tokens[start].line, f"too many films (limit {MAX_FILMS})")
-        record = tokens[start:start + 3]
+            raise DataError(
+                source, tokens[start].line, f"too many films (limit {MAX_FILMS})"
+            )
+        record = tokens[start : start + 3]
         director = percentage(record[0], source)
         if len(record) < 2:
             raise unexpected_end(source, data)
@@ -76,7 +102,9 @@ def load_sample(data: bytes, source: str) -> list[tuple[float, float, int]]:
     return films
 
 
-def classify(films: list[tuple[float, float, int]], director: float, cast: float) -> int:
+def classify(
+    films: list[tuple[float, float, int]], director: float, cast: float
+) -> int:
     best_code = films[0][2]
     best = None
     for film_director, film_cast, code in films:

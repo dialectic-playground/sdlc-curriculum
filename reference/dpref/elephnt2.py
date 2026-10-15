@@ -8,10 +8,25 @@ printed only after the dialog has ended without error.
 from __future__ import annotations
 
 import sys
+
 from ._linked_list_elephants import Node, print_elephants
-from .common import (PROMPT, WHITESPACE, DataError, InputError, InputStream, Token, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    WHITESPACE,
+    DataError,
+    InputError,
+    InputStream,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-elephnt2"
 HELP_TEXT = """\
@@ -78,7 +93,9 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        head = build_list(InputStream(stream), source, bool(parsed.values.get("prompt")))
+        head = build_list(
+            InputStream(stream), source, bool(parsed.values.get("prompt"))
+        )
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

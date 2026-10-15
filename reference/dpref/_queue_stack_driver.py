@@ -11,12 +11,29 @@ from __future__ import annotations
 
 import re
 import sys
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator
+from typing import Any
 
-from .common import (PROMPT, DataError, InputError, InputStream, Token, UsageError,
-                     data_failure, file_failure, handle_action, open_input, out, parse_args,
-                     parse_int_token, prompt, usage_failure, write, INT64_MAX)
+from .common import (
+    INT64_MAX,
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+    write,
+)
 
 CAPACITY = 100
 _AMOUNT = re.compile(rb"([+-]?)([0-9]+)(?:\.([0-9]{1,2}))?\Z")
@@ -43,6 +60,7 @@ def format_amount(cents: int) -> bytes:
 
 # --- records ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Customer:
     last: bytes
@@ -51,8 +69,15 @@ class Customer:
     balance: int  # cents
 
     def text(self) -> bytes:
-        return (self.last + b", " + self.first + b"; account " + str(self.account).encode()
-                + b"; balance " + format_amount(self.balance))
+        return (
+            self.last
+            + b", "
+            + self.first
+            + b"; account "
+            + str(self.account).encode()
+            + b"; balance "
+            + format_amount(self.balance)
+        )
 
 
 @dataclass(frozen=True)
@@ -65,6 +90,7 @@ class Tray:
 
 
 # --- ADTs ------------------------------------------------------------------------------
+
 
 class ArrayQueue:
     def __init__(self) -> None:
@@ -96,7 +122,7 @@ class ArrayQueue:
 @dataclass
 class _Node:
     item: object
-    link: "_Node | None" = None
+    link: _Node | None = None
 
 
 class LinkedQueue:
@@ -178,6 +204,7 @@ class LinkedStack:
 
 # --- the dialog ------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Kind:
     """What distinguishes the queue dialog from the stack dialog."""
@@ -190,12 +217,22 @@ class Kind:
     is_queue: bool
 
 
-QUEUE = Kind("Enter 1 (insert), 2 (remove), 3 (display), 0 (quit): ",
-             "Enter last name, first name, account number, balance: ",
-             b"Removed: ", b"QUEUE FULL", b"QUEUE EMPTY", True)
-STACK = Kind("Enter 1 (push), 2 (pop), 3 (display), 0 (quit): ",
-             "Enter color, id: ",
-             b"Popped: ", b"STACK FULL", b"STACK EMPTY", False)
+QUEUE = Kind(
+    "Enter 1 (insert), 2 (remove), 3 (display), 0 (quit): ",
+    "Enter last name, first name, account number, balance: ",
+    b"Removed: ",
+    b"QUEUE FULL",
+    b"QUEUE EMPTY",
+    True,
+)
+STACK = Kind(
+    "Enter 1 (push), 2 (pop), 3 (display), 0 (quit): ",
+    "Enter color, id: ",
+    b"Popped: ",
+    b"STACK FULL",
+    b"STACK EMPTY",
+    False,
+)
 
 
 def read_record(kind: Kind, reader: InputStream, source: str) -> object:
@@ -210,7 +247,9 @@ def read_record(kind: Kind, reader: InputStream, source: str) -> object:
     return Tray(color, ident)
 
 
-def session(kind: Kind, adt: object, reader: InputStream, source: str, prompts: bool) -> None:
+def session(
+    kind: Kind, adt: Any, reader: InputStream, source: str, prompts: bool
+) -> None:
     while True:
         prompt(prompts, kind.menu_prompt)
         token = reader.token()
@@ -222,17 +261,17 @@ def session(kind: Kind, adt: object, reader: InputStream, source: str, prompts: 
         if command == 1:
             prompt(prompts, kind.record_prompt)
             record = read_record(kind, reader, source)
-            if not adt.insert(record):  # type: ignore[attr-defined]
+            if not adt.insert(record):
                 write(kind.full + b"\n")
         elif command == 2:
-            item = adt.remove()  # type: ignore[attr-defined]
+            item = adt.remove()
             if item is None:
                 write(kind.empty + b"\n")
             else:
-                write(kind.removed_label + item.text() + b"\n")  # type: ignore[attr-defined]
+                write(kind.removed_label + item.text() + b"\n")
         else:
             position = 0
-            for item in adt.items():  # type: ignore[attr-defined]
+            for item in adt.items():
                 position += 1
                 write(str(position).encode() + b": " + item.text() + b"\n")
             if position == 0:
@@ -240,7 +279,9 @@ def session(kind: Kind, adt: object, reader: InputStream, source: str, prompts: 
         out.flush()
 
 
-def run_tool(tool: str, help_text: str, kind: Kind, adt_class: type, argv: list[str]) -> int:
+def run_tool(
+    tool: str, help_text: str, kind: Kind, adt_class: type, argv: list[str]
+) -> int:
     try:
         parsed = parse_args(argv, [PROMPT])
         if handle_action(tool, parsed, help_text):
@@ -257,8 +298,13 @@ def run_tool(tool: str, help_text: str, kind: Kind, adt_class: type, argv: list[
         file_failure(tool, source, error)
         return 1
     try:
-        session(kind, adt_class(), InputStream(stream), source,
-                bool(parsed.values.get("prompt")))
+        session(
+            kind,
+            adt_class(),
+            InputStream(stream),
+            source,
+            bool(parsed.values.get("prompt")),
+        )
     except DataError as error:
         out.flush()
         return data_failure(tool, error)

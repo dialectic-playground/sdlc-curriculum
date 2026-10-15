@@ -23,7 +23,7 @@ _ROWS = (
 )
 
 
-def char_length(data: bytes, pos: int) -> int:
+def char_length(data: bytes | bytearray, pos: int) -> int:
     """Length in bytes (1 … 4) of the character that starts at ``data[pos]``."""
     lead = data[pos]
     if lead < 0x80:

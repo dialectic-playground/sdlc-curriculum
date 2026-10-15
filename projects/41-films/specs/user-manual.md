@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-films — User Manual](#dp-films--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The sample set](#the-sample-set)
+    - [Films to classify](#films-to-classify)
+    - [How a film is classified](#how-a-film-is-classified)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-films — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-films` 1.0.0 |
-| Project | `41-films` — 1-Nearest Neighbor Film Success Classifier |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-41), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                   |
+| :------------ | :------------------------------------------------------ |
+| Product       | `dp-films` 1.0.0                                        |
+| Project       | `41-films` — 1-Nearest Neighbor Film Success Classifier |
+| Applies to    | Linux, macOS, Windows                                   |
+| Specification | `SRS.md` (SRS-41), `shared/CLI-CONVENTIONS.md`          |
 
 ---
 
@@ -23,10 +50,10 @@ dp-films --version
 
 ## DESCRIPTION
 
-`dp-films` forecasts whether a film will be a hit. It first reads a *sample set* of films whose
+`dp-films` forecasts whether a film will be a hit. It first reads a _sample set_ of films whose
 outcome is known, from the file `films.dat` in the current directory (or the file named by
-`-s`). Then it reads films to classify from *FILE*, or from standard input when there is no
-*FILE* or *FILE* is `-`, until the end of the input, and prints one verdict for each:
+`-s`). Then it reads films to classify from _FILE_, or from standard input when there is no
+_FILE_ or _FILE_ is `-`, until the end of the input, and prints one verdict for each:
 
 ```text
 The film is a HIT!
@@ -56,9 +83,9 @@ films may share a line.
 
 ### How a film is classified
 
-The film gets the outcome of the *nearest* film in the sample set. The distance between the
-film (*d*, *c*) and a sample film (*D*, *C*) is measured by the squared Euclidean distance
-(*d* − *D*)² + (*c* − *C*)². If several sample films are equally near, the one that comes first
+The film gets the outcome of the _nearest_ film in the sample set. The distance between the
+film (_d_, _c_) and a sample film (_D_, _C_) is measured by the squared Euclidean distance
+(_d_ − _D_)² + (_c_ − _C_)². If several sample films are equally near, the one that comes first
 in the sample set decides. With the textbook's `films.dat`, the film (50, 65) is at the same
 distance, 125, from four sample films; the first of them, (40, 60), was a flop, so the verdict
 is `The film is a flop.`.
@@ -96,13 +123,13 @@ files) are ignored, in the sample set and in the films to classify.
 ## OPTIONS
 
 **`-s FILE`, `--sample=FILE`**
-: Read the sample set from *FILE* instead of `films.dat`. `-` means standard input; the films
-  to classify must then come from a *FILE* operand, because standard input can be read only
-  once.
+: Read the sample set from _FILE_ instead of `films.dat`. `-` means standard input; the films
+to classify must then come from a _FILE_ operand, because standard input can be read only
+once.
 
 **`-p`, `--prompt`**
 : Before each percentage is read, write a prompt to standard error. A last prompt appears
-  before the end of the input is noticed.
+before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -126,11 +153,11 @@ files) are ignored, in the sample set and in the films to classify.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every film was classified (no films at all is fine), or help or version was printed |
-| 1 | A file could not be read, the sample set is invalid, or a film to classify is invalid or incomplete |
-| 2 | Usage error: an invalid option or option value, or more than one file |
+| Status | Meaning                                                                                             |
+| :----- | :-------------------------------------------------------------------------------------------------- |
+| 0      | Success: every film was classified (no films at all is fine), or help or version was printed        |
+| 1      | A file could not be read, the sample set is invalid, or a film to classify is invalid or incomplete |
+| 2      | Usage error: an invalid option or option value, or more than one file                               |
 
 ## DIAGNOSTICS
 
@@ -145,20 +172,20 @@ The film is a flop.
 dp-films: bad-query.txt:3: invalid number 'seventy'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: too many films (limit 100)` | The sample set *S* has more than 100 films; the 101st starts on line *L* | Remove films |
-| `S:L: no films in the sample set` | The sample set is empty | Name the right file |
-| `F:L: invalid number 'K'` | A percentage *K* is not a number | Write it in plain decimal |
-| `F:L: value out of range 'K'` | A percentage is below 0 or above 100, or a code is not `0` or `1` | Correct the value |
-| `S:L: invalid integer 'K'` | A code *K* is not a whole number (for example `1.0`) | Write `0` or `1` |
-| `F:L: unexpected end of input` | The input ends in the middle of a film | Add the missing value |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The verdicts could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                           | Cause                                                                    | Fix                                          |
+| :-------------------------------- | :----------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: too many films (limit 100)` | The sample set _S_ has more than 100 films; the 101st starts on line _L_ | Remove films                                 |
+| `S:L: no films in the sample set` | The sample set is empty                                                  | Name the right file                          |
+| `F:L: invalid number 'K'`         | A percentage _K_ is not a number                                         | Write it in plain decimal                    |
+| `F:L: value out of range 'K'`     | A percentage is below 0 or above 100, or a code is not `0` or `1`        | Correct the value                            |
+| `S:L: invalid integer 'K'`        | A code _K_ is not a whole number (for example `1.0`)                     | Write `0` or `1`                             |
+| `F:L: unexpected end of input`    | The input ends in the middle of a film                                   | Add the missing value                        |
+| `F: No such file or directory`    | _F_ does not exist                                                       | Check the spelling and the current directory |
+| `F: Permission denied`            | You may not read _F_                                                     | Check the file's permissions                 |
+| `F: Is a directory`               | _F_ is a directory                                                       | Name a file instead                          |
+| `F: Not a directory`              | Part of the path _F_ is a file, not a directory                          | Correct the path                             |
+| `F: Input/output error`           | Any other read failure                                                   | Check the device or file system              |
+| `write error`                     | The verdicts could not be written (for example, the disk is full)        | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -169,16 +196,16 @@ dp-films: invalid argument '-' for '-s'
 Try 'dp-films --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-s` or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 's'` | `-s` given without a file name | Supply a file name |
-| `option '--sample' requires an argument` | `--sample` given without a file name | Supply a file name |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument '' for '-s'` | An empty file name | Give a file name |
-| `invalid argument '-' for '-s'` | Both the sample set and the films to classify would come from standard input | Name a file for one of them |
-| `extra operand 'F'` | More than one file of films to classify was named | Run `dp-films` once per file |
+| Message                                       | Cause                                                                        | Fix                          |
+| :-------------------------------------------- | :--------------------------------------------------------------------------- | :--------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                                                    | Use `-s` or `-p`             |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                           | Spell the option in full     |
+| `option requires an argument -- 's'`          | `-s` given without a file name                                               | Supply a file name           |
+| `option '--sample' requires an argument`      | `--sample` given without a file name                                         | Supply a file name           |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none                      | Remove the `=…`              |
+| `invalid argument '' for '-s'`                | An empty file name                                                           | Give a file name             |
+| `invalid argument '-' for '-s'`               | Both the sample set and the films to classify would come from standard input | Name a file for one of them  |
+| `extra operand 'F'`                           | More than one file of films to classify was named                            | Run `dp-films` once per file |
 
 ## EXAMPLES
 

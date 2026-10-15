@@ -11,8 +11,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .common import (Option, UsageError, encode_arg, file_failure, handle_action,
-                     open_input, parse_args, parse_count, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    encode_arg,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_count,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-diff"
 DEFAULT_CONTEXT = 3
@@ -52,6 +62,7 @@ OPTIONS = [
 
 
 # --- argument handling ---------------------------------------------------------------------
+
 
 def mark_bare_unified(argv: list[str]) -> list[str]:
     """Rewrite each bare ``--unified`` option token to ``--unified=<BARE_UNIFIED>``.
@@ -106,13 +117,19 @@ def parse_settings(argv: list[str]) -> Settings | None:
         if value is True or value == BARE_UNIFIED:
             context = DEFAULT_CONTEXT
         else:
-            context = parse_count(str(value), parsed.spelled["context"], maximum=MAX_CONTEXT)
-    return Settings(brief=bool(parsed.values.get("brief")), context=context,
-                    strip_cr=bool(parsed.values.get("strip_cr")),
-                    paths=(parsed.operands[0], parsed.operands[1]))
+            context = parse_count(
+                str(value), parsed.spelled["context"], maximum=MAX_CONTEXT
+            )
+    return Settings(
+        brief=bool(parsed.values.get("brief")),
+        context=context,
+        strip_cr=bool(parsed.values.get("strip_cr")),
+        paths=(parsed.operands[0], parsed.operands[1]),
+    )
 
 
 # --- input -----------------------------------------------------------------------------------
+
 
 def split_lines(data: bytes) -> list[bytes]:
     """Split into lines, each keeping its LF; a final fragment without LF is a line too."""
@@ -133,6 +150,7 @@ def read_lines(path: str, strip_cr: bool) -> list[bytes]:
 
 
 # --- the canonical edit script (SRS 4.2) ---------------------------------------------------
+
 
 @dataclass(frozen=True)
 class Change:
@@ -202,6 +220,7 @@ def changes(ops: str) -> list[Change]:
 
 # --- output formats --------------------------------------------------------------------------
 
+
 def output_line(prefix: bytes, line: bytes) -> bytes:
     if line.endswith(b"\n"):
         return prefix + line
@@ -221,13 +240,15 @@ def normal_format(a: list[bytes], b: list[bytes], found: list[Change]) -> bytes:
         elif change.j1 == change.j2:
             command = f"{normal_range(change.i1 + 1, change.i2)}d{change.j1}"
         else:
-            command = (f"{normal_range(change.i1 + 1, change.i2)}c"
-                       f"{normal_range(change.j1 + 1, change.j2)}")
+            command = (
+                f"{normal_range(change.i1 + 1, change.i2)}c"
+                f"{normal_range(change.j1 + 1, change.j2)}"
+            )
         parts.append(command.encode() + b"\n")
-        parts.extend(output_line(b"< ", line) for line in a[change.i1:change.i2])
+        parts.extend(output_line(b"< ", line) for line in a[change.i1 : change.i2])
         if change.i1 != change.i2 and change.j1 != change.j2:
             parts.append(b"---\n")
-        parts.extend(output_line(b"> ", line) for line in b[change.j1:change.j2])
+        parts.extend(output_line(b"> ", line) for line in b[change.j1 : change.j2])
     return b"".join(parts)
 
 
@@ -251,8 +272,13 @@ def group_hunks(found: list[Change], context: int) -> list[list[Change]]:
     return hunks
 
 
-def unified_format(a: list[bytes], b: list[bytes], found: list[Change], context: int,
-                   paths: tuple[str, str]) -> bytes:
+def unified_format(
+    a: list[bytes],
+    b: list[bytes],
+    found: list[Change],
+    context: int,
+    paths: tuple[str, str],
+) -> bytes:
     parts = [encode_arg(f"--- {paths[0]}\n+++ {paths[1]}\n")]
     for hunk in group_hunks(found, context):
         first, last = hunk[0], hunk[-1]
@@ -260,19 +286,22 @@ def unified_format(a: list[bytes], b: list[bytes], found: list[Change], context:
         trail = min(context, len(a) - last.i2)
         a_lo, a_hi = first.i1 - lead, last.i2 + trail
         b_lo, b_hi = first.j1 - lead, last.j2 + trail
-        parts.append(f"@@ -{unified_range(a_lo, a_hi - a_lo)} "
-                     f"+{unified_range(b_lo, b_hi - b_lo)} @@\n".encode())
+        parts.append(
+            f"@@ -{unified_range(a_lo, a_hi - a_lo)} "
+            f"+{unified_range(b_lo, b_hi - b_lo)} @@\n".encode()
+        )
         position = a_lo
         for change in hunk:
-            parts.extend(output_line(b" ", line) for line in a[position:change.i1])
-            parts.extend(output_line(b"-", line) for line in a[change.i1:change.i2])
-            parts.extend(output_line(b"+", line) for line in b[change.j1:change.j2])
+            parts.extend(output_line(b" ", line) for line in a[position : change.i1])
+            parts.extend(output_line(b"-", line) for line in a[change.i1 : change.i2])
+            parts.extend(output_line(b"+", line) for line in b[change.j1 : change.j2])
             position = change.i2
         parts.extend(output_line(b" ", line) for line in a[position:a_hi])
     return b"".join(parts)
 
 
 # --- entry point -----------------------------------------------------------------------------
+
 
 def main(argv: list[str]) -> int:
     try:

@@ -25,15 +25,21 @@ import sys
 import time
 from dataclasses import dataclass, field
 
-from ._sysmon_model import (MAX_INTEGER, MAX_PROCESS_PERCENT, Disk, Process, Sample,
-                            round1_tenths)
+from ._sysmon_model import (
+    MAX_INTEGER,
+    MAX_PROCESS_PERCENT,
+    Disk,
+    Process,
+    Sample,
+    round1_tenths,
+)
 
 
 @dataclass
 class ProcessReading:
     name: str
-    identity: object                # start time where available, to detect PID reuse
-    cpu_seconds: float | None       # cumulative user + system CPU time
+    identity: object  # start time where available, to detect PID reuse
+    cpu_seconds: float | None  # cumulative user + system CPU time
     rss_bytes: int | None
 
 
@@ -43,7 +49,7 @@ class Reading:
     wall: float
     hostname: str = ""
     cpu_count: int | None = None
-    cpu_ticks: tuple[float, float] | None = None   # (busy, total), cumulative
+    cpu_ticks: tuple[float, float] | None = None  # (busy, total), cumulative
     memory_total: int | None = None
     memory_available: int | None = None
     disks: list[Disk] = field(default_factory=list)
@@ -81,8 +87,8 @@ def _unescape_mount(field_text: str) -> str:
     out = bytearray()
     index = 0
     while index < len(raw):
-        if raw[index:index + 1] == b"\\" and raw[index + 1:index + 4].isdigit():
-            out.append(int(raw[index + 1:index + 4], 8) & 0xFF)
+        if raw[index : index + 1] == b"\\" and raw[index + 1 : index + 4].isdigit():
+            out.append(int(raw[index + 1 : index + 4], 8) & 0xFF)
             index += 4
         else:
             out.append(raw[index])
@@ -153,8 +159,8 @@ def _read_linux(reading: Reading) -> None:
         open_paren, close_paren = stat.find(b"("), stat.rfind(b")")
         if open_paren < 0 or close_paren < open_paren:
             continue
-        name = _decode(stat[open_paren + 1:close_paren])
-        rest = stat[close_paren + 1:].split()
+        name = _decode(stat[open_paren + 1 : close_paren])
+        rest = stat[close_paren + 1 :].split()
         cpu_seconds: float | None = None
         identity: object = None
         try:
@@ -176,7 +182,9 @@ def _read_linux(reading: Reading) -> None:
 
 def _command(*argv: str) -> str | None:
     try:
-        completed = subprocess.run(list(argv), capture_output=True, timeout=10, check=False)
+        completed = subprocess.run(
+            list(argv), capture_output=True, timeout=10, check=False
+        )
     except (OSError, subprocess.SubprocessError):
         return None
     if completed.returncode != 0:
@@ -187,14 +195,19 @@ def _command(*argv: str) -> str | None:
 def _darwin_cpu_ticks() -> tuple[float, float] | None:
     try:
         import ctypes
+
         libc = ctypes.CDLL("/usr/lib/libSystem.dylib")
         libc.mach_host_self.restype = ctypes.c_uint32
         host = libc.mach_host_self()
-        info = (ctypes.c_uint32 * 4)()     # user, system, idle, nice
+        info = (ctypes.c_uint32 * 4)()  # user, system, idle, nice
         count = ctypes.c_uint32(4)
         host_cpu_load_info = 3
-        if libc.host_statistics(ctypes.c_uint32(host), host_cpu_load_info, info,
-                                ctypes.byref(count)) != 0:
+        if (
+            libc.host_statistics(
+                ctypes.c_uint32(host), host_cpu_load_info, info, ctypes.byref(count)
+            )
+            != 0
+        ):
             return None
         user, system, idle, nice = (float(v) for v in info)
         total = user + system + idle + nice
@@ -231,20 +244,28 @@ def _read_darwin(reading: Reading) -> None:
         page_size, pages = 4096, {}
         for line in vm_stat.splitlines():
             if "page size of" in line:
-                digits = "".join(c for c in line.split("page size of")[1] if c.isdigit())
+                digits = "".join(
+                    c for c in line.split("page size of")[1] if c.isdigit()
+                )
                 page_size = int(digits or "4096")
             key, _, value = line.partition(":")
             value = value.strip().rstrip(".")
             if value.isdigit():
                 pages[key.strip()] = int(value)
         try:
-            free = (pages["Pages free"] + pages["Pages inactive"]
-                    + pages.get("Pages speculative", 0))
+            free = (
+                pages["Pages free"]
+                + pages["Pages inactive"]
+                + pages.get("Pages speculative", 0)
+            )
             reading.memory_available = _clamp_bytes(free * page_size)
         except KeyError:
             pass
-        if (reading.memory_total is not None and reading.memory_available is not None
-                and reading.memory_available > reading.memory_total):
+        if (
+            reading.memory_total is not None
+            and reading.memory_available is not None
+            and reading.memory_available > reading.memory_total
+        ):
             reading.memory_available = reading.memory_total
     mount_text = _command("/sbin/mount")
     for line in (mount_text or "").splitlines():
@@ -257,8 +278,9 @@ def _read_darwin(reading: Reading) -> None:
         disk = _statvfs_disk(rest[:options_at])
         if disk is not None:
             reading.disks.append(disk)
-    ps_text = _command("/bin/ps", "-A", "-o", "pid=", "-o", "rss=", "-o", "time=",
-                       "-o", "comm=")
+    ps_text = _command(
+        "/bin/ps", "-A", "-o", "pid=", "-o", "rss=", "-o", "time=", "-o", "comm="
+    )
     for line in (ps_text or "").splitlines():
         parts = line.split(None, 3)
         if len(parts) < 4 or not parts[0].isdigit():
@@ -266,17 +288,20 @@ def _read_darwin(reading: Reading) -> None:
         rss = int(parts[1]) * 1024 if parts[1].isdigit() else None
         name = parts[3].rsplit("/", 1)[-1]
         reading.processes[int(parts[0])] = ProcessReading(
-            name, None, _parse_cputime(parts[2]), _clamp_bytes(rss))
+            name, None, _parse_cputime(parts[2]), _clamp_bytes(rss)
+        )
 
 
 # --- Windows -----------------------------------------------------------------------------
 
 
-def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on Windows CI
+def _read_windows(
+    reading: Reading,
+) -> None:  # pragma: no cover - exercised on Windows CI
     import ctypes
     from ctypes import wintypes
 
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)  # type: ignore
 
     class FILETIME(ctypes.Structure):
         _fields_ = [("low", wintypes.DWORD), ("high", wintypes.DWORD)]
@@ -285,8 +310,10 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
             return (self.high << 32) | self.low
 
     idle, kernel, user = FILETIME(), FILETIME(), FILETIME()
-    if kernel32.GetSystemTimes(ctypes.byref(idle), ctypes.byref(kernel), ctypes.byref(user)):
-        total = kernel.value() + user.value()          # kernel time includes idle time
+    if kernel32.GetSystemTimes(
+        ctypes.byref(idle), ctypes.byref(kernel), ctypes.byref(user)
+    ):
+        total = kernel.value() + user.value()  # kernel time includes idle time
         reading.cpu_ticks = (float(total - idle.value()), float(total))
 
     try:
@@ -297,11 +324,17 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
         reading.cpu_count = os.cpu_count()
 
     class MEMORYSTATUSEX(ctypes.Structure):
-        _fields_ = [("dwLength", wintypes.DWORD), ("dwMemoryLoad", wintypes.DWORD),
-                    ("ullTotalPhys", ctypes.c_uint64), ("ullAvailPhys", ctypes.c_uint64),
-                    ("ullTotalPageFile", ctypes.c_uint64), ("ullAvailPageFile", ctypes.c_uint64),
-                    ("ullTotalVirtual", ctypes.c_uint64), ("ullAvailVirtual", ctypes.c_uint64),
-                    ("ullAvailExtendedVirtual", ctypes.c_uint64)]
+        _fields_ = [
+            ("dwLength", wintypes.DWORD),
+            ("dwMemoryLoad", wintypes.DWORD),
+            ("ullTotalPhys", ctypes.c_uint64),
+            ("ullAvailPhys", ctypes.c_uint64),
+            ("ullTotalPageFile", ctypes.c_uint64),
+            ("ullAvailPageFile", ctypes.c_uint64),
+            ("ullTotalVirtual", ctypes.c_uint64),
+            ("ullAvailVirtual", ctypes.c_uint64),
+            ("ullAvailExtendedVirtual", ctypes.c_uint64),
+        ]
 
     status = MEMORYSTATUSEX()
     status.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
@@ -311,7 +344,7 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
 
     buffer = ctypes.create_unicode_buffer(512)
     length = kernel32.GetLogicalDriveStringsW(len(buffer), buffer)
-    roots = [r for r in buffer[:length].split("\0") if r]
+    roots = [r for r in buffer[:length].split("\0") if r]  # type: ignore
     drive_fixed = 3
     for root in sorted(roots, key=lambda r: r.encode("utf-8")):
         if kernel32.GetDriveTypeW(root) != drive_fixed:
@@ -319,28 +352,44 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
         free_to_caller = ctypes.c_uint64()
         total_bytes = ctypes.c_uint64()
         total_free = ctypes.c_uint64()
-        if kernel32.GetDiskFreeSpaceExW(root, ctypes.byref(free_to_caller),
-                                        ctypes.byref(total_bytes), ctypes.byref(total_free)):
+        if kernel32.GetDiskFreeSpaceExW(
+            root,
+            ctypes.byref(free_to_caller),
+            ctypes.byref(total_bytes),
+            ctypes.byref(total_free),
+        ):
             total = total_bytes.value
             used = total - total_free.value
             if 0 <= used <= total <= MAX_INTEGER:
                 reading.disks.append(Disk(root, total, used))
 
     class PROCESSENTRY32W(ctypes.Structure):
-        _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
-                    ("th32ProcessID", wintypes.DWORD), ("th32DefaultHeapID", ctypes.c_void_p),
-                    ("th32ModuleID", wintypes.DWORD), ("cntThreads", wintypes.DWORD),
-                    ("th32ParentProcessID", wintypes.DWORD), ("pcPriClassBase", ctypes.c_long),
-                    ("dwFlags", wintypes.DWORD), ("szExeFile", ctypes.c_wchar * 260)]
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_void_p),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", ctypes.c_long),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", ctypes.c_wchar * 260),
+        ]
 
     class PROCESS_MEMORY_COUNTERS(ctypes.Structure):
-        _fields_ = [("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD),
-                    ("PeakWorkingSetSize", ctypes.c_size_t), ("WorkingSetSize", ctypes.c_size_t),
-                    ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
-                    ("QuotaPagedPoolUsage", ctypes.c_size_t),
-                    ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
-                    ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
-                    ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t)]
+        _fields_ = [
+            ("cb", wintypes.DWORD),
+            ("PageFaultCount", wintypes.DWORD),
+            ("PeakWorkingSetSize", ctypes.c_size_t),
+            ("WorkingSetSize", ctypes.c_size_t),
+            ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+            ("QuotaPagedPoolUsage", ctypes.c_size_t),
+            ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+            ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+            ("PagefileUsage", ctypes.c_size_t),
+            ("PeakPagefileUsage", ctypes.c_size_t),
+        ]
 
     kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
     kernel32.OpenProcess.restype = wintypes.HANDLE
@@ -358,25 +407,38 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
             cpu_seconds: float | None = None
             identity: object = None
             rss: int | None = None
-            handle = kernel32.OpenProcess(wintypes.DWORD(0x1000), False, wintypes.DWORD(pid))
+            handle = kernel32.OpenProcess(
+                wintypes.DWORD(0x1000), False, wintypes.DWORD(pid)
+            )
             if handle:
                 try:
-                    creation, exited, k_time, u_time = (FILETIME(), FILETIME(), FILETIME(),
-                                                        FILETIME())
-                    if kernel32.GetProcessTimes(wintypes.HANDLE(handle), ctypes.byref(creation),
-                                                ctypes.byref(exited), ctypes.byref(k_time),
-                                                ctypes.byref(u_time)):
+                    creation, exited, k_time, u_time = (
+                        FILETIME(),
+                        FILETIME(),
+                        FILETIME(),
+                        FILETIME(),
+                    )
+                    if kernel32.GetProcessTimes(
+                        wintypes.HANDLE(handle),
+                        ctypes.byref(creation),
+                        ctypes.byref(exited),
+                        ctypes.byref(k_time),
+                        ctypes.byref(u_time),
+                    ):
                         cpu_seconds = (k_time.value() + u_time.value()) / 1e7
                         identity = creation.value()
                     counters = PROCESS_MEMORY_COUNTERS()
                     counters.cb = ctypes.sizeof(PROCESS_MEMORY_COUNTERS)
-                    if kernel32.K32GetProcessMemoryInfo(wintypes.HANDLE(handle),
-                                                        ctypes.byref(counters), counters.cb):
+                    if kernel32.K32GetProcessMemoryInfo(
+                        wintypes.HANDLE(handle), ctypes.byref(counters), counters.cb
+                    ):
                         rss = _clamp_bytes(int(counters.WorkingSetSize))
                 finally:
                     kernel32.CloseHandle(wintypes.HANDLE(handle))
             reading.processes[pid] = ProcessReading(name, identity, cpu_seconds, rss)
-            more = kernel32.Process32NextW(wintypes.HANDLE(snapshot), ctypes.byref(entry))
+            more = kernel32.Process32NextW(
+                wintypes.HANDLE(snapshot), ctypes.byref(entry)
+            )
     finally:
         kernel32.CloseHandle(wintypes.HANDLE(snapshot))
 
@@ -384,12 +446,15 @@ def _read_windows(reading: Reading) -> None:  # pragma: no cover - exercised on 
 def _windows_hostname() -> str:  # pragma: no cover - exercised on Windows CI
     import ctypes
     from ctypes import wintypes
-    kernel32 = ctypes.WinDLL("kernel32")
+
+    kernel32 = ctypes.WinDLL("kernel32")  # type: ignore
     size = wintypes.DWORD(0)
     computer_name_dns_hostname = 1
     kernel32.GetComputerNameExW(computer_name_dns_hostname, None, ctypes.byref(size))
     buffer = ctypes.create_unicode_buffer(size.value + 1)
-    if kernel32.GetComputerNameExW(computer_name_dns_hostname, buffer, ctypes.byref(size)):
+    if kernel32.GetComputerNameExW(
+        computer_name_dns_hostname, buffer, ctypes.byref(size)
+    ):
         return buffer.value
     return ""
 
@@ -410,7 +475,7 @@ def read() -> Reading:
                 _read_darwin(reading)
             elif os.path.isdir("/proc"):
                 _read_linux(reading)
-    except Exception:  # noqa: BLE001 - best effort: keep whatever was collected (FR-15)
+    except Exception:  # noqa: BLE001, S110 - best effort: keep whatever was collected (FR-15)
         pass
     if reading.cpu_count is None:
         reading.cpu_count = os.cpu_count()
@@ -433,8 +498,13 @@ def make_sample(previous: Reading, current: Reading) -> Sample:
             continue
         before = previous.processes.get(pid)
         tenths = None
-        if (before is not None and before.identity == proc.identity and elapsed > 0
-                and before.cpu_seconds is not None and proc.cpu_seconds is not None):
+        if (
+            before is not None
+            and before.identity == proc.identity
+            and elapsed > 0
+            and before.cpu_seconds is not None
+            and proc.cpu_seconds is not None
+        ):
             percent = max(proc.cpu_seconds - before.cpu_seconds, 0.0) / elapsed * 100.0
             tenths = round1_tenths(min(percent, MAX_PROCESS_PERCENT))
         processes.append(Process(pid, proc.name, tenths, proc.rss_bytes))
@@ -443,6 +513,13 @@ def make_sample(previous: Reading, current: Reading) -> Sample:
     if current.memory_total is not None and available is not None:
         available = min(available, current.memory_total)
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(current.wall))
-    return Sample(stamp, current.hostname, current.cpu_count, cpu_tenths,
-                  current.memory_total, available,
-                  tuple(current.disks), tuple(processes))
+    return Sample(
+        stamp,
+        current.hostname,
+        current.cpu_count,
+        cpu_tenths,
+        current.memory_total,
+        available,
+        tuple(current.disks),
+        tuple(processes),
+    )

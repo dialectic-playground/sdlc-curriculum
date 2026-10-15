@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-koch — User Manual](#dp-koch--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Two ways to choose the level](#two-ways-to-choose-the-level)
+    - [Output formats](#output-formats)
+    - [Exact and portable numbers](#exact-and-portable-numbers)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-koch — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-koch` 1.0.0 |
-| Project | `51-koch` — Recursive Fractal Geometry: The Koch Snowflake |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-51), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                      |
+| :------------ | :--------------------------------------------------------- |
+| Product       | `dp-koch` 1.0.0                                            |
+| Project       | `51-koch` — Recursive Fractal Geometry: The Koch Snowflake |
+| Applies to    | Linux, macOS, Windows                                      |
+| Specification | `SRS.md` (SRS-51), `shared/CLI-CONVENTIONS.md`             |
 
 ---
 
@@ -26,11 +52,11 @@ dp-koch --version
 
 `dp-koch` computes the von Koch curve: a straight segment (level 0) whose middle third is
 replaced by the two sides of an equilateral triangle, giving four segments of one third the
-length (level 1), and so on, each level replacing every segment again. A curve of level *k* has
-4^*k* segments. With `--snowflake`, three curves are drawn on the sides of an equilateral
-triangle, with the bumps pointing outward: 3 × 4^*k* segments.
+length (level 1), and so on, each level replacing every segment again. A curve of level _k_ has
+4^_k_ segments. With `--snowflake`, three curves are drawn on the sides of an equilateral
+triangle, with the bumps pointing outward: 3 × 4^_k_ segments.
 
-The figure starts at the point (0, 0) and its base runs in the +x direction for *LENGTH* units
+The figure starts at the point (0, 0) and its base runs in the +x direction for _LENGTH_ units
 (729 by default); the y axis points up, and the bumps of a single curve rise above the x axis.
 The snowflake's triangle lies below its first side.
 
@@ -48,8 +74,8 @@ Koch curve, level 1: 4 segments
 729.000000 0.000000
 ```
 
-Without `--level`, `dp-koch` runs the textbook's dialog on *FILE*, or on standard input when
-there is no *FILE* or *FILE* is `-`: it reads a level, draws the figure, and reads an answer —
+Without `--level`, `dp-koch` runs the textbook's dialog on _FILE_, or on standard input when
+there is no _FILE_ or _FILE_ is `-`: it reads a level, draws the figure, and reads an answer —
 `y` or `Y` to draw another (it then reads the next level), `n` or `N` to stop. The end of the
 input in place of an answer also stops the dialog normally. Entries are separated by any mix of
 spaces, tabs, and line breaks, so Windows (CRLF) files read the same as any other, and one or
@@ -91,23 +117,23 @@ level-6 curve has length 1 and all x coordinates are exact.
 ## OPTIONS
 
 **`-l LEVEL`, `--level=LEVEL`**
-: Draw one figure of level *LEVEL* (a whole number from 0 to 6) and exit, without reading any
-  input. No *FILE* may be given.
+: Draw one figure of level _LEVEL_ (a whole number from 0 to 6) and exit, without reading any
+input. No _FILE_ may be given.
 
 **`-s`, `--snowflake`**
 : Draw the closed snowflake (three curves) instead of a single curve.
 
 **`-L LENGTH`, `--length=LENGTH`**
-: Make the base segment *LENGTH* units long, a whole number from 1 to 1000000 (default 729).
-  For the snowflake, *LENGTH* is the side of the triangle.
+: Make the base segment _LENGTH_ units long, a whole number from 1 to 1000000 (default 729).
+For the snowflake, _LENGTH_ is the side of the triangle.
 
 **`--svg`**
 : Write each figure as an SVG document instead of a list of coordinates.
 
 **`-p`, `--prompt`**
 : In the dialog, write `Enter level (0-6): ` before each level is read and
-  `Do another (y = yes, n = no)? ` before each answer is read, to standard error. A last prompt
-  appears even when the input ends there. Has no effect with `--level`.
+`Do another (y = yes, n = no)? ` before each answer is read, to standard error. A last prompt
+appears even when the input ends there. Has no effect with `--level`.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -131,11 +157,11 @@ level-6 curve has length 1 and all x coordinates are exact.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the figure was drawn, or the dialog ended normally, or help or version was printed |
-| 1 | The input could not be read, it contained an invalid entry, or it ended where a level was expected |
-| 2 | Usage error: an invalid option or value, or an unexpected file name |
+| Status | Meaning                                                                                            |
+| :----- | :------------------------------------------------------------------------------------------------- |
+| 0      | Success: the figure was drawn, or the dialog ended normally, or help or version was printed        |
+| 1      | The input could not be read, it contained an invalid entry, or it ended where a level was expected |
+| 2      | Usage error: an invalid option or value, or an unexpected file name                                |
 
 ## DIAGNOSTICS
 
@@ -154,18 +180,18 @@ Koch curve, level 1: 4 segments
 dp-koch: bad.txt:3: value out of range '7'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | The level *K* on line *L* is not a whole number | Enter a level from 0 to 6 in digits |
-| `S:L: value out of range 'K'` | The level *K* on line *L* is below 0 or above 6 | Enter a level from 0 to 6 |
-| `S:L: invalid answer 'K'` | The answer *K* on line *L* is not `y`, `Y`, `n`, or `N` | Answer with a single `y` or `n` |
-| `S:L: unexpected end of input` | The input ended where a level was expected (for example, an empty input, or `y` as the last entry) | Supply the level, or answer `n` |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                                              | Fix                                          |
+| :----------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: invalid integer 'K'`     | The level _K_ on line _L_ is not a whole number                                                    | Enter a level from 0 to 6 in digits          |
+| `S:L: value out of range 'K'`  | The level _K_ on line _L_ is below 0 or above 6                                                    | Enter a level from 0 to 6                    |
+| `S:L: invalid answer 'K'`      | The answer _K_ on line _L_ is not `y`, `Y`, `n`, or `N`                                            | Answer with a single `y` or `n`              |
+| `S:L: unexpected end of input` | The input ended where a level was expected (for example, an empty input, or `y` as the last entry) | Supply the level, or answer `n`              |
+| `F: No such file or directory` | _F_ does not exist                                                                                 | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                                                                               | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                                                                                 | Name a file instead                          |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                                    | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                                                                             | Check the device or file system              |
+| `write error`                  | The output could not be written (for example, the disk is full)                                    | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -176,16 +202,16 @@ dp-koch: invalid argument '9' for '--level'
 Try 'dp-koch --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-l`, `-s`, `-L`, or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'l'` | `-l` or `-L` given without a value | Supply a value |
-| `option '--level' requires an argument` | `--level` or `--length` given without a value | Supply a value |
-| `option '--svg' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument '9' for '--level'` | Level not a whole number from 0 to 6 | Use 0 … 6 |
-| `invalid argument '0' for '--length'` | Length not a whole number from 1 to 1000000 | Use 1 … 1000000 |
-| `extra operand 'F'` | A file was named together with `--level`, or more than one file was named | Drop `--level` to run a dialog, or name one file |
+| Message                                    | Cause                                                                     | Fix                                              |
+| :----------------------------------------- | :------------------------------------------------------------------------ | :----------------------------------------------- |
+| `invalid option -- 'x'`                    | Unknown short option `-x`                                                 | Use `-l`, `-s`, `-L`, or `-p`                    |
+| `unrecognized option '--xyz'`              | Unknown or abbreviated long option                                        | Spell the option in full                         |
+| `option requires an argument -- 'l'`       | `-l` or `-L` given without a value                                        | Supply a value                                   |
+| `option '--level' requires an argument`    | `--level` or `--length` given without a value                             | Supply a value                                   |
+| `option '--svg' doesn't allow an argument` | A value was given with `=` to an option that takes none                   | Remove the `=…`                                  |
+| `invalid argument '9' for '--level'`       | Level not a whole number from 0 to 6                                      | Use 0 … 6                                        |
+| `invalid argument '0' for '--length'`      | Length not a whole number from 1 to 1000000                               | Use 1 … 1000000                                  |
+| `extra operand 'F'`                        | A file was named together with `--level`, or more than one file was named | Drop `--level` to run a dialog, or name one file |
 
 ## EXAMPLES
 

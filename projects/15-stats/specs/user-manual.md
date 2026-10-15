@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-stats — User Manual](#dp-stats--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [One pass, constant memory](#one-pass-constant-memory)
+    - [The statistics](#the-statistics)
+    - [Reproducible results](#reproducible-results)
+    - [Numbers](#numbers)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-stats — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-stats` 1.0.0 |
-| Project | `15-stats` — Single-Pass Streaming Statistical Summary |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-15), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                  |
+| :------------ | :----------------------------------------------------- |
+| Product       | `dp-stats` 1.0.0                                       |
+| Project       | `15-stats` — Single-Pass Streaming Statistical Summary |
+| Applies to    | Linux, macOS, Windows                                  |
+| Specification | `SRS.md` (SRS-15), `shared/CLI-CONVENTIONS.md`         |
 
 ---
 
@@ -23,8 +50,8 @@ dp-stats --version
 
 ## DESCRIPTION
 
-`dp-stats` reads real numbers from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`, until the end of the input. It then prints how many numbers it read, their
+`dp-stats` reads real numbers from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`, until the end of the input. It then prints how many numbers it read, their
 maximum, minimum, sum, and mean, and their population variance and standard deviation:
 
 ```text
@@ -49,10 +76,10 @@ numbers themselves, so its memory use is the same for ten numbers and for a hund
 
 ### The statistics
 
-With *N* numbers, sum *S*, and sum of squares *Q*:
+With _N_ numbers, sum _S_, and sum of squares _Q_:
 
-- the mean is *S* / *N*;
-- the **population** variance is *Q* / *N* − mean² (dividing by *N*, not *N* − 1);
+- the mean is _S_ / _N_;
+- the **population** variance is _Q_ / _N_ − mean² (dividing by _N_, not _N_ − 1);
 - the standard deviation is the square root of the variance.
 
 Because the variance subtracts two nearly equal numbers, rounding can make it come out a tiny
@@ -105,11 +132,11 @@ At the keyboard, type the numbers and end the input with **Ctrl-D** on Linux and
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report was printed (an input without numbers is fine), or help or version was printed |
-| 1 | The input could not be read, it contained an invalid number, or the sums overflowed |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                            |
+| :----- | :------------------------------------------------------------------------------------------------- |
+| 0      | Success: the report was printed (an input without numbers is fine), or help or version was printed |
+| 1      | The input could not be read, it contained an invalid number, or the sums overflowed                |
+| 2      | Usage error: an invalid option or more than one file                                               |
 
 ## DIAGNOSTICS
 
@@ -121,16 +148,16 @@ $ dp-stats bad.txt
 dp-stats: bad.txt:3: invalid number '4,5'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid number 'K'` | Entry *K* on line *L* is not a number, or is too large for double precision | Write the number with digits, a point, and an optional exponent |
-| `S:L: arithmetic overflow at 'K'` | The square of *K*, or the sum of squares including it, is too large | Rescale the data (for example, change the unit) |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                           | Cause                                                                       | Fix                                                             |
+| :-------------------------------- | :-------------------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `S:L: invalid number 'K'`         | Entry _K_ on line _L_ is not a number, or is too large for double precision | Write the number with digits, a point, and an optional exponent |
+| `S:L: arithmetic overflow at 'K'` | The square of _K_, or the sum of squares including it, is too large         | Rescale the data (for example, change the unit)                 |
+| `F: No such file or directory`    | _F_ does not exist                                                          | Check the spelling and the current directory                    |
+| `F: Permission denied`            | You may not read _F_                                                        | Check the file's permissions                                    |
+| `F: Is a directory`               | _F_ is a directory                                                          | Name a file instead                                             |
+| `F: Not a directory`              | Part of the path _F_ is a file, not a directory                             | Correct the path                                                |
+| `F: Input/output error`           | Any other read failure                                                      | Check the device or file system                                 |
+| `write error`                     | The report could not be written (for example, the disk is full)             | Free space or redirect the output elsewhere                     |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -141,12 +168,12 @@ dp-stats: extra operand 'three.txt'
 Try 'dp-stats --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | `dp-stats` has no short options |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-stats` once per file, or concatenate the files first |
+| Message                                     | Cause                                                 | Fix                                                          |
+| :------------------------------------------ | :---------------------------------------------------- | :----------------------------------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                             | `dp-stats` has no short options                              |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                    | Spell the option in full                                     |
+| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…`                                              |
+| `extra operand 'F'`                         | More than one file was named                          | Run `dp-stats` once per file, or concatenate the files first |
 
 ## EXAMPLES
 

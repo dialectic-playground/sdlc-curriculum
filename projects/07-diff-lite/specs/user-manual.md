@@ -1,10 +1,34 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-diff — User Manual](#dp-diff--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [One answer, every time](#one-answer-every-time)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-diff — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-diff` 1.0.0 |
-| Project | `07-diff-lite` — Line-by-Line File Comparison |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-diff` 1.0.0                                |
+| Project       | `07-diff-lite` — Line-by-Line File Comparison  |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-07), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,7 +47,7 @@ dp-diff --version
 
 ## DESCRIPTION
 
-`dp-diff` reads *FILE1* and *FILE2*, splits them into lines, and reports the shortest way to
+`dp-diff` reads _FILE1_ and _FILE2_, splits them into lines, and reports the shortest way to
 turn the first into the second: which lines to delete and which to insert. If either operand is
 `-`, that side is read from standard input.
 
@@ -36,18 +60,17 @@ By default the differences are written in **normal format**, the classic diff ou
 > blueberry
 ```
 
-Each block starts with a command: `NdM` (lines *N* of *FILE1* were deleted; *M* is the line of
-*FILE2* they would have followed), `NaM` (lines *M* of *FILE2* were added after line *N* of
-*FILE1*), or `NcM` (lines *N* were changed into lines *M*). Ranges are written `first,last`, or
-as a single number for one line. Deleted lines are shown after `< `, inserted lines after `> `,
-and a change separates the two groups with `---`.
+Each block starts with a command: `NdM` (lines _N_ of _FILE1_ were deleted; _M_ is the line of
+_FILE2_ they would have followed), `NaM` (lines _M_ of _FILE2_ were added after line _N_ of
+_FILE1_), or `NcM` (lines _N_ were changed into lines _M_). Ranges are written `first,last`, or
+as a single number for one line. Deleted lines are shown after `<inserted lines after `>`and a change separates the two groups with`---`.
 
 With `-u` or `-U NUM`, the output uses **unified format**, the format of code review tools and
-patches. It starts with a `---` line naming *FILE1* and a `+++` line naming *FILE2*, followed by
-*hunks*. Each hunk header `@@ -start,count +start,count @@` gives the range of lines it covers
+patches. It starts with a `---` line naming _FILE1_ and a `+++` line naming _FILE2_, followed by
+_hunks_. Each hunk header `@@ -start,count +start,count @@` gives the range of lines it covers
 in each file (`,count` is omitted when the count is 1; a count of 0 means the hunk inserts or
 deletes at that position). Inside a hunk, unchanged context lines start with a space, deleted
-lines with `-`, and inserted lines with `+`. Changes that are close together (at most 2·*NUM*
+lines with `-`, and inserted lines with `+`. Changes that are close together (at most 2·_NUM_
 unchanged lines apart) share one hunk.
 
 Lines are compared as exact byte sequences, including their final line feed. A last line that
@@ -71,21 +94,21 @@ can therefore differ from GNU `diff`, while still describing a valid shortest se
 
 **`-q`, `--brief`**
 : Do not list the differences. Print `Files FILE1 and FILE2 differ` if the files differ, and
-  nothing if they are the same. Takes precedence over `-u` and `-U`.
+nothing if they are the same. Takes precedence over `-u` and `-U`.
 
 **`-u`**
 : Use unified format with 3 lines of context. Exactly the same as `-U 3`.
 
 **`-U NUM`, `--unified[=NUM]`**
-: Use unified format with *NUM* lines of context around each change. *NUM* is a whole number
-  from 0 to 2147483647, written with the digits `0`–`9` only. `--unified` without `=NUM` means
-  3 lines. The value of `--unified` must be attached with `=`: `--unified 5` means "3 lines of
-  context" followed by an operand `5`.
+: Use unified format with _NUM_ lines of context around each change. _NUM_ is a whole number
+from 0 to 2147483647, written with the digits `0`–`9` only. `--unified` without `=NUM` means
+3 lines. The value of `--unified` must be attached with `=`: `--unified 5` means "3 lines of
+context" followed by an operand `5`.
 
 **`--strip-trailing-cr`**
 : Remove the carriage return (CR) that ends each line of a file with Windows (CRLF) line
-  endings before comparing. Files that differ only in CRLF versus LF line endings then compare
-  as the same. Output lines are shown without the removed CR.
+endings before comparing. Files that differ only in CRLF versus LF line endings then compare
+as the same. Output lines are shown without the removed CR.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -108,11 +131,11 @@ can therefore differ from GNU `diff`, while still describing a valid shortest se
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | The files are the same (or `--help` / `--version` was handled) |
-| 1 | The files differ |
-| 2 | Trouble: a file could not be read, or the command line was invalid |
+| Status | Meaning                                                            |
+| :----- | :----------------------------------------------------------------- |
+| 0      | The files are the same (or `--help` / `--version` was handled)     |
+| 1      | The files differ                                                   |
+| 2      | Trouble: a file could not be read, or the command line was invalid |
 
 Note that, as with traditional `diff`, a missing file gives status 2, not 1: status 1 always
 means "the files differ".
@@ -128,28 +151,28 @@ dp-diff: missing operand
 Try 'dp-diff --help' for more information.
 ```
 
-File problems are reported for every operand that fails, *FILE1* first:
+File problems are reported for every operand that fails, _FILE1_ first:
 
 ```text
 $ dp-diff fruits.txt nosuch.txt
 dp-diff: nosuch.txt: No such file or directory
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `missing operand` | Fewer than two files named | Name exactly two files |
-| `extra operand 'c.txt'` | More than two files named | Name exactly two files |
-| `'-' may be given as only one operand` | Both operands are `-` | Standard input can only be one side |
-| `invalid option -- 'x'` | Unknown short option | Use `-q`, `-u`, or `-U` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'U'` | `-U` given without a number | Supply a number: `-U 2` |
-| `option '--brief' doesn't allow an argument` | `--brief=…` (also `--strip-trailing-cr`, `--help`, `--version`) | Remove the `=…` |
-| `invalid argument 'x' for '--unified'` | Context size is not a whole number from 0 to 2147483647 | Use digits only, e.g. `--unified=5` |
-| `FILE: No such file or directory` | The file does not exist | Check the path |
-| `FILE: Permission denied` | The file cannot be read | Check its permissions |
-| `FILE: Is a directory` | A directory was named | `dp-diff` compares files only |
-| `FILE: Not a directory` | A path component is a file, not a directory | Check the path |
-| `FILE: Input/output error` | Any other read failure | Check the device or file |
+| Message                                      | Cause                                                           | Fix                                 |
+| :------------------------------------------- | :-------------------------------------------------------------- | :---------------------------------- |
+| `missing operand`                            | Fewer than two files named                                      | Name exactly two files              |
+| `extra operand 'c.txt'`                      | More than two files named                                       | Name exactly two files              |
+| `'-' may be given as only one operand`       | Both operands are `-`                                           | Standard input can only be one side |
+| `invalid option -- 'x'`                      | Unknown short option                                            | Use `-q`, `-u`, or `-U`             |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                              | Spell the option in full            |
+| `option requires an argument -- 'U'`         | `-U` given without a number                                     | Supply a number: `-U 2`             |
+| `option '--brief' doesn't allow an argument` | `--brief=…` (also `--strip-trailing-cr`, `--help`, `--version`) | Remove the `=…`                     |
+| `invalid argument 'x' for '--unified'`       | Context size is not a whole number from 0 to 2147483647         | Use digits only, e.g. `--unified=5` |
+| `FILE: No such file or directory`            | The file does not exist                                         | Check the path                      |
+| `FILE: Permission denied`                    | The file cannot be read                                         | Check its permissions               |
+| `FILE: Is a directory`                       | A directory was named                                           | `dp-diff` compares files only       |
+| `FILE: Not a directory`                      | A path component is a file, not a directory                     | Check the path                      |
+| `FILE: Input/output error`                   | Any other read failure                                          | Check the device or file            |
 
 ## EXAMPLES
 

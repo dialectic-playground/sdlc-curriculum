@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-average, dp-chk-sort — User Manual](#dp-average-dp-chk-sort--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [dp-average](#dp-average)
+    - [dp-chk-sort](#dp-chk-sort)
+    - [Numbers](#numbers)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-average, dp-chk-sort — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Products | `dp-average` 1.0.0, `dp-chk-sort` 1.0.0 |
-| Project | `17-stream-filters` — Stream Filtering & Monotonicity Validation |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-17), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                            |
+| :------------ | :--------------------------------------------------------------- |
+| Products      | `dp-average` 1.0.0, `dp-chk-sort` 1.0.0                          |
+| Project       | `17-stream-filters` — Stream Filtering & Monotonicity Validation |
+| Applies to    | Linux, macOS, Windows                                            |
+| Specification | `SRS.md` (SRS-17), `shared/CLI-CONVENTIONS.md`                   |
 
 ---
 
@@ -26,7 +52,7 @@ dp-chk-sort --help | --version
 
 ## DESCRIPTION
 
-Both tools read numbers from *FILE*, or from standard input when there is no *FILE* or *FILE*
+Both tools read numbers from _FILE_, or from standard input when there is no _FILE_ or _FILE_
 is `-`, and print a one-line answer.
 
 ### dp-average
@@ -54,11 +80,11 @@ on every computer.
 it. Equal neighbors are fine, and an empty input or a single integer is sorted. The answer is
 printed and is also the exit status:
 
-| Output | Exit status | Meaning |
-| :-- | :-- | :-- |
-| `file is sorted` | 0 | No integer is less than the one before it |
-| `file is not sorted` | 1 | Some integer is less than the one before it |
-| (a diagnostic on standard error) | 2 | Something went wrong: a bad option, an unreadable file, or an invalid integer |
+| Output                           | Exit status | Meaning                                                                       |
+| :------------------------------- | :---------- | :---------------------------------------------------------------------------- |
+| `file is sorted`                 | 0           | No integer is less than the one before it                                     |
+| `file is not sorted`             | 1           | Some integer is less than the one before it                                   |
+| (a diagnostic on standard error) | 2           | Something went wrong: a bad option, an unreadable file, or an invalid integer |
 
 `dp-chk-sort` stops as soon as it reads the first integer that is out of order: it prints
 `file is not sorted` and exits at once, without reading the rest of the input. Anything after
@@ -114,19 +140,19 @@ Both tools follow the curriculum's common conventions (`shared/CLI-CONVENTIONS.m
 
 `dp-average`:
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the answer was printed (`no positive numbers read` is an answer), or help or version was printed |
-| 1 | The input could not be read, it contained an invalid number, or the sum overflowed |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                   |
+| :----- | :-------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the answer was printed (`no positive numbers read` is an answer), or help or version was printed |
+| 1      | The input could not be read, it contained an invalid number, or the sum overflowed                        |
+| 2      | Usage error: an invalid option or more than one file                                                      |
 
 `dp-chk-sort` (like `sort -c`):
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | The input is sorted, or help or version was printed |
-| 1 | The input is not sorted |
-| 2 | Trouble: a usage error, an unreadable input, an invalid integer, or a write error |
+| Status | Meaning                                                                           |
+| :----- | :-------------------------------------------------------------------------------- |
+| 0      | The input is sorted, or help or version was printed                               |
+| 1      | The input is not sorted                                                           |
+| 2      | Trouble: a usage error, an unreadable input, an invalid integer, or a write error |
 
 ## DIAGNOSTICS
 
@@ -140,17 +166,17 @@ $ dp-chk-sort badint.txt
 dp-chk-sort: badint.txt:2: invalid integer '3.5'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid number 'K'` | (`dp-average`) Entry *K* on line *L* is not a number, or is too large for double precision | Write the number with digits, a point, and an optional exponent |
-| `S:L: arithmetic overflow at 'K'` | (`dp-average`) Adding *K* made the sum too large | Rescale the data (for example, change the unit) |
-| `S:L: invalid integer 'K'` | (`dp-chk-sort`) Entry *K* on line *L* is not a whole number in the 64-bit range | Write the integer in digits only |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The answer could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                           | Cause                                                                                      | Fix                                                             |
+| :-------------------------------- | :----------------------------------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `S:L: invalid number 'K'`         | (`dp-average`) Entry _K_ on line _L_ is not a number, or is too large for double precision | Write the number with digits, a point, and an optional exponent |
+| `S:L: arithmetic overflow at 'K'` | (`dp-average`) Adding _K_ made the sum too large                                           | Rescale the data (for example, change the unit)                 |
+| `S:L: invalid integer 'K'`        | (`dp-chk-sort`) Entry _K_ on line _L_ is not a whole number in the 64-bit range            | Write the integer in digits only                                |
+| `F: No such file or directory`    | _F_ does not exist                                                                         | Check the spelling and the current directory                    |
+| `F: Permission denied`            | You may not read _F_                                                                       | Check the file's permissions                                    |
+| `F: Is a directory`               | _F_ is a directory                                                                         | Name a file instead                                             |
+| `F: Not a directory`              | Part of the path _F_ is a file, not a directory                                            | Correct the path                                                |
+| `F: Input/output error`           | Any other read failure                                                                     | Check the device or file system                                 |
+| `write error`                     | The answer could not be written (for example, the disk is full)                            | Free space or redirect the output elsewhere                     |
 
 These exit with status 1 from `dp-average` and 2 from `dp-chk-sort`.
 
@@ -163,12 +189,12 @@ dp-average: extra operand 'nonpos.txt'
 Try 'dp-average --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | The tools have no short options |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run the tool once per file, or concatenate the files first |
+| Message                                     | Cause                                                 | Fix                                                        |
+| :------------------------------------------ | :---------------------------------------------------- | :--------------------------------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                             | The tools have no short options                            |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                    | Spell the option in full                                   |
+| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…`                                            |
+| `extra operand 'F'`                         | More than one file was named                          | Run the tool once per file, or concatenate the files first |
 
 ## EXAMPLES
 

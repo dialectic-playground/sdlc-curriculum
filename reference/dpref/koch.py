@@ -9,12 +9,27 @@ conforming implementation prints the same digits. Dialog tokens are read increme
 from __future__ import annotations
 
 import math
-from typing import Iterator
+from collections.abc import Iterator
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, fix, handle_action, open_input, parse_args,
-                     parse_count, parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_count,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-koch"
 LEVEL_PROMPT = "Enter level (0-6): "
@@ -69,11 +84,17 @@ def vertices(level: int, length: int, snowflake: bool) -> list[tuple[float, floa
         side = side / 3.0
     half = side / 2.0
     rise = side * half_root3
-    delta = [(side, 0.0), (half, rise), (-half, rise), (-side, 0.0), (-half, -rise),
-             (half, -rise)]
+    delta = [
+        (side, 0.0),
+        (half, rise),
+        (-half, rise),
+        (-side, 0.0),
+        (-half, -rise),
+        (half, -rise),
+    ]
     x = y = 0.0
     points = [(x, y)]
-    for base in (SNOWFLAKE_SIDES if snowflake else (0,)):
+    for base in SNOWFLAKE_SIDES if snowflake else (0,):
         for code in directions(level, base):
             dx, dy = delta[code]
             x = x + dx
@@ -83,7 +104,7 @@ def vertices(level: int, length: int, snowflake: bool) -> list[tuple[float, floa
 
 
 def heading(level: int, snowflake: bool) -> str:
-    segments = (3 if snowflake else 1) * 4 ** level
+    segments = (3 if snowflake else 1) * 4**level
     noun = "segment" if segments == 1 else "segments"
     return f"Koch {'snowflake' if snowflake else 'curve'}, level {level}: {segments} {noun}"
 
@@ -104,8 +125,10 @@ def render_svg(level: int, snowflake: bool, points: list[tuple[float, float]]) -
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{left} {top} {width} {height}">',
         f"<title>{heading(level, snowflake)}</title>",
-        '<polyline fill="none" stroke="black" stroke-width="1" '
-        'vector-effect="non-scaling-stroke" points="',
+        (
+            '<polyline fill="none" stroke="black" stroke-width="1" '
+            'vector-effect="non-scaling-stroke" points="'
+        ),
     ]
     lines += [f"{fix(x, DIGITS)},{fix(-y, DIGITS)}" for x, y in points]
     lines += ['"/>', "</svg>"]
@@ -119,8 +142,14 @@ def draw(level: int, length: int, snowflake: bool, svg: bool) -> None:
     common.out.flush()
 
 
-def dialog(stream: InputStream, source: str, prompting: bool, length: int, snowflake: bool,
-           svg: bool) -> int:
+def dialog(
+    stream: InputStream,
+    source: str,
+    prompting: bool,
+    length: int,
+    snowflake: bool,
+    svg: bool,
+) -> int:
     while True:
         prompt(prompting, LEVEL_PROMPT)
         level = parse_int_token(stream.require(source), source, 0, MAX_LEVEL)
@@ -140,12 +169,14 @@ def main(argv: list[str]) -> int:
             return 0
         level = None
         if "level" in parsed.values:
-            level = parse_count(str(parsed.values["level"]), parsed.spelled["level"], 0,
-                                MAX_LEVEL)
+            level = parse_count(
+                str(parsed.values["level"]), parsed.spelled["level"], 0, MAX_LEVEL
+            )
         length = DEFAULT_LENGTH
         if "length" in parsed.values:
-            length = parse_count(str(parsed.values["length"]), parsed.spelled["length"], 1,
-                                 MAX_LENGTH)
+            length = parse_count(
+                str(parsed.values["length"]), parsed.spelled["length"], 1, MAX_LENGTH
+            )
         if level is not None and parsed.operands:
             raise UsageError(f"extra operand '{parsed.operands[0]}'")
         if len(parsed.operands) > 1:

@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-find — User Manual](#dp-find--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Operators](#operators)
+    - [Global options](#global-options)
+    - [Tests](#tests)
+    - [Actions](#actions)
+    - [Standard options](#standard-options)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-find — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-find` 1.0.0 |
-| Project | `06-find-lite` — Recursive File Discovery Suite |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-06), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                           |
+| :------------ | :---------------------------------------------- |
+| Product       | `dp-find` 1.0.0                                 |
+| Project       | `06-find-lite` — Recursive File Discovery Suite |
+| Applies to    | Linux, macOS, Windows                           |
+| Specification | `SRS.md` (SRS-06), `shared/CLI-CONVENTIONS.md`  |
 
 ---
 
@@ -23,24 +50,24 @@ dp-find --version
 
 ## DESCRIPTION
 
-`dp-find` walks the directory tree below each *PATH* and evaluates *EXPRESSION* for every
-entry it reaches: the *PATH* itself, then everything beneath it. With no *PATH*, it searches the
-current directory `.`. The expression combines *tests* (such as `-name '*.c'`), *global
-options* (`-maxdepth`, `-mindepth`), *actions* (`-print`, `-exec`), and *operators* (`!`,
+`dp-find` walks the directory tree below each _PATH_ and evaluates _EXPRESSION_ for every
+entry it reaches: the _PATH_ itself, then everything beneath it. With no _PATH_, it searches the
+current directory `.`. The expression combines _tests_ (such as `-name '*.c'`), _global
+options_ (`-maxdepth`, `-mindepth`), _actions_ (`-print`, `-exec`), and _operators_ (`!`,
 `-a`, `-o`, parentheses). If the expression contains no action, `dp-find` prints the path of
 every entry for which the expression is true; with no expression at all, it prints every entry.
 
 The order of the results is the same on every operating system:
 
-- Each *PATH* is searched completely, in the order given.
-- A directory is listed before its contents (*pre-order*).
+- Each _PATH_ is searched completely, in the order given.
+- A directory is listed before its contents (_pre-order_).
 - The entries of each directory are visited in ascending **byte-wise** order of their UTF-8
   names. This order is case-sensitive and ignores the locale: `B.txt` comes before `a.txt`,
   and `a-b` comes before `a.b`, `a1`, and `a_b`.
 
-Paths are printed as reached: the *PATH* exactly as you typed it, then `/` and each name below
+Paths are printed as reached: the _PATH_ exactly as you typed it, then `/` and each name below
 it, even on Windows. Searching `.` therefore prints `.`, `./src`, `./src/main.c`, and so on.
-No extra `/` is added after a *PATH* that already ends in one: `dp-find src/` prints
+No extra `/` is added after a _PATH_ that already ends in one: `dp-find src/` prints
 `src/main.c`.
 
 Symbolic links (and Windows directory junctions) are never followed. They are reported like other
@@ -62,17 +89,17 @@ does not expand them: `-name '*.txt'`.
 Listed from highest to lowest precedence:
 
 **`( EXPR )`**
-: True if *EXPR* is true. Use parentheses to override precedence.
+: True if _EXPR_ is true. Use parentheses to override precedence.
 
 **`! EXPR`**, **`-not EXPR`**
-: True if *EXPR* is false.
+: True if _EXPR_ is false.
 
 **`EXPR1 EXPR2`**, **`EXPR1 -a EXPR2`**
-: AND: true if both are true. *EXPR2* is not evaluated when *EXPR1* is false. Writing two
-  expressions next to each other means AND.
+: AND: true if both are true. _EXPR2_ is not evaluated when _EXPR1_ is false. Writing two
+expressions next to each other means AND.
 
 **`EXPR1 -o EXPR2`**
-: OR: true if either is true. *EXPR2* is not evaluated when *EXPR1* is true.
+: OR: true if either is true. _EXPR2_ is not evaluated when _EXPR1_ is true.
 
 Because AND binds more tightly than OR, `-type f -name '*.c' -o -name '*.h'` means
 `( -type f -name '*.c' ) -o -name '*.h'`. To select regular files with either extension, write
@@ -81,56 +108,56 @@ Because AND binds more tightly than OR, `-type f -name '*.c' -o -name '*.h'` mea
 ### Global options
 
 These are always true. They affect the whole search wherever they appear in the expression; if
-one is given more than once, the last one counts. *N* is a whole number from 0 to 2147483647.
+one is given more than once, the last one counts. _N_ is a whole number from 0 to 2147483647.
 
 **`-maxdepth N`**
-: Descend at most *N* levels below each start path. `-maxdepth 0` examines only the start paths
-  themselves.
+: Descend at most _N_ levels below each start path. `-maxdepth 0` examines only the start paths
+themselves.
 
 **`-mindepth N`**
-: Do not evaluate entries fewer than *N* levels below their start path (their contents are still
-  searched). `-mindepth 1` skips the start paths themselves.
+: Do not evaluate entries fewer than _N_ levels below their start path (their contents are still
+searched). `-mindepth 1` skips the start paths themselves.
 
 ### Tests
 
 **`-name GLOB`**
 : True if the entry's base name (the last component of its path) matches the glob pattern
-  *GLOB* as a whole. Matching is case-sensitive on every system. The pattern language:
+_GLOB_ as a whole. Matching is case-sensitive on every system. The pattern language:
 
-  | Pattern | Matches |
-  | :-- | :-- |
-  | `*` | any sequence of characters, including none and including a leading `.` |
-  | `?` | exactly one character |
-  | `[abc]`, `[a-z]` | one character from the set or range |
-  | `[!abc]`, `[!a-z]` | one character *not* in the set or range |
-  | `\c` | the character *c* literally, for example `\*` or `\[` |
+| Pattern            | Matches                                                                |
+| :----------------- | :--------------------------------------------------------------------- |
+| `*`                | any sequence of characters, including none and including a leading `.` |
+| `?`                | exactly one character                                                  |
+| `[abc]`, `[a-z]`   | one character from the set or range                                    |
+| `[!abc]`, `[!a-z]` | one character _not_ in the set or range                                |
+| `\c`               | the character _c_ literally, for example `\*` or `\[`                  |
 
-  Inside brackets, a `]` right after `[` or `[!` is an ordinary member, and a `-` at the start
-  or end is literal. A `[` without a closing `]` is an ordinary character. `^` and
-  `[:alpha:]`-style classes have no special meaning. For a start path, the base name ignores
-  trailing slashes: the base name of `src/` is `src`, and that of `.` is `.`.
+Inside brackets, a `]` right after `[` or `[!` is an ordinary member, and a `-` at the start
+or end is literal. A `[` without a closing `]` is an ordinary character. `^` and
+`[:alpha:]`-style classes have no special meaning. For a start path, the base name ignores
+trailing slashes: the base name of `src/` is `src`, and that of `.` is `.`.
 
 **`-iname GLOB`**
 : Like `-name`, but the ASCII letters A–Z and a–z match regardless of case. Other letters, such
-  as `É` and `é`, are still compared exactly.
+as `É` and `é`, are still compared exactly.
 
 **`-type f`**, **`-type d`**
 : True for a regular file (`f`) or a directory (`d`). No other letters are accepted.
 
 **`-size [+|-]N[UNIT]`**
-: Compares the entry's size, **rounded up** to whole units, with *N*. *UNIT* is `c` (bytes),
-  `k` (KiB, 1024 bytes), `M` (MiB), `G` (GiB), or omitted for 512-byte blocks. `+N` means more
-  than *N* units, `-N` fewer than *N*, and `N` exactly *N*. Because of the rounding,
-  `-size -1k` matches only empty files, `-size 1k` matches sizes of 1 to 1024 bytes, and
-  `-size -2k` matches files of at most 1024 bytes. Use `c` for exact byte comparisons:
-  `-size +1024c` means larger than 1024 bytes. Directory sizes differ between operating
-  systems, so combine `-size` with `-type f`.
+: Compares the entry's size, **rounded up** to whole units, with _N_. _UNIT_ is `c` (bytes),
+`k` (KiB, 1024 bytes), `M` (MiB), `G` (GiB), or omitted for 512-byte blocks. `+N` means more
+than _N_ units, `-N` fewer than _N_, and `N` exactly _N_. Because of the rounding,
+`-size -1k` matches only empty files, `-size 1k` matches sizes of 1 to 1024 bytes, and
+`-size -2k` matches files of at most 1024 bytes. Use `c` for exact byte comparisons:
+`-size +1024c` means larger than 1024 bytes. Directory sizes differ between operating
+systems, so combine `-size` with `-type f`.
 
 **`-mtime [+|-]N`**
-: Compares the entry's age with *N* days. The age is the time since the entry was last modified,
-  in **whole** days rounded down, measured from the moment the search started. A file changed an
-  hour ago has age 0, so `-mtime 0` and `-mtime -1` match it; `-mtime +7` matches entries last
-  modified 8 or more days ago.
+: Compares the entry's age with _N_ days. The age is the time since the entry was last modified,
+in **whole** days rounded down, measured from the moment the search started. A file changed an
+hour ago has age 0, so `-mtime 0` and `-mtime -1` match it; `-mtime +7` matches entries last
+modified 8 or more days ago.
 
 **`-empty`**
 : True for an empty regular file and for a directory with no entries.
@@ -141,14 +168,14 @@ one is given more than once, the last one counts. *N* is a whole number from 0 t
 : Print the entry's path followed by a newline. Always true.
 
 **`-exec COMMAND ;`**
-: Run *COMMAND* once for the entry and wait for it to finish. *COMMAND* is every argument up to
-  the next `;` argument. Each `{}` in any of these arguments, even inside a longer argument
-  like `backup-{}`, is replaced by the entry's path. The command is started directly, not by a
-  shell, so no quoting, wildcards, or redirections are interpreted. It runs in the current
-  directory, with the same environment, standard input, standard output, and standard error as
-  `dp-find`. `-exec` is true if the command exits with status 0, so it can also act as a test.
-  If the command cannot be started, `dp-find` reports it, treats `-exec` as false, and exits
-  with status 1 at the end.
+: Run _COMMAND_ once for the entry and wait for it to finish. _COMMAND_ is every argument up to
+the next `;` argument. Each `{}` in any of these arguments, even inside a longer argument
+like `backup-{}`, is replaced by the entry's path. The command is started directly, not by a
+shell, so no quoting, wildcards, or redirections are interpreted. It runs in the current
+directory, with the same environment, standard input, standard output, and standard error as
+`dp-find`. `-exec` is true if the command exits with status 0, so it can also act as a test.
+If the command cannot be started, `dp-find` reports it, treats `-exec` as false, and exits
+with status 1 at the end.
 
 ### Standard options
 
@@ -165,11 +192,11 @@ invalid.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every path was searched without error, or help or version was printed |
-| 1 | At least one path could not be examined or read, or an `-exec` command could not be started; everything else was still searched |
-| 2 | Usage error in the expression; nothing was searched |
+| Status | Meaning                                                                                                                         |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------ |
+| 0      | Success: every path was searched without error, or help or version was printed                                                  |
+| 1      | At least one path could not be examined or read, or an `-exec` command could not be started; everything else was still searched |
+| 2      | Usage error in the expression; nothing was searched                                                                             |
 
 A command run by `-exec` that exits with a non-zero status is not an error. It only makes that
 `-exec` false.
@@ -184,28 +211,28 @@ dp-find: unknown primary '-nme'
 Try 'dp-find --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `unknown primary '-nme'` | A word starting with `-` that is not a test, action, or operator | Check the spelling; see `--help` |
-| `missing argument to '-name'` | The primary is the last argument | Supply its argument |
-| `missing argument to '-exec'` | No `;` after the command, or no command before `;` | End the command with `';'` |
-| `invalid argument '5K' for '-size'` | Malformed number, sign, unit, or type letter | Use the forms shown in OPTIONS |
-| `paths must precede expression: 'src'` | A path appears after the expression has started | Move all paths to the front |
-| `expected an expression after '-o'` | An operator with nothing after it | Complete or remove the operator |
-| `expected an expression before '-o'` | `-o` or `-a` with nothing before it | Complete or remove the operator |
-| `empty parentheses` | `( )` | Put an expression inside |
-| `missing ')'` | A `(` is never closed | Add the `)` |
-| `unexpected ')'` | A `)` without a matching `(` | Remove it or add the `(` |
+| Message                                | Cause                                                            | Fix                              |
+| :------------------------------------- | :--------------------------------------------------------------- | :------------------------------- |
+| `unknown primary '-nme'`               | A word starting with `-` that is not a test, action, or operator | Check the spelling; see `--help` |
+| `missing argument to '-name'`          | The primary is the last argument                                 | Supply its argument              |
+| `missing argument to '-exec'`          | No `;` after the command, or no command before `;`               | End the command with `';'`       |
+| `invalid argument '5K' for '-size'`    | Malformed number, sign, unit, or type letter                     | Use the forms shown in OPTIONS   |
+| `paths must precede expression: 'src'` | A path appears after the expression has started                  | Move all paths to the front      |
+| `expected an expression after '-o'`    | An operator with nothing after it                                | Complete or remove the operator  |
+| `expected an expression before '-o'`   | `-o` or `-a` with nothing before it                              | Complete or remove the operator  |
+| `empty parentheses`                    | `( )`                                                            | Put an expression inside         |
+| `missing ')'`                          | A `(` is never closed                                            | Add the `)`                      |
+| `unexpected ')'`                       | A `)` without a matching `(`                                     | Remove it or add the `(`         |
 
 Runtime errors are one line each. The search continues, and the exit status becomes 1:
 
-| Message | Cause |
-| :-- | :-- |
-| `dp-find: srcc: No such file or directory` | A path that does not exist |
-| `dp-find: a.txt/x: Not a directory` | A path through something that is not a directory |
-| `dp-find: ./private: Permission denied` | A directory you may not read; it is still printed, but its contents are skipped |
-| `dp-find: lint: No such file or directory` | An `-exec` program that cannot be found |
-| `dp-find: <path>: Input/output error` | Any other failure reported by the operating system |
+| Message                                    | Cause                                                                           |
+| :----------------------------------------- | :------------------------------------------------------------------------------ |
+| `dp-find: srcc: No such file or directory` | A path that does not exist                                                      |
+| `dp-find: a.txt/x: Not a directory`        | A path through something that is not a directory                                |
+| `dp-find: ./private: Permission denied`    | A directory you may not read; it is still printed, but its contents are skipped |
+| `dp-find: lint: No such file or directory` | An `-exec` program that cannot be found                                         |
+| `dp-find: <path>: Input/output error`      | Any other failure reported by the operating system                              |
 
 ## EXAMPLES
 

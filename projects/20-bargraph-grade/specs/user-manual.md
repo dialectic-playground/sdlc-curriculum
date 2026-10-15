@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-bargraph2, dp-grade — User Manual](#dp-bargraph2-dp-grade--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [dp-bargraph2](#dp-bargraph2)
+    - [dp-grade](#dp-grade)
+    - [Prompts](#prompts)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-bargraph2, dp-grade — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Products | `dp-bargraph2` 1.0.0, `dp-grade` 1.0.0 |
-| Project | `20-bargraph-grade` — Modular Procedural Decomposition & Evaluation |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-20), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                               |
+| :------------ | :------------------------------------------------------------------ |
+| Products      | `dp-bargraph2` 1.0.0, `dp-grade` 1.0.0                              |
+| Project       | `20-bargraph-grade` — Modular Procedural Decomposition & Evaluation |
+| Applies to    | Linux, macOS, Windows                                               |
+| Specification | `SRS.md` (SRS-20), `shared/CLI-CONVENTIONS.md`                      |
 
 ---
 
@@ -30,7 +56,7 @@ dp-grade --help | --version
 
 `dp-bargraph2` behaves exactly like `dp-bargraph` (project 16): for the same arguments and
 input it prints the same graph, the same diagnostics (with its own name), and exits with the
-same status. It reads *records* from *FILE*, or from standard input when *FILE* is absent or
+same status. It reads _records_ from _FILE_, or from standard input when _FILE_ is absent or
 `-`. Each record is two lines, a **title** and a **value**; the tool prints the title, then a
 bar of one `*` for every 2 units of the value, rounded down.
 
@@ -57,7 +83,7 @@ Whiz Comics
 
 ### dp-grade
 
-`dp-grade` reads answers from *FILE*, or from standard input when *FILE* is absent or `-`.
+`dp-grade` reads answers from _FILE_, or from standard input when _FILE_ is absent or `-`.
 Answers are separated by any mix of spaces, tabs, and line breaks. The session is a series of
 rounds:
 
@@ -68,7 +94,7 @@ rounds:
 
 For each round, `dp-grade` prints `Grade is: P` if the weighted average
 
-*weight* × *mid term* + (1 − *weight*) × *final*
+_weight_ × _mid term_ + (1 − _weight_) × _final_
 
 is greater than 7, and `Grade is: F` otherwise. An average of exactly 7 is a fail.
 
@@ -112,11 +138,11 @@ Both tools follow the curriculum's common conventions (`shared/CLI-CONVENTIONS.m
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the whole input was processed, or help or version was printed |
-| 1 | The file could not be read, or the data contains an error |
-| 2 | Usage error: an invalid option or more than one *FILE* |
+| Status | Meaning                                                                |
+| :----- | :--------------------------------------------------------------------- |
+| 0      | Success: the whole input was processed, or help or version was printed |
+| 1      | The file could not be read, or the data contains an error              |
+| 2      | Usage error: an invalid option or more than one _FILE_                 |
 
 ## DIAGNOSTICS
 
@@ -129,15 +155,15 @@ Grade is: P
 dp-grade: bad-score.txt:4: value out of range '11'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `FILE:LINE: invalid integer 'TOKEN'` | dp-grade: an answer or score is not a whole number; dp-bargraph2: a value line is not a single whole number | Write a whole number |
-| `FILE:LINE: value out of range 'TOKEN'` | dp-grade: an answer other than 0 or 1, a score outside 0–10, or a weight outside 0–1; dp-bargraph2: a value outside 0–10000 | Use a value in range |
-| `FILE:LINE: invalid number 'TOKEN'` | dp-grade: the weight is not a number | Write the weight like `0.5` |
-| `FILE:LINE: unexpected end of input` | dp-grade: the input ends in the middle of a round; dp-bargraph2: it ends after a title | Complete the round or record |
-| `FILE: No such file or directory` | *FILE* does not exist | Check the name |
-| `FILE: Is a directory` | *FILE* is a directory | Name a file |
-| `FILE: Permission denied` | *FILE* cannot be read | Check its permissions |
+| Message                                 | Cause                                                                                                                       | Fix                          |
+| :-------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| `FILE:LINE: invalid integer 'TOKEN'`    | dp-grade: an answer or score is not a whole number; dp-bargraph2: a value line is not a single whole number                 | Write a whole number         |
+| `FILE:LINE: value out of range 'TOKEN'` | dp-grade: an answer other than 0 or 1, a score outside 0–10, or a weight outside 0–1; dp-bargraph2: a value outside 0–10000 | Use a value in range         |
+| `FILE:LINE: invalid number 'TOKEN'`     | dp-grade: the weight is not a number                                                                                        | Write the weight like `0.5`  |
+| `FILE:LINE: unexpected end of input`    | dp-grade: the input ends in the middle of a round; dp-bargraph2: it ends after a title                                      | Complete the round or record |
+| `FILE: No such file or directory`       | _FILE_ does not exist                                                                                                       | Check the name               |
+| `FILE: Is a directory`                  | _FILE_ is a directory                                                                                                       | Name a file                  |
+| `FILE: Permission denied`               | _FILE_ cannot be read                                                                                                       | Check its permissions        |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is written
 to standard output:
@@ -148,12 +174,12 @@ dp-grade: option '--prompt' doesn't allow an argument
 Try 'dp-grade --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option (`dp-bargraph2` has no `-p`) | Remove it |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version` | Remove the `=…` |
-| `extra operand 'b'` | More than one *FILE* | Give one file |
+| Message                                       | Cause                                             | Fix                      |
+| :-------------------------------------------- | :------------------------------------------------ | :----------------------- |
+| `invalid option -- 'x'`                       | Unknown short option (`dp-bargraph2` has no `-p`) | Remove it                |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                | Spell the option in full |
+| `option '--prompt' doesn't allow an argument` | `=…` after `--prompt`, `--help`, or `--version`   | Remove the `=…`          |
+| `extra operand 'b'`                           | More than one _FILE_                              | Give one file            |
 
 ## EXAMPLES
 

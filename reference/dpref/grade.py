@@ -9,9 +9,25 @@ from __future__ import annotations
 
 import sys
 
-from .common import (PROMPT, DataError, InputError, InputStream, UsageError, data_failure,
-                     file_failure, fix, handle_action, open_input, out, parse_args,
-                     parse_int_token, parse_real_token, prompt, usage_failure, write)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    parse_int_token,
+    parse_real_token,
+    prompt,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-grade"
 HELP_TEXT = """\
@@ -61,7 +77,9 @@ def session(reader: InputStream, source: str, prompts: bool) -> None:
         token = reader.require(source)
         weight = parse_real_token(token, source)
         if not 0.0 <= weight <= 1.0:
-            raise DataError(source, token.line, b"value out of range '" + token.text + b"'")
+            raise DataError(
+                source, token.line, b"value out of range '" + token.text + b"'"
+            )
         write(f"Grade is: {grade(mid_term, final, weight_thousandths(weight))}\n")
         out.flush()
 

@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-phone — User Manual](#dp-phone--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The student file](#the-student-file)
+    - [How names are matched](#how-names-are-matched)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-phone — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-phone` 1.0.0 |
-| Project | `31-phone` — Student Directory Lookup via Selection Sort & Binary Search |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-31), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                    |
+| :------------ | :----------------------------------------------------------------------- |
+| Product       | `dp-phone` 1.0.0                                                         |
+| Project       | `31-phone` — Student Directory Lookup via Selection Sort & Binary Search |
+| Applies to    | Linux, macOS, Windows                                                    |
+| Specification | `SRS.md` (SRS-31), `shared/CLI-CONVENTIONS.md`                           |
 
 ---
 
@@ -24,8 +50,8 @@ dp-phone --version
 ## DESCRIPTION
 
 `dp-phone` loads the student records in `students.dat` in the current directory, sorts them,
-and then reads last names, one per line, from *FILE*, or from standard input when there is no
-*FILE* or *FILE* is `-`. For each name it prints one line: the student's record, or a message
+and then reads last names, one per line, from _FILE_, or from standard input when there is no
+_FILE_ or _FILE_ is `-`. For each name it prints one line: the student's record, or a message
 that the name is not in the directory.
 
 ```text
@@ -40,11 +66,11 @@ found.
 
 Each line of the student file is one record of exactly 62 bytes, in three fixed columns:
 
-| Columns | Contents |
-| :-- | :-- |
-| 1–25 | Last name, padded with spaces |
-| 26–50 | First name, padded with spaces |
-| 51–62 | Telephone number, for example `508-416-0633` |
+| Columns | Contents                                     |
+| :------ | :------------------------------------------- |
+| 1–25    | Last name, padded with spaces                |
+| 26–50   | First name, padded with spaces               |
+| 51–62   | Telephone number, for example `508-416-0633` |
 
 The records may be in any order. Lines may end with LF or with CRLF, and one or more Ctrl-Z
 bytes at the very end of the file (the end-of-file mark of old MS-DOS data files) are ignored.
@@ -62,7 +88,7 @@ uses more columns than it has letters.
 
 Each line you type is one last name, including any spaces in it, so `Von Neumann` is looked up
 as one name. The match is exact and case-sensitive: `turing` does not find `Turing`, and a
-space in front of the name (` Turing`) prevents a match, while spaces after it do not. A name
+space in front of the name (`ing`) prevents a match, while spaces after it do not. A name
 longer than 25 bytes cannot fit in the last-name column and is never found. Blank lines are
 ignored and produce no output.
 
@@ -90,12 +116,12 @@ answers.
 ## OPTIONS
 
 **`-f FILE`, `--file=FILE`**
-: Read the student records from *FILE* instead of `students.dat`. `-f -` reads them from
-  standard input; the names must then come from a *FILE* operand other than `-`.
+: Read the student records from _FILE_ instead of `students.dat`. `-f -` reads them from
+standard input; the names must then come from a _FILE_ operand other than `-`.
 
 **`-p`, `--prompt`**
-: Write the prompt `Enter a student's name, or signal EOF to halt: ` to standard error before
-  each name is read, and once more before the end of the input is detected.
+: Write the prompt `Enter a student's name, or signal EOF to halt:o standard error before
+each name is read, and once more before the end of the input is detected.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -119,11 +145,11 @@ answers.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every name was answered, or help or version was printed |
-| 1 | A file could not be read, or the student file contains a malformed record |
-| 2 | Usage error: an invalid option or value, or an unexpected argument |
+| Status | Meaning                                                                   |
+| :----- | :------------------------------------------------------------------------ |
+| 0      | Success: every name was answered, or help or version was printed          |
+| 1      | A file could not be read, or the student file contains a malformed record |
+| 2      | Usage error: an invalid option or value, or an unexpected argument        |
 
 ## DIAGNOSTICS
 
@@ -131,15 +157,15 @@ Every problem is reported on standard error as one line, and the exit status is 
 with the student file are found before any name is read, so nothing is written to standard
 output.
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid record length N, expected 62` | Line *L* of the student file *S* is *N* bytes long (without its line ending) | Pad or trim the record to exactly 62 columns; remove blank lines |
-| `F: No such file or directory` | The student file or name file *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other failure to read *F* | Check the device or file system |
-| `write error` | The answers could not be written to standard output | Free space or redirect the output elsewhere |
+| Message                                     | Cause                                                                        | Fix                                                              |
+| :------------------------------------------ | :--------------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| `S:L: invalid record length N, expected 62` | Line _L_ of the student file _S_ is _N_ bytes long (without its line ending) | Pad or trim the record to exactly 62 columns; remove blank lines |
+| `F: No such file or directory`              | The student file or name file _F_ does not exist                             | Check the spelling and the current directory                     |
+| `F: Permission denied`                      | You may not read _F_                                                         | Check the permissions                                            |
+| `F: Is a directory`                         | _F_ is a directory                                                           | Name a file instead                                              |
+| `F: Not a directory`                        | Part of the path _F_ is a file, not a directory                              | Correct the path                                                 |
+| `F: Input/output error`                     | Any other failure to read _F_                                                | Check the device or file system                                  |
+| `write error`                               | The answers could not be written to standard output                          | Free space or redirect the output elsewhere                      |
 
 Usage errors are written to standard error as two lines; no file is read:
 
@@ -149,16 +175,16 @@ dp-phone: extra operand 'more.txt'
 Try 'dp-phone --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-f` or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'f'` | `-f` given without a file name | Supply a file name |
-| `option '--file' requires an argument` | `--file` given without a file name | Supply a file name |
-| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…` | Remove the `=…` |
-| `invalid argument '' for '-f'` | An empty file name | Give a non-empty file name |
-| `invalid argument '-' for '-f'` | `-f -` while the names also come from standard input | Name a file of names as the operand |
-| `extra operand 'F'` | More than one file of names | Look up the names of one file at a time |
+| Message                                       | Cause                                                | Fix                                     |
+| :-------------------------------------------- | :--------------------------------------------------- | :-------------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                            | Use `-f` or `-p`                        |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                   | Spell the option in full                |
+| `option requires an argument -- 'f'`          | `-f` given without a file name                       | Supply a file name                      |
+| `option '--file' requires an argument`        | `--file` given without a file name                   | Supply a file name                      |
+| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…`           | Remove the `=…`                         |
+| `invalid argument '' for '-f'`                | An empty file name                                   | Give a non-empty file name              |
+| `invalid argument '-' for '-f'`               | `-f -` while the names also come from standard input | Name a file of names as the operand     |
+| `extra operand 'F'`                           | More than one file of names                          | Look up the names of one file at a time |
 
 ## EXAMPLES
 
@@ -234,7 +260,7 @@ Names are compared byte for byte, so the result never depends on the language se
   `/` and `\` work as directory separators in file names.
 - **macOS / Linux:** end interactive input with Ctrl-D at the start of a line. A student file
   copied from Windows needs no conversion.
-- **All systems:** a record is 62 *bytes*. An editor that saves non-ASCII letters in UTF-8 uses
+- **All systems:** a record is 62 _bytes_. An editor that saves non-ASCII letters in UTF-8 uses
   two or more bytes for each of them, so pad such names with fewer spaces.
 
 ## INSTALLATION

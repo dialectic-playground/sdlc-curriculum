@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-cars1 — User Manual](#dp-cars1--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Refused sales](#refused-sales)
+    - [Numbers](#numbers)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-cars1 — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-cars1` 1.0.0 |
-| Project | `26-cars` — Car Dealership Daily Sales & Inventory Tracker |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-26), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                      |
+| :------------ | :--------------------------------------------------------- |
+| Product       | `dp-cars1` 1.0.0                                           |
+| Project       | `26-cars` — Car Dealership Daily Sales & Inventory Tracker |
+| Applies to    | Linux, macOS, Windows                                      |
+| Specification | `SRS.md` (SRS-26), `shared/CLI-CONVENTIONS.md`             |
 
 ---
 
@@ -24,8 +50,8 @@ dp-cars1 --version
 ## DESCRIPTION
 
 `dp-cars1` keeps one day's books for a dealership that sells twelve brands of car, numbered 0
-to 11. It reads whole numbers from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`:
+to 11. It reads whole numbers from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`:
 
 1. **The opening stock**: twelve numbers, the cars of brand 0, 1, …, 11 on the lot at the start
    of the day. Each is between 0 and 999999.
@@ -54,7 +80,7 @@ Brand    Start    Sales      End      Sales %
 ```
 
 For each brand the report shows the stock at the start of the day, the cars sold, the stock
-left at the end of the day (*Start* − *Sales*), and the cars sold as a percentage of the
+left at the end of the day (_Start_ − _Sales_), and the cars sold as a percentage of the
 starting stock, with six decimals. A brand that had no cars at the start of the day shows
 `n/a`, because no percentage of nothing can be sold.
 
@@ -119,8 +145,8 @@ by **Enter** in a Windows console). The prompts are written to standard error, s
 
 **`-p`, `--prompt`**
 : Write a prompt to standard error before each number is read: `Cars in stock for brand: B`
-  and a line break before each opening stock, `Which brand was sold? ` before each brand, and
-  `How many cars in sale? ` before each number of cars.
+and a line break before each opening stock, `Which brand was sold? ` before each brand, and
+`How many cars in sale? ` before each number of cars.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -140,11 +166,11 @@ by **Enter** in a Windows console). The prompts are written to standard error, s
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report was printed and every sale was accepted, or help or version was printed |
-| 1 | The report was printed but at least one sale was refused; or no report was printed because the input could not be read, contained an invalid number, or ended too early |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                                                                 |
+| :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the report was printed and every sale was accepted, or help or version was printed                                                                             |
+| 1      | The report was printed but at least one sale was refused; or no report was printed because the input could not be read, contained an invalid number, or ended too early |
+| 2      | Usage error: an invalid option or more than one file                                                                                                                    |
 
 ## DIAGNOSTICS
 
@@ -172,20 +198,20 @@ $ dp-cars1 cut.txt
 dp-cars1: cut.txt:4: unexpected end of input
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: no such brand 'K'` | The sale on line *L* names brand *K*, which is 12 or more (refused) | Enter a brand from 0 to 11 |
-| `S:L: negative quantity 'K'` | The sale on line *L* sells *K* cars, a negative number (refused) | Enter the number of cars sold |
-| `S:L: not enough cars in stock for brand B 'K'` | Selling *K* more cars of brand *B* would sell more than were on the lot (refused) | Check the sale and the opening stock |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or is far too large | Write numbers in digits only |
-| `S:L: value out of range 'K'` | The opening stock *K* on line *L* is negative or more than 999999 | Enter a count from 0 to 999999 |
-| `S:L: unexpected end of input` | The input ended during the opening stock, or after a brand without its number of cars | Complete the input |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                         | Cause                                                                                 | Fix                                          |
+| :---------------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------- |
+| `S:L: no such brand 'K'`                        | The sale on line _L_ names brand _K_, which is 12 or more (refused)                   | Enter a brand from 0 to 11                   |
+| `S:L: negative quantity 'K'`                    | The sale on line _L_ sells _K_ cars, a negative number (refused)                      | Enter the number of cars sold                |
+| `S:L: not enough cars in stock for brand B 'K'` | Selling _K_ more cars of brand _B_ would sell more than were on the lot (refused)     | Check the sale and the opening stock         |
+| `S:L: invalid integer 'K'`                      | Entry _K_ on line _L_ is not a whole number, or is far too large                      | Write numbers in digits only                 |
+| `S:L: value out of range 'K'`                   | The opening stock _K_ on line _L_ is negative or more than 999999                     | Enter a count from 0 to 999999               |
+| `S:L: unexpected end of input`                  | The input ended during the opening stock, or after a brand without its number of cars | Complete the input                           |
+| `F: No such file or directory`                  | _F_ does not exist                                                                    | Check the spelling and the current directory |
+| `F: Permission denied`                          | You may not read _F_                                                                  | Check the file's permissions                 |
+| `F: Is a directory`                             | _F_ is a directory                                                                    | Name a file instead                          |
+| `F: Not a directory`                            | Part of the path _F_ is a file, not a directory                                       | Correct the path                             |
+| `F: Input/output error`                         | Any other read failure                                                                | Check the device or file system              |
+| `write error`                                   | The report could not be written (for example, the disk is full)                       | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -196,12 +222,12 @@ dp-cars1: extra operand 'rejected.txt'
 Try 'dp-cars1 --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-cars1` once per file |
+| Message                                       | Cause                                                   | Fix                          |
+| :-------------------------------------------- | :------------------------------------------------------ | :--------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                     |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full     |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`              |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-cars1` once per file |
 
 ## EXAMPLES
 

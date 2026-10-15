@@ -1,10 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-wc — User Manual](#dp-wc--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Output layout](#output-layout)
+    - [Character counting in detail](#character-counting-in-detail)
+    - [Large files](#large-files)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-wc — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-wc` 1.0.0 |
-| Project | `04-wc` — Word, Line, and Byte Counter |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-wc` 1.0.0                                  |
+| Project       | `04-wc` — Word, Line, and Byte Counter         |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-04), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,9 +49,9 @@ dp-wc --version
 
 ## DESCRIPTION
 
-`dp-wc` reads each *FILE* and prints one line of counts for it, followed by the file name. When
-more than one *FILE* is given, a final line labelled `total` gives the sums. With no *FILE*,
-`dp-wc` reads standard input and prints the counts without a name. The *FILE* `-` also means
+`dp-wc` reads each _FILE_ and prints one line of counts for it, followed by the file name. When
+more than one _FILE_ is given, a final line labelled `total` gives the sums. With no _FILE_,
+`dp-wc` reads standard input and prints the counts without a name. The _FILE_ `-` also means
 standard input, and is shown as `-`.
 
 Five counts are available. Whatever order you give the options in, they are always printed in
@@ -91,7 +117,7 @@ count files of any size.
 
 **`-L`, `--max-line-length`**
 : Print the length of the longest line, in characters. In the `total` line this is the largest
-  value of all the files, not the sum.
+value of all the files, not the sum.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -113,11 +139,11 @@ count files of any size.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every input was counted, or help or version was printed |
-| 1 | At least one file could not be read; the others were still counted |
-| 2 | Usage error: an invalid option |
+| Status | Meaning                                                            |
+| :----- | :----------------------------------------------------------------- |
+| 0      | Success: every input was counted, or help or version was printed   |
+| 1      | At least one file could not be read; the others were still counted |
+| 2      | Usage error: an invalid option                                     |
 
 ## DIAGNOSTICS
 
@@ -132,13 +158,13 @@ dp-wc: missing.txt: No such file or directory
   9  21 134 total
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name the files inside it instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
+| Message                        | Cause                                           | Fix                                          |
+| :----------------------------- | :---------------------------------------------- | :------------------------------------------- |
+| `F: No such file or directory` | _F_ does not exist                              | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                            | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                              | Name the files inside it instead             |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                          | Check the device or file system              |
 
 Usage errors are written to standard error as two lines; nothing is counted and nothing is
 written to standard output:
@@ -149,11 +175,11 @@ dp-wc: invalid option -- 'z'
 Try 'dp-wc --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'z'` | Unknown short option `-z` | Use `-l`, `-w`, `-m`, `-c`, or `-L` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
+| Message                                      | Cause                                                   | Fix                                 |
+| :------------------------------------------- | :------------------------------------------------------ | :---------------------------------- |
+| `invalid option -- 'z'`                      | Unknown short option `-z`                               | Use `-l`, `-w`, `-m`, `-c`, or `-L` |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                      | Spell the option in full            |
+| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                     |
 
 ## EXAMPLES
 

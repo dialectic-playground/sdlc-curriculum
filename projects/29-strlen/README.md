@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 29 — String Length from First Principles (`dp-strlen`)](#project-29--string-length-from-first-principles-dp-strlen)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 29 — String Length from First Principles (`dp-strlen`)
 
 > Measure strings by walking them, the way a professional tool would: lengths of command-line
@@ -7,7 +23,7 @@
 
 ## Purpose
 
-Project 29 is adapted from §5.8 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 29 is adapted from §5.8 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a function that computes the length of a string by stepping through it until the terminating
 null byte, counting as it goes. The textbook function counts bytes and relies on the null
 terminator, so it cannot measure text that contains a NUL byte and miscounts every non-ASCII
@@ -19,19 +35,19 @@ as `dp-wc` (Project 04) or, with `-b`, in bytes. [Project 27](../27-line-wrap/) 
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Length of each STRING operand | Display widths (wide or combining characters, TAB stops) |
-| Length of each line of standard input or of one file (`-f`, `--file`) | Several input files in one run |
-| Characters by the SRS-04 UTF-8 rule, or bytes (`-b`) | Grapheme clusters, normalization |
-| LF-terminated lines; one CR before LF removed; NUL bytes are data | Other line terminators (CR alone, U+2028) |
-| A trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Counting by an explicit scan in constant memory | Totals, maximum, or other statistics |
-| CONV-16 file errors, `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                              | Out of scope                                             |
+| :-------------------------------------------------------------------- | :------------------------------------------------------- |
+| Length of each STRING operand                                         | Display widths (wide or combining characters, TAB stops) |
+| Length of each line of standard input or of one file (`-f`, `--file`) | Several input files in one run                           |
+| Characters by the SRS-04 UTF-8 rule, or bytes (`-b`)                  | Grapheme clusters, normalization                         |
+| LF-terminated lines; one CR before LF removed; NUL bytes are data     | Other line terminators (CR alone, U+2028)                |
+| A trailing Ctrl-Z end-of-file marker (CONV-37)                        | Other legacy encodings                                   |
+| Counting by an explicit scan in constant memory                       | Totals, maximum, or other statistics                     |
+| CONV-16 file errors, `--help`, `--version`, CONV-13 usage errors      | Configuration files, environment variables               |
 
 ## Learning objectives
 
-1. Compute a length by an explicit scan from the first byte, and explain why it costs O(*n*)
+1. Compute a length by an explicit scan from the first byte, and explain why it costs O(_n_)
    time where a stored length costs O(1) (FR-06).
 2. Contrast a sentinel-terminated string with a counted one: a NUL byte is data here, not the
    end (FR-04).
@@ -43,15 +59,15 @@ as `dp-wc` (Project 04) or, with `-b`, in bytes. [Project 27](../27-line-wrap/) 
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-13) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-12, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`lines.txt`, `crlf.txt`, `utf8.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-13)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-12, NFR-01 … NFR-08)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`lines.txt`, `crlf.txt`, `utf8.txt`)                 |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -75,4 +91,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

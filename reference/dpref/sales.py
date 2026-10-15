@@ -11,9 +11,20 @@ from bisect import bisect_left
 from dataclasses import dataclass
 
 from . import common
-from .common import (DataError, Option, UsageError, WHITESPACE, data_failure, file_failure,
-                     handle_action, invalid_argument, parse_args, read_all, strip_eof_marker,
-                     usage_failure)
+from .common import (
+    WHITESPACE,
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    read_all,
+    strip_eof_marker,
+    usage_failure,
+)
 
 TOOL = "dp-sales"
 DEFAULT_ACCOUNTS = "sales.dat"
@@ -22,7 +33,7 @@ MAX_ACCOUNTS = 100
 MAX_SALESPEOPLE = 100
 _AMOUNT = re.compile(rb"([0-9]+)(?:\.([0-9]{1,2}))?\Z")
 _INTEGER = re.compile(rb"[+-]?[0-9]+\Z")
-INT64_MAX = 2 ** 63 - 1
+INT64_MAX = 2**63 - 1
 HELP_TEXT = """\
 Usage: dp-sales [OPTION]...
 Print the sales report by salesperson from an accounts file and a
@@ -147,14 +158,18 @@ def load_accounts(data: bytes, source: str) -> list[Account]:
     return sorted(accounts, key=lambda account: account.ident)
 
 
-def find_account(accounts: list[Account], keys: list[int], ident: int) -> Account | None:
+def find_account(
+    accounts: list[Account], keys: list[int], ident: int
+) -> Account | None:
     index = bisect_left(keys, ident)
     if index < len(keys) and keys[index] == ident:
         return accounts[index]
     return None
 
 
-def load_salespeople(data: bytes, source: str, accounts: list[Account]) -> list[Salesperson]:
+def load_salespeople(
+    data: bytes, source: str, accounts: list[Account]
+) -> list[Salesperson]:
     keys = [account.ident for account in accounts]
     people: list[Salesperson] = []
     for line, fields in records(data):
@@ -178,8 +193,12 @@ def load_salespeople(data: bytes, source: str, accounts: list[Account]) -> list[
             if any(other is account for other in listed):
                 raise error(source, line, "account listed twice", token)
             listed.append(account)
-        people.append(Salesperson(fields[0], fields[1], fields[2], salary, bonus, listed))
-    return sorted(people, key=lambda person: person.name)  # stable: ties keep file order
+        people.append(
+            Salesperson(fields[0], fields[1], fields[2], salary, bonus, listed)
+        )
+    return sorted(
+        people, key=lambda person: person.name
+    )  # stable: ties keep file order
 
 
 def report(people: list[Salesperson]) -> bytes:
@@ -187,19 +206,46 @@ def report(people: list[Salesperson]) -> bytes:
     parts = [b"Sales report by salesperson:\n\n"]
     for person in people:
         parts += [
-            pad, b"Salesperson:  ", person.name, b"\n",
-            pad, b"Sales coach:  ", person.coach, b"\n",
-            pad, b"Sales region: ", person.region, b"\n",
-            pad, b"Base salary and bonus:  ", money(person.salary), b"  ",
-            money(person.bonus), b"\n",
-            pad, str(len(person.accounts)).encode(), b" Account(s): \n\n",
+            pad,
+            b"Salesperson:  ",
+            person.name,
+            b"\n",
+            pad,
+            b"Sales coach:  ",
+            person.coach,
+            b"\n",
+            pad,
+            b"Sales region: ",
+            person.region,
+            b"\n",
+            pad,
+            b"Base salary and bonus:  ",
+            money(person.salary),
+            b"  ",
+            money(person.bonus),
+            b"\n",
+            pad,
+            str(len(person.accounts)).encode(),
+            b" Account(s): \n\n",
         ]
         for account in person.accounts:
             parts += [
-                deep, b"Name:       ", account.name, b"\n",
-                deep, b"Id:         ", str(account.ident).encode(), b"\n",
-                deep, b"Projected:  ", money(account.projected), b"\n",
-                deep, b"Actual:     ", money(account.actual), b"\n\n",
+                deep,
+                b"Name:       ",
+                account.name,
+                b"\n",
+                deep,
+                b"Id:         ",
+                str(account.ident).encode(),
+                b"\n",
+                deep,
+                b"Projected:  ",
+                money(account.projected),
+                b"\n",
+                deep,
+                b"Actual:     ",
+                money(account.actual),
+                b"\n\n",
             ]
     return b"".join(parts)
 

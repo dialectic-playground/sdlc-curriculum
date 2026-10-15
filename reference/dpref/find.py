@@ -14,12 +14,19 @@ import os
 import stat
 import subprocess
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from . import common
 from ._find_glob import compile_glob
-from .common import UsageError, diagnose, encode_arg, file_error_reason, usage_failure, write
+from .common import (
+    UsageError,
+    diagnose,
+    encode_arg,
+    file_error_reason,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-find"
 HELP_TEXT = """\
@@ -68,11 +75,19 @@ SEPARATORS = "/\\" if IS_WINDOWS else "/"
 MAX_DEPTH_VALUE = 2_147_483_647
 MAX_NUMBER = 9_223_372_036_854_775_807
 NS_PER_DAY = 86_400 * 1_000_000_000
-SIZE_UNITS = {"c": 1, "k": 1024, "M": 1024 ** 2, "G": 1024 ** 3}
+SIZE_UNITS = {"c": 1, "k": 1024, "M": 1024**2, "G": 1024**3}
 DEFAULT_SIZE_UNIT = 512
 OPERATORS = {"(", ")", "!", "-not", "-a", "-o"}
 NO_ARG_PRIMARIES = {"-empty", "-print"}
-ONE_ARG_PRIMARIES = {"-name", "-iname", "-type", "-size", "-mtime", "-maxdepth", "-mindepth"}
+ONE_ARG_PRIMARIES = {
+    "-name",
+    "-iname",
+    "-type",
+    "-size",
+    "-mtime",
+    "-maxdepth",
+    "-mindepth",
+}
 # Windows paths at or beyond this length need the extended-length prefix (NFR-02).
 WINDOWS_LONG_PATH = 248
 JUNCTION_TAG = getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", 0xA0000003)
@@ -157,7 +172,7 @@ def base_name(path: str) -> str:
         return path[:1]
     for index in range(len(stripped) - 1, -1, -1):
         if stripped[index] in SEPARATORS:
-            return stripped[index + 1:]
+            return stripped[index + 1 :]
     return stripped
 
 
@@ -173,13 +188,17 @@ class Node:
 
 
 def and_node(left: Node, right: Node) -> Node:
-    return Node(lambda e: left.evaluate(e) and right.evaluate(e),
-                left.is_action or right.is_action)
+    return Node(
+        lambda e: left.evaluate(e) and right.evaluate(e),
+        left.is_action or right.is_action,
+    )
 
 
 def or_node(left: Node, right: Node) -> Node:
-    return Node(lambda e: left.evaluate(e) or right.evaluate(e),
-                left.is_action or right.is_action)
+    return Node(
+        lambda e: left.evaluate(e) or right.evaluate(e),
+        left.is_action or right.is_action,
+    )
 
 
 def not_node(operand: Node) -> Node:
@@ -216,13 +235,17 @@ def size_test(sign: str, number: int, unit: int) -> Predicate:
     def test(entry: Entry) -> bool:
         units = -(-entry.st.st_size // unit)  # round up to whole units (FR-11)
         return compare(units, sign, number)
+
     return test
 
 
 def mtime_test(sign: str, number: int) -> Predicate:
     def test(entry: Entry) -> bool:
-        age_days = (entry.ctx.now_ns - entry.st.st_mtime_ns) // NS_PER_DAY  # floor (FR-12)
+        age_days = (
+            entry.ctx.now_ns - entry.st.st_mtime_ns
+        ) // NS_PER_DAY  # floor (FR-12)
         return compare(age_days, sign, number)
+
     return test
 
 
@@ -238,6 +261,7 @@ def exec_action(command: list[str]) -> Predicate:
             entry.ctx.failed = True
             return False
         return completed.returncode == 0
+
     return run
 
 
@@ -262,7 +286,7 @@ class Settings:
 def parse_signed(value: str) -> tuple[str, str]:
     """Split an optional leading ``+`` or ``-`` from a numeric argument."""
     sign = value[:1] if value[:1] in ("+", "-") else ""
-    return sign, value[len(sign):]
+    return sign, value[len(sign) :]
 
 
 def parse_digits(digits: str, value: str, primary: str, maximum: int) -> int:
@@ -286,7 +310,9 @@ def make_primary(primary: str, value: str, settings: Settings) -> Node:
         if rest[-1:] in SIZE_UNITS:
             unit = SIZE_UNITS[rest[-1]]
             rest = rest[:-1]
-        return Node(size_test(sign, parse_digits(rest, value, primary, MAX_NUMBER), unit))
+        return Node(
+            size_test(sign, parse_digits(rest, value, primary, MAX_NUMBER), unit)
+        )
     if primary == "-mtime":
         sign, rest = parse_signed(value)
         return Node(mtime_test(sign, parse_digits(rest, value, primary, MAX_NUMBER)))
@@ -322,8 +348,11 @@ def scan(argv: list[str]) -> tuple[Settings, list[Token]]:
         if token in OPERATORS:
             tokens.append(Token(token))
         elif token in NO_ARG_PRIMARIES:
-            node = (Node(print_entry, is_action=True) if token == "-print"
-                    else Node(is_empty))
+            node = (
+                Node(print_entry, is_action=True)
+                if token == "-print"
+                else Node(is_empty)
+            )
             tokens.append(Token(token, node))
         elif token in ONE_ARG_PRIMARIES:
             if index >= len(argv):
@@ -337,7 +366,9 @@ def scan(argv: list[str]) -> tuple[Settings, list[Token]]:
                 end += 1
             if end >= len(argv) or end == index:
                 raise UsageError("missing argument to '-exec'")
-            tokens.append(Token(token, Node(exec_action(argv[index:end]), is_action=True)))
+            tokens.append(
+                Token(token, Node(exec_action(argv[index:end]), is_action=True))
+            )
             index = end + 1
         elif token.startswith("-"):
             raise UsageError(f"unknown primary '{token}'")
@@ -456,7 +487,9 @@ def traverse(start: str, expression: Node, settings: Settings, ctx: Context) -> 
             expression.evaluate(entry)
         if entry.is_dir and (settings.max_depth is None or depth < settings.max_depth):
             names = entry.listing() or []
-            stack.extend((join(path, child), child, depth + 1) for child in reversed(names))
+            stack.extend(
+                (join(path, child), child, depth + 1) for child in reversed(names)
+            )
 
 
 def main(argv: list[str]) -> int:
@@ -464,7 +497,11 @@ def main(argv: list[str]) -> int:
         settings, tokens = scan(argv)
         expression = build_expression(tokens)
     except HelpRequested as request:
-        write(HELP_TEXT.encode() if request.action == "help" else common.version_line(TOOL))
+        write(
+            HELP_TEXT.encode()
+            if request.action == "help"
+            else common.version_line(TOOL)
+        )
         return 0
     except UsageError as error:
         return usage_failure(TOOL, error)

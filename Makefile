@@ -19,9 +19,9 @@ ifeq ($(DP_DELEGATE),)
 SHELL := /bin/sh
 .DEFAULT_GOAL := check
 ifeq ($(OS),Windows_NT)
-  PYTHON ?= python
+PYTHON ?= python
 else
-  PYTHON ?= python3
+PYTHON ?= python3
 endif
 WIRING_PROJECT := projects/00-hello-world/assignment
 CI_TEMPLATE := shared/ci/cross-platform-ci.yml

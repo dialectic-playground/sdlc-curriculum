@@ -10,10 +10,28 @@ from __future__ import annotations
 
 import sys
 
-from .common import (PROMPT, AnsiRand, DataError, InputError, InputStream, Option,
-                     UsageError, data_failure, file_failure, fix, handle_action, open_input,
-                     out, parse_args, parse_count, parse_int_token, parse_seed, prompt,
-                     usage_failure, write)
+from .common import (
+    PROMPT,
+    AnsiRand,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    parse_count,
+    parse_int_token,
+    parse_seed,
+    prompt,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-perc"
 DEFAULT_SIZE = 25
@@ -52,8 +70,10 @@ Forest = list[list[str]]
 
 def plant(size: int, density: int, rand: AnsiRand) -> Forest:
     """One draw per cell in row-major order; a tree iff (r mod 100) + 1 <= density."""
-    return [[TREE if rand.next() % 100 + 1 <= density else NO_TREE for _ in range(size)]
-            for _ in range(size)]
+    return [
+        [TREE if rand.next() % 100 + 1 <= density else NO_TREE for _ in range(size)]
+        for _ in range(size)
+    ]
 
 
 def burn(forest: Forest) -> Forest:
@@ -64,7 +84,7 @@ def burn(forest: Forest) -> Forest:
     for r in range(1, size):
         above = burned[r - 1]
         for c in range(size):
-            if burned[r][c] == TREE and BURNING in above[max(c - 1, 0):c + 2]:
+            if burned[r][c] == TREE and BURNING in above[max(c - 1, 0) : c + 2]:
                 burned[r][c] = BURNING
     return burned
 
@@ -84,15 +104,19 @@ def simulate(size: int, density: int, rand: AnsiRand) -> str:
     after = burn(before)
     trees = count_trees(before)
     actual = (100 * trees) / (size * size)
-    return (render("Forest before fire:", before) + render("Forest after fire:", after)
-            + f"Requested density: {density}%\n"
-            + f"Actual density: {fix(actual, 2)}%\n"
-            + f"Trees at start: {trees}\n"
-            + f"Trees surviving: {count_trees(after)}\n")
+    return (
+        render("Forest before fire:", before)
+        + render("Forest after fire:", after)
+        + f"Requested density: {density}%\n"
+        + f"Actual density: {fix(actual, 2)}%\n"
+        + f"Trees at start: {trees}\n"
+        + f"Trees surviving: {count_trees(after)}\n"
+    )
 
 
-def session(reader: InputStream, source: str, prompts: bool, size: int,
-            rand: AnsiRand) -> None:
+def session(
+    reader: InputStream, source: str, prompts: bool, size: int, rand: AnsiRand
+) -> None:
     while True:
         prompt(prompts, DENSITY_PROMPT)
         density = parse_int_token(reader.require(source), source, 1, 100)
@@ -113,8 +137,9 @@ def main(argv: list[str]) -> int:
             return 0
         size = DEFAULT_SIZE
         if "size" in parsed.values:
-            size = parse_count(str(parsed.values["size"]), parsed.spelled["size"], 1,
-                               MAX_SIZE)
+            size = parse_count(
+                str(parsed.values["size"]), parsed.spelled["size"], 1, MAX_SIZE
+            )
         seed = parse_seed(parsed)
         if len(parsed.operands) > 1:
             raise UsageError(f"extra operand '{parsed.operands[1]}'")
@@ -128,8 +153,13 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(InputStream(stream), source, bool(parsed.values.get("prompt")), size,
-                AnsiRand(seed))
+        session(
+            InputStream(stream),
+            source,
+            bool(parsed.values.get("prompt")),
+            size,
+            AnsiRand(seed),
+        )
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

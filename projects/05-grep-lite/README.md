@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 05 — Pattern Matching Search Engine (`dp-grep`)](#project-05--pattern-matching-search-engine-dp-grep)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 05 — Pattern Matching Search Engine (`dp-grep`)
 
 > Find the lines that match a regular expression in files, pipelines, and whole directory
@@ -18,15 +34,15 @@ does not depend on the operating system or the file system.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
+| In scope                                                                                                                                                | Out of scope                                                                            |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------- |
 | Portable ERE subset: literals, `.`, brackets with ranges and POSIX classes, `^ $`, `* + ?`, `{m}`, `{m,}`, `{m,n}`, `\|`, `( )`, escaped metacharacters | Backreferences, lookaround, lazy/possessive quantifiers, `\d \w \s \b`, Unicode classes |
-| Exact diagnostics for invalid and unsupported patterns (exit 2) | Printing only the matched text (`-o`), color, context lines (`-A -B -C`) |
-| `-e` (repeatable), `-F`, `-i` (ASCII), `-v`, `-x`, `-w` | Pattern files (`-f`), `-L`, `-m`, include/exclude globs |
-| `-n`, `-c`, `-l`, `-q`, `-s`, `-H`, `-h` | Binary-file detection, compressed files |
-| `-r` with sorted pre-order traversal and `/`-joined paths | Following symbolic links found inside directories (`-R`) |
-| Byte-oriented matching; CR kept as data; stdin and `-` | Locale-aware case folding |
-| Three-valued exit status (0 selected, 1 none, 2 error; `-q` rule) | |
+| Exact diagnostics for invalid and unsupported patterns (exit 2)                                                                                         | Printing only the matched text (`-o`), color, context lines (`-A -B -C`)                |
+| `-e` (repeatable), `-F`, `-i` (ASCII), `-v`, `-x`, `-w`                                                                                                 | Pattern files (`-f`), `-L`, `-m`, include/exclude globs                                 |
+| `-n`, `-c`, `-l`, `-q`, `-s`, `-H`, `-h`                                                                                                                | Binary-file detection, compressed files                                                 |
+| `-r` with sorted pre-order traversal and `/`-joined paths                                                                                               | Following symbolic links found inside directories (`-R`)                                |
+| Byte-oriented matching; CR kept as data; stdin and `-`                                                                                                  | Locale-aware case folding                                                               |
+| Three-valued exit status (0 selected, 1 none, 2 error; `-q` rule)                                                                                       |                                                                                         |
 
 ## Learning objectives
 
@@ -45,15 +61,15 @@ does not depend on the operating system or the file system.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-22) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-24, NFR-01 … NFR-12) and the portable ERE grammar |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Fixture files shared by both suites (text files, a CRLF file, and a directory tree) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                            |
+| :--------------------- | :---------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-22)                                                   |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-24, NFR-01 … NFR-12) and the portable ERE grammar   |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                             |
+| `tests/fixtures/`      | Fixture files shared by both suites (text files, a CRLF file, and a directory tree) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                              |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
 
 ## What you deliver (in your language repository)
 
@@ -75,4 +91,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

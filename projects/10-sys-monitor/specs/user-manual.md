@@ -1,11 +1,35 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-sysmon — User Manual](#dp-sysmon--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [SNAPSHOT FILES](#snapshot-files)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-sysmon — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-sysmon` 1.0.0 |
-| Project | `10-sys-monitor` — System Resource Telemetry Daemonic CLI |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-10), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                     |
+| :------------ | :-------------------------------------------------------- |
+| Product       | `dp-sysmon` 1.0.0                                         |
+| Project       | `10-sys-monitor` — System Resource Telemetry Daemonic CLI |
+| Applies to    | Linux, macOS, Windows                                     |
+| Specification | `SRS.md` (SRS-10), `shared/CLI-CONVENTIONS.md`            |
 
 ---
 
@@ -69,7 +93,7 @@ MOUNT                       USED       TOTAL    USE%
 Reading the table:
 
 - **CPU** in the summary is the share of all CPUs that was busy during the interval (0–100%).
-  **CPU%** of a process is its share of *one* CPU, so a multi-threaded process on a multi-core
+  **CPU%** of a process is its share of _one_ CPU, so a multi-threaded process on a multi-core
   machine can show more than 100.
 - **Memory used** is total minus available memory. Available memory is what can be given to
   programs without swapping, so it includes reclaimable caches.
@@ -94,40 +118,40 @@ one decimal place; unknown values are `null`.
 ## OPTIONS
 
 **`-s FILE`, `--snapshot=FILE`**
-: Replay samples from *FILE* instead of sampling the system. `-` reads standard input. Without
-  this option, `dp-sysmon` samples the live system.
+: Replay samples from _FILE_ instead of sampling the system. `-` reads standard input. Without
+this option, `dp-sysmon` samples the live system.
 
 **`-f FORMAT`, `--format=FORMAT`**
 : `table` (the default) or `json`.
 
 **`-k KEY`, `--sort=KEY`**
 : Order the process list by `cpu` (highest first; the default), `mem` (largest RSS first),
-  `pid` (lowest first), or `name` (in byte order, so upper case sorts before lower case).
-  Unknown values sort last. Equal values are ordered by process ID. CPU shares are compared as
-  displayed, with one decimal place.
+`pid` (lowest first), or `name` (in byte order, so upper case sorts before lower case).
+Unknown values sort last. Equal values are ordered by process ID. CPU shares are compared as
+displayed, with one decimal place.
 
 **`-n N`, `--top=N`**
-: Show at most *N* processes (after filtering and sorting). *N* is 0 to 1000000; `0` shows the
-  summary and disks only.
+: Show at most _N_ processes (after filtering and sorting). _N_ is 0 to 1000000; `0` shows the
+summary and disks only.
 
 **`-m TEXT`, `--filter=TEXT`**
-: Show only processes whose name contains *TEXT*. ASCII letters match regardless of case
-  (`--filter=SH` matches `bash` and `SSH-agent`); other characters must match exactly.
+: Show only processes whose name contains _TEXT_. ASCII letters match regardless of case
+(`--filter=SH` matches `bash` and `SSH-agent`); other characters must match exactly.
 
 **`-i SECS`, `--interval=SECS`**
 : Seconds between live samples, from `0.1` to `86400`, written with digits and an optional
-  decimal point (`0.5`, `2`, `10.25`). The default is `1`. Ignored when replaying.
+decimal point (`0.5`, `2`, `10.25`). The default is `1`. Ignored when replaying.
 
 **`-c N`, `--count=N`**
-: Stop after *N* samples, 0 to 1000000. `0` means no limit: live sampling continues until you
-  interrupt it, and replay continues to the end of the file. The default is `1` for live
-  sampling and `0` (the whole file) for replay.
+: Stop after _N_ samples, 0 to 1000000. `0` means no limit: live sampling continues until you
+interrupt it, and replay continues to the end of the file. The default is `1` for live
+sampling and `0` (the whole file) for replay.
 
 **`-o FILE`, `--output=FILE`**
-: Also append every sample, as one JSON line, to *FILE* (created if necessary). Standard output
-  still receives the `--format` output; redirect it to the null device if you only want the
-  file. The recorded processes are the same ones shown (after `--filter`, `--sort`, `--top`).
-  *FILE* must not be the file being replayed.
+: Also append every sample, as one JSON line, to _FILE_ (created if necessary). Standard output
+still receives the `--format` output; redirect it to the null device if you only want the
+file. The recorded processes are the same ones shown (after `--filter`, `--sort`, `--top`).
+_FILE_ must not be the file being replayed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -153,12 +177,12 @@ one decimal place; unknown values are `null`.
 A snapshot file holds one sample per line as a JSON object. Blank lines are skipped, and lines
 may end in LF or CRLF. Each sample needs these members (others are ignored):
 
-| Member | Type | May be `null` |
-| :-- | :-- | :-- |
-| `timestamp`, `hostname` | string | no |
-| `cpu.count` (≥ 1), `cpu.percent` (0–100) | number | yes |
-| `memory.total_bytes`, `memory.available_bytes` | whole number | yes |
-| `disks`: list of `{mount, total_bytes, used_bytes}` | string, whole numbers | no |
+| Member                                                     | Type                                       | May be `null`                      |
+| :--------------------------------------------------------- | :----------------------------------------- | :--------------------------------- |
+| `timestamp`, `hostname`                                    | string                                     | no                                 |
+| `cpu.count` (≥ 1), `cpu.percent` (0–100)                   | number                                     | yes                                |
+| `memory.total_bytes`, `memory.available_bytes`             | whole number                               | yes                                |
+| `disks`: list of `{mount, total_bytes, used_bytes}`        | string, whole numbers                      | no                                 |
 | `processes`: list of `{pid, name, cpu_percent, rss_bytes}` | whole number, string, number, whole number | `cpu_percent` and `rss_bytes` only |
 
 Available memory may not exceed total memory, a disk's used bytes may not exceed its total,
@@ -168,11 +192,11 @@ message that names the line and the problem. The SRS (section 3.9) gives the com
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: all requested samples, the help, or the version was printed |
-| 1 | A file could not be opened, read, or written; a snapshot line was invalid; the snapshot had no samples |
-| 2 | Usage error: invalid option, invalid value, or an unexpected operand |
+| Status | Meaning                                                                                                |
+| :----- | :----------------------------------------------------------------------------------------------------- |
+| 0      | Success: all requested samples, the help, or the version was printed                                   |
+| 1      | A file could not be opened, read, or written; a snapshot line was invalid; the snapshot had no samples |
+| 2      | Usage error: invalid option, invalid value, or an unexpected operand                                   |
 
 If you interrupt a running monitor with Ctrl-C, it stops without a message; shells report
 status 130.
@@ -188,30 +212,30 @@ dp-sysmon: invalid argument 'memory' for '--sort'
 Try 'dp-sysmon --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option | Check the option letter |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'k'` | A short option without its value | Supply a value |
-| `option '--sort' requires an argument` | A long option without its value | Supply a value |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `invalid argument 'memory' for '--sort'` | A value outside the allowed set or range | See OPTIONS |
-| `extra operand 'foo'` | A word that is not an option | Remove it |
-| `FILE: No such file or directory` | The snapshot does not exist | Check the path |
-| `FILE: Is a directory` | A directory was given as snapshot or output | Name a file |
-| `FILE: Permission denied` | The file cannot be read or written | Check permissions |
-| `FILE: input file is output file` | `--output` names the snapshot being replayed | Record to a different file |
-| `FILE: no samples` | The snapshot is empty or has only blank lines | Check the recording |
-| `FILE:LINE: invalid JSON` | The line is not a single valid JSON value (or is not UTF-8, repeats a member name, or nests deeper than 64 levels) | Repair or remove the line |
-| `FILE:LINE: sample is not a JSON object` | The line holds an array, string, or number | Each line must be an object |
-| `FILE:LINE: missing member 'processes[0].name'` | A required member is absent | Add it |
-| `FILE:LINE: invalid type for 'hostname'` | A member has the wrong type, or is `null` where not allowed | Fix the type |
-| `FILE:LINE: invalid value for 'cpu.percent'` | A number is out of range, or a whole number has a fraction | Fix the value |
-| `FILE:LINE: 'memory.available_bytes' exceeds 'memory.total_bytes'` | Inconsistent memory figures | Fix the values |
-| `FILE:LINE: 'disks[1].used_bytes' exceeds 'disks[1].total_bytes'` | Inconsistent disk figures | Fix the values |
-| `FILE:LINE: duplicate value for 'processes[2].pid'` | Two processes share one pid | Remove the duplicate |
+| Message                                                            | Cause                                                                                                              | Fix                         |
+| :----------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------- |
+| `invalid option -- 'x'`                                            | Unknown short option                                                                                               | Check the option letter     |
+| `unrecognized option '--xyz'`                                      | Unknown or abbreviated long option                                                                                 | Spell the option in full    |
+| `option requires an argument -- 'k'`                               | A short option without its value                                                                                   | Supply a value              |
+| `option '--sort' requires an argument`                             | A long option without its value                                                                                    | Supply a value              |
+| `option '--help' doesn't allow an argument`                        | `--help=…` or `--version=…`                                                                                        | Remove the `=…`             |
+| `invalid argument 'memory' for '--sort'`                           | A value outside the allowed set or range                                                                           | See OPTIONS                 |
+| `extra operand 'foo'`                                              | A word that is not an option                                                                                       | Remove it                   |
+| `FILE: No such file or directory`                                  | The snapshot does not exist                                                                                        | Check the path              |
+| `FILE: Is a directory`                                             | A directory was given as snapshot or output                                                                        | Name a file                 |
+| `FILE: Permission denied`                                          | The file cannot be read or written                                                                                 | Check permissions           |
+| `FILE: input file is output file`                                  | `--output` names the snapshot being replayed                                                                       | Record to a different file  |
+| `FILE: no samples`                                                 | The snapshot is empty or has only blank lines                                                                      | Check the recording         |
+| `FILE:LINE: invalid JSON`                                          | The line is not a single valid JSON value (or is not UTF-8, repeats a member name, or nests deeper than 64 levels) | Repair or remove the line   |
+| `FILE:LINE: sample is not a JSON object`                           | The line holds an array, string, or number                                                                         | Each line must be an object |
+| `FILE:LINE: missing member 'processes[0].name'`                    | A required member is absent                                                                                        | Add it                      |
+| `FILE:LINE: invalid type for 'hostname'`                           | A member has the wrong type, or is `null` where not allowed                                                        | Fix the type                |
+| `FILE:LINE: invalid value for 'cpu.percent'`                       | A number is out of range, or a whole number has a fraction                                                         | Fix the value               |
+| `FILE:LINE: 'memory.available_bytes' exceeds 'memory.total_bytes'` | Inconsistent memory figures                                                                                        | Fix the values              |
+| `FILE:LINE: 'disks[1].used_bytes' exceeds 'disks[1].total_bytes'`  | Inconsistent disk figures                                                                                          | Fix the values              |
+| `FILE:LINE: duplicate value for 'processes[2].pid'`                | Two processes share one pid                                                                                        | Remove the duplicate        |
 
-All messages start with `dp-sysmon: `. In replay mode a message about a line is reported for the
+All messages start with `dp-sysmon:In replay mode a message about a line is reported for the
 first problem only, checking members in the order of the table in SNAPSHOT FILES.
 
 ## EXAMPLES
@@ -249,7 +273,7 @@ dp-sysmon --snapshot=day.jsonl --sort=name --top=10
 Replay from standard input and keep only Java processes, as JSON:
 
 ```text
-$ dp-sysmon -s - -f json -m java -k pid < day.jsonl > java.jsonl
+mon -s - -f json -m java -k pid < day.jsonl > java.jsonl
 ```
 
 Show only the first sample of a recording:
