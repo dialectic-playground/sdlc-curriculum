@@ -1,11 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-convert — User Manual](#dp-convert--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Lengths](#lengths)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-convert — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-convert` 1.0.0 |
-| Project | `12-convert` — Interactive Length Unit Conversion |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-12), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                             |
+| :------------ | :------------------------------------------------ |
+| Product       | `dp-convert` 1.0.0                                |
+| Project       | `12-convert` — Interactive Length Unit Conversion |
+| Applies to    | Linux, macOS, Windows                             |
+| Specification | `SRS.md` (SRS-12), `shared/CLI-CONVENTIONS.md`    |
 
 ---
 
@@ -23,8 +48,8 @@ dp-convert --version
 
 ## DESCRIPTION
 
-`dp-convert` reads lengths in whole yards from *FILE*, or from standard input when there is no
-*FILE* or *FILE* is `-`. For each length it prints three lines: the length in yards, in feet,
+`dp-convert` reads lengths in whole yards from _FILE_, or from standard input when there is no
+_FILE_ or _FILE_ is `-`. For each length it prints three lines: the length in yards, in feet,
 and in inches.
 
 ```text
@@ -88,8 +113,8 @@ the results.
 ## OPTIONS
 
 **`-p`, `--prompt`**
-: Before each length is read, write `Enter next length ` to standard error. A prompt is also
-  written before the negative number that ends the input.
+: Before each length is read, write `Enter next lengtho standard error. A prompt is also
+written before the negative number that ends the input.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -109,11 +134,11 @@ the results.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: a negative number ended the input, or help or version was printed |
-| 1 | The input could not be read, contained an invalid length, or ended before a negative number |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                     |
+| :----- | :------------------------------------------------------------------------------------------ |
+| 0      | Success: a negative number ended the input, or help or version was printed                  |
+| 1      | The input could not be read, contained an invalid length, or ended before a negative number |
+| 2      | Usage error: an invalid option or more than one file                                        |
 
 ## DIAGNOSTICS
 
@@ -128,17 +153,17 @@ $ dp-convert bad.txt
 dp-convert: bad.txt:2: invalid integer '2.5'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or lies outside −9223372036854775808 … 9223372036854775807 | Write the length in digits only, without units, separators, or decimals |
-| `S:L: value out of range 'K'` | Entry *K* on line *L* is larger than 256204778801521550 | Enter a smaller length |
-| `S:L: unexpected end of input` | The input ended (on line *L*) before a negative number | End the input with a negative number such as `-1` |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                                                   | Fix                                                                     |
+| :----------------------------- | :------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Entry _K_ on line _L_ is not a whole number, or lies outside −9223372036854775808 … 9223372036854775807 | Write the length in digits only, without units, separators, or decimals |
+| `S:L: value out of range 'K'`  | Entry _K_ on line _L_ is larger than 256204778801521550                                                 | Enter a smaller length                                                  |
+| `S:L: unexpected end of input` | The input ended (on line _L_) before a negative number                                                  | End the input with a negative number such as `-1`                       |
+| `F: No such file or directory` | _F_ does not exist                                                                                      | Check the spelling and the current directory                            |
+| `F: Permission denied`         | You may not read _F_                                                                                    | Check the file's permissions                                            |
+| `F: Is a directory`            | _F_ is a directory                                                                                      | Name a file instead                                                     |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                                         | Correct the path                                                        |
+| `F: Input/output error`        | Any other read failure                                                                                  | Check the device or file system                                         |
+| `write error`                  | The results could not be written (for example, the disk is full)                                        | Free space or redirect the output elsewhere                             |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -149,12 +174,12 @@ dp-convert: extra operand 'mixed.txt'
 Try 'dp-convert --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-convert` once per file |
+| Message                                       | Cause                                                   | Fix                            |
+| :-------------------------------------------- | :------------------------------------------------------ | :----------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                       |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full       |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-convert` once per file |
 
 ## EXAMPLES
 

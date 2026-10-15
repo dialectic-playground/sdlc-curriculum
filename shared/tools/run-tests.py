@@ -42,6 +42,7 @@ Exit status: 0 all tests passed, 1 a test failed, 2 usage or configuration error
 from __future__ import annotations
 
 import argparse
+import contextlib
 import difflib
 import os
 import shlex
@@ -95,7 +96,9 @@ def parse_step(line: str, line_number: int) -> tuple[str, Step]:
         raise ConfigError(f"line {line_number}: expected '<ID> <tool> [ARG]...'")
     test_id, rest = tokens[0], tokens[1:]
     if not (len(test_id) == 2 and test_id.isdigit()):
-        raise ConfigError(f"line {line_number}: test ID must be two digits, got {test_id!r}")
+        raise ConfigError(
+            f"line {line_number}: test ID must be two digits, got {test_id!r}"
+        )
 
     env: dict[str, str] = {}
     while rest and "=" in rest[0] and rest[0].split("=", 1)[0].isidentifier():
@@ -114,7 +117,9 @@ def parse_step(line: str, line_number: int) -> tuple[str, Step]:
 
 def load_suite(suite_dir: Path) -> list[TestCase]:
     """Read the suite's inputs file into ordered test cases."""
-    inputs = next((suite_dir / n for n in INPUT_FILE_NAMES if (suite_dir / n).is_file()), None)
+    inputs = next(
+        (suite_dir / n for n in INPUT_FILE_NAMES if (suite_dir / n).is_file()), None
+    )
     if inputs is None:
         raise ConfigError(f"{suite_dir}: no {' or '.join(INPUT_FILE_NAMES)}")
     cases: list[TestCase] = []
@@ -129,7 +134,9 @@ def load_suite(suite_dir: Path) -> list[TestCase]:
             cases[-1].steps.append(step)
             continue
         if test_id in seen:
-            raise ConfigError(f"{inputs}:{number}: steps of test {test_id} must be consecutive")
+            raise ConfigError(
+                f"{inputs}:{number}: steps of test {test_id} must be consecutive"
+            )
         seen.add(test_id)
         cases.append(TestCase(test_id, [step]))
     return cases
@@ -154,7 +161,9 @@ class ToolResolver:
                 if IS_WINDOWS and not name.endswith(".exe"):
                     return shebang_command(path)
                 return [path]
-        raise ConfigError(f"tool '{tool}' not found in {self.bin_dir} (did 'make all' run?)")
+        raise ConfigError(
+            f"tool '{tool}' not found in {self.bin_dir} (did 'make all' run?)"
+        )
 
 
 def shebang_command(script: str) -> list[str]:
@@ -177,7 +186,11 @@ def shebang_command(script: str) -> list[str]:
         raise ConfigError(f"{script}: empty #! line")
     interpreter, *interpreter_args = words
     resolved = interpreter if os.path.isfile(interpreter) else None
-    resolved = resolved or shutil.which(interpreter) or shutil.which(os.path.basename(interpreter))
+    resolved = (
+        resolved
+        or shutil.which(interpreter)
+        or shutil.which(os.path.basename(interpreter))
+    )
     if resolved is None:
         raise ConfigError(f"{script}: interpreter '{interpreter}' not found on PATH")
     return [resolved, *interpreter_args, script]
@@ -186,7 +199,9 @@ def shebang_command(script: str) -> list[str]:
 def base_environment() -> dict[str, str]:
     env = {"PATH": os.environ.get("PATH", "")}
     if IS_WINDOWS:
-        env.update({k: os.environ[k] for k in WINDOWS_ENV_PASSTHROUGH if k in os.environ})
+        env.update(
+            {k: os.environ[k] for k in WINDOWS_ENV_PASSTHROUGH if k in os.environ}
+        )
     return env
 
 
@@ -194,10 +209,14 @@ def populate_workdir(workdir: Path, suite_dir: Path) -> None:
     """Copy shared then suite fixtures into workdir, giving every file a fresh mtime."""
     for source in (suite_dir.parent / "fixtures", suite_dir / "fixtures"):
         if source.is_dir():
-            shutil.copytree(source, workdir, dirs_exist_ok=True, copy_function=shutil.copy)
+            shutil.copytree(
+                source, workdir, dirs_exist_ok=True, copy_function=shutil.copy
+            )
 
 
-def run_case(case: TestCase, suite_dir: Path, resolver: ToolResolver, timeout: float) -> Result:
+def run_case(
+    case: TestCase, suite_dir: Path, resolver: ToolResolver, timeout: float
+) -> Result:
     stdout, stderr, exit_codes = bytearray(), bytearray(), []
     workdir = Path(tempfile.mkdtemp(prefix=f"dp-test-{case.test_id}-"))
     try:
@@ -205,27 +224,29 @@ def run_case(case: TestCase, suite_dir: Path, resolver: ToolResolver, timeout: f
         for step in case.steps:
             env = base_environment()
             env.update(step.env)
-            stdin = None
             try:
-                if step.stdin_path is not None:
-                    stdin = open(workdir / step.stdin_path, "rb")
-                completed = subprocess.run(
-                    [*resolver.command(step.tool), *step.args],
-                    cwd=workdir,
-                    env=env,
-                    stdin=stdin if stdin is not None else subprocess.DEVNULL,
-                    capture_output=True,
-                    timeout=timeout,
-                )
+                with (
+                    open(workdir / step.stdin_path, "rb")
+                    if step.stdin_path is not None
+                    else contextlib.nullcontext(subprocess.DEVNULL)
+                ) as stdin:
+                    completed = subprocess.run(
+                        [*resolver.command(step.tool), *step.args],
+                        check=False,
+                        cwd=workdir,
+                        env=env,
+                        stdin=stdin,
+                        capture_output=True,
+                        timeout=timeout,
+                    )
             except FileNotFoundError as error:
                 raise ConfigError(f"line {step.line_number}: {error}") from None
             except subprocess.TimeoutExpired:
-                stderr += f"[run-tests] step at line {step.line_number} timed out\n".encode()
+                stderr += (
+                    f"[run-tests] step at line {step.line_number} timed out\n".encode()
+                )
                 exit_codes.append(-1)
                 break
-            finally:
-                if stdin is not None:
-                    stdin.close()
             stdout += completed.stdout
             stderr += completed.stderr
             exit_codes.append(completed.returncode)
@@ -246,23 +267,34 @@ def encode_exit(codes: list[int]) -> bytes:
 def show_diff(kind: str, expected: bytes, actual: bytes) -> str:
     def lines(data: bytes) -> list[str]:
         # Split on LF only and show CR explicitly, so line-ending bugs are visible.
-        parts = data.decode("utf-8", "backslashreplace").replace("\r", "\\r").split("\n")
+        parts = (
+            data.decode("utf-8", "backslashreplace").replace("\r", "\\r").split("\n")
+        )
         return [part + "\n" for part in parts[:-1]] + ([parts[-1]] if parts[-1] else [])
 
-    diff = list(difflib.unified_diff(lines(expected), lines(actual), "expected", "actual"))
-    rendered = [line if line.endswith("\n") else line + "\\ (no trailing newline)\n"
-                for line in diff[:MAX_DIFF_LINES]]
+    diff = list(
+        difflib.unified_diff(lines(expected), lines(actual), "expected", "actual")
+    )
+    rendered = [
+        line if line.endswith("\n") else line + "\\ (no trailing newline)\n"
+        for line in diff[:MAX_DIFF_LINES]
+    ]
     if len(diff) > MAX_DIFF_LINES:
         rendered.append(f"... ({len(diff) - MAX_DIFF_LINES} more diff lines)\n")
-    if not diff:  # identical text after decoding, so the bytes differ in line endings etc.
+    if (
+        not diff
+    ):  # identical text after decoding, so the bytes differ in line endings etc.
         rendered = [f"expected {expected!r}\n", f"actual   {actual!r}\n"]
     return f"  --- {kind} ---\n" + "".join("    " + line for line in rendered)
 
 
 def check_case(case: TestCase, result: Result, suite_dir: Path) -> list[str]:
     """Return human-readable failure reports (empty when the test passes)."""
-    actual = {"stdout": result.stdout, "stderr": result.stderr,
-              "exit": encode_exit(result.exit_codes)}
+    actual = {
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "exit": encode_exit(result.exit_codes),
+    }
     failures = []
     for kind, path in expected_paths(suite_dir, case.test_id).items():
         if not path.is_file():
@@ -282,7 +314,9 @@ def write_expected(case: TestCase, result: Result, suite_dir: Path) -> None:
     paths["exit"].write_bytes(encode_exit(result.exit_codes))
 
 
-def run_suite(suite_dir: Path, resolver: ToolResolver, args: argparse.Namespace) -> tuple[int, int]:
+def run_suite(
+    suite_dir: Path, resolver: ToolResolver, args: argparse.Namespace
+) -> tuple[int, int]:
     cases = load_suite(suite_dir)
     if args.only:
         cases = [case for case in cases if case.test_id in args.only]
@@ -313,18 +347,37 @@ def parse_arguments(argv: list[str]) -> argparse.Namespace:
         epilog="Example: run-tests.py --bin-dir build/bin ../tests/public",
     )
     source = parser.add_mutually_exclusive_group(required=True)
-    source.add_argument("--bin-dir", type=Path, help="directory containing the built tools")
-    source.add_argument("--tool-prefix", help="command prefix (POSIX quoting); the tool name "
-                        "is appended")
-    source.add_argument("--reference", action="store_true",
-                        help="run the curriculum's reference implementations")
+    source.add_argument(
+        "--bin-dir", type=Path, help="directory containing the built tools"
+    )
+    source.add_argument(
+        "--tool-prefix",
+        help="command prefix (POSIX quoting); the tool name is appended",
+    )
+    source.add_argument(
+        "--reference",
+        action="store_true",
+        help="run the curriculum's reference implementations",
+    )
     parser.add_argument("suites", nargs="+", type=Path, help="suite directories")
-    parser.add_argument("--only", action="append", metavar="ID", help="run only this test ID")
-    parser.add_argument("--timeout", type=float, default=10.0, help="per-step timeout (s)")
-    parser.add_argument("--update", action="store_true",
-                        help="overwrite expected outputs with actual results (maintainers only)")
-    parser.add_argument("-q", "--quiet", dest="verbose", action="store_false",
-                        help="do not print diffs for failing tests")
+    parser.add_argument(
+        "--only", action="append", metavar="ID", help="run only this test ID"
+    )
+    parser.add_argument(
+        "--timeout", type=float, default=10.0, help="per-step timeout (s)"
+    )
+    parser.add_argument(
+        "--update",
+        action="store_true",
+        help="overwrite expected outputs with actual results (maintainers only)",
+    )
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        dest="verbose",
+        action="store_false",
+        help="do not print diffs for failing tests",
+    )
     return parser.parse_args(argv)
 
 

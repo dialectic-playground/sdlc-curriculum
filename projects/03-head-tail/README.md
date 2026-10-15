@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 03 — Stream Slicing Utility (`dp-head`, `dp-tail`)](#project-03--stream-slicing-utility-dp-head-dp-tail)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 03 — Stream Slicing Utility (`dp-head`, `dp-tail`)
 
 > Print the beginning or the end of files and streams, by lines or by bytes, and follow growing
@@ -6,8 +22,8 @@
 
 ## Purpose
 
-Project 03 is the first project with two cooperating tools and the first where *how* data is
-read matters as much as *what* is printed. Taking the last ten lines of a 40 GB log by reading
+Project 03 is the first project with two cooperating tools and the first where _how_ data is
+read matters as much as _what_ is printed. Taking the last ten lines of a 40 GB log by reading
 it from the start is correct but useless; reading it into memory is worse. You will design
 slicing strategies for seekable files (seek, and scan backwards in fixed-size blocks) and for
 non-seekable streams (bounded ring buffers), share the common logic between the two tools, and
@@ -15,15 +31,15 @@ make an inherently endless feature, `tail -f`, deterministic enough to test.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| First / last N lines or bytes (`-n`, `-c`), defaults of 10 lines | Obsolete forms `head -5`, `tail +5` |
-| All but the last N (`dp-head -n -N`, `-c -N`) | NUL-delimited lines (`-z`) |
-| From line / byte N onward (`dp-tail -n +N`, `-c +N`) | Follow by name, `--retry`, `--pid`, `-F` |
-| `K`/`M`/`G` count suffixes | Other GNU suffixes (`b`, `kB`, `KiB`, …) |
-| File headers with `-q` / `-v`, several files, standard input | inotify/kqueue change notification |
-| Polling follow mode (`-f`, `-s`, `--max-polls`) | Editing or truncating files |
-| CONV-16 file errors that do not stop processing | Locale-dependent behavior |
+| In scope                                                         | Out of scope                             |
+| :--------------------------------------------------------------- | :--------------------------------------- |
+| First / last N lines or bytes (`-n`, `-c`), defaults of 10 lines | Obsolete forms `head -5`, `tail +5`      |
+| All but the last N (`dp-head -n -N`, `-c -N`)                    | NUL-delimited lines (`-z`)               |
+| From line / byte N onward (`dp-tail -n +N`, `-c +N`)             | Follow by name, `--retry`, `--pid`, `-F` |
+| `K`/`M`/`G` count suffixes                                       | Other GNU suffixes (`b`, `kB`, `KiB`, …) |
+| File headers with `-q` / `-v`, several files, standard input     | inotify/kqueue change notification       |
+| Polling follow mode (`-f`, `-s`, `--max-polls`)                  | Editing or truncating files              |
+| CONV-16 file errors that do not stop processing                  | Locale-dependent behavior                |
 
 ## Learning objectives
 
@@ -39,15 +55,15 @@ make an inherently endless feature, `tail -f`, deterministic enough to test.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-18) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-16, NFR-01 … NFR-10) |
-| `specs/user-manual.md` | Complete user manual, including both normative help texts |
-| `tests/fixtures/` | Input files shared by both suites |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                            |
+| :--------------------- | :---------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-18)                                                   |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-16, NFR-01 … NFR-10)                                |
+| `specs/user-manual.md` | Complete user manual, including both normative help texts                           |
+| `tests/fixtures/`      | Input files shared by both suites                                                   |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                              |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
 
 ## What you deliver (in your language repository)
 
@@ -72,4 +88,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, `make lint` is clean, the large-file demonstration meets NFR-02 and NFR-03, and
-every RTM row is *Verified*.
+every RTM row is _Verified_.

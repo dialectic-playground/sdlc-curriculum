@@ -23,4 +23,5 @@ updates:
     # Dependabot keeps the digest current but never moves to a new Python minor or major.
     ignore:
       - dependency-name: "library/python"
-        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+        update-types:
+          ["version-update:semver-major", "version-update:semver-minor"]

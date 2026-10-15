@@ -8,9 +8,22 @@ from __future__ import annotations
 
 from . import common
 from ._taxes_rule import MAX_INCOME, record
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-taxes"
 PROMPT_TEXT = "Enter income: "

@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from dpref import common  # noqa: E402
+from dpref import common
 
 
 def launch() -> None:

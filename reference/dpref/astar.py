@@ -9,10 +9,26 @@ from __future__ import annotations
 import sys
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, invalid_argument, parse_args,
-                     parse_int_token, prompt, read_all, strip_eof_marker, tokenize,
-                     unexpected_end, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_int_token,
+    prompt,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    unexpected_end,
+    usage_failure,
+)
 
 TOOL = "dp-astar"
 PROMPT_TEXT = "Enter start city: "
@@ -55,8 +71,11 @@ OPTIONS = [
 
 def fold(name: bytes) -> bytes:
     """ASCII-only case folding (A-Z to a-z); every other byte is unchanged."""
-    return name.lower() if name.isascii() else bytes(
-        b + 32 if 0x41 <= b <= 0x5A else b for b in name)
+    return (
+        name.lower()
+        if name.isascii()
+        else bytes(b + 32 if 0x41 <= b <= 0x5A else b for b in name)
+    )
 
 
 def parse_names(data: bytes, source: str) -> tuple[list[bytes], list[int]]:
@@ -91,7 +110,7 @@ def parse_distances(data: bytes, source: str, count: int) -> list[list[int]]:
     if len(tokens) > needed:
         extra = tokens[needed]
         raise DataError(source, extra.line, b"unexpected token '" + extra.text + b"'")
-    return [values[row * count:(row + 1) * count] for row in range(count)]
+    return [values[row * count : (row + 1) * count] for row in range(count)]
 
 
 def display(name: bytes) -> bytes:
@@ -101,8 +120,14 @@ def display(name: bytes) -> bytes:
     return name
 
 
-def search(start: int, goal: int, estimates: list[int], roads: list[list[int]],
-           trace: list[bytes], names: list[bytes]) -> tuple[list[int], int] | None:
+def search(
+    start: int,
+    goal: int,
+    estimates: list[int],
+    roads: list[list[int]],
+    trace: list[bytes],
+    names: list[bytes],
+) -> tuple[list[int], int] | None:
     count = len(names)
     g = [0] * count
     f = [0] * count
@@ -196,7 +221,9 @@ def main(argv: list[str]) -> int:
         start_text = common.encode_arg(parsed.operands[0])
         start = index.get(fold(start_text))
         if start is None:
-            common.err.write(f"{TOOL}: unknown start city '".encode() + start_text + b"'\n")
+            common.err.write(
+                f"{TOOL}: unknown start city '".encode() + start_text + b"'\n"
+            )
             return 1
     else:
         prompt(bool(parsed.values.get("prompt")), PROMPT_TEXT)
@@ -210,15 +237,19 @@ def main(argv: list[str]) -> int:
             return data_failure(TOOL, error)
         start = index.get(fold(token.text))
         if start is None:
-            return data_failure(TOOL, DataError(
-                "-", token.line, b"unknown start city '" + token.text + b"'"))
+            return data_failure(
+                TOOL,
+                DataError("-", token.line, b"unknown start city '" + token.text + b"'"),
+            )
 
     trace: list[bytes] = []
     result = search(start, goal, estimates, roads, trace, names)
     if parsed.values.get("trace"):
         common.write(b"".join(trace))
     if result is None:
-        common.write(b"No path from " + names[start] + b" to " + display(names[goal]) + b".\n")
+        common.write(
+            b"No path from " + names[start] + b" to " + display(names[goal]) + b".\n"
+        )
         return 0
     path, total = result
     common.write(b"Optimal path to " + display(names[goal]) + b":\n")

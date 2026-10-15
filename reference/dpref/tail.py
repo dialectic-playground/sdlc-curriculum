@@ -8,8 +8,18 @@ import time
 from collections import deque
 
 from . import _headtail_common as ht
-from .common import (Option, UsageError, diagnose, handle_action, invalid_argument, out,
-                     parse_args, parse_count, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    diagnose,
+    handle_action,
+    invalid_argument,
+    out,
+    parse_args,
+    parse_count,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-tail"
 DEFAULT_LINES = 10
@@ -62,6 +72,7 @@ def parse_seconds(value: str, spelled: str) -> float:
 
 # --- initial output ----------------------------------------------------------------------
 
+
 def tail_bytes(stream, count: int) -> None:
     region = ht.regular_region(stream)
     if region is not None:
@@ -73,7 +84,7 @@ def tail_bytes(stream, count: int) -> None:
     for block in ht.blocks(stream):
         window += block
         if len(window) > count:
-            del window[:len(window) - count]
+            del window[: len(window) - count]
     write(bytes(window))
 
 
@@ -109,6 +120,7 @@ def slice_tail(stream, amount: ht.Amount) -> None:
 
 # --- follow mode -------------------------------------------------------------------------
 
+
 def poll_once(followed: list[ht.Input], headers: ht.HeaderWriter) -> bool:
     """Output whatever was appended to each followed file; drop files that fail."""
     ok = True
@@ -137,8 +149,12 @@ def poll_once(followed: list[ht.Input], headers: ht.HeaderWriter) -> bool:
     return ok
 
 
-def follow(followed: list[ht.Input], headers: ht.HeaderWriter, interval: float,
-           max_polls: int | None) -> bool:
+def follow(
+    followed: list[ht.Input],
+    headers: ht.HeaderWriter,
+    interval: float,
+    max_polls: int | None,
+) -> bool:
     ok = True
     polls = 0
     while followed and (max_polls is None or polls < max_polls):
@@ -158,27 +174,38 @@ def main(argv: list[str]) -> int:
             return 0
         amount = ht.Amount("", DEFAULT_LINES, True)
         if "amount" in parsed.values:
-            amount = ht.parse_amount(str(parsed.values["amount"]), parsed.spelled["amount"],
-                                     signs="+-")
+            amount = ht.parse_amount(
+                str(parsed.values["amount"]), parsed.spelled["amount"], signs="+-"
+            )
         interval = DEFAULT_SLEEP
         if "sleep" in parsed.values:
-            interval = parse_seconds(str(parsed.values["sleep"]), parsed.spelled["sleep"])
+            interval = parse_seconds(
+                str(parsed.values["sleep"]), parsed.spelled["sleep"]
+            )
         max_polls = None
         if "max_polls" in parsed.values:
-            max_polls = parse_count(str(parsed.values["max_polls"]),
-                                    parsed.spelled["max_polls"], maximum=ht.MAX_AMOUNT)
+            max_polls = parse_count(
+                str(parsed.values["max_polls"]),
+                parsed.spelled["max_polls"],
+                maximum=ht.MAX_AMOUNT,
+            )
     except UsageError as error:
         return usage_failure(TOOL, error)
 
     following = bool(parsed.values.get("follow"))
     operands = parsed.operands
-    headers = ht.HeaderWriter(ht.headers_wanted(parsed.spelled.get("headers"),
-                                                max(1, len(operands))))
+    headers = ht.HeaderWriter(
+        ht.headers_wanted(parsed.spelled.get("headers"), max(1, len(operands)))
+    )
     followed: list[ht.Input] = []
 
     def handle(item: ht.Input) -> None:
         slice_tail(item.stream, amount)
-        if following and item.operand != "-" and ht.regular_region(item.stream) is not None:
+        if (
+            following
+            and item.operand != "-"
+            and ht.regular_region(item.stream) is not None
+        ):
             item.keep_open = True
             item.position = item.stream.tell()
             followed.append(item)

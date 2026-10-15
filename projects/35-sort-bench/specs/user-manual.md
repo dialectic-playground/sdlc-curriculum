@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-sort-bench — User Manual](#dp-sort-bench--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [What is counted](#what-is-counted)
+    - [The algorithms](#the-algorithms)
+    - [Random arrays](#random-arrays)
+    - [Timing](#timing)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-sort-bench — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-sort-bench` 1.0.0 |
-| Project | `35-sort-bench` — Empirical Algorithm Runtime Benchmarking |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-35), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                      |
+| :------------ | :--------------------------------------------------------- |
+| Product       | `dp-sort-bench` 1.0.0                                      |
+| Project       | `35-sort-bench` — Empirical Algorithm Runtime Benchmarking |
+| Applies to    | Linux, macOS, Windows                                      |
+| Specification | `SRS.md` (SRS-35), `shared/CLI-CONVENTIONS.md`             |
 
 ---
 
@@ -23,7 +50,7 @@ dp-sort-bench --version
 
 ## DESCRIPTION
 
-`dp-sort-bench` generates an array of random integers from 0 to 32767 for each size in *LIST*
+`dp-sort-bench` generates an array of random integers from 0 to 32767 for each size in _LIST_
 (by default 1000, 2000, and 4000), sorts one copy of it with **selection sort** and another
 copy with **quicksort**, and reports for each sort how many comparisons and swaps it made and
 whether its result is correctly sorted.
@@ -48,8 +75,8 @@ The indented lines start with one or two TAB characters, and a blank line separa
   bookkeeping is not counted.
 - A **swap** is one exchange of two elements at different positions.
 
-Selection sort always makes *n*(*n* − 1)/2 comparisons, so doubling the size quadruples them.
-Quicksort makes a small multiple of *n* log₂ *n* comparisons on random data, so doubling the
+Selection sort always makes _n_(_n_ − 1)/2 comparisons, so doubling the size quadruples them.
+Quicksort makes a small multiple of _n_ log₂ _n_ comparisons on random data, so doubling the
 size only about doubles them. Because the counts do not depend on the computer, the report is the same
 on every machine for the same sizes and seed.
 
@@ -64,7 +91,7 @@ on every machine for the same sizes and seed.
 ### Random arrays
 
 The arrays come from the portable generator of the ANSI C standard (the same one every
-curriculum tool uses), started from *SEED* (default 1). The sizes are processed in order and
+curriculum tool uses), started from _SEED_ (default 1). The sizes are processed in order and
 each array takes the next numbers from the one generator, so `dp-sort-bench -s 1000` reports
 the same first block as `dp-sort-bench`.
 
@@ -84,13 +111,13 @@ Times vary from run to run and from machine to machine; the other lines never ch
 ## OPTIONS
 
 **`-s LIST`, `--sizes=LIST`**
-: Benchmark the sizes in *LIST*, in order: whole numbers from 0 to 100000, separated by
-  commas without spaces, for example `--sizes=10,20,40`. Sizes may repeat. The default is
-  `1000,2000,4000`.
+: Benchmark the sizes in _LIST_, in order: whole numbers from 0 to 100000, separated by
+commas without spaces, for example `--sizes=10,20,40`. Sizes may repeat. The default is
+`1000,2000,4000`.
 
 **`--seed=SEED`**
-: Start the random-number generator from *SEED*, a whole number from 0 to 4294967295
-  (digits only). The default is 1.
+: Start the random-number generator from _SEED_, a whole number from 0 to 4294967295
+(digits only). The default is 1.
 
 **`-t`, `--time`**
 : Also report the elapsed time of each sort, in seconds with six decimals.
@@ -115,11 +142,11 @@ Times vary from run to run and from machine to machine; the other lines never ch
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report was written and every result was correctly sorted, or help or version was printed |
-| 1 | A sort produced a wrong result (this indicates a defective implementation), or the output could not be written |
-| 2 | Usage error: an invalid option or value, or an operand |
+| Status | Meaning                                                                                                        |
+| :----- | :------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the report was written and every result was correctly sorted, or help or version was printed          |
+| 1      | A sort produced a wrong result (this indicates a defective implementation), or the output could not be written |
+| 2      | Usage error: an invalid option or value, or an operand                                                         |
 
 ## DIAGNOSTICS
 
@@ -132,23 +159,23 @@ dp-sort-bench: invalid argument '10,,20' for '-s'
 Try 'dp-sort-bench --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-s` or `-t` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 's'` | `-s` given without a value | Supply a size list |
-| `option '--sizes' requires an argument` | `--sizes` or `--seed` given without a value | Supply a value |
-| `option '--time' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument 'L' for '--sizes'` | The size list *L* is empty, has an empty item, a sign or space, or a size above 100000 | Use sizes 0–100000 separated by single commas |
-| `invalid argument 'S' for '--seed'` | *S* is not a whole number from 0 to 4294967295 | Use digits only, within the range |
-| `extra operand 'X'` | `dp-sort-bench` takes no operands | Remove *X*, or use `--sizes` |
+| Message                                     | Cause                                                                                  | Fix                                           |
+| :------------------------------------------ | :------------------------------------------------------------------------------------- | :-------------------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                                                              | Use `-s` or `-t`                              |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                                                     | Spell the option in full                      |
+| `option requires an argument -- 's'`        | `-s` given without a value                                                             | Supply a size list                            |
+| `option '--sizes' requires an argument`     | `--sizes` or `--seed` given without a value                                            | Supply a value                                |
+| `option '--time' doesn't allow an argument` | A value was given with `=` to an option that takes none                                | Remove the `=…`                               |
+| `invalid argument 'L' for '--sizes'`        | The size list _L_ is empty, has an empty item, a sign or space, or a size above 100000 | Use sizes 0–100000 separated by single commas |
+| `invalid argument 'S' for '--seed'`         | _S_ is not a whole number from 0 to 4294967295                                         | Use digits only, within the range             |
+| `extra operand 'X'`                         | `dp-sort-bench` takes no operands                                                      | Remove _X_, or use `--sizes`                  |
 
 Runtime errors:
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `verification failed` | At least one sort reported `Sorted = no` | Fix the implementation of that sort |
-| `write error` | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message               | Cause                                                           | Fix                                         |
+| :-------------------- | :-------------------------------------------------------------- | :------------------------------------------ |
+| `verification failed` | At least one sort reported `Sorted = no`                        | Fix the implementation of that sort         |
+| `write error`         | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
 
 ## EXAMPLES
 

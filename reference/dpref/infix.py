@@ -10,9 +10,22 @@ bad answer ends it.
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, Token, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args, prompt,
-                     usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-infix"
 EXPRESSION_PROMPT = "Enter infix expression: "
@@ -106,7 +119,9 @@ def to_postfix(expression: bytes) -> list[bytes]:
         elif byte in OPERATORS:
             if expect_operand:
                 raise ExpressionError(b"unexpected operator '" + bytes([byte]) + b"'")
-            while stack and stack[-1] != LEFT and OPERATORS[stack[-1]] >= OPERATORS[byte]:
+            while (
+                stack and stack[-1] != LEFT and OPERATORS[stack[-1]] >= OPERATORS[byte]
+            ):
                 output.append(bytes([stack.pop()]))
             stack.append(byte)
             expect_operand = True
@@ -125,8 +140,14 @@ def to_postfix(expression: bytes) -> list[bytes]:
 
 
 def record(expression: bytes, postfix: list[bytes]) -> bytes:
-    return (b"Infix:   " + expression.strip(BLANKS) + b"\n"
-            + b"Postfix: " + b" ".join(postfix) + b"\n")
+    return (
+        b"Infix:   "
+        + expression.strip(BLANKS)
+        + b"\n"
+        + b"Postfix: "
+        + b" ".join(postfix)
+        + b"\n"
+    )
 
 
 def session(lines: InputStream, source: str, prompting: bool) -> int:

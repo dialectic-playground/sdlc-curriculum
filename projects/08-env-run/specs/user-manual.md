@@ -1,10 +1,33 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-env — User Manual](#dp-env--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-env — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-env` 1.0.0 |
-| Project | `08-env-run` — Environment Execution Wrapper |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-env` 1.0.0                                 |
+| Project       | `08-env-run` — Environment Execution Wrapper   |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-08), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,7 +46,7 @@ dp-env --version
 
 ## DESCRIPTION
 
-`dp-env` builds an environment and then either runs *COMMAND* with it or, when no command is
+`dp-env` builds an environment and then either runs _COMMAND_ with it or, when no command is
 given, prints it.
 
 The environment is built in three steps:
@@ -31,23 +54,23 @@ The environment is built in three steps:
 1. Start from the environment `dp-env` itself received or, with `-i` (or a lone `-`), from an
    empty one.
 2. Remove every variable named with `-u`.
-3. Apply each *NAME*`=`*VALUE* assignment from left to right. An assignment adds the variable
-   or replaces its value, and a later assignment to the same name wins. An empty *VALUE* sets
+3. Apply each _NAME_`=`_VALUE_ assignment from left to right. An assignment adds the variable
+   or replaces its value, and a later assignment to the same name wins. An empty _VALUE_ sets
    the variable to the empty string; it does not remove it.
 
-**Printing.** Without *COMMAND*, `dp-env` writes one `NAME=VALUE` entry per line, followed by
+**Printing.** Without _COMMAND_, `dp-env` writes one `NAME=VALUE` entry per line, followed by
 a line feed (LF), even on Windows. Entries are sorted by name in byte order, so upper-case
 letters come before lower-case ones (`A`, `C`, `b`) whatever your locale. With `-0`, each
 entry ends with a NUL byte instead, which keeps the output unambiguous when values contain line
 feeds.
 
-**Running a command.** With *COMMAND*, `dp-env` starts it directly, never through a shell,
+**Running a command.** With _COMMAND_, `dp-env` starts it directly, never through a shell,
 and passes the *ARG*s unchanged. The command inherits `dp-env`'s standard input, output, and
 error. `dp-env` waits for the command to finish and then exits with the command's exit
 status, so `dp-env` can be put in front of any command without changing how scripts see its
 result.
 
-**Finding the command.** If *COMMAND* contains a path separator (`/`, or on Windows also `\`
+**Finding the command.** If _COMMAND_ contains a path separator (`/`, or on Windows also `\`
 or a drive prefix such as `C:`), it is used as a path. Otherwise `dp-env` searches the
 directories in `PATH`. It uses the `PATH` of the new environment if that has one, and
 otherwise its own `PATH`. So `dp-env -i PATH=/opt/tools/bin mytool` searches only
@@ -75,21 +98,21 @@ cannot run a program whose name contains `=`.
 
 **`-i`, `--ignore-environment`**
 : Start from an empty environment. Only variables assigned on the command line are set. A lone
-  `-` as the first operand has the same effect.
+`-` as the first operand has the same effect.
 
 **`-u NAME`, `--unset=NAME`**
-: Remove the variable *NAME*. This option may be given several times, and every occurrence
-  applies. Removing a variable that is not set is not an error. *NAME* must not be empty and
-  must not contain `=`.
+: Remove the variable _NAME_. This option may be given several times, and every occurrence
+applies. Removing a variable that is not set is not an error. _NAME_ must not be empty and
+must not contain `=`.
 
 **`-C DIR`, `--chdir=DIR`**
-: Run *COMMAND* with *DIR* as its working directory. The change happens before the command is
-  looked up, so a relative command path such as `../tool` is relative to *DIR*. This option
-  requires a *COMMAND*.
+: Run _COMMAND_ with _DIR_ as its working directory. The change happens before the command is
+looked up, so a relative command path such as `../tool` is relative to _DIR_. This option
+requires a _COMMAND_.
 
 **`-0`, `--null`**
 : When printing the environment, end each entry with a NUL byte instead of a line feed. This
-  option cannot be combined with a *COMMAND*.
+option cannot be combined with a _COMMAND_.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -113,14 +136,14 @@ differences below:
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | The environment, help, or version was printed |
-| 125 | `dp-env` itself failed: invalid usage, an invalid name, or a `-C` directory that cannot be entered |
-| 126 | The command was found but could not be run (for example, no execute permission, or a directory) |
-| 127 | The command was not found |
-| *other* | The exit status of the command itself |
-| 128 + *N* | Linux and macOS: the command was killed by signal *N* (for example, 143 for SIGTERM) |
+| Status    | Meaning                                                                                            |
+| :-------- | :------------------------------------------------------------------------------------------------- |
+| 0         | The environment, help, or version was printed                                                      |
+| 125       | `dp-env` itself failed: invalid usage, an invalid name, or a `-C` directory that cannot be entered |
+| 126       | The command was found but could not be run (for example, no execute permission, or a directory)    |
+| 127       | The command was not found                                                                          |
+| _other_   | The exit status of the command itself                                                              |
+| 128 + _N_ | Linux and macOS: the command was killed by signal _N_ (for example, 143 for SIGTERM)               |
 
 A command may itself exit with 125, 126, or 127. When that matters, check standard error:
 `dp-env` prints a diagnostic whenever it produces one of these statuses itself.
@@ -146,23 +169,23 @@ $ dp-env pyhton script.py
 dp-env: 'pyhton': No such file or directory
 ```
 
-| Message | Cause | Status |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | 125 |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | 125 |
-| `option requires an argument -- 'u'` | `-u` or `-C` without a value | 125 |
-| `option '--unset' requires an argument` | `--unset` or `--chdir` without a value | 125 |
-| `option '--null' doesn't allow an argument` | `--null=…`, `--ignore-environment=…`, `--help=…`, or `--version=…` | 125 |
-| `cannot specify --null (-0) with command` | `-0` given together with a command | 125 |
-| `must specify command with --chdir (-C)` | `-C` given without a command | 125 |
-| `cannot unset 'A=B': Invalid argument` | `-u` name empty or containing `=` | 125 |
-| `cannot set '=x': Invalid argument` | Assignment with an empty name | 125 |
-| `cannot change directory to 'DIR': No such file or directory` | `-C` directory missing (other reasons: `Not a directory`, `Permission denied`, `Input/output error`) | 125 |
-| `write error` | Standard output could not be written | 125 |
-| `'cmd': Is a directory` | The command path names a directory | 126 |
-| `'cmd': Permission denied` | The file is not executable or access is refused | 126 |
-| `'cmd': Exec format error` | The file is not a valid program (a script needs a `#!` line) | 126 |
-| `'cmd': No such file or directory` | The command does not exist, or not in any `PATH` directory | 127 |
+| Message                                                       | Cause                                                                                                | Status |
+| :------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------- | :----- |
+| `invalid option -- 'x'`                                       | Unknown short option `-x`                                                                            | 125    |
+| `unrecognized option '--xyz'`                                 | Unknown or abbreviated long option                                                                   | 125    |
+| `option requires an argument -- 'u'`                          | `-u` or `-C` without a value                                                                         | 125    |
+| `option '--unset' requires an argument`                       | `--unset` or `--chdir` without a value                                                               | 125    |
+| `option '--null' doesn't allow an argument`                   | `--null=…`, `--ignore-environment=…`, `--help=…`, or `--version=…`                                   | 125    |
+| `cannot specify --null (-0) with command`                     | `-0` given together with a command                                                                   | 125    |
+| `must specify command with --chdir (-C)`                      | `-C` given without a command                                                                         | 125    |
+| `cannot unset 'A=B': Invalid argument`                        | `-u` name empty or containing `=`                                                                    | 125    |
+| `cannot set '=x': Invalid argument`                           | Assignment with an empty name                                                                        | 125    |
+| `cannot change directory to 'DIR': No such file or directory` | `-C` directory missing (other reasons: `Not a directory`, `Permission denied`, `Input/output error`) | 125    |
+| `write error`                                                 | Standard output could not be written                                                                 | 125    |
+| `'cmd': Is a directory`                                       | The command path names a directory                                                                   | 126    |
+| `'cmd': Permission denied`                                    | The file is not executable or access is refused                                                      | 126    |
+| `'cmd': Exec format error`                                    | The file is not a valid program (a script needs a `#!` line)                                         | 126    |
+| `'cmd': No such file or directory`                            | The command does not exist, or not in any `PATH` directory                                           | 127    |
 
 ## EXAMPLES
 
@@ -258,10 +281,10 @@ dp-env (dialectic-playground) 1.0.0
 
 ## ENVIRONMENT
 
-| Variable | Use |
-| :-- | :-- |
-| `PATH` | Directories searched for *COMMAND* when it contains no path separator. The new environment's `PATH` is used if it has one, otherwise `dp-env`'s own. |
-| `PATHEXT` | Windows only: file extensions tried when looking up *COMMAND* (default `.COM;.EXE;.BAT;.CMD`). Taken from the new environment if set there, otherwise from `dp-env`'s own. |
+| Variable  | Use                                                                                                                                                                        |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PATH`    | Directories searched for _COMMAND_ when it contains no path separator. The new environment's `PATH` is used if it has one, otherwise `dp-env`'s own.                       |
+| `PATHEXT` | Windows only: file extensions tried when looking up _COMMAND_ (default `.COM;.EXE;.BAT;.CMD`). Taken from the new environment if set there, otherwise from `dp-env`'s own. |
 
 Apart from these lookups, `dp-env` does not interpret any variable. Locale variables such as
 `LANG` and `LC_ALL` do not change `dp-env`'s behavior or messages, and they are passed on to the

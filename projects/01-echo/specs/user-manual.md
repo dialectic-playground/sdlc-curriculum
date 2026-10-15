@@ -1,10 +1,35 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-echo — User Manual](#dp-echo--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Which arguments are options](#which-arguments-are-options)
+    - [Escape sequences](#escape-sequences)
+    - [Line endings](#line-endings)
+  - [OPTIONS](#options)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-echo — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-echo` 1.0.0 |
-| Project | `01-echo` — Stream Echo & Formatting |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-echo` 1.0.0                                |
+| Project       | `01-echo` — Stream Echo & Formatting           |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-01), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,14 +48,14 @@ dp-echo --version
 
 ## DESCRIPTION
 
-`dp-echo` writes each *STRING* to standard output, separated by single spaces, and ends the
+`dp-echo` writes each _STRING_ to standard output, separated by single spaces, and ends the
 output with a line feed (LF). With `-n` it leaves out the line feed; with `-e` it interprets
 backslash escape sequences such as `\t` (tab) and `\r` (carriage return).
 
 Output is identical on every operating system. The line feed `dp-echo` adds is always the single
 byte LF (`0x0A`), even on Windows, where many programs would write CRLF. `dp-echo` never adds or
 removes a carriage return: a CR appears in the output only if you put one there yourself (see
-*Line endings* below). Strings are printed exactly as given, including non-ASCII characters such
+_Line endings_ below). Strings are printed exactly as given, including non-ASCII characters such
 as `Zoë` or `日本語`, and are encoded in UTF-8.
 
 `dp-echo` reads no input, never touches files or environment variables, and never complains
@@ -57,22 +82,22 @@ Because every argument is acceptable, `dp-echo` has no usage errors.
 
 ### Escape sequences
 
-When `-e` is in effect, a backslash in a *STRING* begins an escape sequence:
+When `-e` is in effect, a backslash in a _STRING_ begins an escape sequence:
 
-| Sequence | Produces |
-| :-- | :-- |
-| `\\` | a single backslash |
-| `\a` | alert (BEL, `0x07`) |
-| `\b` | backspace (`0x08`) |
-| `\c` | nothing; **all further output stops**, including the remaining strings and the final line feed |
-| `\e` | escape (`0x1B`) |
-| `\f` | form feed (`0x0C`) |
-| `\n` | line feed (LF, `0x0A`) |
-| `\r` | carriage return (CR, `0x0D`) |
-| `\t` | horizontal tab (`0x09`) |
-| `\v` | vertical tab (`0x0B`) |
-| `\0NNN` | the byte whose octal value is *NNN*: zero to three octal digits (`0`–`7`) after `\0`; values above 255 wrap around (modulo 256) |
-| `\xHH` | the byte whose hexadecimal value is *HH*: one or two hex digits, upper or lower case |
+| Sequence | Produces                                                                                                                        |
+| :------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| `\\`     | a single backslash                                                                                                              |
+| `\a`     | alert (BEL, `0x07`)                                                                                                             |
+| `\b`     | backspace (`0x08`)                                                                                                              |
+| `\c`     | nothing; **all further output stops**, including the remaining strings and the final line feed                                  |
+| `\e`     | escape (`0x1B`)                                                                                                                 |
+| `\f`     | form feed (`0x0C`)                                                                                                              |
+| `\n`     | line feed (LF, `0x0A`)                                                                                                          |
+| `\r`     | carriage return (CR, `0x0D`)                                                                                                    |
+| `\t`     | horizontal tab (`0x09`)                                                                                                         |
+| `\v`     | vertical tab (`0x0B`)                                                                                                           |
+| `\0NNN`  | the byte whose octal value is _NNN_: zero to three octal digits (`0`–`7`) after `\0`; values above 255 wrap around (modulo 256) |
+| `\xHH`   | the byte whose hexadecimal value is _HH_: one or two hex digits, upper or lower case                                            |
 
 Details:
 
@@ -97,7 +122,7 @@ Windows is byte-for-byte identical to one written on Linux or macOS. When a file
 network protocol requires CRLF, ask for it explicitly:
 
 ```text
-$ dp-echo -ne 'HELO example.org\r\n'
+o -ne 'HELO example.org\r\n'
 ```
 
 This writes the text, a CR, and an LF, and nothing else (`-n` stops `dp-echo` from adding a
@@ -109,11 +134,11 @@ second, bare LF). Carriage returns that are part of a string you pass are printe
 : Do not write the trailing line feed.
 
 **`-e`**
-: Interpret backslash escape sequences in the strings (see *Escape sequences*).
+: Interpret backslash escape sequences in the strings (see _Escape sequences_).
 
 **`-E`**
 : Do not interpret backslash escape sequences. This is the default. If both `-e` and `-E` are
-  given, the one that comes last wins: `-e -E` and `-eE` turn escapes off, `-E -e` turns them on.
+given, the one that comes last wins: `-e -E` and `-eE` turn escapes off, `-E -e` turns them on.
 
 **`--help`**
 : Display the help text below and exit with status 0. Recognized only as the sole argument.
@@ -123,10 +148,10 @@ second, bare LF). Carriage returns that are part of a string you pass are printe
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the strings, help, or version were written |
-| 1 | Standard output could not be written (for example, the disk is full) |
+| Status | Meaning                                                              |
+| :----- | :------------------------------------------------------------------- |
+| 0      | Success: the strings, help, or version were written                  |
+| 1      | Standard output could not be written (for example, the disk is full) |
 
 `dp-echo` never exits with status 2, because it has no usage errors. If the program reading the
 output exits early (a broken pipe), `dp-echo` stops quietly.
@@ -135,8 +160,8 @@ output exits early (a broken pipe), `dp-echo` stops quietly.
 
 `dp-echo` prints exactly one diagnostic, on standard error:
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
+| Message                | Cause                                                                      | Fix                                         |
+| :--------------------- | :------------------------------------------------------------------------- | :------------------------------------------ |
 | `dp-echo: write error` | Standard output could not be written, for example because the disk is full | Free space or redirect the output elsewhere |
 
 Unknown options and malformed escape sequences are not errors; they are printed as text.

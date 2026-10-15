@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-taxes-file — User Manual](#dp-taxes-file--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The tax rule](#the-tax-rule)
+    - [Incomes](#incomes)
+    - [The report file is all or nothing](#the-report-file-is-all-or-nothing)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-taxes-file — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-taxes-file` 1.0.0 |
-| Project | `14-taxes-file` — Batch File-Based Progressive Income Tax Calculator |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-14), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                |
+| :------------ | :------------------------------------------------------------------- |
+| Product       | `dp-taxes-file` 1.0.0                                                |
+| Project       | `14-taxes-file` — Batch File-Based Progressive Income Tax Calculator |
+| Applies to    | Linux, macOS, Windows                                                |
+| Specification | `SRS.md` (SRS-14), `shared/CLI-CONVENTIONS.md`                       |
 
 ---
 
@@ -40,8 +66,7 @@ Tax = 1350 greenbacks
 - An income **below 6000** greenbacks is taxed at **30%**.
 - An income of **6000 or more** is taxed at **60%** of the whole income.
 
-The tax is rounded down to a whole number of greenbacks: 30% of 5999 is 1799.7, so the tax is
-1799. The calculation is exact for every income `dp-taxes-file` accepts, up to
+The tax is rounded down to a whole number of greenbacks: 30% of 5999 is 1799.7, so the tax is 1799. The calculation is exact for every income `dp-taxes-file` accepts, up to
 9223372036854775807; it never suffers from floating-point rounding. The rule and the report
 format are exactly those of `dp-taxes` (project 13).
 
@@ -72,11 +97,11 @@ their report.
 ## OPTIONS
 
 **`-i FILE`, `--input=FILE`**
-: Read the incomes from *FILE* instead of `incomes.dat`. `-i -` reads standard input.
+: Read the incomes from _FILE_ instead of `incomes.dat`. `-i -` reads standard input.
 
 **`-o FILE`, `--output=FILE`**
-: Write the report to *FILE* instead of `out.dat`, creating it or replacing its contents.
-  `-o -` writes the report to standard output instead of a file.
+: Write the report to _FILE_ instead of `out.dat`, creating it or replacing its contents.
+`-o -` writes the report to standard output instead of a file.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -99,11 +124,11 @@ their report.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report was written, or help or version was printed |
-| 1 | The input could not be read, it contained an invalid income, or the report could not be written |
-| 2 | Usage error: an invalid option or value, or an unexpected argument |
+| Status | Meaning                                                                                         |
+| :----- | :---------------------------------------------------------------------------------------------- |
+| 0      | Success: the report was written, or help or version was printed                                 |
+| 1      | The input could not be read, it contained an invalid income, or the report could not be written |
+| 2      | Usage error: an invalid option or value, or an unexpected argument                              |
 
 ## DIAGNOSTICS
 
@@ -115,16 +140,16 @@ $ dp-taxes-file -i bad.dat
 dp-taxes-file: bad.dat:3: invalid integer '12,000'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* of input *S* is not a whole number, or is larger than 9223372036854775807 | Write the income in digits only, without separators or decimals |
-| `S:L: value out of range 'K'` | Entry *K* on line *L* of input *S* is negative | Correct the income |
-| `F: No such file or directory` | The input *F* does not exist, or a directory in the report path *F* does not exist | Check the spelling and the current directory; create the directory |
-| `F: Permission denied` | You may not read the input *F*, or may not create or write the report *F* | Check the permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other failure to read *F* or to write *F* (for example, the disk is full) | Check the device or file system |
-| `write error` | The report could not be written to standard output | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                                           | Fix                                                                |
+| :----------------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Entry _K_ on line _L_ of input _S_ is not a whole number, or is larger than 9223372036854775807 | Write the income in digits only, without separators or decimals    |
+| `S:L: value out of range 'K'`  | Entry _K_ on line _L_ of input _S_ is negative                                                  | Correct the income                                                 |
+| `F: No such file or directory` | The input _F_ does not exist, or a directory in the report path _F_ does not exist              | Check the spelling and the current directory; create the directory |
+| `F: Permission denied`         | You may not read the input _F_, or may not create or write the report _F_                       | Check the permissions                                              |
+| `F: Is a directory`            | _F_ is a directory                                                                              | Name a file instead                                                |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                                 | Correct the path                                                   |
+| `F: Input/output error`        | Any other failure to read _F_ or to write _F_ (for example, the disk is full)                   | Check the device or file system                                    |
+| `write error`                  | The report could not be written to standard output                                              | Free space or redirect the output elsewhere                        |
 
 If the report file cannot be written completely (for example, the disk fills up), its contents
 are incomplete; run the tool again once the problem is fixed.
@@ -137,15 +162,15 @@ dp-taxes-file: extra operand 'incomes.dat'
 Try 'dp-taxes-file --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-i` or `-o` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'i'` | `-i` or `-o` given without a file name | Supply a file name |
-| `option '--input' requires an argument` | `--input` or `--output` given without a file name | Supply a file name |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `invalid argument '' for '-i'` | An empty file name | Give a non-empty file name |
-| `extra operand 'F'` | A file name given without `-i` or `-o` | Use `-i F` or `-o F` |
+| Message                                     | Cause                                             | Fix                        |
+| :------------------------------------------ | :------------------------------------------------ | :------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                         | Use `-i` or `-o`           |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                | Spell the option in full   |
+| `option requires an argument -- 'i'`        | `-i` or `-o` given without a file name            | Supply a file name         |
+| `option '--input' requires an argument`     | `--input` or `--output` given without a file name | Supply a file name         |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`                       | Remove the `=…`            |
+| `invalid argument '' for '-i'`              | An empty file name                                | Give a non-empty file name |
+| `extra operand 'F'`                         | A file name given without `-i` or `-o`            | Use `-i F` or `-o F`       |
 
 ## EXAMPLES
 

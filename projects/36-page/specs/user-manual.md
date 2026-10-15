@@ -1,10 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-page — User Manual](#dp-page--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [What counts as a line](#what-counts-as-a-line)
+    - [The text is never changed](#the-text-is-never-changed)
+    - [No empty pages](#no-empty-pages)
+    - [Several files](#several-files)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-page — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-page` 1.0.0 |
-| Project | `36-page` — Stream Text Pagination Utility |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-page` 1.0.0                                |
+| Project       | `36-page` — Stream Text Pagination Utility     |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-36), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,8 +50,8 @@ dp-page --version
 
 ## DESCRIPTION
 
-`dp-page` copies the text of the *FILE*s, or of standard input when there is no *FILE* or a
-*FILE* is `-`, to standard output in pages. Each page consists of:
+`dp-page` copies the text of the *FILE*s, or of standard input when there is no _FILE_ or a
+_FILE_ is `-`, to standard output in pages. Each page consists of:
 
 1. the header line `Page     N` — the word `Page`, five spaces, and the page number;
 2. an empty line;
@@ -43,7 +70,7 @@ line is copied without one, and the form feed follows it directly.
 
 ### The text is never changed
 
-`dp-page` only *adds* the headers and form feeds. Deleting them from the output gives back the
+`dp-page` only _adds_ the headers and form feeds. Deleting them from the output gives back the
 input exactly, byte for byte.
 
 ### No empty pages
@@ -62,9 +89,9 @@ the next file, exactly as `dp-cat` would join them.
 ## OPTIONS
 
 **`-l N`, `--lines=N`**
-: Put *N* lines of text on each page instead of 52. *N* is a whole number from 1 to
-  9223372036854775807, written in digits only. The header and the empty line after it are not
-  counted. If the option is given more than once, the last one counts.
+: Put _N_ lines of text on each page instead of 52. _N_ is a whole number from 1 to
+9223372036854775807, written in digits only. The header and the empty line after it are not
+counted. If the option is given more than once, the last one counts.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -86,11 +113,11 @@ the next file, exactly as `dp-cat` would join them.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every input was paginated (an empty input is fine), or help or version was printed |
-| 1 | At least one file could not be read; the others were still paginated |
-| 2 | Usage error: an invalid option or page length |
+| Status | Meaning                                                                                     |
+| :----- | :------------------------------------------------------------------------------------------ |
+| 0      | Success: every input was paginated (an empty input is fine), or help or version was printed |
+| 1      | At least one file could not be read; the others were still paginated                        |
+| 2      | Usage error: an invalid option or page length                                               |
 
 ## DIAGNOSTICS
 
@@ -101,14 +128,14 @@ $ dp-page missing.txt notes.txt > notes.prn
 dp-page: missing.txt: No such file or directory
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The pages could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                          | Fix                                          |
+| :----------------------------- | :------------------------------------------------------------- | :------------------------------------------- |
+| `F: No such file or directory` | _F_ does not exist                                             | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                                           | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                                             | Name a file instead                          |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                                         | Check the device or file system              |
+| `write error`                  | The pages could not be written (for example, the disk is full) | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -119,14 +146,14 @@ dp-page: invalid argument '0' for '-l'
 Try 'dp-page --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-l` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'l'` | `-l` was given without a number | Add the number of lines |
-| `option '--lines' requires an argument` | `--lines` was given without a number | Add the number of lines |
-| `invalid argument 'V' for '-l'` | *V* is not a whole number from 1 to 9223372036854775807 | Give a positive number of lines in digits |
-| `option '--help' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
+| Message                                     | Cause                                                   | Fix                                       |
+| :------------------------------------------ | :------------------------------------------------------ | :---------------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                               | Use `-l`                                  |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                      | Spell the option in full                  |
+| `option requires an argument -- 'l'`        | `-l` was given without a number                         | Add the number of lines                   |
+| `option '--lines' requires an argument`     | `--lines` was given without a number                    | Add the number of lines                   |
+| `invalid argument 'V' for '-l'`             | _V_ is not a whole number from 1 to 9223372036854775807 | Give a positive number of lines in digits |
+| `option '--help' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                           |
 
 ## EXAMPLES
 

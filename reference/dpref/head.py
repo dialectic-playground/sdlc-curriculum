@@ -65,7 +65,9 @@ def head_all_but_last_lines(stream, count: int) -> None:
         stream.seek(start)
         ht.copy_count(stream, stop - start)
         return
-    window: deque[bytes] = deque()  # the most recent `count` lines, not yet known to print
+    window: deque[bytes] = (
+        deque()
+    )  # the most recent `count` lines, not yet known to print
     for line in ht.split_lines(stream):
         window.append(line)
         if len(window) > count:
@@ -91,14 +93,17 @@ def main(argv: list[str]) -> int:
             return 0
         amount = ht.Amount("", DEFAULT_LINES, True)
         if "amount" in parsed.values:
-            amount = ht.parse_amount(str(parsed.values["amount"]), parsed.spelled["amount"],
-                                     signs="-")
+            amount = ht.parse_amount(
+                str(parsed.values["amount"]), parsed.spelled["amount"], signs="-"
+            )
     except UsageError as error:
         return usage_failure(TOOL, error)
 
     operands = parsed.operands
-    headers = ht.HeaderWriter(ht.headers_wanted(parsed.spelled.get("headers"),
-                                                max(1, len(operands))))
-    ok = ht.process_operands(TOOL, operands, headers,
-                             lambda item: slice_head(item.stream, amount))
+    headers = ht.HeaderWriter(
+        ht.headers_wanted(parsed.spelled.get("headers"), max(1, len(operands)))
+    )
+    ok = ht.process_operands(
+        TOOL, operands, headers, lambda item: slice_head(item.stream, amount)
+    )
     return 0 if ok else 1

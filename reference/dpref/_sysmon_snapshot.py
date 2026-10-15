@@ -10,8 +10,15 @@ from __future__ import annotations
 import json
 import math
 
-from ._sysmon_model import (MAX_INTEGER, MAX_PROCESS_PERCENT, MAX_SYSTEM_PERCENT, Disk,
-                            Process, Sample, round1_tenths)
+from ._sysmon_model import (
+    MAX_INTEGER,
+    MAX_PROCESS_PERCENT,
+    MAX_SYSTEM_PERCENT,
+    Disk,
+    Process,
+    Sample,
+    round1_tenths,
+)
 
 MAX_DEPTH = 64
 JSON_WHITESPACE = b" \t\r"
@@ -46,8 +53,11 @@ def _unique_members(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return members
 
 
-_DECODER = json.JSONDecoder(object_pairs_hook=_unique_members, parse_constant=_reject_constant,
-                            parse_int=_parse_int)
+_DECODER = json.JSONDecoder(
+    object_pairs_hook=_unique_members,
+    parse_constant=_reject_constant,
+    parse_int=_parse_int,
+)
 
 
 def _depth_exceeds(text: str, limit: int) -> bool:
@@ -81,7 +91,9 @@ def _has_lone_surrogate(value: object) -> bool:
     if isinstance(value, list):
         return any(_has_lone_surrogate(item) for item in value)
     if isinstance(value, dict):
-        return any(_has_lone_surrogate(k) or _has_lone_surrogate(v) for k, v in value.items())
+        return any(
+            _has_lone_surrogate(k) or _has_lone_surrogate(v) for k, v in value.items()
+        )
     return False
 
 
@@ -133,8 +145,14 @@ def _array(container: dict[str, object], key: str, path: str) -> list[object]:
     return value
 
 
-def _integer(container: dict[str, object], key: str, path: str, *, minimum: int = 0,
-             nullable: bool = False) -> int | None:
+def _integer(
+    container: dict[str, object],
+    key: str,
+    path: str,
+    *,
+    minimum: int = 0,
+    nullable: bool = False,
+) -> int | None:
     value = _member(container, key, path)
     if value is None and nullable:
         return None
@@ -150,12 +168,15 @@ def _integer(container: dict[str, object], key: str, path: str, *, minimum: int 
     return value
 
 
-def _percent(container: dict[str, object], key: str, path: str, maximum: float) -> int | None:
+def _percent(
+    container: dict[str, object], key: str, path: str, maximum: float
+) -> int | None:
     value = _member(container, key, path)
     if value is None:
         return None
     if not _is_number(value):
         raise SnapshotError(f"invalid type for '{path}'")
+    assert isinstance(value, (int, float))
     number = float(value)
     if not math.isfinite(number) or not 0.0 <= number <= maximum:
         raise SnapshotError(f"invalid value for '{path}'")
@@ -179,7 +200,9 @@ def to_sample(document: object) -> Sample:
     cpu_tenths = _percent(cpu, "percent", "cpu.percent", MAX_SYSTEM_PERCENT)
     memory = _object(document, "memory", "memory")
     total = _integer(memory, "total_bytes", "memory.total_bytes", nullable=True)
-    available = _integer(memory, "available_bytes", "memory.available_bytes", nullable=True)
+    available = _integer(
+        memory, "available_bytes", "memory.available_bytes", nullable=True
+    )
     if total is not None and available is not None and available > total:
         raise SnapshotError("'memory.available_bytes' exceeds 'memory.total_bytes'")
 
@@ -206,13 +229,22 @@ def to_sample(document: object) -> Sample:
             raise SnapshotError(f"duplicate value for '{base}.pid'")
         seen_pids.add(pid)
         name = _string(entry, "name", f"{base}.name")
-        cpu_percent = _percent(entry, "cpu_percent", f"{base}.cpu_percent",
-                               MAX_PROCESS_PERCENT)
+        cpu_percent = _percent(
+            entry, "cpu_percent", f"{base}.cpu_percent", MAX_PROCESS_PERCENT
+        )
         rss = _integer(entry, "rss_bytes", f"{base}.rss_bytes", nullable=True)
         processes.append(Process(pid, name, cpu_percent, rss))
 
-    return Sample(timestamp, hostname, cpu_count, cpu_tenths, total, available,
-                  tuple(disks), tuple(processes))
+    return Sample(
+        timestamp,
+        hostname,
+        cpu_count,
+        cpu_tenths,
+        total,
+        available,
+        tuple(disks),
+        tuple(processes),
+    )
 
 
 def decode_line(line: bytes) -> Sample:

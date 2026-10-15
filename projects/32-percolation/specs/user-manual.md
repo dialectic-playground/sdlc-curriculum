@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-perc — User Manual](#dp-perc--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [A simulation](#a-simulation)
+    - [Responses](#responses)
+    - [Reproducible randomness](#reproducible-randomness)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-perc — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-perc` 1.0.0 |
-| Project | `32-percolation` — Monte Carlo Forest Fire Percolation Simulation |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-32), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                             |
+| :------------ | :---------------------------------------------------------------- |
+| Product       | `dp-perc` 1.0.0                                                   |
+| Project       | `32-percolation` — Monte Carlo Forest Fire Percolation Simulation |
+| Applies to    | Linux, macOS, Windows                                             |
+| Specification | `SRS.md` (SRS-32), `shared/CLI-CONVENTIONS.md`                    |
 
 ---
 
@@ -25,7 +52,7 @@ dp-perc --version
 
 `dp-perc` plants a square forest at random, sets every tree in its top row on fire, lets the
 fire spread downward, and prints the forest before and after the fire with some statistics.
-It reads its responses from *FILE*, or from standard input when there is no *FILE* or *FILE*
+It reads its responses from _FILE_, or from standard input when there is no _FILE_ or _FILE_
 is `-`: first a tree density, then, after each simulation, an answer to `Again? (y/n)`.
 
 ### A simulation
@@ -94,8 +121,8 @@ session is not the same as the first, even at the same density. Use a different 
 different forests.
 
 For the curious: each cell, in reading order (left to right along the top row, then the next
-row, and so on), takes the next random number *r* from 0 to 32767 and holds a tree if
-(*r* mod 100) + 1 is at most the density.
+row, and so on), takes the next random number _r_ from 0 to 32767 and holds a tree if
+(_r_ mod 100) + 1 is at most the density.
 
 ### Working interactively
 
@@ -119,15 +146,15 @@ simulations.
 
 **`-p`, `--prompt`**
 : Write `Enter density (1-100): ` before each density is read and `Again? (y/n) ` before each
-  answer is read, to standard error.
+answer is read, to standard error.
 
-**`-s` *SIZE*, `--size=`*SIZE***
-: Use a forest of *SIZE* by *SIZE* cells, from 1 to 78 (default 25). The framed forest is
-  *SIZE* + 2 columns wide, so 78 still fits an 80-column terminal.
+**`-s` _SIZE_, `--size=`_SIZE_**
+: Use a forest of _SIZE_ by _SIZE_ cells, from 1 to 78 (default 25). The framed forest is
+_SIZE_ + 2 columns wide, so 78 still fits an 80-column terminal.
 
-**`--seed=`*SEED***
-: Start the random number generator from *SEED*, a whole number from 0 to 4294967295
-  (default 1).
+**`--seed=`_SEED_**
+: Start the random number generator from _SEED_, a whole number from 0 to 4294967295
+(default 1).
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -150,11 +177,11 @@ simulations.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the session ended with `n` or at the end of the input after a simulation, or help or version was printed |
-| 1 | The input could not be read, or it contained an invalid or missing response |
-| 2 | Usage error: an invalid option, an invalid size or seed, or more than one file |
+| Status | Meaning                                                                                                           |
+| :----- | :---------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the session ended with `n` or at the end of the input after a simulation, or help or version was printed |
+| 1      | The input could not be read, or it contained an invalid or missing response                                       |
+| 2      | Usage error: an invalid option, an invalid size or seed, or more than one file                                    |
 
 ## DIAGNOSTICS
 
@@ -169,18 +196,18 @@ Trees surviving: 0
 dp-perc: bad-answer.txt:2: invalid answer 'maybe'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | The density *K* on line *L* is not a whole number | Write the density in digits only, without `%` or decimals |
-| `S:L: value out of range 'K'` | The density *K* is not between 1 and 100 | Give a density from 1 to 100 |
-| `S:L: invalid answer 'K'` | The answer *K* is not `y`, `Y`, `n`, or `N` | Answer with one of those letters |
-| `S:L: unexpected end of input` | The input ended where a density was expected; *L* is the last line | Supply a density at the start and after every `y` |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                              | Fix                                                       |
+| :----------------------------- | :----------------------------------------------------------------- | :-------------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | The density _K_ on line _L_ is not a whole number                  | Write the density in digits only, without `%` or decimals |
+| `S:L: value out of range 'K'`  | The density _K_ is not between 1 and 100                           | Give a density from 1 to 100                              |
+| `S:L: invalid answer 'K'`      | The answer _K_ is not `y`, `Y`, `n`, or `N`                        | Answer with one of those letters                          |
+| `S:L: unexpected end of input` | The input ended where a density was expected; _L_ is the last line | Supply a density at the start and after every `y`         |
+| `F: No such file or directory` | _F_ does not exist                                                 | Check the spelling and the current directory              |
+| `F: Permission denied`         | You may not read _F_                                               | Check the file's permissions                              |
+| `F: Is a directory`            | _F_ is a directory                                                 | Name a file instead                                       |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                    | Correct the path                                          |
+| `F: Input/output error`        | Any other read failure                                             | Check the device or file system                           |
+| `write error`                  | The results could not be written (for example, the disk is full)   | Free space or redirect the output elsewhere               |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -191,16 +218,16 @@ dp-perc: invalid argument '0' for '--size'
 Try 'dp-perc --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` or `-s` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 's'` | `-s` was given without a size | Add the size |
-| `option '--size' requires an argument` | `--size` or `--seed` was the last argument | Add the value |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument 'V' for '--size'` | The size is not a whole number from 1 to 78 | Give a size from 1 to 78 |
-| `invalid argument 'V' for '--seed'` | The seed is not a whole number from 0 to 4294967295 | Give a seed in that range, digits only |
-| `extra operand 'F'` | More than one file was named | Run `dp-perc` once per file |
+| Message                                       | Cause                                                   | Fix                                    |
+| :-------------------------------------------- | :------------------------------------------------------ | :------------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p` or `-s`                       |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full               |
+| `option requires an argument -- 's'`          | `-s` was given without a size                           | Add the size                           |
+| `option '--size' requires an argument`        | `--size` or `--seed` was the last argument              | Add the value                          |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                        |
+| `invalid argument 'V' for '--size'`           | The size is not a whole number from 1 to 78             | Give a size from 1 to 78               |
+| `invalid argument 'V' for '--seed'`           | The seed is not a whole number from 0 to 4294967295     | Give a seed in that range, digits only |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-perc` once per file            |
 
 ## EXAMPLES
 

@@ -10,8 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import ROUND_HALF_EVEN, Decimal
 
-MAX_INTEGER = 2**53 - 1          # largest value of every integer field
-MAX_SYSTEM_PERCENT = 100.0       # cpu.percent upper bound
+MAX_INTEGER = 2**53 - 1  # largest value of every integer field
+MAX_SYSTEM_PERCENT = 100.0  # cpu.percent upper bound
 MAX_PROCESS_PERCENT = 1000000.0  # processes[].cpu_percent upper bound
 _TENTH = Decimal("0.1")
 
@@ -76,7 +76,7 @@ def format_bytes(count: int) -> str:
     while exponent < len(_UNITS) - 1 and count >= 1024 ** (exponent + 1):
         exponent += 1
     while True:
-        divisor = 1024 ** exponent
+        divisor = 1024**exponent
         quotient, remainder = divmod(count * 10, divisor)
         twice = 2 * remainder
         if twice > divisor or (twice == divisor and quotient % 2 == 1):

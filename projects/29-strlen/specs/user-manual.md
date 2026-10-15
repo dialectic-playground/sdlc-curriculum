@@ -1,11 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-strlen — User Manual](#dp-strlen--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Characters and bytes](#characters-and-bytes)
+    - [How the length is found](#how-the-length-is-found)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-strlen — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-strlen` 1.0.0 |
-| Project | `29-strlen` — String Length from First Principles |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-29), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                             |
+| :------------ | :------------------------------------------------ |
+| Product       | `dp-strlen` 1.0.0                                 |
+| Project       | `29-strlen` — String Length from First Principles |
+| Applies to    | Linux, macOS, Windows                             |
+| Specification | `SRS.md` (SRS-29), `shared/CLI-CONVENTIONS.md`    |
 
 ---
 
@@ -24,7 +49,7 @@ dp-strlen --version
 
 ## DESCRIPTION
 
-`dp-strlen` prints the length of each *STRING* given on the command line, one number per line,
+`dp-strlen` prints the length of each _STRING_ given on the command line, one number per line,
 in order:
 
 ```text
@@ -35,7 +60,7 @@ $ dp-strlen '' a 'hello world' 'ANSI C'
 6
 ```
 
-With no *STRING*, `dp-strlen` reads standard input — or the file *FILE* named with `-f` — and
+With no _STRING_, `dp-strlen` reads standard input — or the file _FILE_ named with `-f` — and
 prints the length of each line instead. A line is the text before a line feed; the text after
 the last line feed, if there is any, is a line too. The line feed is not part of the line, and
 neither is one carriage return (CR) just before it, so a file with Windows (CRLF) line endings
@@ -80,8 +105,8 @@ files) is ignored.
 ## OPTIONS
 
 **`-f FILE`, `--file=FILE`**
-: Read lines from *FILE* instead of standard input. The *FILE* `-` means standard input. No
-  *STRING* may be given together with `-f`.
+: Read lines from _FILE_ instead of standard input. The _FILE_ `-` means standard input. No
+_STRING_ may be given together with `-f`.
 
 **`-b`, `--bytes`**
 : Count bytes instead of characters.
@@ -101,29 +126,29 @@ files) is ignored.
 - Options and strings can be given in any order: `dp-strlen Zoë -b` counts bytes.
 - If `-f` is given more than once, the last one counts.
 - `--` ends option processing, so `dp-strlen -- -b` prints `2`, the length of the string `-b`.
-- A *STRING* `-` is just a one-character string; to read standard input explicitly, use
+- A _STRING_ `-` is just a one-character string; to read standard input explicitly, use
   `-f -`.
 - `--help` and `--version` take effect as soon as they are reached while reading the arguments
   from left to right, unless an earlier argument was invalid.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every string or line was measured (an empty input is fine), or help or version was printed |
-| 1 | The input file could not be read |
-| 2 | Usage error: an invalid option, or strings given together with `-f` |
+| Status | Meaning                                                                                             |
+| :----- | :-------------------------------------------------------------------------------------------------- |
+| 0      | Success: every string or line was measured (an empty input is fine), or help or version was printed |
+| 1      | The input file could not be read                                                                    |
+| 2      | Usage error: an invalid option, or strings given together with `-f`                                 |
 
 ## DIAGNOSTICS
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                           | Fix                                          |
+| :----------------------------- | :-------------------------------------------------------------- | :------------------------------------------- |
+| `F: No such file or directory` | _F_ does not exist                                              | Check the spelling and the current directory |
+| `F: Permission denied`         | You may not read _F_                                            | Check the file's permissions                 |
+| `F: Is a directory`            | _F_ is a directory                                              | Name a file instead                          |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                 | Correct the path                             |
+| `F: Input/output error`        | Any other read failure                                          | Check the device or file system              |
+| `write error`                  | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -134,15 +159,15 @@ dp-strlen: extra operand 'extra'
 Try 'dp-strlen --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-f` or `-b`; put `--` before a string that starts with `-` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'f'` | `-f` was the last argument | Name the file |
-| `option '--file' requires an argument` | `--file` was the last argument | Name the file |
-| `invalid argument '' for '-f'` | The file name is empty | Name the file |
-| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'X'` | Strings were given together with `-f` | Measure strings and files in separate runs |
+| Message                                      | Cause                                                   | Fix                                                             |
+| :------------------------------------------- | :------------------------------------------------------ | :-------------------------------------------------------------- |
+| `invalid option -- 'x'`                      | Unknown short option `-x`                               | Use `-f` or `-b`; put `--` before a string that starts with `-` |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                      | Spell the option in full                                        |
+| `option requires an argument -- 'f'`         | `-f` was the last argument                              | Name the file                                                   |
+| `option '--file' requires an argument`       | `--file` was the last argument                          | Name the file                                                   |
+| `invalid argument '' for '-f'`               | The file name is empty                                  | Name the file                                                   |
+| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                                                 |
+| `extra operand 'X'`                          | Strings were given together with `-f`                   | Measure strings and files in separate runs                      |
 
 ## EXAMPLES
 

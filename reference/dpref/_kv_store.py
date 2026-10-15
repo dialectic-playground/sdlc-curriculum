@@ -16,7 +16,8 @@ import os
 import re
 import stat
 import time
-from typing import Callable, Iterator, TypeVar
+from collections.abc import Callable, Generator
+from typing import TypeVar
 
 from .common import file_error_reason
 
@@ -29,9 +30,16 @@ LOCK_POLL_SECONDS = 0.025
 INVALID_STORE_REASON = "not a valid dp-kv store file"
 LOCKED_REASON = "store is locked"
 
-_KEY_PATTERN = re.compile(r"[A-Za-z0-9._:-]{1,%d}" % MAX_KEY_LENGTH, re.ASCII)
-_SHORT_ESCAPES = {'"': '\\"', "\\": "\\\\", "\b": "\\b", "\f": "\\f", "\n": "\\n",
-                  "\r": "\\r", "\t": "\\t"}
+_KEY_PATTERN = re.compile(rf"[A-Za-z0-9._:-]{{1,{MAX_KEY_LENGTH}}}", re.ASCII)
+_SHORT_ESCAPES = {
+    '"': '\\"',
+    "\\": "\\\\",
+    "\b": "\\b",
+    "\f": "\\f",
+    "\n": "\\n",
+    "\r": "\\r",
+    "\t": "\\t",
+}
 
 T = TypeVar("T")
 Data = dict[str, str]
@@ -48,6 +56,7 @@ class StoreError(Exception):
 
 
 # --- key and value rules ------------------------------------------------------------------
+
 
 def is_valid_key(key: str) -> bool:
     return _KEY_PATTERN.fullmatch(key) is not None
@@ -68,6 +77,7 @@ def value_problem(value: str) -> str | None:
 
 # --- canonical document --------------------------------------------------------------------
 
+
 def json_string(text: str) -> str:
     """Encode ``text`` as a JSON string literal using the SRS 5.1 escaping rules."""
     pieces = ['"']
@@ -75,7 +85,7 @@ def json_string(text: str) -> str:
         if char in _SHORT_ESCAPES:
             pieces.append(_SHORT_ESCAPES[char])
         elif char < " ":
-            pieces.append("\\u%04x" % ord(char))
+            pieces.append(f"\\u{ord(char):04x}")
         else:
             pieces.append(char)
     pieces.append('"')
@@ -123,8 +133,9 @@ def parse_json(raw: bytes) -> object:
     """Parse strict RFC 8259 JSON from UTF-8 bytes (SRS 5.2). Raises ValueError."""
     try:
         text = raw.decode("utf-8")
-        return json.loads(text, object_pairs_hook=_unique_object,
-                          parse_constant=_reject_constant)
+        return json.loads(
+            text, object_pairs_hook=_unique_object, parse_constant=_reject_constant
+        )
     except (UnicodeDecodeError, ValueError, _InvalidJson, RecursionError) as error:
         raise ValueError(str(error)) from None
 
@@ -159,18 +170,33 @@ if os.name == "nt":
     from ctypes import wintypes
 
     class _Overlapped(ctypes.Structure):
-        _fields_ = [("Internal", ctypes.c_size_t), ("InternalHigh", ctypes.c_size_t),
-                    ("Offset", wintypes.DWORD), ("OffsetHigh", wintypes.DWORD),
-                    ("hEvent", wintypes.HANDLE)]
+        _fields_ = [
+            ("Internal", ctypes.c_size_t),
+            ("InternalHigh", ctypes.c_size_t),
+            ("Offset", wintypes.DWORD),
+            ("OffsetHigh", wintypes.DWORD),
+            ("hEvent", wintypes.HANDLE),
+        ]
 
     _kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
     _LockFileEx = _kernel32.LockFileEx
-    _LockFileEx.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.DWORD, wintypes.DWORD,
-                            wintypes.DWORD, ctypes.POINTER(_Overlapped)]
+    _LockFileEx.argtypes = [
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        ctypes.POINTER(_Overlapped),
+    ]
     _LockFileEx.restype = wintypes.BOOL
     _UnlockFileEx = _kernel32.UnlockFileEx
-    _UnlockFileEx.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.DWORD, wintypes.DWORD,
-                              ctypes.POINTER(_Overlapped)]
+    _UnlockFileEx.argtypes = [
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        ctypes.POINTER(_Overlapped),
+    ]
     _UnlockFileEx.restype = wintypes.BOOL
     _LOCKFILE_FAIL_IMMEDIATELY = 0x1
     _LOCKFILE_EXCLUSIVE_LOCK = 0x2
@@ -179,9 +205,13 @@ if os.name == "nt":
 
     def _try_lock(fd: int, exclusive: bool) -> bool:
         """LockFileEx on byte 0 (length 1) of the lock file, without waiting."""
-        flags = _LOCKFILE_FAIL_IMMEDIATELY | (_LOCKFILE_EXCLUSIVE_LOCK if exclusive else 0)
+        flags = _LOCKFILE_FAIL_IMMEDIATELY | (
+            _LOCKFILE_EXCLUSIVE_LOCK if exclusive else 0
+        )
         overlapped = _Overlapped()
-        if _LockFileEx(msvcrt.get_osfhandle(fd), flags, 0, 1, 0, ctypes.byref(overlapped)):
+        if _LockFileEx(
+            msvcrt.get_osfhandle(fd), flags, 0, 1, 0, ctypes.byref(overlapped)
+        ):
             return True
         code = ctypes.get_last_error()
         if code in (_ERROR_LOCK_VIOLATION, _ERROR_IO_PENDING):
@@ -197,7 +227,9 @@ else:
     def _try_lock(fd: int, exclusive: bool) -> bool:
         """flock(2) on the whole lock file, without waiting."""
         try:
-            fcntl.flock(fd, (fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH) | fcntl.LOCK_NB)
+            fcntl.flock(
+                fd, (fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH) | fcntl.LOCK_NB
+            )
         except BlockingIOError:
             return False
         return True
@@ -207,7 +239,7 @@ else:
 
 
 @contextlib.contextmanager
-def _locked(lock_path: str, exclusive: bool, store_path: str) -> Iterator[None]:
+def _locked(lock_path: str, exclusive: bool, store_path: str) -> Generator[None]:
     """Hold a shared or exclusive lock on ``lock_path`` (created if absent).
 
     Raises OSError if the lock file cannot be opened, or StoreError(kind="locked") naming
@@ -230,6 +262,7 @@ def _locked(lock_path: str, exclusive: bool, store_path: str) -> Iterator[None]:
 
 # --- the store -----------------------------------------------------------------------------
 
+
 class Store:
     """A dp-kv store file at ``path`` with its sidecar ``path.lock`` and ``path.tmp``."""
 
@@ -248,7 +281,9 @@ class Store:
         except (FileNotFoundError, NotADirectoryError):
             return {}  # the directory does not exist, so neither does the store (FR-16)
         except OSError as error:
-            raise StoreError(self.lock_path, file_error_reason(error, self.lock_path)) from None
+            raise StoreError(
+                self.lock_path, file_error_reason(error, self.lock_path)
+            ) from None
 
     def update(self, mutate: Callable[[Data], tuple[bool, T]]) -> T:
         """Read-modify-write under an exclusive lock (SRS FR-20, FR-21).
@@ -266,7 +301,9 @@ class Store:
         except StoreError:
             raise
         except OSError as error:
-            raise StoreError(self.lock_path, file_error_reason(error, self.lock_path)) from None
+            raise StoreError(
+                self.lock_path, file_error_reason(error, self.lock_path)
+            ) from None
 
     def _load(self) -> Data:
         if os.path.isdir(self.path):
@@ -286,13 +323,15 @@ class Store:
     def _save(self, data: Data) -> None:
         payload = encode_document(data)
         try:
-            fd = os.open(self.temp_path,
-                         os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_BINARY", 0),
-                         0o666)
+            fd = os.open(
+                self.temp_path,
+                os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_BINARY", 0),
+                0o666,
+            )
             try:
                 view = memoryview(payload)
                 while view:
-                    view = view[os.write(fd, view):]
+                    view = view[os.write(fd, view) :]
                 os.fsync(fd)
             finally:
                 os.close(fd)

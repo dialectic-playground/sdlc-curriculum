@@ -7,9 +7,9 @@ projects/14-taxes-file/specs/SRS.md (section "Tax rule and report").
 from __future__ import annotations
 
 THRESHOLD = 6000  # incomes below this are taxed at the lower rate
-LOW_RATE = 30     # percent
-HIGH_RATE = 60    # percent
-MAX_INCOME = 2 ** 63 - 1
+LOW_RATE = 30  # percent
+HIGH_RATE = 60  # percent
+MAX_INCOME = 2**63 - 1
 
 
 def tax(income: int) -> int:
@@ -20,4 +20,6 @@ def tax(income: int) -> int:
 
 def record(income: int) -> bytes:
     """The two report lines for one income."""
-    return f"Income = {income} greenbacks\nTax = {tax(income)} greenbacks\n".encode("ascii")
+    return f"Income = {income} greenbacks\nTax = {tax(income)} greenbacks\n".encode(
+        "ascii"
+    )

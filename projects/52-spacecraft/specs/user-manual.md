@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-ship — User Manual](#dp-ship--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The textbook scenario](#the-textbook-scenario)
+    - [Scripts](#scripts)
+    - [Numbers in reports](#numbers-in-reports)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-ship — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-ship` 1.0.0 |
-| Project | `52-spacecraft` — Object-Oriented Spacecraft Domain Modeling |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-52), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                        |
+| :------------ | :----------------------------------------------------------- |
+| Product       | `dp-ship` 1.0.0                                              |
+| Project       | `52-spacecraft` — Object-Oriented Spacecraft Domain Modeling |
+| Applies to    | Linux, macOS, Windows                                        |
+| Specification | `SRS.md` (SRS-52), `shared/CLI-CONVENTIONS.md`               |
 
 ---
 
@@ -30,7 +56,7 @@ distance divided by the velocity, in hours.
 
 ### The textbook scenario
 
-Without *FILE*, `dp-ship` replays the scenario of the textbook: it creates a ship with default
+Without _FILE_, `dp-ship` replays the scenario of the textbook: it creates a ship with default
 values, then MightyMite (mass 5000, velocity 63567, distance 560989, 4 astronauts), raises
 MightyMite's velocity by 2000 and lowers it by 1000, and reports:
 
@@ -50,23 +76,23 @@ MightyMite requires 8.68848 hours for trip.
 
 ### Scripts
 
-With *FILE*, `dp-ship` runs the script in that file instead (standard input when *FILE* is
+With _FILE_, `dp-ship` runs the script in that file instead (standard input when _FILE_ is
 `-`). A script has one command per line; words are separated by spaces or tabs. Empty lines are
 ignored, and so is any line whose first word starts with `#`.
 
-| Command | Meaning |
-| :-- | :-- |
-| `new ID` | Create a ship called *ID* with the default values: name `???`, mass, velocity, distance, and capacity 0 |
-| `new ID MASS VEL DIST CAP NAME` | Create a ship called *ID* with mass *MASS*, velocity *VEL*, distance *DIST*, capacity *CAP*, and name *NAME* (the textbook's order) |
-| `adjust ID DIFF` | Add *DIFF* (which may be negative) to the ship's velocity; a result below 0 becomes 0 |
-| `print ID` | Report the ship's basics: two lines, then an empty line |
-| `trip ID` | Report the hours the ship needs for its trip |
+| Command                         | Meaning                                                                                                                             |
+| :------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------- |
+| `new ID`                        | Create a ship called _ID_ with the default values: name `???`, mass, velocity, distance, and capacity 0                             |
+| `new ID MASS VEL DIST CAP NAME` | Create a ship called _ID_ with mass _MASS_, velocity _VEL_, distance _DIST_, capacity _CAP_, and name _NAME_ (the textbook's order) |
+| `adjust ID DIFF`                | Add _DIFF_ (which may be negative) to the ship's velocity; a result below 0 becomes 0                                               |
+| `print ID`                      | Report the ship's basics: two lines, then an empty line                                                                             |
+| `trip ID`                       | Report the hours the ship needs for its trip                                                                                        |
 
-*ID* is the name the script uses for a ship (like a variable name); *NAME* is the name printed
-in reports. Neither may contain spaces. *MASS*, *VEL*, and *DIST* are non-negative numbers,
+_ID_ is the name the script uses for a ship (like a variable name); _NAME_ is the name printed
+in reports. Neither may contain spaces. _MASS_, _VEL_, and _DIST_ are non-negative numbers,
 written with digits, an optional sign, an optional decimal point, and an optional exponent
-(`5000`, `0.25`, `1.2e9`); *DIFF* is such a number of either sign; *CAP* is a non-negative
-whole number. Ship *IDs* and command names are case-sensitive.
+(`5000`, `0.25`, `1.2e9`); _DIFF_ is such a number of either sign; _CAP_ is a non-negative
+whole number. Ship _IDs_ and command names are case-sensitive.
 
 A ship whose velocity is 0 cannot make its trip, and `trip` says so:
 
@@ -104,11 +130,11 @@ very small values use an exponent (`1234567` is written `1.23457e+06`, `0.00001`
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the scenario or the whole script ran, or help or version was printed |
-| 1 | The script could not be read, or it contained an invalid line |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                       |
+| :----- | :---------------------------------------------------------------------------- |
+| 0      | Success: the scenario or the whole script ran, or help or version was printed |
+| 1      | The script could not be read, or it contained an invalid line                 |
+| 2      | Usage error: an invalid option or more than one file                          |
 
 ## DIAGNOSTICS
 
@@ -123,22 +149,22 @@ and a velocity of 63567 and holds 4 astronauts for a trip of 560989 kilometers.
 dp-ship: bad.txt:3: invalid number 'fast'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: unknown command 'N'` | Line *L* starts with a word that is not `new`, `adjust`, `print`, or `trip` | Check the spelling (commands are lowercase) |
-| `S:L: extra argument 'X'` | Line *L* has more words than its command takes | Remove the surplus words |
-| `S:L: missing argument for 'N'` | Line *L* has too few words for command *N* (`new` takes 1 or 6) | Supply every value |
-| `S:L: ship 'I' already exists` | `new` reuses the *ID* of an existing ship | Choose another *ID* |
-| `S:L: unknown ship 'I'` | No ship with *ID* *I* has been created | Create it with `new` first |
-| `S:L: invalid number 'X'` | A mass, velocity, distance, or difference is not a number | Write it with digits, `.`, and an optional exponent |
-| `S:L: invalid integer 'X'` | The capacity is not a whole number | Write it with digits only |
-| `S:L: value out of range 'X'` | A mass, velocity, distance, or capacity is negative, or an adjustment makes the velocity too large to represent | Use a non-negative value, or a smaller adjustment |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The reports could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                         | Cause                                                                                                           | Fix                                                 |
+| :------------------------------ | :-------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------- |
+| `S:L: unknown command 'N'`      | Line _L_ starts with a word that is not `new`, `adjust`, `print`, or `trip`                                     | Check the spelling (commands are lowercase)         |
+| `S:L: extra argument 'X'`       | Line _L_ has more words than its command takes                                                                  | Remove the surplus words                            |
+| `S:L: missing argument for 'N'` | Line _L_ has too few words for command _N_ (`new` takes 1 or 6)                                                 | Supply every value                                  |
+| `S:L: ship 'I' already exists`  | `new` reuses the _ID_ of an existing ship                                                                       | Choose another _ID_                                 |
+| `S:L: unknown ship 'I'`         | No ship with _ID_ _I_ has been created                                                                          | Create it with `new` first                          |
+| `S:L: invalid number 'X'`       | A mass, velocity, distance, or difference is not a number                                                       | Write it with digits, `.`, and an optional exponent |
+| `S:L: invalid integer 'X'`      | The capacity is not a whole number                                                                              | Write it with digits only                           |
+| `S:L: value out of range 'X'`   | A mass, velocity, distance, or capacity is negative, or an adjustment makes the velocity too large to represent | Use a non-negative value, or a smaller adjustment   |
+| `F: No such file or directory`  | _F_ does not exist                                                                                              | Check the spelling and the current directory        |
+| `F: Permission denied`          | You may not read _F_                                                                                            | Check the file's permissions                        |
+| `F: Is a directory`             | _F_ is a directory                                                                                              | Name a file instead                                 |
+| `F: Not a directory`            | Part of the path _F_ is a file, not a directory                                                                 | Correct the path                                    |
+| `F: Input/output error`         | Any other read failure                                                                                          | Check the device or file system                     |
+| `write error`                   | The reports could not be written (for example, the disk is full)                                                | Free space or redirect the output elsewhere         |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -149,12 +175,12 @@ dp-ship: extra operand 'clamp.txt'
 Try 'dp-ship --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | `dp-ship` has no short options |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Use `--help` or `--version` |
-| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-ship` once per script |
+| Message                                     | Cause                                                 | Fix                            |
+| :------------------------------------------ | :---------------------------------------------------- | :----------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x`                             | `dp-ship` has no short options |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option                    | Use `--help` or `--version`    |
+| `option '--help' doesn't allow an argument` | A value was given with `=` to `--help` or `--version` | Remove the `=…`                |
+| `extra operand 'F'`                         | More than one file was named                          | Run `dp-ship` once per script  |
 
 ## EXAMPLES
 

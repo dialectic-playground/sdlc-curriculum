@@ -13,9 +13,24 @@ import threading
 
 from . import common
 from ._parallel_sort_worker import MAX_VALUES, selection_sort, serve
-from .common import (AnsiRand, DataError, InputError, Option, UsageError, data_failure,
-                     file_failure, handle_action, parse_args, parse_count, parse_int_token,
-                     parse_seed, read_all, strip_eof_marker, tokenize, usage_failure)
+from .common import (
+    AnsiRand,
+    DataError,
+    InputError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    parse_args,
+    parse_count,
+    parse_int_token,
+    parse_seed,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    usage_failure,
+)
 
 TOOL = "dp-sort-host"
 HELP_TEXT = """\
@@ -169,8 +184,9 @@ def main(argv: list[str]) -> int:
             return 0
         random_count = None
         if "random" in parsed.values:
-            random_count = parse_count(str(parsed.values["random"]), parsed.spelled["random"],
-                                       0, MAX_VALUES)
+            random_count = parse_count(
+                str(parsed.values["random"]), parsed.spelled["random"], 0, MAX_VALUES
+            )
         seed = parse_seed(parsed)
         allowed_operands = 0 if random_count is not None else 1
         if len(parsed.operands) > allowed_operands:

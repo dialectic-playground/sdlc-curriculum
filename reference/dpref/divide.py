@@ -11,9 +11,23 @@ from __future__ import annotations
 import math
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, fix, handle_action, open_input, parse_args,
-                     parse_real_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_real_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-divide"
 PROMPT_TEXT = "Two floats: "
@@ -86,12 +100,15 @@ def main(argv: list[str]) -> int:
             try:
                 quotient = divide(dividend, divisor)
             except ArithmeticFault as fault:  # the recovery point
-                common.write(f"Signal status == {fault.status}.\n"
-                             "At jump point and about to exit...\n".encode())
+                common.write(
+                    f"Signal status == {fault.status}.\n"
+                    "At jump point and about to exit...\n".encode()
+                )
                 common.out.flush()
                 return 0
-            common.write(f"{fix(dividend, 6)} / {fix(divisor, 6)} == {fix(quotient, 6)}\n"
-                         .encode())
+            common.write(
+                f"{fix(dividend, 6)} / {fix(divisor, 6)} == {fix(quotient, 6)}\n".encode()
+            )
             common.out.flush()
     except DataError as error:
         return data_failure(TOOL, error)

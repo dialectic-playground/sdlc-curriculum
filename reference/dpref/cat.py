@@ -10,8 +10,17 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass
 
-from .common import (Option, UsageError, file_failure, handle_action, open_input, out,
-                     parse_args, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    file_failure,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-cat"
 BUFFER_SIZE = 128 * 1024
@@ -50,18 +59,26 @@ CR = b"\r"
 
 @dataclass(frozen=True)
 class Settings:
-    number: bool = False            # -n: number every output line
-    number_nonblank: bool = False   # -b: number non-empty lines (overrides -n)
-    squeeze_blank: bool = False     # -s
+    number: bool = False  # -n: number every output line
+    number_nonblank: bool = False  # -b: number non-empty lines (overrides -n)
+    squeeze_blank: bool = False  # -s
     show_nonprinting: bool = False  # -v
-    show_ends: bool = False         # -E
-    show_tabs: bool = False         # -T
+    show_ends: bool = False  # -E
+    show_tabs: bool = False  # -T
 
     @property
     def transforms(self) -> bool:
         """False when output is a byte-for-byte copy of the input (FR-06)."""
-        return any((self.number, self.number_nonblank, self.squeeze_blank,
-                    self.show_nonprinting, self.show_ends, self.show_tabs))
+        return any(
+            (
+                self.number,
+                self.number_nonblank,
+                self.squeeze_blank,
+                self.show_nonprinting,
+                self.show_ends,
+                self.show_tabs,
+            )
+        )
 
 
 def caret_notation(value: int) -> bytes:
@@ -100,9 +117,9 @@ class Formatter:
         self.defer_cr = settings.show_ends and not settings.show_nonprinting
         self.end_marker = b"$\n" if settings.show_ends else b"\n"
         self.line_number = 0
-        self.at_line_start = True   # no byte of the current line has been seen yet
+        self.at_line_start = True  # no byte of the current line has been seen yet
         self.previous_blank = False  # the last complete line was empty
-        self.pending_cr = False      # a deferred CR that is the latest byte of the stream
+        self.pending_cr = False  # a deferred CR that is the latest byte of the stream
 
     def _render(self, data: bytes) -> bytes:
         if self.identity:
@@ -191,7 +208,7 @@ def copy_operand(path: str, formatter: Formatter) -> bool:
     try:
         while True:
             try:
-                chunk = stream.read1(BUFFER_SIZE)
+                chunk = stream.read1(BUFFER_SIZE)  # type: ignore
             except OSError as error:
                 file_failure(TOOL, path, error)
                 return False

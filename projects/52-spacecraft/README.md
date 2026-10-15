@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 52 — Object-Oriented Spacecraft Domain Modeling (`dp-ship`)](#project-52--object-oriented-spacecraft-domain-modeling-dp-ship)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 52 — Object-Oriented Spacecraft Domain Modeling (`dp-ship`)
 
 > Model spacecraft as encapsulated objects and report their basics and trip times, the way a
@@ -7,30 +23,30 @@
 
 ## Purpose
 
-Project 52 is adapted from §11.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 52 is adapted from §11.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 the book's first C++ example, a spacecraft class with private data, a default and a full
 constructor, a velocity adjustment that never goes below zero, and a short scenario that prints
 the ships' basics and a trip time. This project keeps the class, the scenario, and the report
 wording, and turns the scenario into a tool: without arguments it replays the textbook, and
 with a script it creates and adjusts any number of ships. The engineering focus is twofold: an
-*object design* requirement stated without reference to any language (encapsulation and
-constructors, checked by design review), and *number formatting* that does not depend on a
+_object design_ requirement stated without reference to any language (encapsulation and
+constructors, checked by design review), and _number formatting_ that does not depend on a
 language's default conversion of floating-point values to text — the textbook's own trip time,
 printed by C++ stream defaults, is reproduced here by an explicit rule (and corrected: the
 section's description misquotes it).
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| The textbook scenario with no operand (FR-07) | Other built-in scenarios |
-| Command scripts from one `FILE` operand (`-` is standard input) | Several scripts, interactive prompting |
-| `new` (default or full construction), `adjust`, `print`, `trip` | Changing name, mass, distance, or capacity; deleting ships |
-| Velocity clamped at 0; trip time = distance / velocity, guarded at zero velocity | Units other than kg, km, km/h |
-| Numbers written as `GEN(x, 6)` (CONV-35) | Other precisions, localized number formats |
-| CRLF scripts, comments, and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Recovering after an invalid line |
-| `--help`, `--version`, CONV-13 usage errors | Saving ships between runs, configuration files, environment variables |
+| In scope                                                                         | Out of scope                                                          |
+| :------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| The textbook scenario with no operand (FR-07)                                    | Other built-in scenarios                                              |
+| Command scripts from one `FILE` operand (`-` is standard input)                  | Several scripts, interactive prompting                                |
+| `new` (default or full construction), `adjust`, `print`, `trip`                  | Changing name, mass, distance, or capacity; deleting ships            |
+| Velocity clamped at 0; trip time = distance / velocity, guarded at zero velocity | Units other than kg, km, km/h                                         |
+| Numbers written as `GEN(x, 6)` (CONV-35)                                         | Other precisions, localized number formats                            |
+| CRLF scripts, comments, and a trailing Ctrl-Z end-of-file marker (CONV-37)       | Other legacy encodings                                                |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                | Recovering after an invalid line                                      |
+| `--help`, `--version`, CONV-13 usage errors                                      | Saving ships between runs, configuration files, environment variables |
 
 ## Learning objectives
 
@@ -49,15 +65,15 @@ section's description misquotes it).
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-15) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-15, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Scripts shared by both suites (`fleet.txt`, `clamp.txt`, `bad.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-15)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-15, NFR-01 … NFR-08)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Scripts shared by both suites (`fleet.txt`, `clamp.txt`, `bad.txt`)                     |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -83,4 +99,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, `make lint` is clean, a design review confirms NFR-05, and every RTM row is
-*Verified*.
+_Verified_.

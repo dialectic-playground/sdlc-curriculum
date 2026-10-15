@@ -9,11 +9,26 @@ reaches the end of the input (CONV-37).
 from __future__ import annotations
 
 import sys
-from typing import Iterator
+from collections.abc import Iterator
 
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, open_input, out, parse_args,
-                     parse_int_token, prompt, usage_failure, write)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    out,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-tromino"
 HELP_TEXT = """\
@@ -36,7 +51,7 @@ Options:
 SIZE_PROMPT = "Enter size of board (0 to quit): "
 SQUARE_PROMPT = "Enter coordinates of missing square: "
 MAX_SIZE = 64
-VALID_SIZES = {2 ** k for k in range(1, 7)}
+VALID_SIZES = {2**k for k in range(1, 7)}
 DRAW = Option("draw", short="d", long="draw")
 
 # Orientation of a tromino = the corner of its 2x2 block opposite the uncovered square.
@@ -45,8 +60,9 @@ NAMES = {(0, 1): "UL", (1, 1): "UR", (1, 0): "LR", (0, 0): "LL"}
 QUADRANT_ORDER = ((0, 1), (1, 1), (1, 0), (0, 0))  # UL, UR, LR, LL
 
 
-def tile(x_board: int, y_board: int, x_missing: int, y_missing: int,
-         size: int) -> Iterator[tuple[int, int, str]]:
+def tile(
+    x_board: int, y_board: int, x_missing: int, y_missing: int, size: int
+) -> Iterator[tuple[int, int, str]]:
     """Trominoes (center x, center y, orientation) in the order of SRS-24 FR-04."""
     if size < 2:
         return
@@ -60,8 +76,10 @@ def tile(x_board: int, y_board: int, x_missing: int, y_missing: int,
         if (right, upper) == hole:
             sub_missing = (x_missing, y_missing)
         else:
-            sub_missing = (x_center if right else x_center - 1,
-                           y_center if upper else y_center - 1)
+            sub_missing = (
+                x_center if right else x_center - 1,
+                y_center if upper else y_center - 1,
+            )
         yield from tile(x_sub, y_sub, *sub_missing, half)
 
 
@@ -69,8 +87,12 @@ def covered(x: int, y: int, name: str) -> list[tuple[int, int]]:
     """The three squares covered by the tromino with block center (x, y)."""
     elbow = next(corner for corner, text in NAMES.items() if text == name)
     missing = (1 - elbow[0], 1 - elbow[1])
-    return [(x - 1 + dx, y - 1 + dy) for dx in (0, 1) for dy in (0, 1)
-            if (dx, dy) != missing]
+    return [
+        (x - 1 + dx, y - 1 + dy)
+        for dx in (0, 1)
+        for dy in (0, 1)
+        if (dx, dy) != missing
+    ]
 
 
 def report(size: int, x_missing: int, y_missing: int, draw: bool) -> bytes:
@@ -79,7 +101,7 @@ def report(size: int, x_missing: int, y_missing: int, draw: bool) -> bytes:
     lines += [f"{x} {y} {name}" for x, y, name in trominoes]
     if draw:
         width = len(str(len(trominoes)))
-        board = [["X".rjust(width)] * size for _ in range(size)]
+        board: list[list[str]] = [["X".rjust(width)] * size for _ in range(size)]
         for number, (x, y, name) in enumerate(trominoes, start=1):
             for col, row in covered(x, y, name):
                 board[row][col] = str(number).rjust(width)
@@ -98,7 +120,9 @@ def session(reader: InputStream, source: str, prompts: bool, draw: bool) -> None
         if size == 0:
             return
         if size not in VALID_SIZES:
-            raise DataError(source, token.line, b"invalid board size '" + token.text + b"'")
+            raise DataError(
+                source, token.line, b"invalid board size '" + token.text + b"'"
+            )
         prompt(prompts, SQUARE_PROMPT)
         x_missing = parse_int_token(reader.require(source), source, 0, size - 1)
         y_missing = parse_int_token(reader.require(source), source, 0, size - 1)
@@ -123,8 +147,12 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        session(InputStream(stream), source, bool(parsed.values.get("prompt")),
-                bool(parsed.values.get("draw")))
+        session(
+            InputStream(stream),
+            source,
+            bool(parsed.values.get("prompt")),
+            bool(parsed.values.get("draw")),
+        )
     except DataError as error:
         return data_failure(TOOL, error)
     except InputError as failure:

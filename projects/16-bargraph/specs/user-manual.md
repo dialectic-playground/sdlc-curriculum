@@ -1,11 +1,35 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-bargraph — User Manual](#dp-bargraph--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Input format](#input-format)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-bargraph — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-bargraph` 1.0.0 |
-| Project | `16-bargraph` — ASCII Comic Book Bar Graph Generator |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-16), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                |
+| :------------ | :--------------------------------------------------- |
+| Product       | `dp-bargraph` 1.0.0                                  |
+| Project       | `16-bargraph` — ASCII Comic Book Bar Graph Generator |
+| Applies to    | Linux, macOS, Windows                                |
+| Specification | `SRS.md` (SRS-16), `shared/CLI-CONVENTIONS.md`       |
 
 ---
 
@@ -23,7 +47,7 @@ dp-bargraph --version
 
 ## DESCRIPTION
 
-`dp-bargraph` reads *records* from *FILE*, or from standard input when *FILE* is absent or `-`.
+`dp-bargraph` reads _records_ from _FILE_, or from standard input when _FILE_ is absent or `-`.
 Each record is two lines: a **title**, then a **value**. For every record it prints the title
 on one line and, on the next line, a bar of asterisks: one `*` for every 2 units of the value,
 rounded down. A value of 0 or 1 gives an empty bar line.
@@ -78,11 +102,11 @@ An empty input, or one holding only blank lines, produces no output.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every record was drawn, or help or version was printed |
-| 1 | The file could not be read, or the data contains an error |
-| 2 | Usage error: an invalid option or more than one *FILE* |
+| Status | Meaning                                                         |
+| :----- | :-------------------------------------------------------------- |
+| 0      | Success: every record was drawn, or help or version was printed |
+| 1      | The file could not be read, or the data contains an error       |
+| 2      | Usage error: an invalid option or more than one _FILE_          |
 
 ## DIAGNOSTICS
 
@@ -98,14 +122,14 @@ dp-bargraph: badvalue.txt:4: invalid integer 'forty-two'
 
 Standard input is named `-`. Nothing of the faulty record, and nothing after it, is printed.
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `FILE:LINE: invalid integer 'TEXT'` | The value line is not a single whole number (*TEXT* is the line without surrounding spaces; `''` for a blank line) | Put just the number on the line |
-| `FILE:LINE: value out of range 'TEXT'` | The value is negative or larger than 10000 | Use a value from 0 to 10000 |
-| `FILE:LINE: unexpected end of input` | The input ends after a title, without its value | Add the value line, or remove the title |
-| `FILE: No such file or directory` | *FILE* does not exist | Check the name |
-| `FILE: Is a directory` | *FILE* is a directory | Name a file |
-| `FILE: Permission denied` | *FILE* cannot be read | Check its permissions |
+| Message                                | Cause                                                                                                              | Fix                                     |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------- |
+| `FILE:LINE: invalid integer 'TEXT'`    | The value line is not a single whole number (_TEXT_ is the line without surrounding spaces; `''` for a blank line) | Put just the number on the line         |
+| `FILE:LINE: value out of range 'TEXT'` | The value is negative or larger than 10000                                                                         | Use a value from 0 to 10000             |
+| `FILE:LINE: unexpected end of input`   | The input ends after a title, without its value                                                                    | Add the value line, or remove the title |
+| `FILE: No such file or directory`      | _FILE_ does not exist                                                                                              | Check the name                          |
+| `FILE: Is a directory`                 | _FILE_ is a directory                                                                                              | Name a file                             |
+| `FILE: Permission denied`              | _FILE_ cannot be read                                                                                              | Check its permissions                   |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is written
 to standard output:
@@ -116,12 +140,12 @@ dp-bargraph: extra operand 'more.txt'
 Try 'dp-bargraph --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option | Remove it |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `extra operand 'more.txt'` | More than one *FILE* | Graph one file at a time |
+| Message                                     | Cause                              | Fix                      |
+| :------------------------------------------ | :--------------------------------- | :----------------------- |
+| `invalid option -- 'x'`                     | Unknown short option               | Remove it                |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option | Spell the option in full |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`        | Remove the `=…`          |
+| `extra operand 'more.txt'`                  | More than one _FILE_               | Graph one file at a time |
 
 ## EXAMPLES
 
@@ -135,7 +159,7 @@ Titles keep their spaces; values 0 and 1 give empty bars:
 
 ```text
 $ printf '  Spaced  Title  \n75\nZero\n0\n' | dp-bargraph
-  Spaced  Title  
+  Spaced  Title
 *************************************
 Zero
 

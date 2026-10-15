@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 04 — Word, Line, and Byte Counter (`dp-wc`)](#project-04--word-line-and-byte-counter-dp-wc)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 04 — Word, Line, and Byte Counter (`dp-wc`)
 
 > Count lines, words, UTF-8 characters, and bytes the way `wc` does — but with one answer for
@@ -6,7 +22,7 @@
 
 ## Purpose
 
-Earlier projects copied or sliced bytes. Project 04 is the first that must *interpret* them:
+Earlier projects copied or sliced bytes. Project 04 is the first that must _interpret_ them:
 as words separated by whitespace, as UTF-8 characters that may be damaged or truncated, and as
 lines whose length is measured in characters. Traditional `wc` leaves these definitions to the
 locale and derives its column widths from file sizes; this project replaces every such
@@ -16,15 +32,15 @@ where the read-buffer boundaries fall — including in the middle of a multibyte
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Line (LF), word, character, and byte counts (`-l`, `-w`, `-m`, `-c`) | Locale-dependent word and character rules |
-| Maximum line length in characters (`-L`) | Display-width (column) measurement, tab expansion |
-| Fixed column order and a deterministic width rule | GNU's size-dependent column widths |
-| Multiple files with a `total` line; standard input and `-` | `--files0-from`, `--total=WHEN` |
-| Strict UTF-8 decoding with a per-byte rule for invalid sequences | Encodings other than UTF-8 |
-| CONV-16 file diagnostics, continuing after failures | Directory traversal |
-| `--help`, `--version`, CONV-13 usage errors | Colors, quoting of file names |
+| In scope                                                             | Out of scope                                      |
+| :------------------------------------------------------------------- | :------------------------------------------------ |
+| Line (LF), word, character, and byte counts (`-l`, `-w`, `-m`, `-c`) | Locale-dependent word and character rules         |
+| Maximum line length in characters (`-L`)                             | Display-width (column) measurement, tab expansion |
+| Fixed column order and a deterministic width rule                    | GNU's size-dependent column widths                |
+| Multiple files with a `total` line; standard input and `-`           | `--files0-from`, `--total=WHEN`                   |
+| Strict UTF-8 decoding with a per-byte rule for invalid sequences     | Encodings other than UTF-8                        |
+| CONV-16 file diagnostics, continuing after failures                  | Directory traversal                               |
+| `--help`, `--version`, CONV-13 usage errors                          | Colors, quoting of file names                     |
 
 ## Learning objectives
 
@@ -41,15 +57,15 @@ where the read-buffer boundaries fall — including in the middle of a multibyte
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-17) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-18, NFR-01 … NFR-10) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`poem.txt`, `utf8.txt`, `crlf.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-17)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-18, NFR-01 … NFR-10)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`poem.txt`, `utf8.txt`, `crlf.txt`)                  |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 ## What you deliver (in your language repository)
 
@@ -71,4 +87,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

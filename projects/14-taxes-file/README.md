@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 14 — Batch File-Based Progressive Income Tax Calculator (`dp-taxes-file`)](#project-14--batch-file-based-progressive-income-tax-calculator-dp-taxes-file)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 14 — Batch File-Based Progressive Income Tax Calculator (`dp-taxes-file`)
 
 > Read a file of incomes, compute the tax on each under a two-bracket rule, and write the
@@ -7,10 +23,10 @@
 
 ## Purpose
 
-Project 14 is adapted from §1.10 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 14 is adapted from §1.10 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 the tax program of §1.6 ([Project 13](../13-taxes/)), changed to read its incomes from the file
 `incomes.dat` and write its report to the file `out.dat`. The tax rule and report format are
-exactly those of Project 13. What is new is the *file handling*: default names in the current
+exactly those of Project 13. What is new is the _file handling_: default names in the current
 directory, options to override them, creating and replacing the output file, mapping file-system
 failures to fixed messages, and — the central design decision — checking the whole input
 before the output file is opened, so a bad input never leaves a truncated or half-written
@@ -18,15 +34,15 @@ report behind.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Input from `incomes.dat`, or the file named by `-i`/`--input` (`-` is standard input) | Several input files |
-| Report to `out.dat`, or the file named by `-o`/`--output` (`-` is standard output) | Appending to an existing report, backup copies |
-| Exact two-bracket tax (30% below 6000, 60% from 6000), any income 0 … 2⁶³−1 | Other tax schedules, negative incomes |
-| Validation of the whole input before the output file is created or replaced | Partial reports after a data error |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Prompts or any other interaction |
-| Data diagnostics with line numbers (CONV-34), CONV-16 errors for both files | Atomic replacement, file locking |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                              | Out of scope                                   |
+| :------------------------------------------------------------------------------------ | :--------------------------------------------- |
+| Input from `incomes.dat`, or the file named by `-i`/`--input` (`-` is standard input) | Several input files                            |
+| Report to `out.dat`, or the file named by `-o`/`--output` (`-` is standard output)    | Appending to an existing report, backup copies |
+| Exact two-bracket tax (30% below 6000, 60% from 6000), any income 0 … 2⁶³−1           | Other tax schedules, negative incomes          |
+| Validation of the whole input before the output file is created or replaced           | Partial reports after a data error             |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                         | Prompts or any other interaction               |
+| Data diagnostics with line numbers (CONV-34), CONV-16 errors for both files           | Atomic replacement, file locking               |
+| `--help`, `--version`, CONV-13 usage errors                                           | Configuration files, environment variables     |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ report behind.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-13, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`incomes.dat`, `more.dat`, `bad.dat`, `prev.dat`, `empty.dat`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                          |
+| :--------------------- | :------------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                 |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-13, NFR-01 … NFR-08)                                              |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                           |
+| `tests/fixtures/`      | Input files shared by both suites (`incomes.dat`, `more.dat`, `bad.dat`, `prev.dat`, `empty.dat`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                            |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)           |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates               |
 
 The textbook section has no companion data file; every fixture, including `incomes.dat`, was
 written for this project. Several tests have more than one step: a later step reads back, with
@@ -78,4 +94,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

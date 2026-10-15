@@ -1,10 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-calc — User Manual](#dp-calc--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Operators](#operators)
+    - [Mistakes cost nothing](#mistakes-cost-nothing)
+    - [The tape](#the-tape)
+    - [Ending the calculation](#ending-the-calculation)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-calc — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-calc` 1.0.0 |
-| Project | `37-calc` — Interactive Accumulator Calculator |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-calc` 1.0.0                                |
+| Project       | `37-calc` — Interactive Accumulator Calculator |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-37), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,9 +51,9 @@ dp-calc --version
 
 ## DESCRIPTION
 
-`dp-calc` works like a desk adding machine. It keeps a running total, the *accumulator*, which
-starts at 0. It reads lines from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`. Each line holds one or more *pairs* of an operator and a whole number, such as
+`dp-calc` works like a desk adding machine. It keeps a running total, the _accumulator_, which
+starts at 0. It reads lines from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`. Each line holds one or more _pairs_ of an operator and a whole number, such as
 `+ 5 * 10`, and the pairs are applied to the accumulator one after another, from left to
 right. For each line, `dp-calc` prints the old total, the line, `==`, and the new total:
 
@@ -38,14 +66,14 @@ from 0 the result is 50, not 0 + 50.
 
 ### Operators
 
-| Operator | Meaning |
-| :-- | :-- |
-| `+ n` | add *n* |
-| `- n` | subtract *n* |
-| `* n` | multiply by *n* |
-| `/ n` | divide by *n*, discarding any remainder (the quotient is truncated toward zero) |
-| `% n` | replace the total by the remainder of dividing it by *n* (it has the sign of the total) |
-| `!` | end the calculation |
+| Operator | Meaning                                                                                 |
+| :------- | :-------------------------------------------------------------------------------------- |
+| `+ n`    | add _n_                                                                                 |
+| `- n`    | subtract _n_                                                                            |
+| `* n`    | multiply by _n_                                                                         |
+| `/ n`    | divide by _n_, discarding any remainder (the quotient is truncated toward zero)         |
+| `% n`    | replace the total by the remainder of dividing it by _n_ (it has the sign of the total) |
+| `!`      | end the calculation                                                                     |
 
 Operators and numbers are separated by spaces or tabs: write `+ 5`, not `+5`. Numbers are whole
 numbers from −9223372036854775808 to 9223372036854775807, written in decimal digits with an
@@ -63,7 +91,7 @@ $ printf -- '- 7 / 2\n- 4 %% 2\n+ 8 %% -3\n' | dp-calc
 
 ### Mistakes cost nothing
 
-A line is applied to the total only if *all* of its pairs can be applied. If a line contains
+A line is applied to the total only if _all_ of its pairs can be applied. If a line contains
 a mistake — an unknown operator, an operator without a number, something that is not a whole
 number — or if it divides by zero or produces a result outside the range above, `dp-calc`
 reports the first problem with the line number, prints no result, and leaves the total exactly
@@ -115,7 +143,7 @@ ignored.
 
 **`-p`, `--prompt`**
 : Before each line is read, write the current total and a space to standard error. A last
-  prompt appears before the end of the input is noticed; none follows `!`.
+prompt appears before the end of the input is noticed; none follows `!`.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -135,11 +163,11 @@ ignored.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the calculation ended at `!` or at the end of the input and every line was accepted (an empty input is fine), or help or version was printed |
-| 1 | At least one line was rejected, or the input could not be read |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                                               |
+| :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the calculation ended at `!` or at the end of the input and every line was accepted (an empty input is fine), or help or version was printed |
+| 1      | At least one line was rejected, or the input could not be read                                                                                        |
+| 2      | Usage error: an invalid option or more than one file                                                                                                  |
 
 ## DIAGNOSTICS
 
@@ -160,19 +188,19 @@ dp-calc: errors.txt:5: missing operand after '-'
 (Results go to standard output and messages to standard error; a terminal shows them in the
 order they occur.)
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid operator 'K'` | *K* stands where an operator is expected, but is not one of `+ - * / % !` (for example `+5` without a space) | Separate the operator from its number |
-| `S:L: missing operand after 'O'` | The line ends with the operator *O* | Add the number |
-| `S:L: invalid integer 'K'` | *K* is not a whole number, or is outside −9223372036854775808 … 9223372036854775807 | Write the number in digits only |
-| `S:L: division by zero` | `/ 0` or `% 0` | Divide by a non-zero number |
-| `S:L: integer overflow` | A step of the line gives a result outside −9223372036854775808 … 9223372036854775807 | Use smaller numbers |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                          | Cause                                                                                                        | Fix                                          |
+| :------------------------------- | :----------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: invalid operator 'K'`      | _K_ stands where an operator is expected, but is not one of `+ - * / % !` (for example `+5` without a space) | Separate the operator from its number        |
+| `S:L: missing operand after 'O'` | The line ends with the operator _O_                                                                          | Add the number                               |
+| `S:L: invalid integer 'K'`       | _K_ is not a whole number, or is outside −9223372036854775808 … 9223372036854775807                          | Write the number in digits only              |
+| `S:L: division by zero`          | `/ 0` or `% 0`                                                                                               | Divide by a non-zero number                  |
+| `S:L: integer overflow`          | A step of the line gives a result outside −9223372036854775808 … 9223372036854775807                         | Use smaller numbers                          |
+| `F: No such file or directory`   | _F_ does not exist                                                                                           | Check the spelling and the current directory |
+| `F: Permission denied`           | You may not read _F_                                                                                         | Check the file's permissions                 |
+| `F: Is a directory`              | _F_ is a directory                                                                                           | Name a file instead                          |
+| `F: Not a directory`             | Part of the path _F_ is a file, not a directory                                                              | Correct the path                             |
+| `F: Input/output error`          | Any other read failure                                                                                       | Check the device or file system              |
+| `write error`                    | The results could not be written (for example, the disk is full)                                             | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -183,12 +211,12 @@ dp-calc: extra operand 'acs.txt'
 Try 'dp-calc --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-calc` once per file |
+| Message                                       | Cause                                                   | Fix                         |
+| :-------------------------------------------- | :------------------------------------------------------ | :-------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                    |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full    |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`             |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-calc` once per file |
 
 ## EXAMPLES
 

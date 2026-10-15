@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 15 — Single-Pass Streaming Statistical Summary (`dp-stats`)](#project-15--single-pass-streaming-statistical-summary-dp-stats)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 15 — Single-Pass Streaming Statistical Summary (`dp-stats`)
 
 > Read real numbers until the end of the input and report their count, extremes, sum, mean,
@@ -7,28 +23,28 @@
 
 ## Purpose
 
-Project 15 is adapted from §2.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 15 is adapted from §2.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads numbers until end-of-file, keeps only a running count, minimum, maximum,
 sum, and sum of squares, and then prints seven summary lines. The textbook version leaves the
 result of a mistyped number, an empty input, and floating-point rounding to chance. This
 project keeps its report word for word and turns it into a well-behaved command-line filter.
-The engineering focus is *reproducible floating-point arithmetic*: the specification fixes the
+The engineering focus is _reproducible floating-point arithmetic_: the specification fixes the
 binary64 operation order, the treatment of a variance that rounding has made slightly
 negative, overflow, and the decimal rounding of every printed digit, so that independent
 implementations in any language agree to the last digit.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Real numbers as whitespace-separated tokens until end of input (CONV-32, CONV-33) | Digit grouping, `inf`, `nan`, hexadecimal numbers |
-| Count, maximum, minimum, sum, mean, population variance, standard deviation | Sample variance, median, percentiles, histograms |
-| One pass in constant memory; the exact binary64 operation order of the SRS | Compensated or two-pass summation; arbitrary precision |
-| Six digits after the decimal point, correctly rounded (`FIX(x, 6)`, CONV-35) | Other precisions or exponent notation |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), including arithmetic overflow; CONV-16 file errors | Recovering after an invalid number |
-| `--help`, `--version`, CONV-13 usage errors | Prompts, configuration files, environment variables |
+| In scope                                                                                         | Out of scope                                           |
+| :----------------------------------------------------------------------------------------------- | :----------------------------------------------------- |
+| Real numbers as whitespace-separated tokens until end of input (CONV-32, CONV-33)                | Digit grouping, `inf`, `nan`, hexadecimal numbers      |
+| Count, maximum, minimum, sum, mean, population variance, standard deviation                      | Sample variance, median, percentiles, histograms       |
+| One pass in constant memory; the exact binary64 operation order of the SRS                       | Compensated or two-pass summation; arbitrary precision |
+| Six digits after the decimal point, correctly rounded (`FIX(x, 6)`, CONV-35)                     | Other precisions or exponent notation                  |
+| Standard input or one `FILE` operand (`-` is standard input)                                     | Several input files                                    |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                                    | Other legacy encodings                                 |
+| Data diagnostics with line numbers (CONV-34), including arithmetic overflow; CONV-16 file errors | Recovering after an invalid number                     |
+| `--help`, `--version`, CONV-13 usage errors                                                      | Prompts, configuration files, environment variables    |
 
 ## Learning objectives
 
@@ -47,15 +63,15 @@ implementations in any language agree to the last digit.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-13, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`three.txt`, `data.txt`, `single.txt`, `same.txt`, `round.txt`, `bad.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                      |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                             |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-13, NFR-01 … NFR-08)                                                          |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                       |
+| `tests/fixtures/`      | Input files shared by both suites (`three.txt`, `data.txt`, `single.txt`, `same.txt`, `round.txt`, `bad.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                        |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                       |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                           |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -79,4 +95,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

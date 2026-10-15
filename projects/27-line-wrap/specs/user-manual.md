@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-wrap — User Manual](#dp-wrap--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The line length](#the-line-length)
+    - [How lines are filled](#how-lines-are-filled)
+    - [How words are measured](#how-words-are-measured)
+    - [Words that do not fit](#words-that-do-not-fit)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-wrap — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-wrap` 1.0.0 |
-| Project | `27-line-wrap` — Greedy Word-Wrapping Text Formatter |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-27), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                |
+| :------------ | :--------------------------------------------------- |
+| Product       | `dp-wrap` 1.0.0                                      |
+| Project       | `27-line-wrap` — Greedy Word-Wrapping Text Formatter |
+| Applies to    | Linux, macOS, Windows                                |
+| Specification | `SRS.md` (SRS-27), `shared/CLI-CONVENTIONS.md`       |
 
 ---
 
@@ -23,8 +50,8 @@ dp-wrap --version
 
 ## DESCRIPTION
 
-`dp-wrap` reads words from *FILE*, or from standard input when there is no *FILE* or *FILE* is
-`-`, and writes them to standard output in lines no longer than the *line length*. A word is
+`dp-wrap` reads words from _FILE_, or from standard input when there is no _FILE_ or _FILE_ is
+`-`, and writes them to standard output in lines no longer than the _line length_. A word is
 any run of characters without spaces, tabs, or line breaks. The words keep their order; the
 way they were laid out in the input does not matter, so runs of spaces, tabs, and blank lines
 all disappear.
@@ -89,8 +116,8 @@ files) is ignored. Files with Windows (CRLF) line endings read the same as any o
 ## OPTIONS
 
 **`-w WIDTH`, `--width=WIDTH`**
-: Use *WIDTH* as the line length. *WIDTH* is written in digits only and is at least 1. The first
-  word of the input is then text, not a line length.
+: Use _WIDTH_ as the line length. _WIDTH_ is written in digits only and is at least 1. The first
+word of the input is then text, not a line length.
 
 **`-b`, `--bytes`**
 : Measure words in bytes instead of characters.
@@ -117,11 +144,11 @@ files) is ignored. Files with Windows (CRLF) line endings read the same as any o
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every word was placed and none was too long (an input without words is fine), or help or version was printed |
-| 1 | A word was longer than the line length, the line length in the input was missing or invalid, or the input could not be read |
-| 2 | Usage error: an invalid option or *WIDTH*, or more than one file |
+| Status | Meaning                                                                                                                     |
+| :----- | :-------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: every word was placed and none was too long (an input without words is fine), or help or version was printed       |
+| 1      | A word was longer than the line length, the line length in the input was missing or invalid, or the input could not be read |
+| 2      | Usage error: an invalid option or _WIDTH_, or more than one file                                                            |
 
 ## DIAGNOSTICS
 
@@ -129,18 +156,18 @@ Problems with the data name the input (`-` for standard input) and the line numb
 that is too long is reported, written anyway, and wrapping continues. A problem with the line
 length at the start of the input stops `dp-wrap` before anything is written.
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: word length exceeds line length 'K'` | Word *K* on line *L* is longer than the line length | Choose a larger line length, or accept the long line |
-| `S:L: invalid integer 'K'` | The first word *K* is not a whole number (or is larger than 9223372036854775807) | Put the line length first, or use `-w` |
-| `S:L: value out of range 'K'` | The line length *K* is 0 or negative | Use a line length of at least 1 |
-| `S:L: unexpected end of input` | The input is empty, so there is no line length | Put the line length first, or use `-w` |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                    | Cause                                                                            | Fix                                                  |
+| :----------------------------------------- | :------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| `S:L: word length exceeds line length 'K'` | Word _K_ on line _L_ is longer than the line length                              | Choose a larger line length, or accept the long line |
+| `S:L: invalid integer 'K'`                 | The first word _K_ is not a whole number (or is larger than 9223372036854775807) | Put the line length first, or use `-w`               |
+| `S:L: value out of range 'K'`              | The line length _K_ is 0 or negative                                             | Use a line length of at least 1                      |
+| `S:L: unexpected end of input`             | The input is empty, so there is no line length                                   | Put the line length first, or use `-w`               |
+| `F: No such file or directory`             | _F_ does not exist                                                               | Check the spelling and the current directory         |
+| `F: Permission denied`                     | You may not read _F_                                                             | Check the file's permissions                         |
+| `F: Is a directory`                        | _F_ is a directory                                                               | Name a file instead                                  |
+| `F: Not a directory`                       | Part of the path _F_ is a file, not a directory                                  | Correct the path                                     |
+| `F: Input/output error`                    | Any other read failure                                                           | Check the device or file system                      |
+| `write error`                              | The output could not be written (for example, the disk is full)                  | Free space or redirect the output elsewhere          |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -151,15 +178,15 @@ dp-wrap: invalid argument '0' for '-w'
 Try 'dp-wrap --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-w` or `-b` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'w'` | `-w` was the last argument | Give the line length |
-| `option '--width' requires an argument` | `--width` was the last argument | Give the line length |
-| `invalid argument 'V' for '-w'` | *V* is not a whole number of at least 1 written in digits | Use, for example, `-w 72` |
-| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-wrap` once per file |
+| Message                                      | Cause                                                     | Fix                         |
+| :------------------------------------------- | :-------------------------------------------------------- | :-------------------------- |
+| `invalid option -- 'x'`                      | Unknown short option `-x`                                 | Use `-w` or `-b`            |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option                        | Spell the option in full    |
+| `option requires an argument -- 'w'`         | `-w` was the last argument                                | Give the line length        |
+| `option '--width' requires an argument`      | `--width` was the last argument                           | Give the line length        |
+| `invalid argument 'V' for '-w'`              | _V_ is not a whole number of at least 1 written in digits | Use, for example, `-w 72`   |
+| `option '--bytes' doesn't allow an argument` | A value was given with `=` to an option that takes none   | Remove the `=…`             |
+| `extra operand 'F'`                          | More than one file was named                              | Run `dp-wrap` once per file |
 
 ## EXAMPLES
 

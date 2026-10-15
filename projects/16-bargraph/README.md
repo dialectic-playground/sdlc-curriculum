@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 16 — ASCII Comic Book Bar Graph Generator (`dp-bargraph`)](#project-16--ascii-comic-book-bar-graph-generator-dp-bargraph)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 16 — ASCII Comic Book Bar Graph Generator (`dp-bargraph`)
 
 > Draw a terminal bar graph from alternating title and value lines, reading the same data file
@@ -6,25 +22,24 @@
 
 ## Purpose
 
-Project 16 is adapted from §2.8 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*,
+Project 16 is adapted from §2.8 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_,
 where a short program echoes comic-book titles and draws a bar of asterisks for each book's
 value. The program is small, but its input is not: it interleaves free-text lines with numeric
-lines, and the textbook's data file still ends with the Ctrl-Z byte an MS-DOS editor wrote in
-1996. The engineering challenge is to define a line-oriented format exactly — what a line is,
+lines, and the textbook's data file still ends with the Ctrl-Z byte an MS-DOS editor wrote in 1996. The engineering challenge is to define a line-oriented format exactly — what a line is,
 what happens to CR, what a value line may contain, what a blank line means and where — and to
 read it as bytes, so that no platform's text-mode conventions can change the result.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Alternating title and value lines from one FILE or standard input | Several input files |
-| One `*` per 2 units of value (integer division), values 0–10000 | Other scales, negative or fractional values |
-| Titles echoed byte for byte (spaces, empty titles, any encoding) | Decoding or validating title text |
-| LF and CRLF line endings; trailing Ctrl-Z marker (CONV-37) | Other legacy encodings or line-ending conventions |
-| Trailing blank lines ignored | Comments, headers, or sorting |
-| CONV-34 data diagnostics with line numbers; CONV-16 file errors | Recovering after a data error |
-| `--help`, `--version`, CONV-13 usage errors | Colors, vertical bars |
+| In scope                                                          | Out of scope                                      |
+| :---------------------------------------------------------------- | :------------------------------------------------ |
+| Alternating title and value lines from one FILE or standard input | Several input files                               |
+| One `*` per 2 units of value (integer division), values 0–10000   | Other scales, negative or fractional values       |
+| Titles echoed byte for byte (spaces, empty titles, any encoding)  | Decoding or validating title text                 |
+| LF and CRLF line endings; trailing Ctrl-Z marker (CONV-37)        | Other legacy encodings or line-ending conventions |
+| Trailing blank lines ignored                                      | Comments, headers, or sorting                     |
+| CONV-34 data diagnostics with line numbers; CONV-16 file errors   | Recovering after a data error                     |
+| `--help`, `--version`, CONV-13 usage errors                       | Colors, vertical bars                             |
 
 ## Learning objectives
 
@@ -40,15 +55,15 @@ read it as bytes, so that no platform's text-mode conventions can change the res
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-16) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-14, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites: `bargraph.in` (from the textbook's companion disk), `edge.txt`, `crlf.txt`, `trailing.txt`, `badvalue.txt`, `truncated.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                                       |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-16)                                                                                                                              |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-14, NFR-01 … NFR-08)                                                                                                           |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                                                        |
+| `tests/fixtures/`      | Input files shared by both suites: `bargraph.in` (from the textbook's companion disk), `edge.txt`, `crlf.txt`, `trailing.txt`, `badvalue.txt`, `truncated.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                                         |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                                        |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                            |
 
 ## What you deliver (in your language repository)
 
@@ -70,4 +85,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

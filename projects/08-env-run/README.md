@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 08 — Environment Execution Wrapper (`dp-env`)](#project-08--environment-execution-wrapper-dp-env)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 08 — Environment Execution Wrapper (`dp-env`)
 
 > Run a program with a precisely controlled environment and working directory, the way POSIX
@@ -17,15 +33,15 @@ on Windows.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Printing the resulting environment, sorted byte-wise by name (`-0` for NUL terminators) | Running commands through a shell, `-S`/`--split-string` |
-| `-i` / lone `-`, `-u NAME` (repeatable), `NAME=VALUE` assignments | Blocking, ignoring, or defaulting signals on request |
-| `-C DIR` working directory for the command | Detaching from the terminal (`nohup`), resource limits |
-| Command lookup via `PATH` (and `PATHEXT` on Windows), no implicit current-directory search | Changing `dp-env`'s own behavior from locale variables |
-| Exit statuses 125 / 126 / 127, child status propagation, 128+N for signal deaths | Re-raising the child's signal against `dp-env` |
-| Forwarding SIGINT/SIGTERM/SIGHUP (POSIX); surviving Ctrl+C/Ctrl+Break (Windows) | Process groups, job control, pseudo-terminals |
-| Case-insensitive variable names on Windows | |
+| In scope                                                                                   | Out of scope                                            |
+| :----------------------------------------------------------------------------------------- | :------------------------------------------------------ |
+| Printing the resulting environment, sorted byte-wise by name (`-0` for NUL terminators)    | Running commands through a shell, `-S`/`--split-string` |
+| `-i` / lone `-`, `-u NAME` (repeatable), `NAME=VALUE` assignments                          | Blocking, ignoring, or defaulting signals on request    |
+| `-C DIR` working directory for the command                                                 | Detaching from the terminal (`nohup`), resource limits  |
+| Command lookup via `PATH` (and `PATHEXT` on Windows), no implicit current-directory search | Changing `dp-env`'s own behavior from locale variables  |
+| Exit statuses 125 / 126 / 127, child status propagation, 128+N for signal deaths           | Re-raising the child's signal against `dp-env`          |
+| Forwarding SIGINT/SIGTERM/SIGHUP (POSIX); surviving Ctrl+C/Ctrl+Break (Windows)            | Process groups, job control, pseudo-terminals           |
+| Case-insensitive variable names on Windows                                                 |                                                         |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ on Windows.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-18) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-19, NFR-01 … NFR-11), integration tests IT-01 … IT-08 |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `tests/fixtures/` | The portable child process `child.py` (run through `{PYTHON}`) and the `subdir` directory used by the tests |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                    |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-18)                                                                           |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-19, NFR-01 … NFR-11), integration tests IT-01 … IT-08                       |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                     |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                      |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                                        |
+| `tests/fixtures/`      | The portable child process `child.py` (run through `{PYTHON}`) and the `subdir` directory used by the tests |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                         |
 
 ## What you deliver (in your language repository)
 
@@ -80,4 +96,4 @@ without `SYSTEMROOT`.
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, the integration tests pass on the platforms they name, `make lint` is clean,
-and every RTM row is *Verified*.
+and every RTM row is _Verified_.

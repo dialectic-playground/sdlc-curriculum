@@ -1,10 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-size — User Manual](#dp-size--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Every byte counts](#every-byte-counts)
+    - [Names](#names)
+    - [Choosing the extension](#choosing-the-extension)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-size — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-size` 1.0.0 |
-| Project | `39-size` — Binary File Byte Size Inspector |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-size` 1.0.0                                |
+| Project       | `39-size` — Binary File Byte Size Inspector    |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-39), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,7 +49,7 @@ dp-size --version
 
 ## DESCRIPTION
 
-`dp-size` takes the name of a file *without its extension*, appends `.c`, and reports how many
+`dp-size` takes the name of a file _without its extension_, appends `.c`, and reports how many
 bytes the file holds. It finds out by opening the file in binary mode and reading it to the
 end, counting every byte, so the answer is exactly what `wc -c` or a directory listing shows.
 
@@ -41,7 +67,7 @@ the second gives the size. Between the label and the value is one TAB.
 
 ### Every byte counts
 
-The file is read in *binary* mode, never in text mode. Every byte counts as one, including:
+The file is read in _binary_ mode, never in text mode. Every byte counts as one, including:
 
 - NUL bytes (`0x00`), which some programs treat as the end of a string;
 - CR bytes: a line ending in CRLF (Windows) counts two bytes, not one;
@@ -66,12 +92,12 @@ very end of the input are ignored. An empty name, or one that contains a NUL byt
 ## OPTIONS
 
 **`-e EXT`, `--extension=EXT`**
-: Append *EXT* to each name instead of `.c`. *EXT* must be empty or begin with `.`.
+: Append _EXT_ to each name instead of `.c`. _EXT_ must be empty or begin with `.`.
 
 **`-p`, `--prompt`**
 : Before each name is read from standard input, write the prompt
-  `File name (NO extension):`, with a TAB before and after it, to standard error. No prompt is
-  written for names given as arguments. The prompt never appears on standard output.
+`File name (NO extension):`, with a TAB before and after it, to standard error. No prompt is
+written for names given as arguments. The prompt never appears on standard output.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -93,11 +119,11 @@ very end of the input are ignored. An empty name, or one that contains a NUL byt
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Every name was measured (or there were none), or help or version was printed |
-| 1 | At least one name was empty or malformed, or its file could not be read |
-| 2 | Usage error: an invalid option or extension |
+| Status | Meaning                                                                      |
+| :----- | :--------------------------------------------------------------------------- |
+| 0      | Every name was measured (or there were none), or help or version was printed |
+| 1      | At least one name was empty or malformed, or its file could not be read      |
+| 2      | Usage error: an invalid option or extension                                  |
 
 ## DIAGNOSTICS
 
@@ -111,18 +137,18 @@ dp-size: missing.c: No such file or directory
 	Byte size:	562
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `P: No such file or directory` | The file *P* does not exist (or its name is not valid on this system) | Check the spelling, the extension, and the current directory |
-| `P: Permission denied` | You may not read *P* | Check the permissions |
-| `P: Is a directory` | *P* is a directory | Name a file instead |
-| `P: Not a directory` | Part of the path *P* is a file, not a directory | Correct the path |
-| `P: Input/output error` | Any other failure to read *P* | Check the device or file system |
-| `empty file name` | An empty argument (`''`) | Give a name |
-| `-:L: empty file name` | Line *L* of standard input is empty | Remove the blank line |
-| `-:L: file name contains a NUL byte` | Line *L* of standard input contains a NUL byte | Correct the input |
-| `-: Input/output error` | Standard input could not be read | Check what feeds standard input |
-| `write error` | The results could not be written to standard output | Free space or redirect the output elsewhere |
+| Message                              | Cause                                                                 | Fix                                                          |
+| :----------------------------------- | :-------------------------------------------------------------------- | :----------------------------------------------------------- |
+| `P: No such file or directory`       | The file _P_ does not exist (or its name is not valid on this system) | Check the spelling, the extension, and the current directory |
+| `P: Permission denied`               | You may not read _P_                                                  | Check the permissions                                        |
+| `P: Is a directory`                  | _P_ is a directory                                                    | Name a file instead                                          |
+| `P: Not a directory`                 | Part of the path _P_ is a file, not a directory                       | Correct the path                                             |
+| `P: Input/output error`              | Any other failure to read _P_                                         | Check the device or file system                              |
+| `empty file name`                    | An empty argument (`''`)                                              | Give a name                                                  |
+| `-:L: empty file name`               | Line _L_ of standard input is empty                                   | Remove the blank line                                        |
+| `-:L: file name contains a NUL byte` | Line _L_ of standard input contains a NUL byte                        | Correct the input                                            |
+| `-: Input/output error`              | Standard input could not be read                                      | Check what feeds standard input                              |
+| `write error`                        | The results could not be written to standard output                   | Free space or redirect the output elsewhere                  |
 
 Usage errors are written to standard error as two lines; no file is read:
 
@@ -132,14 +158,14 @@ dp-size: invalid argument 'txt' for '-e'
 Try 'dp-size --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-e` or `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'e'` | `-e` given without an extension | Supply an extension (or `''`) |
-| `option '--extension' requires an argument` | `--extension` given without an extension | Supply an extension |
-| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…` | Remove the `=…` |
-| `invalid argument 'txt' for '-e'` | The extension is not empty and does not begin with `.` | Write `-e .txt` |
+| Message                                       | Cause                                                  | Fix                           |
+| :-------------------------------------------- | :----------------------------------------------------- | :---------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                              | Use `-e` or `-p`              |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                     | Spell the option in full      |
+| `option requires an argument -- 'e'`          | `-e` given without an extension                        | Supply an extension (or `''`) |
+| `option '--extension' requires an argument`   | `--extension` given without an extension               | Supply an extension           |
+| `option '--prompt' doesn't allow an argument` | `--prompt=…`, `--help=…`, or `--version=…`             | Remove the `=…`               |
+| `invalid argument 'txt' for '-e'`             | The extension is not empty and does not begin with `.` | Write `-e .txt`               |
 
 ## EXAMPLES
 

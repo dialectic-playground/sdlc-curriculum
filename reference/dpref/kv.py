@@ -7,16 +7,36 @@ The storage engine lives in ``_kv_store`` and the HTTP server in ``_kv_http``.
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from . import common
-from ._kv_store import (INVALID_STORE_REASON, MAX_VALUE_BYTES, Data, Store, StoreError,
-                        encode_document, is_valid_key, is_valid_prefix, parse_document,
-                        sorted_keys, value_problem)
-from .common import (Option, UsageError, diagnose, file_error_reason, handle_action,
-                     invalid_argument, open_input, parse_args, parse_count, usage_failure,
-                     write)
+from ._kv_store import (
+    INVALID_STORE_REASON,
+    MAX_VALUE_BYTES,
+    Data,
+    Store,
+    StoreError,
+    encode_document,
+    is_valid_key,
+    is_valid_prefix,
+    parse_document,
+    sorted_keys,
+    value_problem,
+)
+from .common import (
+    Option,
+    UsageError,
+    diagnose,
+    file_error_reason,
+    handle_action,
+    invalid_argument,
+    open_input,
+    parse_args,
+    parse_count,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-kv"
 DEFAULT_STORE = "kv.json"
@@ -64,7 +84,7 @@ class Failure(Exception):
 @dataclass(frozen=True)
 class Command:
     operands: tuple[str, ...]  # operand names; FILE/KEY/VALUE are all required
-    run: Callable[["Invocation"], None]
+    run: Callable[[Invocation], None]
     options: list[Option] = field(default_factory=list)
 
 
@@ -76,6 +96,7 @@ class Invocation:
 
 
 # --- commands ------------------------------------------------------------------------------
+
 
 def run_set(inv: Invocation) -> None:
     key, value = inv.operands
@@ -111,7 +132,11 @@ def run_del(inv: Invocation) -> None:
 def run_list(inv: Invocation) -> None:
     prefix = str(inv.values.get("prefix", ""))
     data = inv.store.read()
-    write("".join(f"{key}\n" for key in sorted_keys(data) if key.startswith(prefix)).encode())
+    write(
+        "".join(
+            f"{key}\n" for key in sorted_keys(data) if key.startswith(prefix)
+        ).encode()
+    )
 
 
 def run_export(inv: Invocation) -> None:
@@ -140,10 +165,14 @@ def run_import(inv: Invocation) -> None:
 
 
 def run_serve(inv: Invocation) -> None:
-    from ._kv_http import authority, listen_reason, serve  # only serve needs http.server
+    from ._kv_http import (  # only serve needs http.server
+        authority,
+        listen_reason,
+        serve,
+    )
 
     host = str(inv.values.get("host", DEFAULT_HOST))
-    port = int(inv.values.get("port", DEFAULT_PORT))  # type: ignore[arg-type]
+    port = int(inv.values.get("port", DEFAULT_PORT))  # type: ignore
 
     def announce(message: str) -> None:
         diagnose(TOOL, message)
@@ -160,16 +189,26 @@ COMMANDS: dict[str, Command] = {
     "set": Command(("KEY", "VALUE"), run_set),
     "get": Command(("KEY",), run_get),
     "del": Command(("KEY",), run_del),
-    "list": Command((), run_list, [Option("prefix", short="p", long="prefix",
-                                          takes_value=True)]),
+    "list": Command(
+        (), run_list, [Option("prefix", short="p", long="prefix", takes_value=True)]
+    ),
     "export": Command((), run_export),
-    "import": Command(("FILE",), run_import, [Option("replace", short="r", long="replace")]),
-    "serve": Command((), run_serve, [Option("host", long="host", takes_value=True),
-                                     Option("port", long="port", takes_value=True)]),
+    "import": Command(
+        ("FILE",), run_import, [Option("replace", short="r", long="replace")]
+    ),
+    "serve": Command(
+        (),
+        run_serve,
+        [
+            Option("host", long="host", takes_value=True),
+            Option("port", long="port", takes_value=True),
+        ],
+    ),
 }
 
 
 # --- argument handling ---------------------------------------------------------------------
+
 
 def validate(name: str, command: Command, parsed: common.Parsed) -> None:
     """Usage checks after option syntax, in SRS FR-02 order: operands, options, KEY, VALUE."""
@@ -183,11 +222,13 @@ def validate(name: str, command: Command, parsed: common.Parsed) -> None:
         raise invalid_argument(str(values["prefix"]), parsed.spelled["prefix"])
     if name == "serve":
         from ._kv_http import is_valid_host
+
         if "host" in values and not is_valid_host(str(values["host"])):
             raise invalid_argument(str(values["host"]), parsed.spelled["host"])
         if "port" in values:
-            values["port"] = parse_count(str(values["port"]), parsed.spelled["port"],
-                                         minimum=0, maximum=65535)
+            values["port"] = parse_count(
+                str(values["port"]), parsed.spelled["port"], minimum=0, maximum=65535
+            )
     if "KEY" in command.operands and not is_valid_key(operands[0]):
         raise UsageError(f"invalid key '{operands[0]}'")
     if "VALUE" in command.operands:
@@ -224,8 +265,9 @@ def main(argv: list[str]) -> int:
     except UsageError as error:
         return usage_failure(TOOL, error)
 
-    invocation = Invocation(Store(resolve_store_path(top.values)), parsed.values,
-                            parsed.operands)
+    invocation = Invocation(
+        Store(resolve_store_path(top.values)), parsed.values, parsed.operands
+    )
     try:
         command.run(invocation)
     except (Failure, StoreError) as error:

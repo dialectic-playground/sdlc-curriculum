@@ -8,9 +8,22 @@ from __future__ import annotations
 
 import math
 
-from .common import (DataError, InputError, InputStream, Option, UsageError, data_failure,
-                     file_failure, fix, handle_action, open_input, parse_args,
-                     parse_real_token, usage_failure, write)
+from .common import (
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    fix,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_real_token,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-stats"
 HELP_TEXT = """\
@@ -32,7 +45,9 @@ OPTIONS: list[Option] = []
 
 
 def overflow(source: str, token) -> DataError:
-    return DataError(source, token.line, b"arithmetic overflow at '" + token.text + b"'")
+    return DataError(
+        source, token.line, b"arithmetic overflow at '" + token.text + b"'"
+    )
 
 
 def main(argv: list[str]) -> int:
@@ -62,15 +77,16 @@ def main(argv: list[str]) -> int:
                 smallest = largest = total = x
                 squares = square
             else:
-                if x > largest:
-                    largest = x
-                if x < smallest:
-                    smallest = x
+                largest = max(largest, x)
+                smallest = min(smallest, x)
                 total = total + x
                 squares = squares + square
             count += 1
-            if not (math.isfinite(square) and math.isfinite(total)
-                    and math.isfinite(squares)):
+            if not (
+                math.isfinite(square)
+                and math.isfinite(total)
+                and math.isfinite(squares)
+            ):
                 raise overflow(source, token)
     except DataError as error:
         return data_failure(TOOL, error)
@@ -87,14 +103,15 @@ def main(argv: list[str]) -> int:
     n = float(count)
     mean = total / n
     variance = squares / n - mean * mean
-    if variance < 0.0:
-        variance = 0.0
+    variance = max(variance, 0.0)
     deviation = math.sqrt(variance)
-    write(f"{count} data items read\n"
-          f"maximum value read = {fix(largest, 6)}\n"
-          f"minimum value read = {fix(smallest, 6)}\n"
-          f"sum of all values read = {fix(total, 6)}\n"
-          f"mean = {fix(mean, 6)}\n"
-          f"variance = {fix(variance, 6)}\n"
-          f"standard deviation = {fix(deviation, 6)}\n")
+    write(
+        f"{count} data items read\n"
+        f"maximum value read = {fix(largest, 6)}\n"
+        f"minimum value read = {fix(smallest, 6)}\n"
+        f"sum of all values read = {fix(total, 6)}\n"
+        f"mean = {fix(mean, 6)}\n"
+        f"variance = {fix(variance, 6)}\n"
+        f"standard deviation = {fix(deviation, 6)}\n"
+    )
     return 0

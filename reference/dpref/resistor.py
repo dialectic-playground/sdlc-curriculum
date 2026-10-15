@@ -7,9 +7,23 @@ standard output flushed, as soon as the third code of a resistor is complete.
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, Token,
-                     UsageError, data_failure, file_failure, handle_action, open_input,
-                     parse_args, parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-resistor"
 CODES_PROMPT = "Enter the three color codes: "
@@ -34,12 +48,21 @@ Options:
 OPTIONS: list[Option] = [PROMPT]
 
 COLORS = [  # (code, color name), in the order of their digit values 0 ... 9
-    ("B", "Black"), ("N", "Brown"), ("R", "Red"), ("O", "Orange"), ("Y", "Yellow"),
-    ("G", "Green"), ("E", "Blue"), ("V", "Violet"), ("A", "Gray"), ("W", "White"),
+    ("B", "Black"),
+    ("N", "Brown"),
+    ("R", "Red"),
+    ("O", "Orange"),
+    ("Y", "Yellow"),
+    ("G", "Green"),
+    ("E", "Blue"),
+    ("V", "Violet"),
+    ("A", "Gray"),
+    ("W", "White"),
 ]
 DIGITS = {code.encode(): value for value, (code, _) in enumerate(COLORS)}
 GUIDE = "Resistor color codes\nCode  Color   Value\n" + "".join(
-    f"{code}     {name:<8}{value}\n" for value, (code, name) in enumerate(COLORS))
+    f"{code}     {name:<8}{value}\n" for value, (code, name) in enumerate(COLORS)
+)
 
 
 def code_value(token: Token) -> int | None:
@@ -48,7 +71,7 @@ def code_value(token: Token) -> int | None:
 
 
 def resistance_text(d1: int, d2: int, d3: int) -> str:
-    ohms = (10 * d1 + d2) * 10 ** d3
+    ohms = (10 * d1 + d2) * 10**d3
     if ohms >= 1_000_000:
         return common.fix(ohms / 1_000_000, 6) + " mega-ohms"
     if ohms >= 1_000:
@@ -73,11 +96,17 @@ def dialog(tokens: InputStream, source: str, prompting: bool) -> int:
             common.out.flush()
             for token, value in zip(bands, values):
                 if value is None:
-                    data_failure(TOOL, DataError(
-                        source, token.line, b"invalid color code '" + token.text + b"'"))
+                    data_failure(
+                        TOOL,
+                        DataError(
+                            source,
+                            token.line,
+                            b"invalid color code '" + token.text + b"'",
+                        ),
+                    )
             continue
-        letters = " ".join(COLORS[value][0] for value in values)  # type: ignore[index]
-        common.write(f"Resistance of {letters} = {resistance_text(*values)}\n")  # type: ignore[arg-type]
+        letters = " ".join(COLORS[value][0] for value in values)  # type: ignore
+        common.write(f"Resistance of {letters} = {resistance_text(*values)}\n")  # type: ignore
         common.out.flush()
         prompt(prompting, ANSWER_PROMPT)
         token = tokens.token()

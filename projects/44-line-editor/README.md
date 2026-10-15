@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 44 — Modal Line-Oriented Text Editor (`dp-line-ed`)](#project-44--modal-line-oriented-text-editor-dp-line-ed)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 44 — Modal Line-Oriented Text Editor (`dp-line-ed`)
 
 > Edit a text file with a classic line editor — a linked buffer headed by a `[BOF]` sentinel,
@@ -8,7 +24,7 @@
 
 ## Purpose
 
-Project 44 is adapted from §10.3 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 44 is adapted from §10.3 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a line editor that loads a file into a linked list of lines, keeps a pointer to the current
 line, and obeys the commands `i` (insert), `d` (delete), `t` (type), `m` (move), `f` (find),
 `s` (substitute), and `q` (quit and write). The textbook version prompts for the file name,
@@ -21,18 +37,18 @@ valid or not, has exactly one specified outcome.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| A buffer of lines headed by the `[BOF]` sentinel, with a current line | Undo, marks, line addresses, several buffers |
-| Commands `i`, `d [N]`, `t .`/`b`/`e`/`N`, `m N`, `f 'PAT'`, `s 'OLD' 'NEW'`, `q` | Regular expressions, global substitution, shell escapes |
-| Insert mode ended by a line holding a single `.` | Inserting a line that is exactly `.` |
-| Patterns and replacements between any punctuation delimiters | Escape sequences inside patterns |
-| Commands from standard input; the file named by the one operand | Commands from the command line or a script file option |
-| A missing file starts an empty buffer; `q` creates or replaces the file | Backup files, atomic replacement, file locking |
-| Lines as raw bytes: CR, NUL, and invalid UTF-8 preserved; trailing Ctrl-Z ignored (CONV-37) | Character-set conversion, line-ending conversion |
-| Command diagnostics with line numbers (CONV-34); the session continues | Interactive recovery prompts |
-| Optional `*` prompt on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| `--help`, `--version`, CONV-13 usage errors, CONV-16 file errors | Configuration files, environment variables |
+| In scope                                                                                    | Out of scope                                            |
+| :------------------------------------------------------------------------------------------ | :------------------------------------------------------ |
+| A buffer of lines headed by the `[BOF]` sentinel, with a current line                       | Undo, marks, line addresses, several buffers            |
+| Commands `i`, `d [N]`, `t .`/`b`/`e`/`N`, `m N`, `f 'PAT'`, `s 'OLD' 'NEW'`, `q`            | Regular expressions, global substitution, shell escapes |
+| Insert mode ended by a line holding a single `.`                                            | Inserting a line that is exactly `.`                    |
+| Patterns and replacements between any punctuation delimiters                                | Escape sequences inside patterns                        |
+| Commands from standard input; the file named by the one operand                             | Commands from the command line or a script file option  |
+| A missing file starts an empty buffer; `q` creates or replaces the file                     | Backup files, atomic replacement, file locking          |
+| Lines as raw bytes: CR, NUL, and invalid UTF-8 preserved; trailing Ctrl-Z ignored (CONV-37) | Character-set conversion, line-ending conversion        |
+| Command diagnostics with line numbers (CONV-34); the session continues                      | Interactive recovery prompts                            |
+| Optional `*` prompt on standard error (`-p`, `--prompt`, CONV-36)                           | Prompts on standard output                              |
+| `--help`, `--version`, CONV-13 usage errors, CONV-16 file errors                            | Configuration files, environment variables              |
 
 ## Learning objectives
 
@@ -54,15 +70,15 @@ valid or not, has exactly one specified outcome.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-16) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-20, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Files shared by both suites: the text `poem.txt` and the command scripts `cmd-*.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-16)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-20, NFR-01 … NFR-08)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Files shared by both suites: the text `poem.txt` and the command scripts `cmd-*.txt`    |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -86,4 +102,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

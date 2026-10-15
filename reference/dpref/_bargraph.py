@@ -9,9 +9,21 @@ streaming the SRSs require.
 
 from __future__ import annotations
 
-from .common import (DataError, Token, UsageError, data_failure, end_line, file_failure,
-                     handle_action, parse_args, parse_int_token, read_all, strip_eof_marker,
-                     usage_failure, write)
+from .common import (
+    DataError,
+    Token,
+    UsageError,
+    data_failure,
+    end_line,
+    file_failure,
+    handle_action,
+    parse_args,
+    parse_int_token,
+    read_all,
+    strip_eof_marker,
+    usage_failure,
+    write,
+)
 
 MIN_VALUE, MAX_VALUE = 0, 10000
 BLANK = b" \t\n\v\f\r"  # the CONV-32 whitespace bytes
@@ -41,7 +53,9 @@ def print_stars(value: int) -> bytes:
     return b"*" * (value // 2) + b"\n"
 
 
-def records(data: bytes, source: str) -> tuple[list[tuple[bytes, int]], DataError | None]:
+def records(
+    data: bytes, source: str
+) -> tuple[list[tuple[bytes, int]], DataError | None]:
     """Parse the whole input into (title, value) records, stopping at the first data error."""
     lines = split_lines(data)
     while lines and is_blank(lines[-1]):
@@ -53,7 +67,9 @@ def records(data: bytes, source: str) -> tuple[list[tuple[bytes, int]], DataErro
             return parsed, DataError(source, end_line(data), "unexpected end of input")
         text = lines[index + 1].strip(BLANK)
         try:
-            value = parse_int_token(Token(text, index + 2), source, MIN_VALUE, MAX_VALUE)
+            value = parse_int_token(
+                Token(text, index + 2), source, MIN_VALUE, MAX_VALUE
+            )
         except DataError as error:
             return parsed, error
         parsed.append((title, value))

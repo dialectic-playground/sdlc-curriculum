@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 02 — Concatenate & Number Files (`dp-cat`)](#project-02--concatenate--number-files-dp-cat)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 02 — Concatenate & Number Files (`dp-cat`)
 
 > Join files and standard input into one output stream, exactly as the bytes arrive. On request,
@@ -20,15 +36,15 @@ turns these into the visible **CRLF lesson**: every Windows line end shows up as
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Concatenating any number of files and `-` (standard input), in order | Line-ending or character-set conversion |
-| Byte-exact copying of binary data and CRLF files | Recursing into directories |
-| Numbering all lines (`-n`) or non-empty lines (`-b`) across files | Paging, colors, terminal control |
-| Squeezing blank-line runs (`-s`) | Detecting that an input is also the output file |
-| `-v` / `-T` / `-E` / `-A` visualization (`^X`, `M-`, `^I`, `$`, `^M$`) | GNU-only `-e`, `-t`, `-u` |
-| CONV-16 diagnostics that continue past failures; exit status 1 | Configuration files, environment variables |
-| `--help`, `--version`, CONV-13 usage errors (exit 2) | |
+| In scope                                                               | Out of scope                                    |
+| :--------------------------------------------------------------------- | :---------------------------------------------- |
+| Concatenating any number of files and `-` (standard input), in order   | Line-ending or character-set conversion         |
+| Byte-exact copying of binary data and CRLF files                       | Recursing into directories                      |
+| Numbering all lines (`-n`) or non-empty lines (`-b`) across files      | Paging, colors, terminal control                |
+| Squeezing blank-line runs (`-s`)                                       | Detecting that an input is also the output file |
+| `-v` / `-T` / `-E` / `-A` visualization (`^X`, `M-`, `^I`, `$`, `^M$`) | GNU-only `-e`, `-t`, `-u`                       |
+| CONV-16 diagnostics that continue past failures; exit status 1         | Configuration files, environment variables      |
+| `--help`, `--version`, CONV-13 usage errors (exit 2)                   |                                                 |
 
 ## Learning objectives
 
@@ -46,15 +62,15 @@ turns these into the visible **CRLF lesson**: every Windows line end shows up as
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-20, NFR-01 … NFR-10) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites: CRLF, control and high bytes, no final newline, blank runs, an empty file, and a directory |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                      |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                                             |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-20, NFR-01 … NFR-10)                                                                          |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                       |
+| `tests/fixtures/`      | Input files shared by both suites: CRLF, control and high bytes, no final newline, blank runs, an empty file, and a directory |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                        |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                                                          |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                           |
 
 ## What you deliver (in your language repository)
 
@@ -81,4 +97,4 @@ The project is complete when all of the following hold:
 - `make lint` is clean;
 - the memory and streaming measurements for NFR-02 … NFR-04 are recorded in the master test
   plan;
-- every RTM row is *Verified*.
+- every RTM row is _Verified_.

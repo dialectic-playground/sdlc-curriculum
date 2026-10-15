@@ -15,7 +15,7 @@ from . import common
 @dataclass
 class Node:
     name: bytes
-    next: "Node | None" = None
+    next: Node | None = None
 
 
 def print_elephants(head: Node | None) -> None:
@@ -23,7 +23,8 @@ def print_elephants(head: Node | None) -> None:
     count = 1
     current = head
     while current is not None:
-        common.write(b"Elephant number " + str(count).encode() + b" is " + current.name
-                     + b".\n")
+        common.write(
+            b"Elephant number " + str(count).encode() + b" is " + current.name + b".\n"
+        )
         current = current.next
         count += 1

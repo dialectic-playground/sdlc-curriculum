@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-grep — User Manual](#dp-grep--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Pattern selection](#pattern-selection)
+    - [Output control](#output-control)
+    - [File selection](#file-selection)
+    - [Option syntax](#option-syntax)
+  - [PATTERN SYNTAX](#pattern-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-grep — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-grep` 1.0.0 |
-| Project | `05-grep-lite` — Pattern Matching Search Engine |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-05), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                           |
+| :------------ | :---------------------------------------------- |
+| Product       | `dp-grep` 1.0.0                                 |
+| Project       | `05-grep-lite` — Pattern Matching Search Engine |
+| Applies to    | Linux, macOS, Windows                           |
+| Specification | `SRS.md` (SRS-05), `shared/CLI-CONVENTIONS.md`  |
 
 ---
 
@@ -24,11 +51,11 @@ dp-grep --version
 
 ## DESCRIPTION
 
-`dp-grep` searches each *FILE* for lines that match *PATTERN* and writes those lines to standard
-output. With no *FILE* it reads standard input; with `-r` and no *FILE* it searches the current
-directory and everything below it. A *FILE* of `-` means standard input.
+`dp-grep` searches each _FILE_ for lines that match _PATTERN_ and writes those lines to standard
+output. With no _FILE_ it reads standard input; with `-r` and no _FILE_ it searches the current
+directory and everything below it. A _FILE_ of `-` means standard input.
 
-*PATTERN* is a regular expression in the **portable ERE subset** described below. Every
+_PATTERN_ is a regular expression in the **portable ERE subset** described below. Every
 implementation of `dp-grep`, on every operating system, accepts exactly the same patterns and
 selects exactly the same lines. Constructs that other tools support but that do not behave the
 same everywhere, such as `\d`, backreferences, and lazy quantifiers, are rejected with a message
@@ -39,7 +66,7 @@ that names the problem, instead of being silently interpreted one way or another
 unchanged. Files need not be text: NUL bytes and invalid UTF-8 are searched like any other bytes.
 Each printed line ends with a single LF, even if the last line of the file had none.
 
-When more than one *FILE* is given, or with `-r`, each output line starts with the file name and
+When more than one _FILE_ is given, or with `-r`, each output line starts with the file name and
 a colon. Files found by `-r` are named by joining directory and entry names with `/` on every
 operating system, and are visited in a fixed (byte-wise sorted) order, so the output is the same
 everywhere.
@@ -51,28 +78,28 @@ everywhere.
 ### Pattern selection
 
 **`-e PATTERN`, `--regexp=PATTERN`**
-: Use *PATTERN*. Give the option several times to search for several patterns: a line matches
-  if any of them matches. When `-e` is used, every operand is a *FILE*. Use `-e` for a pattern
-  that begins with `-`: `dp-grep -e -x notes.txt`.
+: Use _PATTERN_. Give the option several times to search for several patterns: a line matches
+if any of them matches. When `-e` is used, every operand is a _FILE_. Use `-e` for a pattern
+that begins with `-`: `dp-grep -e -x notes.txt`.
 
 **`-F`, `--fixed-strings`**
 : Treat every pattern as a literal string. No character is special, so `dp-grep -F 'a.b*'`
-  finds the text `a.b*` exactly.
+finds the text `a.b*` exactly.
 
 **`-i`, `--ignore-case`**
 : Ignore the case of the ASCII letters `A`–`Z` and `a`–`z`. Other characters, such as `é` and
-  `É`, are always compared exactly.
+`É`, are always compared exactly.
 
 **`-v`, `--invert-match`**
-: Select the lines that do *not* match.
+: Select the lines that do _not_ match.
 
 **`-x`, `--line-regexp`**
 : A pattern must match the whole line, from its first byte to its last. `-x` overrides `-w`.
 
 **`-w`, `--word-regexp`**
 : A pattern must match a whole word: the matched text must not be directly preceded or followed
-  by a word character (`A`–`Z`, `a`–`z`, `0`–`9`, or `_`). For example, `-w cat` matches
-  `the cat sat` and `CAT!` (with `-i`), but not `concatenate`, `cat_food`, or `bobcat`.
+by a word character (`A`–`Z`, `a`–`z`, `0`–`9`, or `_`). For example, `-w cat` matches
+`the cat sat` and `CAT!` (with `-i`), but not `concatenate`, `cat_food`, or `bobcat`.
 
 ### Output control
 
@@ -84,22 +111,22 @@ everywhere.
 
 **`-l`, `--files-with-matches`**
 : Instead of the lines, print the name of each file that has at least one selected line.
-  `dp-grep` stops reading a file as soon as it knows the answer.
+`dp-grep` stops reading a file as soon as it knows the answer.
 
 **`-q`, `--quiet`**
 : Print nothing. Exit with status 0 as soon as any line is selected, without reading further.
-  Useful in scripts: `if dp-grep -q ERROR log.txt; then ...`.
+Useful in scripts: `if dp-grep -q ERROR log.txt; then ...`.
 
 **`-s`, `--no-messages`**
 : Do not report missing or unreadable files and directories. The exit status still reports the
-  error.
+error.
 
 **`-H`, `--with-filename`**
 : Start each output line (and each count) with the file name, even for a single file.
 
 **`-h`, `--no-filename`**
 : Never start output lines with the file name. If both `-H` and `-h` are given, the last one
-  wins. Note that `-h` does **not** mean help; use `--help`.
+wins. Note that `-h` does **not** mean help; use `--help`.
 
 If several of `-q`, `-l`, and `-c` are given, `-q` wins over `-l`, which wins over `-c`.
 
@@ -107,11 +134,11 @@ If several of `-q`, `-l`, and `-c` are given, `-q` wins over `-l`, which wins ov
 
 **`-r`, `--recursive`**
 : Search each directory operand, and all of its subdirectories, in a fixed order: entries are
-  sorted by the bytes of their names (so `B.txt` comes before `a.txt`, and the directory `a`
-  comes before `a-b.txt` and `a.txt`), and the contents of a subdirectory are searched at the
-  point where its name appears. Names that start with `.` are searched too. Symbolic links
-  found inside a directory are skipped; a symbolic link given as an operand is followed. With
-  no *FILE*, the current directory is searched and names are printed without a leading `./`.
+sorted by the bytes of their names (so `B.txt` comes before `a.txt`, and the directory `a`
+comes before `a-b.txt` and `a.txt`), and the contents of a subdirectory are searched at the
+point where its name appears. Names that start with `.` are searched too. Symbolic links
+found inside a directory are skipped; a symbolic link given as an operand is followed. With
+no _FILE_, the current directory is searched and names are printed without a leading `./`.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -132,19 +159,19 @@ If several of `-q`, `-l`, and `-c` are given, `-q` wins over `-l`, which wins ov
 
 A pattern is made of the following pieces. Everything else is rejected (see DIAGNOSTICS).
 
-| Syntax | Meaning |
-| :-- | :-- |
-| `c` | Any ordinary character matches itself. `]` and `}` are ordinary characters. Non-ASCII characters such as `ë` are allowed and match themselves |
-| `\c` | One of the fourteen special characters `^ . [ ] $ ( ) \| * + ? { } \`, matched literally. A backslash before any other character is an error |
-| `.` | Any single byte |
-| `[abc]`, `[a-z]` | Any one byte from the list; `a-z` is a range of ASCII characters |
-| `[^abc]` | Any one byte **not** in the list (including non-ASCII bytes) |
-| `[[:digit:]]` | A character class inside a bracket expression: `alpha`, `digit`, `alnum`, `upper`, `lower`, `space`, `blank`, `punct`, `print`, `graph`, `cntrl`, `xdigit` (ASCII only) |
-| `^`, `$` | The start and the end of the line |
-| `x*`, `x+`, `x?` | Zero or more, one or more, zero or one `x` |
-| `x{m}`, `x{m,}`, `x{m,n}` | Exactly m, at least m, from m to n `x` (m and n at most 255) |
-| `x\|y` | Either `x` or `y` |
-| `(x)` | Grouping, so that a quantifier applies to all of `x` |
+| Syntax                    | Meaning                                                                                                                                                                 |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `c`                       | Any ordinary character matches itself. `]` and `}` are ordinary characters. Non-ASCII characters such as `ë` are allowed and match themselves                           |
+| `\c`                      | One of the fourteen special characters `^ . [ ] $ ( ) \| * + ? { } \`, matched literally. A backslash before any other character is an error                            |
+| `.`                       | Any single byte                                                                                                                                                         |
+| `[abc]`, `[a-z]`          | Any one byte from the list; `a-z` is a range of ASCII characters                                                                                                        |
+| `[^abc]`                  | Any one byte **not** in the list (including non-ASCII bytes)                                                                                                            |
+| `[[:digit:]]`             | A character class inside a bracket expression: `alpha`, `digit`, `alnum`, `upper`, `lower`, `space`, `blank`, `punct`, `print`, `graph`, `cntrl`, `xdigit` (ASCII only) |
+| `^`, `$`                  | The start and the end of the line                                                                                                                                       |
+| `x*`, `x+`, `x?`          | Zero or more, one or more, zero or one `x`                                                                                                                              |
+| `x{m}`, `x{m,}`, `x{m,n}` | Exactly m, at least m, from m to n `x` (m and n at most 255)                                                                                                            |
+| `x\|y`                    | Either `x` or `y`                                                                                                                                                       |
+| `(x)`                     | Grouping, so that a quantifier applies to all of `x`                                                                                                                    |
 
 Inside brackets, every ASCII character is literal, including `\`, `.`, and `*`. To include `]`,
 put it first (`[]a]`); to include `-`, put it first or last (`[a-]`). Brackets may contain only
@@ -161,11 +188,11 @@ Some consequences of the byte-based design:
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | At least one line was selected (with `-q`: even if an error occurred) |
-| 1 | No line was selected, and no error occurred |
-| 2 | An error occurred: a usage error, an invalid pattern, or a file that could not be read |
+| Status | Meaning                                                                                |
+| :----- | :------------------------------------------------------------------------------------- |
+| 0      | At least one line was selected (with `-q`: even if an error occurred)                  |
+| 1      | No line was selected, and no error occurred                                            |
+| 2      | An error occurred: a usage error, an invalid pattern, or a file that could not be read |
 
 With `-v`, "selected" means "did not match", so `dp-grep -v x` exits 0 if some line lacks `x`.
 
@@ -179,35 +206,35 @@ dp-grep: unrecognized option '--cuont'
 Try 'dp-grep --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'Z'` | Unknown short option | Check the option letter |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 'e'` | `-e` at the end of the command | Give the pattern after `-e` |
-| `option '--regexp' requires an argument` | `--regexp` at the end of the command | Give the pattern |
-| `option '--count' doesn't allow an argument` | `--count=…` or another flag given a value | Remove the `=…` |
-| `missing operand` | No pattern was given | Give a pattern, or use `-e` |
+| Message                                      | Cause                                     | Fix                         |
+| :------------------------------------------- | :---------------------------------------- | :-------------------------- |
+| `invalid option -- 'Z'`                      | Unknown short option                      | Check the option letter     |
+| `unrecognized option '--xyz'`                | Unknown or abbreviated long option        | Spell the option in full    |
+| `option requires an argument -- 'e'`         | `-e` at the end of the command            | Give the pattern after `-e` |
+| `option '--regexp' requires an argument`     | `--regexp` at the end of the command      | Give the pattern            |
+| `option '--count' doesn't allow an argument` | `--count=…` or another flag given a value | Remove the `=…`             |
+| `missing operand`                            | No pattern was given                      | Give a pattern, or use `-e` |
 
 An invalid pattern is reported as `dp-grep: invalid pattern '<PATTERN>': <reason>` (no hint
 line) and nothing is searched:
 
-| Reason | Example | Cause |
-| :-- | :-- | :-- |
-| `unsupported escape \1` | `(a)\1` | Backreferences are not supported |
-| `unsupported escape \d` | `\d+`, `\w`, `\s`, `\b`, `\-`, `\n` | Only the fourteen special characters may follow `\`; use `[0-9]` for digits |
-| `trailing backslash` | `abc\` | A pattern cannot end with `\` |
-| `nothing to repeat` | `*a`, `(?=x)`, `(?i)x`, `^*` | A quantifier needs something before it; lookaround and inline flags are not supported |
-| `multiple repeat` | `a+?`, `a**` | Only one quantifier per item; lazy and possessive forms are not supported |
-| `invalid interval` | `a{2,1}`, `a{256}`, `a{,3}`, `f{oo}` | Use `{m}`, `{m,}`, or `{m,n}` with m ≤ n ≤ 255; write a literal brace as `\{` |
-| `repetition too large` | `(a{30}){40}` | Nested repetition counts multiply to more than 1000 |
-| `nesting too deep` | 101 nested `(` | More than 100 nested groups |
-| `unmatched (` | `(lazy\|dog` | A group is not closed |
-| `unmatched )` | `a)` | `)` without a matching `(`; write `\)` for a literal |
-| `unmatched [` | `[abc`, `[[:alpha]` | A bracket expression is not closed |
-| `invalid character class` | `[[:word:]]` | Use one of the twelve class names |
-| `invalid range` | `[z-a]`, `[[:digit:]-z]` | Range ends must be single characters in ascending order |
-| `unsupported bracket construct` | `[[.a.]]`, `[[=a=]]` | Collating elements and equivalence classes are not supported |
-| `non-ASCII character in bracket expression` | `[éè]` | Use alternation instead: `(é\|è)` |
+| Reason                                      | Example                              | Cause                                                                                 |
+| :------------------------------------------ | :----------------------------------- | :------------------------------------------------------------------------------------ |
+| `unsupported escape \1`                     | `(a)\1`                              | Backreferences are not supported                                                      |
+| `unsupported escape \d`                     | `\d+`, `\w`, `\s`, `\b`, `\-`, `\n`  | Only the fourteen special characters may follow `\`; use `[0-9]` for digits           |
+| `trailing backslash`                        | `abc\`                               | A pattern cannot end with `\`                                                         |
+| `nothing to repeat`                         | `*a`, `(?=x)`, `(?i)x`, `^*`         | A quantifier needs something before it; lookaround and inline flags are not supported |
+| `multiple repeat`                           | `a+?`, `a**`                         | Only one quantifier per item; lazy and possessive forms are not supported             |
+| `invalid interval`                          | `a{2,1}`, `a{256}`, `a{,3}`, `f{oo}` | Use `{m}`, `{m,}`, or `{m,n}` with m ≤ n ≤ 255; write a literal brace as `\{`         |
+| `repetition too large`                      | `(a{30}){40}`                        | Nested repetition counts multiply to more than 1000                                   |
+| `nesting too deep`                          | 101 nested `(`                       | More than 100 nested groups                                                           |
+| `unmatched (`                               | `(lazy\|dog`                         | A group is not closed                                                                 |
+| `unmatched )`                               | `a)`                                 | `)` without a matching `(`; write `\)` for a literal                                  |
+| `unmatched [`                               | `[abc`, `[[:alpha]`                  | A bracket expression is not closed                                                    |
+| `invalid character class`                   | `[[:word:]]`                         | Use one of the twelve class names                                                     |
+| `invalid range`                             | `[z-a]`, `[[:digit:]-z]`             | Range ends must be single characters in ascending order                               |
+| `unsupported bracket construct`             | `[[.a.]]`, `[[=a=]]`                 | Collating elements and equivalence classes are not supported                          |
+| `non-ASCII character in bracket expression` | `[éè]`                               | Use alternation instead: `(é\|è)`                                                     |
 
 File problems are reported as `dp-grep: <file>: <reason>`, where the reason is one of
 `No such file or directory`, `Permission denied`, `Is a directory` (a directory given without

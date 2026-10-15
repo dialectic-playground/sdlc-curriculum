@@ -11,10 +11,18 @@ from __future__ import annotations
 
 import os
 import stat
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import BinaryIO, Callable
+from typing import BinaryIO
 
-from .common import diagnose, encode_arg, file_error_reason, invalid_argument, open_input, write
+from .common import (
+    diagnose,
+    encode_arg,
+    file_error_reason,
+    invalid_argument,
+    open_input,
+    write,
+)
 
 BLOCK_SIZE = 64 * 1024
 MAX_AMOUNT = 2**63 - 1
@@ -24,6 +32,7 @@ LF = b"\n"
 
 
 # --- option values -----------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class Amount:
@@ -81,6 +90,7 @@ class HeaderWriter:
 
 # --- per-operand driver ------------------------------------------------------------------
 
+
 @dataclass
 class Input:
     operand: str
@@ -95,8 +105,12 @@ def report(tool: str, item_operand: str, error: OSError) -> None:
     diagnose(tool, f"{display_name(item_operand)}: {file_error_reason(error, path)}")
 
 
-def process_operands(tool: str, operands: list[str], headers: HeaderWriter,
-                     handle: Callable[[Input], None]) -> bool:
+def process_operands(
+    tool: str,
+    operands: list[str],
+    headers: HeaderWriter,
+    handle: Callable[[Input], None],
+) -> bool:
     """Open each operand in order, write its header, and slice it with ``handle``.
 
     Failures are reported per CONV-16 and processing continues (CONV-17). A failed open
@@ -129,6 +143,7 @@ def process_operands(tool: str, operands: list[str], headers: HeaderWriter,
 
 # --- byte primitives ---------------------------------------------------------------------
 
+
 def regular_region(stream: BinaryIO) -> tuple[int, int] | None:
     """Return (current offset, size) when ``stream`` is a seekable regular file, else None."""
     try:
@@ -144,7 +159,7 @@ def regular_region(stream: BinaryIO) -> tuple[int, int] | None:
 def blocks(stream: BinaryIO):
     """Yield the remaining content of ``stream`` in blocks of at most BLOCK_SIZE bytes."""
     while True:
-        block = stream.read1(BLOCK_SIZE)  # type: ignore[attr-defined]
+        block = stream.read1(BLOCK_SIZE)  # type: ignore
         if not block:
             return
         yield block
@@ -158,7 +173,7 @@ def copy_rest(stream: BinaryIO) -> None:
 def copy_count(stream: BinaryIO, count: int) -> None:
     """Copy at most ``count`` bytes from the current position."""
     while count > 0:
-        block = stream.read1(min(BLOCK_SIZE, count))  # type: ignore[attr-defined]
+        block = stream.read1(min(BLOCK_SIZE, count))  # type: ignore
         if not block:
             return
         write(block)
@@ -173,7 +188,7 @@ def skip_count(stream: BinaryIO, count: int) -> None:
         stream.seek(min(size, start + count))
         return
     while count > 0:
-        block = stream.read1(min(BLOCK_SIZE, count))  # type: ignore[attr-defined]
+        block = stream.read1(min(BLOCK_SIZE, count))  # type: ignore
         if not block:
             return
         count -= len(block)
@@ -191,7 +206,7 @@ def copy_lines(stream: BinaryIO, count: int) -> None:
                 break
             count -= 1
         if count == 0:
-            write(block[:index + 1])
+            write(block[: index + 1])
             return
         write(block)
 
@@ -209,7 +224,7 @@ def skip_lines(stream: BinaryIO, count: int) -> None:
                 break
             count -= 1
         if count == 0:
-            write(block[index + 1:])
+            write(block[index + 1 :])
 
 
 def last_lines_offset(stream: BinaryIO, start: int, end: int, count: int) -> int:
@@ -253,11 +268,11 @@ def split_lines(stream: BinaryIO):
             if index < 0:
                 break
             if partial:
-                partial += block[begin:index + 1]
+                partial += block[begin : index + 1]
                 yield bytes(partial)
                 partial.clear()
             else:
-                yield block[begin:index + 1]
+                yield block[begin : index + 1]
             begin = index + 1
         partial += block[begin:]
     if partial:

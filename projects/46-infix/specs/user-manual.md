@@ -1,11 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-infix — User Manual](#dp-infix--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The dialog](#the-dialog)
+    - [Expressions](#expressions)
+    - [Output](#output)
+    - [Mistakes in an expression](#mistakes-in-an-expression)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-infix — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-infix` 1.0.0 |
-| Project | `46-infix` — Shunting-Yard Infix to Postfix Conversion |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-46), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                  |
+| :------------ | :----------------------------------------------------- |
+| Product       | `dp-infix` 1.0.0                                       |
+| Project       | `46-infix` — Shunting-Yard Infix to Postfix Conversion |
+| Applies to    | Linux, macOS, Windows                                  |
+| Specification | `SRS.md` (SRS-46), `shared/CLI-CONVENTIONS.md`         |
 
 ---
 
@@ -23,8 +51,8 @@ dp-infix --version
 
 ## DESCRIPTION
 
-`dp-infix` reads arithmetic expressions in the usual *infix* notation, where each operator
-stands between its operands, and rewrites each one in *postfix* (reverse Polish) notation,
+`dp-infix` reads arithmetic expressions in the usual _infix_ notation, where each operator
+stands between its operands, and rewrites each one in _postfix_ (reverse Polish) notation,
 where each operator follows its operands and no parentheses are needed:
 
 ```text
@@ -32,7 +60,7 @@ Infix:   (A + B) * C - D / E
 Postfix: A B + C * D E / -
 ```
 
-It reads from *FILE*, or from standard input when there is no *FILE* or *FILE* is `-`.
+It reads from _FILE_, or from standard input when there is no _FILE_ or _FILE_ is `-`.
 
 ### The dialog
 
@@ -108,9 +136,9 @@ bytes at the very end (the end-of-file mark of old MS-DOS files) are all read co
 ## OPTIONS
 
 **`-p`, `--prompt`**
-: Before each expression is read, write `Enter infix expression: ` to standard error, and
-  before each answer is read, write `Another? (y/n) `. A last prompt appears before the end of
-  the input is noticed.
+: Before each expression is read, write `Enter infix expression:o standard error, and
+before each answer is read, write `Another? (y/n)A last prompt appears before the end of
+the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -130,11 +158,11 @@ bytes at the very end (the end-of-file mark of old MS-DOS files) are all read co
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every expression was converted (an empty input is fine), or help or version was printed |
-| 1 | An expression was rejected, an answer was invalid, or the input could not be read |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                          |
+| :----- | :----------------------------------------------------------------------------------------------- |
+| 0      | Success: every expression was converted (an empty input is fine), or help or version was printed |
+| 1      | An expression was rejected, an answer was invalid, or the input could not be read                |
+| 2      | Usage error: an invalid option or more than one file                                             |
 
 ## DIAGNOSTICS
 
@@ -153,29 +181,29 @@ Postfix: A B +
 (Standard error and standard output are shown together here; the results go to standard
 output.)
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid character 'C'` | A character that is not a letter, digit, operator, parenthesis, space, or tab; bytes outside printable ASCII are shown as `\xHH` | Remove it; write operands with letters and digits only |
-| `S:L: unexpected operand 'X'` | Two operands in a row, as in `A B` or `2 x` | Put an operator between them |
-| `S:L: unexpected operator 'O'` | An operator with no operand before it, as in `-A`, `A * * B`, or `(+ A)` | Supply the missing operand; unary minus is not supported |
-| `S:L: unexpected '('` | A parenthesis directly after an operand, as in `A(B)` | Write the operator: `A * (B)` |
-| `S:L: unexpected ')'` | A `)` with no operand before it, as in `()` or `(A +)` | Supply the missing operand |
-| `S:L: unmatched ')'` | A `)` with no `(` to close | Remove it or add the `(` |
-| `S:L: empty expression` | The expression line is empty or holds only blanks | Type an expression |
-| `S:L: unexpected end of expression` | The line ends after an operator or `(` | Complete the expression |
-| `S:L: unmatched '('` | A `(` is never closed | Add the `)` |
+| Message                             | Cause                                                                                                                            | Fix                                                      |
+| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------- |
+| `S:L: invalid character 'C'`        | A character that is not a letter, digit, operator, parenthesis, space, or tab; bytes outside printable ASCII are shown as `\xHH` | Remove it; write operands with letters and digits only   |
+| `S:L: unexpected operand 'X'`       | Two operands in a row, as in `A B` or `2 x`                                                                                      | Put an operator between them                             |
+| `S:L: unexpected operator 'O'`      | An operator with no operand before it, as in `-A`, `A * * B`, or `(+ A)`                                                         | Supply the missing operand; unary minus is not supported |
+| `S:L: unexpected '('`               | A parenthesis directly after an operand, as in `A(B)`                                                                            | Write the operator: `A * (B)`                            |
+| `S:L: unexpected ')'`               | A `)` with no operand before it, as in `()` or `(A +)`                                                                           | Supply the missing operand                               |
+| `S:L: unmatched ')'`                | A `)` with no `(` to close                                                                                                       | Remove it or add the `(`                                 |
+| `S:L: empty expression`             | The expression line is empty or holds only blanks                                                                                | Type an expression                                       |
+| `S:L: unexpected end of expression` | The line ends after an operator or `(`                                                                                           | Complete the expression                                  |
+| `S:L: unmatched '('`                | A `(` is never closed                                                                                                            | Add the `)`                                              |
 
 Problems that end the run (exit status 1):
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid answer 'A'` | The answer line is not `y`, `Y`, `n`, or `N` | Answer `y` or `n`; check that expressions and answers alternate |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                            | Fix                                                             |
+| :----------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `S:L: invalid answer 'A'`      | The answer line is not `y`, `Y`, `n`, or `N`                     | Answer `y` or `n`; check that expressions and answers alternate |
+| `F: No such file or directory` | _F_ does not exist                                               | Check the spelling and the current directory                    |
+| `F: Permission denied`         | You may not read _F_                                             | Check the file's permissions                                    |
+| `F: Is a directory`            | _F_ is a directory                                               | Name a file instead                                             |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                  | Correct the path                                                |
+| `F: Input/output error`        | Any other read failure                                           | Check the device or file system                                 |
+| `write error`                  | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere                     |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -186,12 +214,12 @@ dp-infix: extra operand 'mixed.txt'
 Try 'dp-infix --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-infix` once per file |
+| Message                                       | Cause                                                   | Fix                          |
+| :-------------------------------------------- | :------------------------------------------------------ | :--------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                     |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full     |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`              |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-infix` once per file |
 
 ## EXAMPLES
 

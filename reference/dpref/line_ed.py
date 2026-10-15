@@ -13,9 +13,22 @@ import re
 import sys
 
 from . import common
-from .common import (INT64_MAX, PROMPT, DataError, InputError, InputStream, Option, Token,
-                     UsageError, data_failure, file_failure, handle_action, parse_args, prompt,
-                     usage_failure)
+from .common import (
+    INT64_MAX,
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-line-ed"
 SOURCE = "-"
@@ -120,7 +133,7 @@ def take_string(text: bytes) -> tuple[bytes, bytes]:
     end = text.find(text[0:1], 1)
     if end < 0:
         raise CommandError("unterminated string")
-    return text[1:end], text[end + 1:].lstrip(BLANKS)
+    return text[1:end], text[end + 1 :].lstrip(BLANKS)
 
 
 def no_more(rest: bytes) -> None:
@@ -159,7 +172,7 @@ class Editor:
             words = split_words(rest)
             count = parse_count(words[0]) if words else 1
             no_more(b" ".join(words[1:]))
-            del self.lines[self.current:self.current + count]
+            del self.lines[self.current : self.current + count]
         elif word in (b"t", b"m"):
             words = split_words(rest)
             if not words:
@@ -180,7 +193,9 @@ class Editor:
             count = parse_count(target)
             no_more(b" ".join(words[1:]))
             if word == b"t":
-                for index in range(self.current + 1, min(self.current + count, self.last()) + 1):
+                for index in range(
+                    self.current + 1, min(self.current + count, self.last()) + 1
+                ):
                     self.display(index)
             else:
                 self.current = min(self.current + count, self.last())
@@ -225,6 +240,7 @@ def edit(path: str, editor: Editor, reader: InputStream, prompting: bool) -> int
         if not text:
             continue
         match = _COMMAND.match(text)
+        assert match is not None
         word, rest = match.group(1), match.group(2)
         number = line.line
         try:

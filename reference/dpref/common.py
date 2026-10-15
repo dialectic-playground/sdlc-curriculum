@@ -11,8 +11,9 @@ from __future__ import annotations
 import os
 import re
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import BinaryIO, Callable
+from typing import BinaryIO
 
 SPEC_VERSION = "1.0.0"
 
@@ -40,14 +41,18 @@ class Parsed:
     values: dict[str, object] = field(default_factory=dict)
     operands: list[str] = field(default_factory=list)
     action: str | None = None  # "help" or "version" when requested (CONV-12)
-    spelled: dict[str, str] = field(default_factory=dict)  # dest -> option as last written
+    spelled: dict[str, str] = field(
+        default_factory=dict
+    )  # dest -> option as last written
 
 
 HELP = Option("__help", long="help")
 VERSION = Option("__version", long="version")
 
 
-def parse_args(argv: list[str], options: list[Option], *, permute: bool = True) -> Parsed:
+def parse_args(
+    argv: list[str], options: list[Option], *, permute: bool = True
+) -> Parsed:
     """Parse ``argv`` per CONV-07..CONV-13.
 
     Flags store True, valued options store their string (or a list when ``repeatable``).
@@ -65,7 +70,7 @@ def parse_args(argv: list[str], options: list[Option], *, permute: bool = True) 
             parsed.action = "help" if option is HELP else "version"
             return True
         if option.repeatable:
-            parsed.values.setdefault(option.dest, []).append(value)  # type: ignore[union-attr]
+            parsed.values.setdefault(option.dest, []).append(value)  # type: ignore
         else:
             parsed.values[option.dest] = value
         parsed.spelled[option.dest] = spelled
@@ -131,8 +136,9 @@ def invalid_argument(value: str, spelled_option: str) -> UsageError:
     return UsageError(f"invalid argument '{value}' for '{spelled_option}'")
 
 
-def parse_count(value: str, spelled_option: str, minimum: int = 0,
-                maximum: int | None = None) -> int:
+def parse_count(
+    value: str, spelled_option: str, minimum: int = 0, maximum: int | None = None
+) -> int:
     """Parse an ASCII-decimal integer option value within [minimum, maximum]."""
     if not value or not all("0" <= c <= "9" for c in value):
         raise invalid_argument(value, spelled_option)
@@ -188,7 +194,11 @@ def handle_action(tool: str, parsed: Parsed, help_text: str) -> bool:
 
 def file_error_reason(error: OSError, path: str | None = None) -> str:
     """Map an OSError to the fixed CONV-16 reason text."""
-    if path is not None and os.path.isdir(path) and not isinstance(error, FileNotFoundError):
+    if (
+        path is not None
+        and os.path.isdir(path)
+        and not isinstance(error, FileNotFoundError)
+    ):
         return "Is a directory"
     if isinstance(error, FileNotFoundError):
         return "No such file or directory"
@@ -245,7 +255,7 @@ def run(main: Callable[[list[str]], int], tool: str) -> None:
 WHITESPACE = b" \t\n\v\f\r"
 _INTEGER = re.compile(rb"[+-]?[0-9]+\Z")
 _REAL = re.compile(rb"[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][+-]?[0-9]+)?\Z")
-INT64_MIN, INT64_MAX = -(2 ** 63), 2 ** 63 - 1
+INT64_MIN, INT64_MAX = -(2**63), 2**63 - 1
 
 
 class DataError(Exception):
@@ -294,8 +304,9 @@ def end_line(data: bytes) -> int:
     return data.count(b"\n") + 1
 
 
-def parse_int_token(token: Token, source: str, minimum: int = INT64_MIN,
-                    maximum: int = INT64_MAX) -> int:
+def parse_int_token(
+    token: Token, source: str, minimum: int = INT64_MIN, maximum: int = INT64_MAX
+) -> int:
     """An *integer* token (CONV-33), optionally range-restricted (``value out of range``)."""
     if not _INTEGER.match(token.text) or not INT64_MIN <= int(token.text) <= INT64_MAX:
         raise DataError(source, token.line, b"invalid integer '" + token.text + b"'")
@@ -320,7 +331,9 @@ def unexpected_end(source: str, data: bytes) -> DataError:
 
 def data_failure(tool: str, error: DataError) -> int:
     """Write a CONV-34 diagnostic and return exit status 1."""
-    err.write(encode_arg(f"{tool}: {error.source}:{error.line}: ") + error.message + b"\n")
+    err.write(
+        encode_arg(f"{tool}: {error.source}:{error.line}: ") + error.message + b"\n"
+    )
     return 1
 
 
@@ -346,10 +359,10 @@ def prompt(enabled: bool, text: str | bytes) -> None:
 
 
 PROMPT = Option("prompt", short="p", long="prompt")
-MAX_SEED = 2 ** 32 - 1
+MAX_SEED = 2**32 - 1
 
 
-def parse_seed(parsed: "Parsed", dest: str = "seed") -> int:
+def parse_seed(parsed: Parsed, dest: str = "seed") -> int:
     """The CONV-38 seed: default 1, ASCII digits 0 … 4294967295."""
     if dest not in parsed.values:
         return 1
@@ -410,11 +423,11 @@ class InputStream:
         if self.at_eof:
             return False
         try:
-            chunk = self.handle.read1(self.CHUNK_SIZE)  # type: ignore[attr-defined]
+            chunk = self.handle.read1(self.CHUNK_SIZE)  # type: ignore
         except OSError as error:
             raise InputError(error) from error
         if chunk:
-            del self.buffer[:self.position]
+            del self.buffer[: self.position]
             self.position = 0
             self.buffer += chunk
             return True
@@ -429,7 +442,10 @@ class InputStream:
     def token(self) -> Token | None:
         """The next whitespace-delimited token, or None at the end of the input."""
         while True:
-            while self.position < len(self.buffer) and self.buffer[self.position] in WHITESPACE:
+            while (
+                self.position < len(self.buffer)
+                and self.buffer[self.position] in WHITESPACE
+            ):
                 if self.buffer[self.position] == 0x0A:
                     self.line += 1
                 self.position += 1
@@ -463,7 +479,7 @@ class InputStream:
         while True:
             newline = self.buffer.find(b"\n", self.position)
             if newline >= 0:
-                text = bytes(self.buffer[self.position:newline])
+                text = bytes(self.buffer[self.position : newline])
                 self.position = newline + 1
                 number = self.line
                 self.line += 1
@@ -472,7 +488,7 @@ class InputStream:
                 break
         if self.position >= len(self.buffer):
             return None
-        text = bytes(self.buffer[self.position:])
+        text = bytes(self.buffer[self.position :])
         self.position = len(self.buffer)
         return Token(text, self.line)
 

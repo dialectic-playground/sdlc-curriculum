@@ -8,9 +8,24 @@ CONV-38 generator: each roll draws the first die, then the second.
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, AnsiRand, DataError, InputError, InputStream, Option,
-                     UsageError, data_failure, file_failure, handle_action, open_input,
-                     parse_args, parse_int_token, parse_seed, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    AnsiRand,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    parse_seed,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-dice"
 PLAY_PROMPT = "Want to play? (1: yes, 0: no) "
@@ -126,8 +141,9 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        return game(InputStream(handle), source, bool(parsed.values.get("prompt")),
-                    Dice(seed))
+        return game(
+            InputStream(handle), source, bool(parsed.values.get("prompt")), Dice(seed)
+        )
     except DataError as error:
         common.out.flush()
         return data_failure(TOOL, error)

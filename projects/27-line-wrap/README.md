@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 27 — Greedy Word-Wrapping Text Formatter (`dp-wrap`)](#project-27--greedy-word-wrapping-text-formatter-dp-wrap)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 27 — Greedy Word-Wrapping Text Formatter (`dp-wrap`)
 
 > Fill a stream of words into lines no longer than a given length, the way a professional
@@ -7,7 +23,7 @@
 
 ## Purpose
 
-Project 27 is adapted from §5.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 27 is adapted from §5.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads a line length and then a stream of words, and writes the words greedily,
 separated by single spaces, so that no line exceeds the length. The textbook version reads into
 a fixed-size word buffer, counts bytes, and prints its error message into the middle of the
@@ -19,16 +35,16 @@ standard error and still written, and the arithmetic is safe for any line length
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Words as whitespace-separated tokens (CONV-32), any line structure | Hyphenation, justification, indentation |
-| Line length from the first token, or from `-w`, `--width` (1 … 2⁶³−1) | Display widths (wide or combining characters, TAB stops) |
-| Word lengths in UTF-8 characters (SRS-04 rule) or bytes (`-b`) | Preserving paragraphs or blank lines |
-| Over-long words reported on standard error and written on a line of their own | Breaking a word across lines |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files, writing files |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Prompts (the textbook program did not prompt) |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                      | Out of scope                                             |
+| :---------------------------------------------------------------------------- | :------------------------------------------------------- |
+| Words as whitespace-separated tokens (CONV-32), any line structure            | Hyphenation, justification, indentation                  |
+| Line length from the first token, or from `-w`, `--width` (1 … 2⁶³−1)         | Display widths (wide or combining characters, TAB stops) |
+| Word lengths in UTF-8 characters (SRS-04 rule) or bytes (`-b`)                | Preserving paragraphs or blank lines                     |
+| Over-long words reported on standard error and written on a line of their own | Breaking a word across lines                             |
+| Standard input or one `FILE` operand (`-` is standard input)                  | Several input files, writing files                       |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                 | Other legacy encodings                                   |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors             | Prompts (the textbook program did not prompt)            |
+| `--help`, `--version`, CONV-13 usage errors                                   | Configuration files, environment variables               |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ standard error and still written, and the arithmetic is safe for any line length
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-13, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`fox.txt`, `words.txt`, `utf8.txt`, `long.txt`, `badwidth.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                           |
+| :--------------------- | :------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                  |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-13, NFR-01 … NFR-08)                                               |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                            |
+| `tests/fixtures/`      | Input files shared by both suites (`fox.txt`, `words.txt`, `utf8.txt`, `long.txt`, `badwidth.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                             |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)            |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                |
 
 The textbook section has no companion data file; every fixture was written for this project.
 `fox.txt` holds the example from the section's description.
@@ -77,4 +93,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

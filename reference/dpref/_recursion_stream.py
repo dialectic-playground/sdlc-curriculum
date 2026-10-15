@@ -9,16 +9,33 @@ a trailing run of 0x1A bytes is ignored (CONV-37).
 from __future__ import annotations
 
 import sys
-from typing import Callable
+from collections.abc import Callable
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Token, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args, prompt,
-                     usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Token,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 
-def run_tool(argv: list[str], tool: str, help_text: str, prompt_text: str,
-             answer: Callable[[Token, str], None]) -> int:
+def run_tool(
+    argv: list[str],
+    tool: str,
+    help_text: str,
+    prompt_text: str,
+    answer: Callable[[Token, str], None],
+) -> int:
     """Parse arguments, then call ``answer(token, source)`` for every token, in order.
 
     ``answer`` validates the token (raising DataError) and writes the record; this loop

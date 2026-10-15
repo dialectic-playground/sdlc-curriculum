@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 43 — Singly Linked List Foundations (`dp-elephnt1`, `dp-elephnt2`)](#project-43--singly-linked-list-foundations-dp-elephnt1-dp-elephnt2)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 43 — Singly Linked List Foundations (`dp-elephnt1`, `dp-elephnt2`)
 
 > Build a list out of nodes that point to their successors — first three nodes linked by hand,
@@ -7,12 +23,12 @@
 
 ## Purpose
 
-Project 43 is adapted from §10.2 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*,
+Project 43 is adapted from §10.2 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_,
 the section that introduces linked lists. It has two tools. `dp-elephnt1` creates three nodes
 (Edna, Elmer, Eloise), links them by explicit assignments, and prints the list with a traversal
 procedure that follows the links until the end marker. `dp-elephnt2` grows a list one node at a
 time from a dialog — a name, then "Add another?" — appending at the tail, and prints it with the
-same traversal. The output is trivial on purpose: the engineering focus is the *structure*
+same traversal. The output is trivial on purpose: the engineering focus is the _structure_
 (self-referential nodes, an explicit end marker, O(1) appending through a tail reference, no
 built-in array or list holding the names), which the SRS states as design requirements, and a
 line-oriented dialog whose every edge — a blank name, a mistyped answer, the input ending in
@@ -20,17 +36,17 @@ the middle — has exactly one specified outcome.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| `dp-elephnt1`: three hand-linked nodes, one traversal, no input | Changing the three names |
-| `dp-elephnt2`: names and answers on alternate lines, any number of names | Names that span lines; editing or deleting names |
-| Names trimmed of surrounding whitespace, otherwise copied byte for byte | Character-set conversion, length limits |
-| Answers 0 or 1 (CONV-33 *integer*); the end of the input in place of an answer ends the list | Answers such as `y` / `n` |
-| `-p`, `--prompt` with the textbook's tab-indented prompts on standard error (CONV-36) | Prompts on standard output |
-| Standard input or one `FILE` operand; CRLF input and a trailing Ctrl-Z (CONV-37) | Several input files |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Recovering after a data error |
-| Linked-structure design requirements, checked by design review | Sorting, searching, or freeing strategies beyond the end of the run |
-| `--help`, `--version`, CONV-13 usage errors for both tools | Configuration files, environment variables |
+| In scope                                                                                     | Out of scope                                                        |
+| :------------------------------------------------------------------------------------------- | :------------------------------------------------------------------ |
+| `dp-elephnt1`: three hand-linked nodes, one traversal, no input                              | Changing the three names                                            |
+| `dp-elephnt2`: names and answers on alternate lines, any number of names                     | Names that span lines; editing or deleting names                    |
+| Names trimmed of surrounding whitespace, otherwise copied byte for byte                      | Character-set conversion, length limits                             |
+| Answers 0 or 1 (CONV-33 _integer_); the end of the input in place of an answer ends the list | Answers such as `y` / `n`                                           |
+| `-p`, `--prompt` with the textbook's tab-indented prompts on standard error (CONV-36)        | Prompts on standard output                                          |
+| Standard input or one `FILE` operand; CRLF input and a trailing Ctrl-Z (CONV-37)             | Several input files                                                 |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                            | Recovering after a data error                                       |
+| Linked-structure design requirements, checked by design review                               | Sorting, searching, or freeing strategies beyond the end of the run |
+| `--help`, `--version`, CONV-13 usage errors for both tools                                   | Configuration files, environment variables                          |
 
 ## Learning objectives
 
@@ -49,15 +65,15 @@ the middle — has exactly one specified outcome.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-15) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-15, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts |
-| `tests/fixtures/` | Input files shared by both suites: `readme.txt` (the dialog shown in the textbook section), `herd.txt`, `no-answer.txt`, `bad-answer.txt`, `cut.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                             |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-15)                                                                                                                    |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-15, NFR-01 … NFR-08)                                                                                                 |
+| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts                                                                             |
+| `tests/fixtures/`      | Input files shared by both suites: `readme.txt` (the dialog shown in the textbook section), `herd.txt`, `no-answer.txt`, `bad-answer.txt`, `cut.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                               |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                              |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                  |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -84,4 +100,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, `make lint` is clean, the design review confirms NFR-05, and every RTM row is
-*Verified*.
+_Verified_.

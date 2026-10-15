@@ -1,11 +1,36 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-max — User Manual](#dp-max--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Integers](#integers)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-max — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-max` 1.0.0 |
-| Project | `25-max` — Variadic Functions & Dynamic Arity Processing |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-25), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                    |
+| :------------ | :------------------------------------------------------- |
+| Product       | `dp-max` 1.0.0                                           |
+| Project       | `25-max` — Variadic Functions & Dynamic Arity Processing |
+| Applies to    | Linux, macOS, Windows                                    |
+| Specification | `SRS.md` (SRS-25), `shared/CLI-CONVENTIONS.md`           |
 
 ---
 
@@ -23,8 +48,8 @@ dp-max --version
 
 ## DESCRIPTION
 
-`dp-max` reads one to four integers from *FILE*, or from standard input when there is no *FILE*
-or *FILE* is `-`, until the end of the input, and prints the largest of them:
+`dp-max` reads one to four integers from _FILE_, or from standard input when there is no _FILE_
+or _FILE_ is `-`, until the end of the input, and prints the largest of them:
 
 ```text
 Maximum integer = 42
@@ -67,7 +92,7 @@ The prompt is written to standard error, so `dp-max --prompt > max.txt` saves on
 
 **`-p`, `--prompt`**
 : Before reading, write the two lines `Enter one to four integers` and
-  `generate EOF when done` to standard error.
+`generate EOF when done` to standard error.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -87,11 +112,11 @@ The prompt is written to standard error, so `dp-max --prompt > max.txt` saves on
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the result was printed, or help or version was printed |
-| 1 | The input could not be read, or it did not hold one to four valid integers |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                    |
+| :----- | :------------------------------------------------------------------------- |
+| 0      | Success: the result was printed, or help or version was printed            |
+| 1      | The input could not be read, or it did not hold one to four valid integers |
+| 2      | Usage error: an invalid option or more than one file                       |
 
 ## DIAGNOSTICS
 
@@ -103,17 +128,17 @@ $ dp-max five.txt
 dp-max: five.txt:2: too many values '5'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number in the 64-bit range | Write the integer in digits only, without separators or decimals |
-| `S:L: too many values 'K'` | *K*, on line *L*, is a fifth entry | Give at most four integers |
-| `S:L: unexpected end of input` | The input holds no integer; *L* is the last line | Give at least one integer |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The result could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                           | Fix                                                              |
+| :----------------------------- | :-------------------------------------------------------------- | :--------------------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Entry _K_ on line _L_ is not a whole number in the 64-bit range | Write the integer in digits only, without separators or decimals |
+| `S:L: too many values 'K'`     | _K_, on line _L_, is a fifth entry                              | Give at most four integers                                       |
+| `S:L: unexpected end of input` | The input holds no integer; _L_ is the last line                | Give at least one integer                                        |
+| `F: No such file or directory` | _F_ does not exist                                              | Check the spelling and the current directory                     |
+| `F: Permission denied`         | You may not read _F_                                            | Check the file's permissions                                     |
+| `F: Is a directory`            | _F_ is a directory                                              | Name a file instead                                              |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                 | Correct the path                                                 |
+| `F: Input/output error`        | Any other read failure                                          | Check the device or file system                                  |
+| `write error`                  | The result could not be written (for example, the disk is full) | Free space or redirect the output elsewhere                      |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -124,12 +149,12 @@ dp-max: extra operand 'one.txt'
 Try 'dp-max --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x`, or a negative number given as an argument | Use `-p`; give the integers on standard input or in a file |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Put the integers in one file |
+| Message                                       | Cause                                                                | Fix                                                        |
+| :-------------------------------------------- | :------------------------------------------------------------------- | :--------------------------------------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`, or a negative number given as an argument | Use `-p`; give the integers on standard input or in a file |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                   | Spell the option in full                                   |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none              | Remove the `=…`                                            |
+| `extra operand 'F'`                           | More than one file was named                                         | Put the integers in one file                               |
 
 ## EXAMPLES
 

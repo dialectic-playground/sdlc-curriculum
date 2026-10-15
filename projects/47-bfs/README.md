@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 47 — Graph Breadth-First Search: Adjacency Matrix vs. Adjacency List (`dp-bfs-adj`, `dp-bfs-link`)](#project-47--graph-breadth-first-search-adjacency-matrix-vs-adjacency-list-dp-bfs-adj-dp-bfs-link)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 47 — Graph Breadth-First Search: Adjacency Matrix vs. Adjacency List (`dp-bfs-adj`, `dp-bfs-link`)
 
 > Search the same graph breadth-first with two different representations, an adjacency matrix
@@ -8,8 +24,8 @@
 
 ## Purpose
 
-Project 47 is adapted from §10.8 of Johnsonbaugh & Kalin, *Applications Programming in ANSI
-C*. Its two tools search a graph whose vertices are the seven deadly sins, starting at Anger,
+Project 47 is adapted from §10.8 of Johnsonbaugh & Kalin, _Applications Programming in ANSI
+C_. Its two tools search a graph whose vertices are the seven deadly sins, starting at Anger,
 and print `X has been visited.` for each vertex in the order it is discovered. `dp-bfs-adj`
 holds the graph as a matrix and examines a vertex's neighbors in ascending order of vertex
 number; `dp-bfs-link` holds it as linked adjacency lists, each built by inserting new
@@ -20,15 +36,15 @@ from a fully specified file format, which is validated completely before anythin
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| The built-in seven-sins graph (7 vertices, 9 undirected edges) | Directed or weighted graphs |
-| Graphs read from a file or standard input (`-g`, `--graph`): 1–1000 vertices, simple undirected edges | Several graph files; vertex names with spaces |
-| A start vertex chosen with `-s`, `--start` (default 0) | Depth-first search, shortest-path output, levels |
-| Neighbor order fixed by the representation: matrix ascending, lists by head insertion | Any other neighbor order (sorted lists, hash sets) |
-| Only the start vertex's connected component is visited | Reporting unreachable vertices |
-| Whole-file validation before output; CONV-34 data diagnostics; CRLF and a trailing Ctrl-Z | Partial output after a data error; prompts |
-| `--help`, `--version`, CONV-13 usage errors for both tools | Configuration files, environment variables |
+| In scope                                                                                              | Out of scope                                       |
+| :---------------------------------------------------------------------------------------------------- | :------------------------------------------------- |
+| The built-in seven-sins graph (7 vertices, 9 undirected edges)                                        | Directed or weighted graphs                        |
+| Graphs read from a file or standard input (`-g`, `--graph`): 1–1000 vertices, simple undirected edges | Several graph files; vertex names with spaces      |
+| A start vertex chosen with `-s`, `--start` (default 0)                                                | Depth-first search, shortest-path output, levels   |
+| Neighbor order fixed by the representation: matrix ascending, lists by head insertion                 | Any other neighbor order (sorted lists, hash sets) |
+| Only the start vertex's connected component is visited                                                | Reporting unreachable vertices                     |
+| Whole-file validation before output; CONV-34 data diagnostics; CRLF and a trailing Ctrl-Z             | Partial output after a data error; prompts         |
+| `--help`, `--version`, CONV-13 usage errors for both tools                                            | Configuration files, environment variables         |
 
 ## Learning objectives
 
@@ -46,15 +62,15 @@ from a fully specified file format, which is validated completely before anythin
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-13, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts |
-| `tests/fixtures/` | Graph files shared by both suites: `sins.txt` (the built-in graph written as a file), `order.txt`, `islands.txt`, `bad-edge.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                         |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                                                |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-13, NFR-01 … NFR-08)                                                                             |
+| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts                                                         |
+| `tests/fixtures/`      | Graph files shared by both suites: `sins.txt` (the built-in graph written as a file), `order.txt`, `islands.txt`, `bad-edge.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                           |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                          |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                              |
 
 The textbook section has no companion data file, and its description does not list every
 edge of the graph; the built-in edge set (SRS FR-01) was designed for this project to be
@@ -81,4 +97,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

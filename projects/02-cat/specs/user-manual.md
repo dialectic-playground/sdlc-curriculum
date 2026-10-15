@@ -1,10 +1,34 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-cat — User Manual](#dp-cat--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+  - [OPTIONS](#options)
+    - [Notation used by `-v`](#notation-used-by--v)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-cat — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-cat` 1.0.0 |
-| Project | `02-cat` — Concatenate & Number Files |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-cat` 1.0.0                                 |
+| Project       | `02-cat` — Concatenate & Number Files          |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-02), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,8 +47,8 @@ dp-cat --version
 
 ## DESCRIPTION
 
-`dp-cat` reads each *FILE* in turn and writes its contents to standard output. With no *FILE*,
-or where *FILE* is `-`, it reads standard input. `-` may appear more than once and between
+`dp-cat` reads each _FILE_ in turn and writes its contents to standard output. With no _FILE_,
+or where _FILE_ is `-`, it reads standard input. `-` may appear more than once and between
 file names: `dp-cat header.txt - footer.txt` wraps whatever arrives on standard input.
 
 Without options the output is an exact copy of the input, byte for byte. Binary files, NUL
@@ -32,7 +56,7 @@ bytes, Windows (CRLF) line endings, and a missing final newline are all passed t
 unchanged. `dp-cat` never converts line endings or character sets.
 
 The options number lines, squeeze runs of blank lines, and make invisible bytes visible. For
-these options, a *line* ends at a line feed (LF). A carriage return (CR) is ordinary data, so a
+these options, a _line_ ends at a line feed (LF). A carriage return (CR) is ordinary data, so a
 line containing only a CR is not blank. All the files are treated as one continuous stream:
 line numbers continue from one file to the next. If a file does not end with a newline, its
 last line runs straight into the first line of the next file, just as it would if you had
@@ -52,27 +76,27 @@ handles files of any size and endless pipes. Data arriving on a pipe is passed o
 
 **`-b`, `--number-nonblank`**
 : Number the non-empty output lines. Empty lines are left unnumbered and do not use up a number.
-  Overrides `-n`.
+Overrides `-n`.
 
 **`-E`, `--show-ends`**
 : Display `$` at the end of each line, just before the line feed. A carriage return directly
-  before the line feed is displayed as `^M`, so CRLF line endings appear as `^M$`. A final line
-  without a line feed gets no `$`.
+before the line feed is displayed as `^M`, so CRLF line endings appear as `^M$`. A final line
+without a line feed gets no `$`.
 
 **`-n`, `--number`**
 : Number all output lines, starting at 1. Each number is right-aligned in a six-character field
-  and followed by a TAB: `     1<TAB>first line`.
+and followed by a TAB: `e`.
 
 **`-s`, `--squeeze-blank`**
 : Replace each run of consecutive empty lines with a single empty line. Lines that contain only
-  a carriage return (blank lines in a CRLF file) are not empty and are never squeezed.
+a carriage return (blank lines in a CRLF file) are not empty and are never squeezed.
 
 **`-T`, `--show-tabs`**
 : Display TAB characters as `^I`.
 
 **`-v`, `--show-nonprinting`**
 : Display control characters and other non-printing bytes in a visible notation, described
-  below. TAB and line feed are left as they are, unless `-T` or `-E` is also given.
+below. TAB and line feed are left as they are, unless `-T` or `-E` is also given.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -82,12 +106,12 @@ handles files of any size and endless pipes. Data arriving on a pipe is passed o
 
 ### Notation used by `-v`
 
-| Byte | Shown as | Examples |
-| :-- | :-- | :-- |
-| Control characters `0x00`–`0x1F` except TAB and LF | `^` and a letter or symbol | NUL `^@`, Ctrl-A `^A`, CR `^M`, Ctrl-Z `^Z`, ESC `^[` |
-| Printable ASCII `0x20`–`0x7E` | Unchanged | `A`, `~`, space |
-| DEL `0x7F` | `^?` | |
-| `0x80`–`0xFF` | `M-` and the notation for the byte minus 128 | `0x89` `M-^I`, `0xA0` `M-` + space, `0xE9` `M-i`, `0xFF` `M-^?` |
+| Byte                                               | Shown as                                     | Examples                                                        |
+| :------------------------------------------------- | :------------------------------------------- | :-------------------------------------------------------------- |
+| Control characters `0x00`–`0x1F` except TAB and LF | `^` and a letter or symbol                   | NUL `^@`, Ctrl-A `^A`, CR `^M`, Ctrl-Z `^Z`, ESC `^[`           |
+| Printable ASCII `0x20`–`0x7E`                      | Unchanged                                    | `A`, `~`, space                                                 |
+| DEL `0x7F`                                         | `^?`                                         |                                                                 |
+| `0x80`–`0xFF`                                      | `M-` and the notation for the byte minus 128 | `0x89` `M-^I`, `0xA0` `M-` + space, `0xE9` `M-i`, `0xFF` `M-^?` |
 
 Bytes are shown one at a time, so a UTF-8 character such as `é` (bytes `0xC3 0xA9`) appears as
 `M-CM-)`.
@@ -106,11 +130,11 @@ Bytes are shown one at a time, so a UTF-8 character such as `é` (bytes `0xC3 0x
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every file was read and written, or help or version was printed |
-| 1 | At least one file could not be read, or the output could not be written |
-| 2 | Usage error: invalid option; nothing was read or written |
+| Status | Meaning                                                                  |
+| :----- | :----------------------------------------------------------------------- |
+| 0      | Success: every file was read and written, or help or version was printed |
+| 1      | At least one file could not be read, or the output could not be written  |
+| 2      | Usage error: invalid option; nothing was read or written                 |
 
 ## DIAGNOSTICS
 
@@ -137,17 +161,17 @@ dp-cat: unrecognized option '--numbr'
 Try 'dp-cat --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `FILE: No such file or directory` | *FILE* does not exist | Check the name and the current directory |
-| `FILE: Permission denied` | You may not read *FILE* | Check the file's permissions |
-| `FILE: Is a directory` | *FILE* is a directory | Name the files inside it instead |
-| `FILE: Not a directory` | A part of the path that should be a directory is a file | Correct the path |
-| `FILE: Input/output error` | Any other error while opening or reading *FILE* (`-` means standard input) | Check the device or the file system |
-| `write error` | The output could not be written (for example, the disk is full) | Free space or choose another destination |
-| `invalid option -- 'x'` | Unknown short option, such as `-e`, `-t`, or `-u` | Use `-A`, `-b`, `-E`, `-n`, `-s`, `-T`, or `-v` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--number' doesn't allow an argument` | A long option given `=value` | Remove the `=value` |
+| Message                                       | Cause                                                                      | Fix                                             |
+| :-------------------------------------------- | :------------------------------------------------------------------------- | :---------------------------------------------- |
+| `FILE: No such file or directory`             | _FILE_ does not exist                                                      | Check the name and the current directory        |
+| `FILE: Permission denied`                     | You may not read _FILE_                                                    | Check the file's permissions                    |
+| `FILE: Is a directory`                        | _FILE_ is a directory                                                      | Name the files inside it instead                |
+| `FILE: Not a directory`                       | A part of the path that should be a directory is a file                    | Correct the path                                |
+| `FILE: Input/output error`                    | Any other error while opening or reading _FILE_ (`-` means standard input) | Check the device or the file system             |
+| `write error`                                 | The output could not be written (for example, the disk is full)            | Free space or choose another destination        |
+| `invalid option -- 'x'`                       | Unknown short option, such as `-e`, `-t`, or `-u`                          | Use `-A`, `-b`, `-E`, `-n`, `-s`, `-T`, or `-v` |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                                         | Spell the option in full                        |
+| `option '--number' doesn't allow an argument` | A long option given `=value`                                               | Remove the `=value`                             |
 
 If the program reading `dp-cat`'s output exits early (for example `dp-cat big.log | head`),
 `dp-cat` stops quietly.

@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 20 — Modular Procedural Decomposition & Evaluation (`dp-bargraph2`, `dp-grade`)](#project-20--modular-procedural-decomposition--evaluation-dp-bargraph2-dp-grade)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 20 — Modular Procedural Decomposition & Evaluation (`dp-bargraph2`, `dp-grade`)
 
 > Rebuild the Project 16 bar graph from two reusable procedures without changing a single
@@ -6,7 +22,7 @@
 
 ## Purpose
 
-Project 20 is adapted from §4.1 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*,
+Project 20 is adapted from §4.1 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_,
 the section that introduces functions. It has two tools. `dp-bargraph2` is `dp-bargraph`
 (Project 16) refactored into a title-echoing procedure and a bar-drawing procedure: its
 specification is "the same bytes as before", so the refactoring is checked by the same kind of
@@ -19,16 +35,16 @@ with prompts on standard error, and on a prepared file.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| `dp-bargraph2`: the exact behavior of `dp-bargraph` (Project 16) | Any change to the bar-graph format |
-| A required decomposition into `echo_line`- and `print_stars`-style procedures | Prescribing a language or a module layout |
-| `dp-grade`: rounds of answer, mid term, final, weight, read as tokens | Student names, more than two exams, letter grades other than P/F |
-| Scores 0–10, weight 0–1 to the nearest 0.001, pass when the average exceeds 7 | Other scales and thresholds; printing the average |
-| Exact integer decision rule (FR-11) | Binary floating-point comparison with 7.0 |
-| `-p`, `--prompt` with the textbook's prompts on standard error (CONV-36) | Prompts on standard output |
-| CRLF input, trailing Ctrl-Z (CONV-37); CONV-34 data diagnostics | Recovering after a data error |
-| `--help`, `--version`, CONV-13 usage errors for both tools | Colors, line editing |
+| In scope                                                                      | Out of scope                                                     |
+| :---------------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| `dp-bargraph2`: the exact behavior of `dp-bargraph` (Project 16)              | Any change to the bar-graph format                               |
+| A required decomposition into `echo_line`- and `print_stars`-style procedures | Prescribing a language or a module layout                        |
+| `dp-grade`: rounds of answer, mid term, final, weight, read as tokens         | Student names, more than two exams, letter grades other than P/F |
+| Scores 0–10, weight 0–1 to the nearest 0.001, pass when the average exceeds 7 | Other scales and thresholds; printing the average                |
+| Exact integer decision rule (FR-11)                                           | Binary floating-point comparison with 7.0                        |
+| `-p`, `--prompt` with the textbook's prompts on standard error (CONV-36)      | Prompts on standard output                                       |
+| CRLF input, trailing Ctrl-Z (CONV-37); CONV-34 data diagnostics               | Recovering after a data error                                    |
+| `--help`, `--version`, CONV-13 usage errors for both tools                    | Colors, line editing                                             |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ with prompts on standard error, and on a prepared file.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-17) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-19, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts |
-| `tests/fixtures/` | Input files shared by both suites: `bargraph.in` (from the textbook's companion disk), `edge.txt`, `readme-grades.txt`, `stop.txt`, `weights.txt`, `bad-score.txt`, `cut-record.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                                                             |
+| :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-17)                                                                                                                                                    |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-19, NFR-01 … NFR-08)                                                                                                                                 |
+| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts                                                                                                             |
+| `tests/fixtures/`      | Input files shared by both suites: `bargraph.in` (from the textbook's companion disk), `edge.txt`, `readme-grades.txt`, `stop.txt`, `weights.txt`, `bad-score.txt`, `cut-record.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                                                               |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                                                              |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                                                  |
 
 ## What you deliver (in your language repository)
 
@@ -75,4 +91,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

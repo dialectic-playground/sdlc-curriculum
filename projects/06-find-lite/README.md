@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 06 — Recursive File Discovery Suite (`dp-find`)](#project-06--recursive-file-discovery-suite-dp-find)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 06 — Recursive File Discovery Suite (`dp-find`)
 
 > Walk directory trees and select entries with a `find`-style expression language: glob names,
@@ -6,7 +22,7 @@
 
 ## Purpose
 
-Project 06 is the curriculum's first tool that is driven by a small *language* rather than by a
+Project 06 is the curriculum's first tool that is driven by a small _language_ rather than by a
 fixed set of options. Learners write a scanner and a recursive-descent parser for `find`'s
 expression grammar, an evaluator with short-circuit semantics, a glob matcher built from first
 principles, and a deterministic tree walker. They also start child processes portably. The
@@ -16,16 +32,16 @@ that cannot be read.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Pre-order traversal of several start paths in byte-wise order | Following symbolic links (`-L`, `-H`), cycle detection |
-| `-name`, `-iname` with `*`, `?`, `[...]`, `[!...]`, `\` escapes | Regular-expression name tests, `-path`, `-regex` |
-| `-type f\|d`, `-size [+\|-]N[ckMG]`, `-mtime [+\|-]N`, `-empty` | Permission, owner, inode, and access-time tests |
-| `-maxdepth`, `-mindepth` | `-prune`, `-depth` (post-order), `-xdev` |
-| `!`, `-not`, `-a`, implicit AND, `-o`, parentheses | The `,` operator, `-and` / `-or` spellings |
-| `-print`, `-exec COMMAND ;` with `{}` substitution | `-exec … +` batching, `-ok`, `-delete`, `-printf`, `-print0` |
-| Exact usage diagnostics; missing and unreadable paths reported without stopping | Reading standard input, configuration files |
-| Windows long paths and access-denied folders | Network file system specifics |
+| In scope                                                                        | Out of scope                                                 |
+| :------------------------------------------------------------------------------ | :----------------------------------------------------------- |
+| Pre-order traversal of several start paths in byte-wise order                   | Following symbolic links (`-L`, `-H`), cycle detection       |
+| `-name`, `-iname` with `*`, `?`, `[...]`, `[!...]`, `\` escapes                 | Regular-expression name tests, `-path`, `-regex`             |
+| `-type f\|d`, `-size [+\|-]N[ckMG]`, `-mtime [+\|-]N`, `-empty`                 | Permission, owner, inode, and access-time tests              |
+| `-maxdepth`, `-mindepth`                                                        | `-prune`, `-depth` (post-order), `-xdev`                     |
+| `!`, `-not`, `-a`, implicit AND, `-o`, parentheses                              | The `,` operator, `-and` / `-or` spellings                   |
+| `-print`, `-exec COMMAND ;` with `{}` substitution                              | `-exec … +` batching, `-ok`, `-delete`, `-printf`, `-print0` |
+| Exact usage diagnostics; missing and unreadable paths reported without stopping | Reading standard input, configuration files                  |
+| Windows long paths and access-denied folders                                    | Network file system specifics                                |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ that cannot be read.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-18) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-22, NFR-01 … NFR-10), including the deliberate CLI-CONV overrides (§1.5) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | The fixture tree and two `-exec` helper scripts, copied into every test's working directory |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                 |
+| :--------------------- | :------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-18)                                                                        |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-22, NFR-01 … NFR-10), including the deliberate CLI-CONV overrides (§1.5) |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                  |
+| `tests/fixtures/`      | The fixture tree and two `-exec` helper scripts, copied into every test's working directory              |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                   |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                                     |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                      |
 
 The black-box harness cannot portably create long paths, unreadable directories, or files with
 specific old timestamps. Those requirements (FR-18, FR-22, and the full range of FR-12) are
@@ -80,4 +96,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, `make lint` is clean, the FR-18 and FR-22 integration tests pass on their target
-platforms, and every RTM row is *Verified*.
+platforms, and every RTM row is _Verified_.

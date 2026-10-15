@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 25 — Variadic Functions & Dynamic Arity Processing (`dp-max`)](#project-25--variadic-functions--dynamic-arity-processing-dp-max)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 25 — Variadic Functions & Dynamic Arity Processing (`dp-max`)
 
 > Print the largest of one to four integers, the way a professional tool would: one function
@@ -7,7 +23,7 @@
 
 ## Purpose
 
-Project 25 is adapted from §4.10 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 25 is adapted from §4.10 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads one to four integers until end-of-file and prints
 `Maximum integer = …`, computed by a single function that can be called with any number of
 arguments. The textbook uses this tiny task to teach a language mechanism — variable-length
@@ -18,16 +34,16 @@ with integers that do not fit in the platform's native `int` or `long`.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| One to four integers as whitespace-separated tokens until end of input (CONV-32, CONV-33) | Real numbers, digit grouping, more than four values |
-| Exact maximum over the full 64-bit signed range | Minimum, sum, or other statistics (see `dp-stats`, Project 15) |
-| One variadic maximum function, checked by design review | A fixed-arity function or a function that only accepts four values |
-| Standard input or one `FILE` operand (`-` is standard input) | Values given as command-line operands, several input files |
-| Optional prompt on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Partial results after a bad value |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                                  | Out of scope                                                       |
+| :---------------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
+| One to four integers as whitespace-separated tokens until end of input (CONV-32, CONV-33) | Real numbers, digit grouping, more than four values                |
+| Exact maximum over the full 64-bit signed range                                           | Minimum, sum, or other statistics (see `dp-stats`, Project 15)     |
+| One variadic maximum function, checked by design review                                   | A fixed-arity function or a function that only accepts four values |
+| Standard input or one `FILE` operand (`-` is standard input)                              | Values given as command-line operands, several input files         |
+| Optional prompt on standard error (`-p`, `--prompt`, CONV-36)                             | Prompts on standard output                                         |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                             | Other legacy encodings                                             |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                         | Partial results after a bad value                                  |
+| `--help`, `--version`, CONV-13 usage errors                                               | Configuration files, environment variables                         |
 
 ## Learning objectives
 
@@ -44,15 +60,15 @@ with integers that do not fit in the platform's native `int` or `long`.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-13) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-12, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`readme.txt`, `one.txt`, `four-negative.txt`, `five.txt`, `bad.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                |
+| :--------------------- | :------------------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-13)                                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-12, NFR-01 … NFR-08)                                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`readme.txt`, `one.txt`, `four-negative.txt`, `five.txt`, `bad.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                 |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -77,4 +93,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
 systems in CI, `make lint` is clean, the design review confirms NFR-05, and every RTM row is
-*Verified*.
+_Verified_.

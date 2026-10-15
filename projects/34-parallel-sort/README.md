@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 34 — Distributed Parallel Sorting & Stream Merging (`dp-sort-host`, `dp-sort-child`)](#project-34--distributed-parallel-sorting--stream-merging-dp-sort-host-dp-sort-child)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 34 — Distributed Parallel Sorting & Stream Merging (`dp-sort-host`, `dp-sort-child`)
 
 > Sort integers the way a small parallel machine does — a host keeps half, a concurrent
@@ -7,8 +23,8 @@
 
 ## Purpose
 
-Project 34 is adapted from §6.6 of Johnsonbaugh & Kalin, *Applications Programming in ANSI
-C*: a host program on a transputer network sends a child program the size and the elements
+Project 34 is adapted from §6.6 of Johnsonbaugh & Kalin, _Applications Programming in ANSI
+C_: a host program on a transputer network sends a child program the size and the elements
 of half an array over a CSP channel, both halves are sorted with selection sort at the same
 time, and the host merges its sorted half with the stream the child sends back. Transputer
 channels exist on none of today's platforms, so this project specifies the channels as a
@@ -21,18 +37,18 @@ computation into a byte-exact, testable record.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Up to 100000 integer tokens from a file or standard input (CONV-32, CONV-33) | Real numbers, strings, keys with records |
-| Generated data with `-r`, `--random` and `--seed` (CONV-38) | Other distributions |
-| Split ⌊*N*/2⌋ to the host, the rest to one concurrent worker | Several workers, workers on other machines |
-| A fully specified worker protocol; `dp-sort-child` serves it standalone | Binary or framed protocols, network sockets |
-| Worker as a thread, a process, or `dp-sort-child` (same observable bytes) | Shared-memory parallel sorting |
-| Selection sort on both sides; linear two-way merge, host first on ties | Other sorting algorithms |
-| Deadlock-free ordering (FR-10); worker failure detected, never a hang | Recovering from a failed worker |
-| Deterministic `--trace` of messages and merge steps on standard error | Timing or profiling information |
-| CRLF input, trailing Ctrl-Z (CONV-37); CONV-34 data diagnostics | Partial output on invalid data |
-| `--help`, `--version`, CONV-13 usage errors for both tools | Configuration files, environment variables |
+| In scope                                                                     | Out of scope                                |
+| :--------------------------------------------------------------------------- | :------------------------------------------ |
+| Up to 100000 integer tokens from a file or standard input (CONV-32, CONV-33) | Real numbers, strings, keys with records    |
+| Generated data with `-r`, `--random` and `--seed` (CONV-38)                  | Other distributions                         |
+| Split ⌊_N_/2⌋ to the host, the rest to one concurrent worker                 | Several workers, workers on other machines  |
+| A fully specified worker protocol; `dp-sort-child` serves it standalone      | Binary or framed protocols, network sockets |
+| Worker as a thread, a process, or `dp-sort-child` (same observable bytes)    | Shared-memory parallel sorting              |
+| Selection sort on both sides; linear two-way merge, host first on ties       | Other sorting algorithms                    |
+| Deadlock-free ordering (FR-10); worker failure detected, never a hang        | Recovering from a failed worker             |
+| Deterministic `--trace` of messages and merge steps on standard error        | Timing or profiling information             |
+| CRLF input, trailing Ctrl-Z (CONV-37); CONV-34 data diagnostics              | Partial output on invalid data              |
+| `--help`, `--version`, CONV-13 usage errors for both tools                   | Configuration files, environment variables  |
 
 ## Learning objectives
 
@@ -50,15 +66,15 @@ computation into a byte-exact, testable record.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-19, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts |
-| `tests/fixtures/` | Input files shared by both suites: `data.txt`, `odd.txt`, `request.txt`, `bad.txt`, `short.txt` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                        |
+| :--------------------- | :---------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                               |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-19, NFR-01 … NFR-08)                                            |
+| `specs/user-manual.md` | Complete user manual for both tools, including both normative help texts                        |
+| `tests/fixtures/`      | Input files shared by both suites: `data.txt`, `odd.txt`, `request.txt`, `bad.txt`, `short.txt` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                          |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)         |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates             |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -84,4 +100,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

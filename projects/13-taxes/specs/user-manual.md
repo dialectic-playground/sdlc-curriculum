@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-taxes — User Manual](#dp-taxes--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The tax rule](#the-tax-rule)
+    - [Incomes](#incomes)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-taxes — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-taxes` 1.0.0 |
-| Project | `13-taxes` — Stream-Based Progressive Income Tax Calculator |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-13), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                       |
+| :------------ | :---------------------------------------------------------- |
+| Product       | `dp-taxes` 1.0.0                                            |
+| Project       | `13-taxes` — Stream-Based Progressive Income Tax Calculator |
+| Applies to    | Linux, macOS, Windows                                       |
+| Specification | `SRS.md` (SRS-13), `shared/CLI-CONVENTIONS.md`              |
 
 ---
 
@@ -23,7 +49,7 @@ dp-taxes --version
 
 ## DESCRIPTION
 
-`dp-taxes` reads incomes from *FILE*, or from standard input when there is no *FILE* or *FILE*
+`dp-taxes` reads incomes from _FILE_, or from standard input when there is no _FILE_ or _FILE_
 is `-`, until the end of the input. For each income it prints two lines: the income and the
 tax due on it.
 
@@ -37,8 +63,7 @@ Tax = 1500 greenbacks
 - An income **below 6000** greenbacks is taxed at **30%**.
 - An income of **6000 or more** is taxed at **60%** of the whole income.
 
-The tax is rounded down to a whole number of greenbacks: 30% of 5999 is 1799.7, so the tax is
-1799. The calculation is exact for every income `dp-taxes` accepts, up to
+The tax is rounded down to a whole number of greenbacks: 30% of 5999 is 1799.7, so the tax is 1799. The calculation is exact for every income `dp-taxes` accepts, up to
 9223372036854775807; it never suffers from floating-point rounding.
 
 ### Incomes
@@ -81,8 +106,8 @@ results.
 ## OPTIONS
 
 **`-p`, `--prompt`**
-: Before each income is read, write `Enter income: ` to standard error. A last prompt appears
-  before the end of the input is noticed.
+: Before each income is read, write `Enter income:o standard error. A last prompt appears
+before the end of the input is noticed.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -102,11 +127,11 @@ results.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every income was processed (an empty input is fine), or help or version was printed |
-| 1 | The input could not be read, or it contained an invalid income |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                      |
+| :----- | :------------------------------------------------------------------------------------------- |
+| 0      | Success: every income was processed (an empty input is fine), or help or version was printed |
+| 1      | The input could not be read, or it contained an invalid income                               |
+| 2      | Usage error: an invalid option or more than one file                                         |
 
 ## DIAGNOSTICS
 
@@ -122,16 +147,16 @@ Tax = 3600 greenbacks
 dp-taxes: bad.txt:3: invalid integer '12,000'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or is larger than 9223372036854775807 | Write the income in digits only, without separators or decimals |
-| `S:L: value out of range 'K'` | Entry *K* on line *L* is negative | Enter a non-negative income |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                              | Fix                                                             |
+| :----------------------------- | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------- |
+| `S:L: invalid integer 'K'`     | Entry _K_ on line _L_ is not a whole number, or is larger than 9223372036854775807 | Write the income in digits only, without separators or decimals |
+| `S:L: value out of range 'K'`  | Entry _K_ on line _L_ is negative                                                  | Enter a non-negative income                                     |
+| `F: No such file or directory` | _F_ does not exist                                                                 | Check the spelling and the current directory                    |
+| `F: Permission denied`         | You may not read _F_                                                               | Check the file's permissions                                    |
+| `F: Is a directory`            | _F_ is a directory                                                                 | Name a file instead                                             |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                                    | Correct the path                                                |
+| `F: Input/output error`        | Any other read failure                                                             | Check the device or file system                                 |
+| `write error`                  | The results could not be written (for example, the disk is full)                   | Free space or redirect the output elsewhere                     |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -142,12 +167,12 @@ dp-taxes: extra operand 'mixed.txt'
 Try 'dp-taxes --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-taxes` once per file |
+| Message                                       | Cause                                                   | Fix                          |
+| :-------------------------------------------- | :------------------------------------------------------ | :--------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                     |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full     |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`              |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-taxes` once per file |
 
 ## EXAMPLES
 

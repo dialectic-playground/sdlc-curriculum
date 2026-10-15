@@ -1,11 +1,38 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-cars2 — User Manual](#dp-cars2--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Refused sales](#refused-sales)
+    - [Saving and reprinting the day's totals](#saving-and-reprinting-the-days-totals)
+    - [Numbers](#numbers)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-cars2 — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-cars2` 1.0.0 |
-| Project | `28-cars-modular` — Modular Car Sales Architecture & Reporting |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-28), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                          |
+| :------------ | :------------------------------------------------------------- |
+| Product       | `dp-cars2` 1.0.0                                               |
+| Project       | `28-cars-modular` — Modular Car Sales Architecture & Reporting |
+| Applies to    | Linux, macOS, Windows                                          |
+| Specification | `SRS.md` (SRS-28), `shared/CLI-CONVENTIONS.md`                 |
 
 ---
 
@@ -27,7 +54,7 @@ dp-cars2 --version
 `dp-cars2` is the second release of `dp-cars1` (project 26). Without `--totals` and `--save`
 it behaves **exactly** like `dp-cars1`: the same input gives the same report, the same messages
 (with `dp-cars2` in place of `dp-cars1`), the same prompts, and the same exit status. It reads
-whole numbers from *FILE*, or from standard input when there is no *FILE* or *FILE* is `-`:
+whole numbers from _FILE_, or from standard input when there is no _FILE_ or _FILE_ is `-`:
 
 1. **The opening stock**: twelve numbers, the cars of brand 0, 1, …, 11 on the lot at the start
    of the day. Each is between 0 and 999999.
@@ -70,7 +97,7 @@ is always two numbers, even after an unknown brand.
 ### Saving and reprinting the day's totals
 
 The report depends only on the day's **totals**: each brand's opening stock and the number of
-cars it sold. `--save FILE` writes them to *FILE* after the report, one brand per line:
+cars it sold. `--save FILE` writes them to _FILE_ after the report, one brand per line:
 
 ```text
 $ dp-cars2 --save monday.tot day.txt > monday.rpt
@@ -108,8 +135,8 @@ reported and no report is printed.
 
 The totals saved are those the report shows: refused sales are not included, and a refused
 sale does not prevent saving. If the input is invalid or incomplete, no report is printed and
-*FILE* is left exactly as it was. If *FILE* cannot be written, the report has already been
-printed; `dp-cars2` says why the file could not be written and exits with status 1. *FILE* may
+_FILE_ is left exactly as it was. If _FILE_ cannot be written, the report has already been
+printed; `dp-cars2` says why the file could not be written and exits with status 1. _FILE_ may
 be the same file as the input.
 
 ### Numbers
@@ -138,8 +165,8 @@ by **Enter** in a Windows console).
 : Write a prompt to standard error before each number is read. Ignored with `--totals`.
 
 **`-s FILE`, `--save=FILE`**
-: After the report, write the day's totals to *FILE*, replacing its contents. *FILE* must not
-  be empty or `-`.
+: After the report, write the day's totals to _FILE_, replacing its contents. _FILE_ must not
+be empty or `-`.
 
 **`-t`, `--totals`**
 : Read the day's totals (24 numbers) instead of the opening stock and the sales.
@@ -165,11 +192,11 @@ by **Enter** in a Windows console).
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the report was printed, every sale was accepted, and the totals were saved if requested; or help or version was printed |
-| 1 | The report was printed but a sale was refused or the totals file could not be written; or no report was printed because the input could not be read or was invalid or incomplete |
-| 2 | Usage error: an invalid option or option value, or more than one file |
+| Status | Meaning                                                                                                                                                                          |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: the report was printed, every sale was accepted, and the totals were saved if requested; or help or version was printed                                                 |
+| 1      | The report was printed but a sale was refused or the totals file could not be written; or no report was printed because the input could not be read or was invalid or incomplete |
+| 2      | Usage error: an invalid option or option value, or more than one file                                                                                                            |
 
 ## DIAGNOSTICS
 
@@ -181,21 +208,21 @@ $ dp-cars2 --totals oversold.tot
 dp-cars2: oversold.tot:4: value out of range '5'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: no such brand 'K'` | The sale on line *L* names brand *K*, which is 12 or more (refused) | Enter a brand from 0 to 11 |
-| `S:L: negative quantity 'K'` | The sale on line *L* sells *K* cars, a negative number (refused) | Enter the number of cars sold |
-| `S:L: not enough cars in stock for brand B 'K'` | Selling *K* more cars of brand *B* would sell more than were on the lot (refused) | Check the sale and the opening stock |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or is far too large | Write numbers in digits only |
-| `S:L: value out of range 'K'` | An opening stock is negative or more than 999999, or (with `--totals`) a brand's cars sold are negative or more than its opening stock | Correct the figure |
-| `S:L: unexpected end of input` | The input ended where a number was expected | Complete the input |
-| `S:L: extra data 'K'` | With `--totals`, the input holds more than 24 numbers | Remove the extra entries |
-| `F: No such file or directory` | The input *F*, or a directory in the totals file name *F*, does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read the input *F*, or write the totals file *F* | Check the permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read or write failure | Check the device or file system |
-| `write error` | The report could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                         | Cause                                                                                                                                  | Fix                                          |
+| :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| `S:L: no such brand 'K'`                        | The sale on line _L_ names brand _K_, which is 12 or more (refused)                                                                    | Enter a brand from 0 to 11                   |
+| `S:L: negative quantity 'K'`                    | The sale on line _L_ sells _K_ cars, a negative number (refused)                                                                       | Enter the number of cars sold                |
+| `S:L: not enough cars in stock for brand B 'K'` | Selling _K_ more cars of brand _B_ would sell more than were on the lot (refused)                                                      | Check the sale and the opening stock         |
+| `S:L: invalid integer 'K'`                      | Entry _K_ on line _L_ is not a whole number, or is far too large                                                                       | Write numbers in digits only                 |
+| `S:L: value out of range 'K'`                   | An opening stock is negative or more than 999999, or (with `--totals`) a brand's cars sold are negative or more than its opening stock | Correct the figure                           |
+| `S:L: unexpected end of input`                  | The input ended where a number was expected                                                                                            | Complete the input                           |
+| `S:L: extra data 'K'`                           | With `--totals`, the input holds more than 24 numbers                                                                                  | Remove the extra entries                     |
+| `F: No such file or directory`                  | The input _F_, or a directory in the totals file name _F_, does not exist                                                              | Check the spelling and the current directory |
+| `F: Permission denied`                          | You may not read the input _F_, or write the totals file _F_                                                                           | Check the permissions                        |
+| `F: Is a directory`                             | _F_ is a directory                                                                                                                     | Name a file instead                          |
+| `F: Not a directory`                            | Part of the path _F_ is a file, not a directory                                                                                        | Correct the path                             |
+| `F: Input/output error`                         | Any other read or write failure                                                                                                        | Check the device or file system              |
+| `write error`                                   | The report could not be written (for example, the disk is full)                                                                        | Free space or redirect the output elsewhere  |
 
 Usage errors are written to standard error as two lines; nothing is read, no file is written,
 and nothing is written to standard output:
@@ -206,15 +233,15 @@ dp-cars2: invalid argument '' for '-s'
 Try 'dp-cars2 --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p`, `-s`, or `-t` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option requires an argument -- 's'` | `-s` is the last argument | Give the totals file name |
-| `option '--save' requires an argument` | `--save` is the last argument | Give the totals file name |
-| `option '--totals' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `invalid argument 'V' for '--save'` | The totals file name is empty or `-` | Name a file |
-| `extra operand 'F'` | More than one input file was named | Run `dp-cars2` once per file |
+| Message                                       | Cause                                                   | Fix                          |
+| :-------------------------------------------- | :------------------------------------------------------ | :--------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`, `-s`, or `-t`      |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full     |
+| `option requires an argument -- 's'`          | `-s` is the last argument                               | Give the totals file name    |
+| `option '--save' requires an argument`        | `--save` is the last argument                           | Give the totals file name    |
+| `option '--totals' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`              |
+| `invalid argument 'V' for '--save'`           | The totals file name is empty or `-`                    | Name a file                  |
+| `extra operand 'F'`                           | More than one input file was named                      | Run `dp-cars2` once per file |
 
 ## EXAMPLES
 

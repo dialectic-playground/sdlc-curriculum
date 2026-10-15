@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-sched — User Manual](#dp-sched--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [The input file](#the-input-file)
+    - [How activities are chosen](#how-activities-are-chosen)
+    - [Errors in the file](#errors-in-the-file)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-sched — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-sched` 1.0.0 |
-| Project | `38-sched` — Greedy Interval Activity Scheduling |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-38), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                            |
+| :------------ | :----------------------------------------------- |
+| Product       | `dp-sched` 1.0.0                                 |
+| Project       | `38-sched` — Greedy Interval Activity Scheduling |
+| Applies to    | Linux, macOS, Windows                            |
+| Specification | `SRS.md` (SRS-38), `shared/CLI-CONVENTIONS.md`   |
 
 ---
 
@@ -23,7 +49,7 @@ dp-sched --version
 
 ## DESCRIPTION
 
-`dp-sched` reads a list of activities from *FILE*, or from standard input when *FILE* is `-`,
+`dp-sched` reads a list of activities from _FILE_, or from standard input when _FILE_ is `-`,
 and prints a largest possible set of them that can share one resource without overlapping:
 
 ```text
@@ -37,21 +63,21 @@ Optimal schedule:
 ```
 
 The report is the heading `Optimal schedule:`, a blank line, and the chosen activities, each
-printed exactly as its line appears in *FILE*, in order of finish time. A file with no
+printed exactly as its line appears in _FILE_, in order of finish time. A file with no
 activities produces just the heading and the blank line.
 
 ### The input file
 
 Each line describes one activity in two fixed columns:
 
-| Columns | Contents |
-| :-- | :-- |
-| 1–5 | Start time, a whole number from 0 to 99999, padded with spaces |
-| 6–10 | Finish time, a whole number from 0 to 99999, padded with spaces |
+| Columns | Contents                                                        |
+| :------ | :-------------------------------------------------------------- |
+| 1–5     | Start time, a whole number from 0 to 99999, padded with spaces  |
+| 6–10    | Finish time, a whole number from 0 to 99999, padded with spaces |
 
 Every line must be exactly 10 bytes long, not counting its line ending, and the finish time must
-be later than the start time. Numbers are normally right-justified (`   12`), but any padding
-with spaces is accepted, as are a `+` sign and leading zeros. Lines may end with LF or CRLF, the
+be later than the start time. Numbers are normally right-justified (`any padding
+with spaces is accepted, as are a`+` sign and leading zeros. Lines may end with LF or CRLF, the
 last line needs no line ending, and one or more Ctrl-Z bytes at the very end of the file (the
 end-of-file mark of old MS-DOS data files) are ignored.
 
@@ -90,38 +116,38 @@ dp-sched: bad.in:3: invalid integer 'six'
 `dp-sched` follows the curriculum's common conventions (`shared/CLI-CONVENTIONS.md`):
 
 - Long options must be spelled out in full; `--he` is not accepted.
-- Exactly one *FILE* must be given.
+- Exactly one _FILE_ must be given.
 - `--` ends option processing: `dp-sched -- -plan.in` reads the file `-plan.in`.
 - `--help` and `--version` take effect as soon as they are reached while reading the arguments
   from left to right, unless an earlier argument was invalid.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the schedule, help, or version was printed |
-| 1 | The file could not be read, or it contains a malformed line |
-| 2 | Usage error: an invalid option, or a missing or unexpected argument |
+| Status | Meaning                                                             |
+| :----- | :------------------------------------------------------------------ |
+| 0      | Success: the schedule, help, or version was printed                 |
+| 1      | The file could not be read, or it contains a malformed line         |
+| 2      | Usage error: an invalid option, or a missing or unexpected argument |
 
 ## DIAGNOSTICS
 
 Every problem is reported on standard error as one line, and the exit status is 1. Problems
 with the data name the input (`-` for standard input) and the line number.
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid line length N, expected 10` | Line *L* is *N* bytes long without its line ending (a blank line has length 0) | Write exactly two 5-column fields; remove trailing spaces and blank lines |
-| `S:L: missing start time` | Columns 1–5 of line *L* are blank | Fill in the start time |
-| `S:L: missing finish time` | Columns 6–10 of line *L* are blank | Fill in the finish time |
-| `S:L: invalid integer 'V'` | A field of line *L* holds *V*, which is not a whole number (a tab, a decimal point, letters) | Write the time in digits, padded with spaces |
-| `S:L: value out of range 'V'` | A field of line *L* holds a negative number *V* | Use times from 0 to 99999 |
-| `S:L: finish time is not later than start time` | The activity on line *L* ends when or before it starts | Correct the times |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other failure to read *F* | Check the device or file system |
-| `write error` | The schedule could not be written to standard output | Free space or redirect the output elsewhere |
+| Message                                         | Cause                                                                                        | Fix                                                                       |
+| :---------------------------------------------- | :------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------ |
+| `S:L: invalid line length N, expected 10`       | Line _L_ is _N_ bytes long without its line ending (a blank line has length 0)               | Write exactly two 5-column fields; remove trailing spaces and blank lines |
+| `S:L: missing start time`                       | Columns 1–5 of line _L_ are blank                                                            | Fill in the start time                                                    |
+| `S:L: missing finish time`                      | Columns 6–10 of line _L_ are blank                                                           | Fill in the finish time                                                   |
+| `S:L: invalid integer 'V'`                      | A field of line _L_ holds _V_, which is not a whole number (a tab, a decimal point, letters) | Write the time in digits, padded with spaces                              |
+| `S:L: value out of range 'V'`                   | A field of line _L_ holds a negative number _V_                                              | Use times from 0 to 99999                                                 |
+| `S:L: finish time is not later than start time` | The activity on line _L_ ends when or before it starts                                       | Correct the times                                                         |
+| `F: No such file or directory`                  | _F_ does not exist                                                                           | Check the spelling and the current directory                              |
+| `F: Permission denied`                          | You may not read _F_                                                                         | Check the permissions                                                     |
+| `F: Is a directory`                             | _F_ is a directory                                                                           | Name a file instead                                                       |
+| `F: Not a directory`                            | Part of the path _F_ is a file, not a directory                                              | Correct the path                                                          |
+| `F: Input/output error`                         | Any other failure to read _F_                                                                | Check the device or file system                                           |
+| `write error`                                   | The schedule could not be written to standard output                                         | Free space or redirect the output elsewhere                               |
 
 Usage errors are written to standard error as two lines; no file is read:
 
@@ -131,13 +157,13 @@ dp-sched: missing operand
 Try 'dp-sched --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` (`dp-sched` has none) | Remove it |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…` | Remove the `=…` |
-| `missing operand` | No *FILE* given | Name the file of activities, or `-` for standard input |
-| `extra operand 'F'` | More than one *FILE* | Schedule one file at a time |
+| Message                                     | Cause                                           | Fix                                                    |
+| :------------------------------------------ | :---------------------------------------------- | :----------------------------------------------------- |
+| `invalid option -- 'x'`                     | Unknown short option `-x` (`dp-sched` has none) | Remove it                                              |
+| `unrecognized option '--xyz'`               | Unknown or abbreviated long option              | Spell the option in full                               |
+| `option '--help' doesn't allow an argument` | `--help=…` or `--version=…`                     | Remove the `=…`                                        |
+| `missing operand`                           | No _FILE_ given                                 | Name the file of activities, or `-` for standard input |
+| `extra operand 'F'`                         | More than one _FILE_                            | Schedule one file at a time                            |
 
 ## EXAMPLES
 

@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 01 — Stream Echo & Formatting (`dp-echo`)](#project-01--stream-echo--formatting-dp-echo)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 01 — Stream Echo & Formatting (`dp-echo`)
 
 > Re-create `echo` so that it behaves identically, byte for byte, on Linux, macOS, and Windows:
@@ -9,7 +25,7 @@
 `echo` looks trivial, yet it is one of the least portable commands in everyday use: shells
 disagree about whether it interprets backslashes, whether `-n` is an option, and which line
 ending it writes. Project 01 turns that mess into a precise specification. It is also the first
-project that *deliberately* departs from the shared CLI conventions (only leading `-n`/`-e`/`-E`
+project that _deliberately_ departs from the shared CLI conventions (only leading `-n`/`-e`/`-E`
 tokens are options, `--help` works only on its own, and there are no usage errors), so it
 teaches how to read, honor, and document an override.
 
@@ -19,14 +35,14 @@ escapes (`-ne 'text\r\n'`).
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Writing operands separated by single spaces | Reading stdin or files |
-| Suppressing the trailing LF (`-n`) | `printf`-style format specifiers |
-| Backslash escapes (`-e`, `-E`), including `\c`, `\0NNN`, `\xHH` | Locale-dependent behavior, `POSIXLY_CORRECT` |
+| In scope                                                                  | Out of scope                                   |
+| :------------------------------------------------------------------------ | :--------------------------------------------- |
+| Writing operands separated by single spaces                               | Reading stdin or files                         |
+| Suppressing the trailing LF (`-n`)                                        | `printf`-style format specifiers               |
+| Backslash escapes (`-e`, `-E`), including `\c`, `\0NNN`, `\xHH`           | Locale-dependent behavior, `POSIXLY_CORRECT`   |
 | GNU-style leading-option parsing; `--help` / `--version` as sole argument | Long options other than `--help` / `--version` |
-| LF-only output; explicit CRLF through escapes | Automatic line-ending conversion |
-| Exit statuses 0 (success) and 1 (write failure) | Usage errors (there are none) |
+| LF-only output; explicit CRLF through escapes                             | Automatic line-ending conversion               |
+| Exit statuses 0 (success) and 1 (write failure)                           | Usage errors (there are none)                  |
 
 ## Learning objectives
 
@@ -42,14 +58,14 @@ escapes (`-ne 'text\r\n'`).
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-16) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-15, NFR-01 … NFR-08), including the CLI-CONV overrides |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                               |
+| :--------------------- | :------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-16)                                                      |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-15, NFR-01 … NFR-08), including the CLI-CONV overrides |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                 |
+| `tests/private/`       | 10 hidden black-box tests (used by grading/CI; unseen by convention)                   |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates    |
 
 ## What you deliver (in your language repository)
 
@@ -71,4 +87,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

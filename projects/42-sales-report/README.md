@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 42 — Enterprise Sales Reporting & Relational Data Integration (`dp-sales`)](#project-42--enterprise-sales-reporting--relational-data-integration-dp-sales)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 42 — Enterprise Sales Reporting & Relational Data Integration (`dp-sales`)
 
 > Join two flat files — accounts and the salespeople who manage them — and print a
@@ -8,11 +24,11 @@
 
 ## Purpose
 
-Project 42 is adapted from §9.7 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*.
+Project 42 is adapted from §9.7 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_.
 A sales department keeps two files. The accounts file (`sales.dat`) holds one line per customer
 account: an id, a name, the actual sales, and the projected sales. The salesperson file
 (`sper.dat`) holds one line per salesperson: name, sales coach, region, base salary, bonus, and,
-after a `#`, the ids of the accounts the salesperson manages. The ids are *foreign keys*: the
+after a `#`, the ids of the accounts the salesperson manages. The ids are _foreign keys_: the
 tool sorts the accounts by id, resolves every id by binary search, sorts the salespeople by
 name, and prints the report whose exact layout is given by the textbook's sample report
 `sales.rpt`.
@@ -24,16 +40,16 @@ trailing spaces — exactly.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Accounts from `sales.dat`, or the file named by `-a`/`--accounts` | Updating either file, other report layouts |
-| Salespeople from `sper.dat`, or the file named by `-s`/`--salespeople` | Joins on anything but the account id |
-| Either file from standard input (`-`), but not both | Report totals, sub-totals, or percentages |
-| Up to 100 accounts and 100 salespeople; ids 0 … 2⁶³−1 | Larger data sets, external sorting |
-| Exact decimal amounts with at most two decimals, printed with two decimals | Binary floating-point money, currencies, negative amounts |
-| Validation of both files (fields, amounts, duplicate ids, unknown ids) before any output | Partial reports after a data error |
-| CRLF input, trailing Ctrl-Z (CONV-37), data diagnostics with line numbers (CONV-34) | Prompts or any other interaction |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                                 | Out of scope                                              |
+| :--------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| Accounts from `sales.dat`, or the file named by `-a`/`--accounts`                        | Updating either file, other report layouts                |
+| Salespeople from `sper.dat`, or the file named by `-s`/`--salespeople`                   | Joins on anything but the account id                      |
+| Either file from standard input (`-`), but not both                                      | Report totals, sub-totals, or percentages                 |
+| Up to 100 accounts and 100 salespeople; ids 0 … 2⁶³−1                                    | Larger data sets, external sorting                        |
+| Exact decimal amounts with at most two decimals, printed with two decimals               | Binary floating-point money, currencies, negative amounts |
+| Validation of both files (fields, amounts, duplicate ids, unknown ids) before any output | Partial reports after a data error                        |
+| CRLF input, trailing Ctrl-Z (CONV-37), data diagnostics with line numbers (CONV-34)      | Prompts or any other interaction                          |
+| `--help`, `--version`, CONV-13 usage errors                                              | Configuration files, environment variables                |
 
 ## Learning objectives
 
@@ -48,15 +64,15 @@ trailing spaces — exactly.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-15, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Inputs shared by both suites: `sales.rpt` (from the textbook's companion disk), `sales.dat`, `sper.dat`, `team.dat`, `mixed.dat`, `unknown.dat`, `dup.dat`, `bad-amount.dat` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                                                     |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                                                                                            |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-15, NFR-01 … NFR-08)                                                                                                                         |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                                                                      |
+| `tests/fixtures/`      | Inputs shared by both suites: `sales.rpt` (from the textbook's companion disk), `sales.dat`, `sper.dat`, `team.dat`, `mixed.dat`, `unknown.dat`, `dup.dat`, `bad-amount.dat` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                                                       |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                                                      |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                                          |
 
 `sales.rpt` is the textbook's sample report, byte for byte; do not modify it. The textbook did
 not supply its input files: `sales.dat` and `sper.dat` were written for this project from the
@@ -83,4 +99,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

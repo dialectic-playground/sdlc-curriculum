@@ -8,13 +8,25 @@ from __future__ import annotations
 
 import os
 import sys
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import BinaryIO, Iterator
+from typing import BinaryIO
 
 from . import common
 from ._grep_pattern import LineMatcher, PatternError, literal, parse
-from .common import (Option, UsageError, diagnose, encode_arg, file_error_reason, file_failure,
-                     handle_action, open_input, parse_args, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    diagnose,
+    encode_arg,
+    file_error_reason,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-grep"
 STDIN_LABEL = "(standard input)"
@@ -202,7 +214,7 @@ def main(argv: list[str]) -> int:
             return 0
         operands = list(parsed.operands)
         if "regexp" in parsed.values:
-            patterns = [str(p) for p in parsed.values["regexp"]]  # type: ignore[union-attr]
+            patterns = [str(p) for p in parsed.values["regexp"]]  # type: ignore
         elif operands:
             patterns = [operands.pop(0)]
         else:
@@ -217,8 +229,9 @@ def main(argv: list[str]) -> int:
         try:
             trees.append(literal(data) if values.get("fixed") else parse(data))
         except PatternError as error:
-            common.err.write(b"%s: invalid pattern '%s': %s\n"
-                             % (TOOL.encode(), data, error.reason))
+            common.err.write(
+                b"%s: invalid pattern '%s': %s\n" % (TOOL.encode(), data, error.reason)
+            )
             return 2
 
     recursive = bool(values.get("recursive"))
@@ -227,9 +240,12 @@ def main(argv: list[str]) -> int:
     else:
         with_filename = recursive or len(operands) > 1
     settings = Settings(
-        matcher=LineMatcher(trees, ignore_case=bool(values.get("ignore_case")),
-                            line_regexp=bool(values.get("line_regexp")),
-                            word_regexp=bool(values.get("word_regexp"))),
+        matcher=LineMatcher(
+            trees,
+            ignore_case=bool(values.get("ignore_case")),
+            line_regexp=bool(values.get("line_regexp")),
+            word_regexp=bool(values.get("word_regexp")),
+        ),
         invert=bool(values.get("invert")),
         line_number=bool(values.get("line_number")),
         mode=output_mode(values),

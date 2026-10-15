@@ -10,9 +10,21 @@ import os
 
 from . import common
 from ._taxes_rule import MAX_INCOME, record
-from .common import (DataError, Option, UsageError, data_failure, file_failure,
-                     handle_action, invalid_argument, parse_args, parse_int_token, read_all,
-                     strip_eof_marker, tokenize, usage_failure)
+from .common import (
+    DataError,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    parse_int_token,
+    read_all,
+    strip_eof_marker,
+    tokenize,
+    usage_failure,
+)
 
 TOOL = "dp-taxes-file"
 DEFAULT_INPUT = "incomes.dat"
@@ -68,7 +80,9 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, source, error)
         return 1
     try:
-        incomes = [parse_int_token(token, source, 0, MAX_INCOME) for token in tokenize(data)]
+        incomes = [
+            parse_int_token(token, source, 0, MAX_INCOME) for token in tokenize(data)
+        ]
     except DataError as error:
         return data_failure(TOOL, error)
     report = b"".join(record(income) for income in incomes)
@@ -79,7 +93,7 @@ def main(argv: list[str]) -> int:
     try:
         if os.path.isdir(target):
             raise IsADirectoryError(target)
-        handle = open(target, "wb")
+        handle = open(target, "wb")  # noqa: SIM115
     except OSError as error:
         file_failure(TOOL, target, error)
         return 1

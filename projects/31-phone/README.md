@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 31 — Student Directory Lookup via Selection Sort & Binary Search (`dp-phone`)](#project-31--student-directory-lookup-via-selection-sort--binary-search-dp-phone)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 31 — Student Directory Lookup via Selection Sort & Binary Search (`dp-phone`)
 
 > Load a file of fixed-width student records, sort it, and answer last names with the matching
@@ -7,31 +23,31 @@
 
 ## Purpose
 
-Project 31 is adapted from §5.11 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 31 is adapted from §5.11 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that reads the student records of `students.dat` (last name, first name, and
 telephone number in fixed columns), sorts them with selection sort, and then looks up each last
 name typed at the keyboard with binary search on the blank-padded last-name column. The
 textbook version assumes a well-formed data file and says nothing about names with spaces, bad
 records, or other platforms' line endings. This
 project keeps its algorithms and its answers word for word, and turns it into a well-behaved
-command-line tool. The engineering focus is fixed-width data handled as *bytes* — column
+command-line tool. The engineering focus is fixed-width data handled as _bytes_ — column
 widths, line endings, and comparisons that do not depend on the platform or the locale — and
 two classic algorithms implemented exactly as specified, so that even the choice among students
 who share a last name is the same in every implementation.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
+| In scope                                                                                | Out of scope                                       |
+| :-------------------------------------------------------------------------------------- | :------------------------------------------------- |
 | Student file `students.dat`, or the file named by `-f`/`--file` (`-` is standard input) | Several student files, writing or updating records |
-| Fixed-width 62-byte records, each checked before any name is answered | Variable-width or delimited formats |
-| Selection sort by whole record; binary search on the 25-byte padded last name | Library sort or search routines |
-| Names as whole lines (spaces allowed) from standard input or one `FILE` operand | Partial, prefix, or case-insensitive matching |
-| One answer per non-empty name, flushed before the next name is read | Listing every student who shares a last name |
-| Optional prompts on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| CRLF line endings and a trailing Ctrl-Z end-of-file marker in both inputs (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Repairing malformed records |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| Fixed-width 62-byte records, each checked before any name is answered                   | Variable-width or delimited formats                |
+| Selection sort by whole record; binary search on the 25-byte padded last name           | Library sort or search routines                    |
+| Names as whole lines (spaces allowed) from standard input or one `FILE` operand         | Partial, prefix, or case-insensitive matching      |
+| One answer per non-empty name, flushed before the next name is read                     | Listing every student who shares a last name       |
+| Optional prompts on standard error (`-p`, `--prompt`, CONV-36)                          | Prompts on standard output                         |
+| CRLF line endings and a trailing Ctrl-Z end-of-file marker in both inputs (CONV-37)     | Other legacy encodings                             |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                       | Repairing malformed records                        |
+| `--help`, `--version`, CONV-13 usage errors                                             | Configuration files, environment variables         |
 
 ## Learning objectives
 
@@ -49,15 +65,15 @@ who share a last name is the same in every implementation.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-15) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-13, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites: `students.dat` (from the textbook's companion disk), `names.txt`, `edges.txt`, `more.dat`, `dups.txt`, `bad.dat` |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                                                            |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-15)                                                                                                                   |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-13, NFR-01 … NFR-08)                                                                                                |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                                                             |
+| `tests/fixtures/`      | Input files shared by both suites: `students.dat` (from the textbook's companion disk), `names.txt`, `edges.txt`, `more.dat`, `dups.txt`, `bad.dat` |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                                                              |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                                                             |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                                                                 |
 
 ## What you deliver (in your language repository)
 
@@ -79,4 +95,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

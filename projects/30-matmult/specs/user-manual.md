@@ -1,10 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-matmult — User Manual](#dp-matmult--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Input](#input)
+    - [Output](#output)
+    - [The product](#the-product)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-matmult — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-matmult` 1.0.0 |
-| Project | `30-matmult` — Matrix Multiplication Engine |
-| Applies to | Linux, macOS, Windows |
+| Field         | Value                                          |
+| :------------ | :--------------------------------------------- |
+| Product       | `dp-matmult` 1.0.0                             |
+| Project       | `30-matmult` — Matrix Multiplication Engine    |
+| Applies to    | Linux, macOS, Windows                          |
 | Specification | `SRS.md` (SRS-30), `shared/CLI-CONVENTIONS.md` |
 
 ---
@@ -23,8 +50,8 @@ dp-matmult --version
 
 ## DESCRIPTION
 
-`dp-matmult` reads a matrix size *N* and two *N*×*N* matrices from *FILE*, or from standard
-input when there is no *FILE* or *FILE* is `-`. It prints the first matrix, the second matrix,
+`dp-matmult` reads a matrix size _N_ and two *N*×*N* matrices from _FILE_, or from standard
+input when there is no _FILE_ or _FILE_ is `-`. It prints the first matrix, the second matrix,
 and their product, each under a heading:
 
 ```text
@@ -44,7 +71,7 @@ Product m3:
 The input is a sequence of whole numbers separated by any mix of spaces, tabs, and line
 breaks:
 
-1. the size *N*, from 1 to 20;
+1. the size _N_, from 1 to 20;
 2. the *N*×*N* elements of the first matrix, row by row (all of row 1, then all of row 2, …);
 3. the *N*×*N* elements of the second matrix, in the same order.
 
@@ -64,8 +91,8 @@ blank line between the matrices.
 
 ### The product
 
-Element (*i*, *j*) of the product is row *i* of the first matrix multiplied element by element
-with column *j* of the second, summed:
+Element (_i_, _j_) of the product is row _i_ of the first matrix multiplied element by element
+with column _j_ of the second, summed:
 *c*ᵢⱼ = *a*ᵢ₁*b*₁ⱼ + *a*ᵢ₂*b*₂ⱼ + … + *a*ᵢₙ*b*ₙⱼ. The result is exact. If any product
 *a*ᵢₖ*b*ₖⱼ, or the running total after adding it (added from left to right), falls outside
 −9223372036854775808 … 9223372036854775807, `dp-matmult` reports an integer overflow and the
@@ -107,8 +134,8 @@ the matrices.
 
 **`-p`, `--prompt`**
 : Write `Input matrix size: ` before the size is read, `Input first matrix by row` (and a line
-  break) before the first matrix, and `Input second matrix by row` (and a line break) before
-  the second matrix, all to standard error.
+break) before the first matrix, and `Input second matrix by row` (and a line break) before
+the second matrix, all to standard error.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -128,11 +155,11 @@ the matrices.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: the product was printed, or help or version was printed |
-| 1 | The input could not be read, it contained invalid or too little data, or the product overflowed |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                         |
+| :----- | :---------------------------------------------------------------------------------------------- |
+| 0      | Success: the product was printed, or help or version was printed                                |
+| 1      | The input could not be read, it contained invalid or too little data, or the product overflowed |
+| 2      | Usage error: an invalid option or more than one file                                            |
 
 ## DIAGNOSTICS
 
@@ -147,18 +174,18 @@ Matrix m1:
 dp-matmult: bad.txt:5: invalid integer 'x8'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid integer 'K'` | Entry *K* on line *L* is not a whole number, or lies outside −9223372036854775808 … 9223372036854775807 | Write the number in digits only, without separators or decimals |
-| `S:L: value out of range 'K'` | The size *K* is not between 1 and 20 | Give a size from 1 to 20 |
-| `S:L: unexpected end of input` | The input ended before the size or before the last element of the second matrix; *L* is the last line | Supply all 2×*N*×*N* elements |
-| `integer overflow in product row I, column J` | Computing product element (*I*, *J*) needs a number outside the 64-bit range | Use smaller elements |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                                       | Cause                                                                                                   | Fix                                                             |
+| :-------------------------------------------- | :------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------- |
+| `S:L: invalid integer 'K'`                    | Entry _K_ on line _L_ is not a whole number, or lies outside −9223372036854775808 … 9223372036854775807 | Write the number in digits only, without separators or decimals |
+| `S:L: value out of range 'K'`                 | The size _K_ is not between 1 and 20                                                                    | Give a size from 1 to 20                                        |
+| `S:L: unexpected end of input`                | The input ended before the size or before the last element of the second matrix; _L_ is the last line   | Supply all 2×*N*×*N* elements                                   |
+| `integer overflow in product row I, column J` | Computing product element (_I_, _J_) needs a number outside the 64-bit range                            | Use smaller elements                                            |
+| `F: No such file or directory`                | _F_ does not exist                                                                                      | Check the spelling and the current directory                    |
+| `F: Permission denied`                        | You may not read _F_                                                                                    | Check the file's permissions                                    |
+| `F: Is a directory`                           | _F_ is a directory                                                                                      | Name a file instead                                             |
+| `F: Not a directory`                          | Part of the path _F_ is a file, not a directory                                                         | Correct the path                                                |
+| `F: Input/output error`                       | Any other read failure                                                                                  | Check the device or file system                                 |
+| `write error`                                 | The results could not be written (for example, the disk is full)                                        | Free space or redirect the output elsewhere                     |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -169,12 +196,12 @@ dp-matmult: extra operand 'identity.txt'
 Try 'dp-matmult --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-matmult` once per file |
+| Message                                       | Cause                                                   | Fix                            |
+| :-------------------------------------------- | :------------------------------------------------------ | :----------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                       |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full       |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`                |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-matmult` once per file |
 
 ## EXAMPLES
 

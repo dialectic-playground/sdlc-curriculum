@@ -10,16 +10,28 @@ from __future__ import annotations
 import os
 import re
 import time
+from collections.abc import Iterator
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import BinaryIO, Iterator
+from typing import BinaryIO
 
 from . import _sysmon_live as live
 from ._sysmon_model import Process, Sample, format_bytes, format_tenths, ratio_tenths
 from ._sysmon_snapshot import SnapshotError, decode_line, is_blank
-from .common import (Option, UsageError, diagnose, err, file_failure, handle_action,
-                     invalid_argument, open_input, out, parse_args, parse_count,
-                     usage_failure)
+from .common import (
+    Option,
+    UsageError,
+    diagnose,
+    err,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    open_input,
+    out,
+    parse_args,
+    parse_count,
+    usage_failure,
+)
 
 TOOL = "dp-sysmon"
 MAX_TOP = 1000000
@@ -27,7 +39,7 @@ MAX_COUNT = 1000000
 FORMATS = ("table", "json")
 SORT_KEYS = ("cpu", "mem", "pid", "name")
 INTERVAL_PATTERN = re.compile(r"[0-9]+(\.[0-9]+)?")
-MIN_INTERVAL, MAX_INTERVAL = Decimal("0.1"), Decimal("86400")
+MIN_INTERVAL, MAX_INTERVAL = Decimal("0.1"), Decimal(86400)
 
 HELP_TEXT = """\
 Usage: dp-sysmon [OPTION]...
@@ -118,16 +130,23 @@ def parse_config(argv: list[str]) -> Config | None:
     config.format = _choice(parsed, "format", FORMATS) or "table"
     config.sort = _choice(parsed, "sort", SORT_KEYS) or "cpu"
     if "top" in parsed.values:
-        config.top = parse_count(str(parsed.values["top"]), parsed.spelled["top"],
-                                 minimum=0, maximum=MAX_TOP)
+        config.top = parse_count(
+            str(parsed.values["top"]), parsed.spelled["top"], minimum=0, maximum=MAX_TOP
+        )
     if "filter" in parsed.values:
         config.filter = str(parsed.values["filter"])
     if "interval" in parsed.values:
-        config.interval = _interval(str(parsed.values["interval"]), parsed.spelled["interval"])
+        config.interval = _interval(
+            str(parsed.values["interval"]), parsed.spelled["interval"]
+        )
     config.count = 0 if config.snapshot is not None else 1
     if "count" in parsed.values:
-        config.count = parse_count(str(parsed.values["count"]), parsed.spelled["count"],
-                                   minimum=0, maximum=MAX_COUNT)
+        config.count = parse_count(
+            str(parsed.values["count"]),
+            parsed.spelled["count"],
+            minimum=0,
+            maximum=MAX_COUNT,
+        )
     config.output = _path(parsed, "output")
     return config
 
@@ -157,14 +176,21 @@ def select_processes(processes: tuple[Process, ...], config: Config) -> list[Pro
         chosen = [p for p in chosen if needle in p.name.translate(_ASCII_LOWER)]
     chosen.sort(key=SORTERS[config.sort])
     if config.top is not None:
-        chosen = chosen[:config.top]
+        chosen = chosen[: config.top]
     return chosen
 
 
 # --- JSON rendering ----------------------------------------------------------------------
 
-_JSON_ESCAPES = {'"': '\\"', "\\": "\\\\", "\b": "\\b", "\f": "\\f", "\n": "\\n",
-                 "\r": "\\r", "\t": "\\t"}
+_JSON_ESCAPES = {
+    '"': '\\"',
+    "\\": "\\\\",
+    "\b": "\\b",
+    "\f": "\\f",
+    "\n": "\\n",
+    "\r": "\\r",
+    "\t": "\\t",
+}
 
 
 def json_string(text: str) -> str:
@@ -191,18 +217,23 @@ def _json_percent(tenths: int | None) -> str:
 def render_json(sample: Sample, processes: list[Process]) -> str:
     disks = ",".join(
         f'{{"mount":{json_string(d.mount)},"total_bytes":{d.total_bytes},'
-        f'"used_bytes":{d.used_bytes}}}' for d in sorted_disks(sample))
+        f'"used_bytes":{d.used_bytes}}}'
+        for d in sorted_disks(sample)
+    )
     procs = ",".join(
         f'{{"pid":{p.pid},"name":{json_string(p.name)},'
         f'"cpu_percent":{_json_percent(p.cpu_tenths)},"rss_bytes":{_json_int(p.rss_bytes)}}}'
-        for p in processes)
-    return (f'{{"timestamp":{json_string(sample.timestamp)},'
-            f'"hostname":{json_string(sample.hostname)},'
-            f'"cpu":{{"count":{_json_int(sample.cpu_count)},'
-            f'"percent":{_json_percent(sample.cpu_tenths)}}},'
-            f'"memory":{{"total_bytes":{_json_int(sample.memory_total)},'
-            f'"available_bytes":{_json_int(sample.memory_available)}}},'
-            f'"disks":[{disks}],"processes":[{procs}]}}\n')
+        for p in processes
+    )
+    return (
+        f'{{"timestamp":{json_string(sample.timestamp)},'
+        f'"hostname":{json_string(sample.hostname)},'
+        f'"cpu":{{"count":{_json_int(sample.cpu_count)},'
+        f'"percent":{_json_percent(sample.cpu_tenths)}}},'
+        f'"memory":{{"total_bytes":{_json_int(sample.memory_total)},'
+        f'"available_bytes":{_json_int(sample.memory_available)}}},'
+        f'"disks":[{disks}],"processes":[{procs}]}}\n'
+    )
 
 
 # --- table rendering ---------------------------------------------------------------------
@@ -224,7 +255,7 @@ def sanitize(text: str) -> str:
 
 
 def truncate(text: str, width: int) -> str:
-    return text if len(text) <= width else text[:width - 3] + "..."
+    return text if len(text) <= width else text[: width - 3] + "..."
 
 
 def _dash(text: str | None) -> str:
@@ -257,26 +288,40 @@ def render_table(sample: Sample, processes: list[Process]) -> str:
         _label("Host", _dash(sanitize(sample.hostname))),
         _label("Time", _dash(sanitize(sample.timestamp))),
         _label("CPU", f"{cpu_text} busy; logical CPUs: {count_text}"),
-        _label("Memory", f"{_bytes_or_dash(used)} used of {_bytes_or_dash(total)} "
-                         f"({_dash(used_share)}); {_bytes_or_dash(available)} available"),
+        _label(
+            "Memory",
+            f"{_bytes_or_dash(used)} used of {_bytes_or_dash(total)} "
+            f"({_dash(used_share)}); {_bytes_or_dash(available)} available",
+        ),
         _label("Processes", f"{len(sample.processes)} total; {len(processes)} shown"),
         "\n",
-        f"{'MOUNT':<{MOUNT_WIDTH}}{GAP}{'USED':>{BYTES_WIDTH}}{GAP}"
-        f"{'TOTAL':>{BYTES_WIDTH}}{GAP}{'USE%':>{USE_WIDTH}}\n",
+        (
+            f"{'MOUNT':<{MOUNT_WIDTH}}{GAP}{'USED':>{BYTES_WIDTH}}{GAP}"
+            f"{'TOTAL':>{BYTES_WIDTH}}{GAP}{'USE%':>{USE_WIDTH}}\n"
+        ),
     ]
     for disk in sorted_disks(sample):
-        share = (format_tenths(ratio_tenths(disk.used_bytes, disk.total_bytes))
-                 if disk.total_bytes else "-")
+        share = (
+            format_tenths(ratio_tenths(disk.used_bytes, disk.total_bytes))
+            if disk.total_bytes
+            else "-"
+        )
         mount = truncate(sanitize(disk.mount), MOUNT_WIDTH)
-        lines.append(f"{mount:<{MOUNT_WIDTH}}{GAP}{format_bytes(disk.used_bytes):>{BYTES_WIDTH}}"
-                     f"{GAP}{format_bytes(disk.total_bytes):>{BYTES_WIDTH}}"
-                     f"{GAP}{share:>{USE_WIDTH}}\n")
+        lines.append(
+            f"{mount:<{MOUNT_WIDTH}}{GAP}{format_bytes(disk.used_bytes):>{BYTES_WIDTH}}"
+            f"{GAP}{format_bytes(disk.total_bytes):>{BYTES_WIDTH}}"
+            f"{GAP}{share:>{USE_WIDTH}}\n"
+        )
     lines.append("\n")
-    lines.append(f"{'PID':>{PID_WIDTH}}{GAP}{'CPU%':>{CPU_WIDTH}}{GAP}"
-                 f"{'RSS':>{BYTES_WIDTH}}{GAP}NAME\n")
+    lines.append(
+        f"{'PID':>{PID_WIDTH}}{GAP}{'CPU%':>{CPU_WIDTH}}{GAP}"
+        f"{'RSS':>{BYTES_WIDTH}}{GAP}NAME\n"
+    )
     for proc in processes:
-        row = (f"{proc.pid:>{PID_WIDTH}}{GAP}{_percent_or_dash(proc.cpu_tenths):>{CPU_WIDTH}}"
-               f"{GAP}{_bytes_or_dash(proc.rss_bytes):>{BYTES_WIDTH}}")
+        row = (
+            f"{proc.pid:>{PID_WIDTH}}{GAP}{_percent_or_dash(proc.cpu_tenths):>{CPU_WIDTH}}"
+            f"{GAP}{_bytes_or_dash(proc.rss_bytes):>{BYTES_WIDTH}}"
+        )
         name = truncate(sanitize(proc.name), NAME_WIDTH)
         lines.append(f"{row}{GAP}{name}\n" if name else f"{row}\n")
     return "".join(lines)
@@ -337,7 +382,9 @@ def live_samples(interval: float) -> Iterator[Sample]:
 # --- main --------------------------------------------------------------------------------
 
 
-def run_samples(config: Config, samples: Iterator[Sample], record: BinaryIO | None) -> int:
+def run_samples(
+    config: Config, samples: Iterator[Sample], record: BinaryIO | None
+) -> int:
     emitted = 0
     try:
         for sample in samples:

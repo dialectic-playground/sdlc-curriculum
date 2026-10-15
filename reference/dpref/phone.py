@@ -10,9 +10,24 @@ from __future__ import annotations
 import sys
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, invalid_argument, open_input,
-                     parse_args, prompt, read_all, strip_eof_marker, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    open_input,
+    parse_args,
+    prompt,
+    read_all,
+    strip_eof_marker,
+    usage_failure,
+)
 
 TOOL = "dp-phone"
 DEFAULT_FILE = "students.dat"
@@ -60,8 +75,11 @@ def load_records(data: bytes, source: str) -> list[bytes]:
     for number, raw in enumerate(lines, start=1):
         record = strip_cr(raw)
         if len(record) != RECORD_SIZE:
-            raise DataError(source, number,
-                            f"invalid record length {len(record)}, expected {RECORD_SIZE}")
+            raise DataError(
+                source,
+                number,
+                f"invalid record length {len(record)}, expected {RECORD_SIZE}",
+            )
         records.append(record)
     return records
 
@@ -134,7 +152,9 @@ def main(argv: list[str]) -> int:
         file_failure(TOOL, queries, error)
         return 1
     try:
-        lines = InputStream(handle)  # query lines, each as soon as it is complete (FR-05)
+        lines = InputStream(
+            handle
+        )  # query lines, each as soon as it is complete (FR-05)
         while True:
             prompt(prompting, PROMPT_TEXT)
             try:

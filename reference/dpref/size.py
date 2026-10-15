@@ -13,8 +13,19 @@ import os
 import sys
 
 from . import common
-from .common import (PROMPT, InputError, InputStream, Option, UsageError, encode_arg,
-                     handle_action, invalid_argument, parse_args, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    encode_arg,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-size"
 DEFAULT_EXTENSION = ".c"
@@ -48,7 +59,9 @@ class Session:
         self.extension = extension
         self.prompting = prompting
         self.failed = False
-        self.stdin: InputStream | None = None  # opened by the first read of names (FR-01)
+        self.stdin: InputStream | None = (
+            None  # opened by the first read of names (FR-01)
+        )
 
     def measure(self, name: bytes) -> None:
         path = name + self.extension
@@ -60,7 +73,7 @@ class Session:
         try:
             if os.path.isdir(os_path):
                 raise IsADirectoryError(os_path)
-            handle = open(os_path, "rb")
+            handle = open(os_path, "rb")  # noqa: SIM115
         except OSError as error:
             # A name the platform rejects as malformed (EINVAL, for example a control
             # character in a Windows file name) cannot exist: SRS FR-07.
@@ -79,8 +92,9 @@ class Session:
         except OSError:
             self.fail_path(path, "Input/output error")
             return
-        common.write(b"\tFile name:\t" + path + b"\n\tByte size:\t" + str(count).encode()
-                     + b"\n")
+        common.write(
+            b"\tFile name:\t" + path + b"\n\tByte size:\t" + str(count).encode() + b"\n"
+        )
         common.out.flush()
 
     def fail_path(self, path: bytes, reason: str) -> None:
@@ -111,6 +125,7 @@ class Session:
                 self.fail_line(line.line, "file name contains a NUL byte")
             else:
                 self.measure(name)
+
 
 def main(argv: list[str]) -> int:
     try:

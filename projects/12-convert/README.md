@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 12 — Interactive Length Unit Conversion (`dp-convert`)](#project-12--interactive-length-unit-conversion-dp-convert)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 12 — Interactive Length Unit Conversion (`dp-convert`)
 
 > Convert lengths in yards to feet and inches until a negative length says stop, the way a
@@ -7,28 +23,28 @@
 
 ## Purpose
 
-Project 12 is adapted from §1.2 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 12 is adapted from §1.2 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that asks for a length in yards, prints it in yards, feet, and inches, and repeats
 until the user enters a negative number, when it prints `*** END OF PROGRAM ***`. The textbook
 version assumes a well-behaved typist: it has no answer for a mistyped number, a length too
 large for its integers, or an input that ends before the negative value arrives. This project
 keeps its prompt, report, and banner word for word and turns it into a command-line tool that
-works the same at the keyboard and in a pipeline. The engineering focus is the *sentinel
-loop*: what ends it, what happens to input after it, and what happens when it never comes.
+works the same at the keyboard and in a pipeline. The engineering focus is the _sentinel
+loop_: what ends it, what happens to input after it, and what happens when it never comes.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
+| In scope                                                                                        | Out of scope                                   |
+| :---------------------------------------------------------------------------------------------- | :--------------------------------------------- |
 | Lengths as whitespace-separated integer tokens (CONV-32, CONV-33), 0 … 256204778801521550 yards | Fractional lengths, other units, unit suffixes |
-| Exact conversion: feet = yards × 3, inches = yards × 36 | Conversions in the other direction |
-| A negative length as the sentinel; nothing after it is read | Continuing after the sentinel |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files, writing files |
-| One block per length, flushed before the next length is read | Summary totals |
-| Optional prompts on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), including a missing sentinel; CONV-16 file errors | Recovering after an invalid length |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| Exact conversion: feet = yards × 3, inches = yards × 36                                         | Conversions in the other direction             |
+| A negative length as the sentinel; nothing after it is read                                     | Continuing after the sentinel                  |
+| Standard input or one `FILE` operand (`-` is standard input)                                    | Several input files, writing files             |
+| One block per length, flushed before the next length is read                                    | Summary totals                                 |
+| Optional prompts on standard error (`-p`, `--prompt`, CONV-36)                                  | Prompts on standard output                     |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                                   | Other legacy encodings                         |
+| Data diagnostics with line numbers (CONV-34), including a missing sentinel; CONV-16 file errors | Recovering after an invalid length             |
+| `--help`, `--version`, CONV-13 usage errors                                                     | Configuration files, environment variables     |
 
 ## Learning objectives
 
@@ -45,15 +61,15 @@ loop*: what ends it, what happens to input after it, and what happens when it ne
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-14, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`lengths.txt`, `mixed.txt`, `nosentinel.txt`, `bad.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                    |
+| :--------------------- | :------------------------------------------------------------------------------------------ |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                           |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-14, NFR-01 … NFR-08)                                        |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                     |
+| `tests/fixtures/`      | Input files shared by both suites (`lengths.txt`, `mixed.txt`, `nosentinel.txt`, `bad.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                      |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)     |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates         |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -77,4 +93,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 32 — Monte Carlo Forest Fire Percolation Simulation (`dp-perc`)](#project-32--monte-carlo-forest-fire-percolation-simulation-dp-perc)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 32 — Monte Carlo Forest Fire Percolation Simulation (`dp-perc`)
 
 > Plant a random forest at a chosen density, set its top row on fire, let the fire spread
@@ -8,14 +24,14 @@
 
 ## Purpose
 
-Project 32 is adapted from §5.12 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 32 is adapted from §5.12 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that asks for a tree density, plants a 25×25 forest at random, ignites every tree in
 the top row, spreads the fire to each tree that has a burning neighbor directly or diagonally
 above it, prints the forest before and after the fire, reports statistics, and asks
 `Again? (y/n)`. The textbook version draws from the C library's `rand()`, whose sequence differs
 from one platform to the next, so no two systems show the same forest. This project keeps the
-model and the dialog and turns it into a well-behaved, *reproducible* command-line simulation.
-The engineering focus is *deterministic Monte Carlo*: the generator, the seed, the exact order
+model and the dialog and turns it into a well-behaved, _reproducible_ command-line simulation.
+The engineering focus is _deterministic Monte Carlo_: the generator, the seed, the exact order
 in which random numbers are consumed, and how a random number becomes a tree are all part of
 the specification, so the same seed gives the same forest in every implementation — and a
 two-dimensional cellular automaton whose boundary columns are handled without stepping outside
@@ -23,17 +39,17 @@ the grid.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Densities 1 … 100 (percent) as integer tokens and `y`/`n` answers (CONV-32, CONV-33) | Fractional densities, other answers such as `yes` |
-| A square forest of side 25 by default, 1 … 78 with `-s`, `--size` | Rectangular forests, wind, sideways or upward spread |
-| The ANSI C example generator with `--seed` (CONV-38), one draw per cell in row-major order | The platform's own `rand()`, seeding from the clock |
-| Top-row ignition and downward spread to the three cells below a burning tree | Fire that burns out over time, animation |
-| Bordered ASCII grids before and after the fire; requested and actual density, trees at start, trees surviving | Percolation-probability estimates over many runs |
-| Repeated simulations in one session, the generator continuing from one to the next | Re-seeding between simulations |
-| Standard input or one `FILE` operand (`-` is standard input); optional prompts on standard error (`-p`, `--prompt`, CONV-36) | Several input files, writing files |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37); data diagnostics (CONV-34), CONV-16 file errors | Recovering after an invalid response |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                                                                     | Out of scope                                         |
+| :--------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| Densities 1 … 100 (percent) as integer tokens and `y`/`n` answers (CONV-32, CONV-33)                                         | Fractional densities, other answers such as `yes`    |
+| A square forest of side 25 by default, 1 … 78 with `-s`, `--size`                                                            | Rectangular forests, wind, sideways or upward spread |
+| The ANSI C example generator with `--seed` (CONV-38), one draw per cell in row-major order                                   | The platform's own `rand()`, seeding from the clock  |
+| Top-row ignition and downward spread to the three cells below a burning tree                                                 | Fire that burns out over time, animation             |
+| Bordered ASCII grids before and after the fire; requested and actual density, trees at start, trees surviving                | Percolation-probability estimates over many runs     |
+| Repeated simulations in one session, the generator continuing from one to the next                                           | Re-seeding between simulations                       |
+| Standard input or one `FILE` operand (`-` is standard input); optional prompts on standard error (`-p`, `--prompt`, CONV-36) | Several input files, writing files                   |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37); data diagnostics (CONV-34), CONV-16 file errors               | Recovering after an invalid response                 |
+| `--help`, `--version`, CONV-13 usage errors                                                                                  | Configuration files, environment variables           |
 
 ## Learning objectives
 
@@ -51,15 +67,15 @@ the grid.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-17, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Response files shared by both suites (`once.txt`, `again.txt`, `full.txt`, `bad-density.txt`, `bad-answer.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                                        |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                                               |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-17, NFR-01 … NFR-08)                                                            |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                                         |
+| `tests/fixtures/`      | Response files shared by both suites (`once.txt`, `again.txt`, `full.txt`, `bad-density.txt`, `bad-answer.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                                          |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention)                         |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates                             |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -83,4 +99,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.

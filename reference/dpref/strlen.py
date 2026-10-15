@@ -9,8 +9,17 @@ from __future__ import annotations
 
 from . import common
 from ._strings import length, lines
-from .common import (Option, UsageError, encode_arg, file_failure, handle_action,
-                     invalid_argument, parse_args, read_all, usage_failure)
+from .common import (
+    Option,
+    UsageError,
+    encode_arg,
+    file_failure,
+    handle_action,
+    invalid_argument,
+    parse_args,
+    read_all,
+    usage_failure,
+)
 
 TOOL = "dp-strlen"
 HELP_TEXT = """\

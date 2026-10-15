@@ -13,8 +13,17 @@ import codecs
 from dataclasses import dataclass
 from typing import BinaryIO
 
-from .common import (Option, UsageError, encode_arg, file_failure, handle_action, open_input,
-                     parse_args, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    encode_arg,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-wc"
 CHUNK_SIZE = 64 * 1024
@@ -96,7 +105,9 @@ class Counter:
 
     def finish(self) -> Counts:
         self._count_text(self._decoder.decode(b"", final=True))
-        self.counts.max_line_length = max(self.counts.max_line_length, self._line_length)
+        self.counts.max_line_length = max(
+            self.counts.max_line_length, self._line_length
+        )
         return self.counts
 
     def _count_text(self, text: str) -> None:
@@ -106,7 +117,9 @@ class Counter:
         segments = text.split("\n")
         self._line_length += len(segments[0])
         for segment in segments[1:]:
-            self.counts.max_line_length = max(self.counts.max_line_length, self._line_length)
+            self.counts.max_line_length = max(
+                self.counts.max_line_length, self._line_length
+            )
             self._line_length = len(segment)
 
 
@@ -121,7 +134,7 @@ def count_bytes(data: bytes, chunk_size: int = CHUNK_SIZE) -> Counts:
     """Count an in-memory buffer by feeding it in ``chunk_size`` pieces (for self-checks)."""
     counter = Counter()
     for start in range(0, len(data), chunk_size):
-        counter.feed(data[start:start + chunk_size])
+        counter.feed(data[start : start + chunk_size])
     return counter.finish()
 
 
@@ -145,8 +158,12 @@ def main(argv: list[str]) -> int:
     except UsageError as error:
         return usage_failure(TOOL, error)
 
-    columns = tuple(name for name in COLUMNS if parsed.values.get(name)) or DEFAULT_COLUMNS
-    operands: list[str | None] = list(parsed.operands) or [None]  # None = implicit stdin
+    columns = (
+        tuple(name for name in COLUMNS if parsed.values.get(name)) or DEFAULT_COLUMNS
+    )
+    operands: list[str | None] = list(parsed.operands) or [
+        None
+    ]  # None = implicit stdin
     rows: list[tuple[list[int], bytes | None]] = []
     total = Counts()
     stdin_consumed = False
@@ -172,7 +189,9 @@ def main(argv: list[str]) -> int:
                 if path == "-":
                     stdin_consumed = True
         total.add(counts)
-        rows.append((counts.select(columns), None if operand is None else encode_arg(operand)))
+        rows.append(
+            (counts.select(columns), None if operand is None else encode_arg(operand))
+        )
 
     if len(operands) > 1:
         rows.append((total.select(columns), b"total"))

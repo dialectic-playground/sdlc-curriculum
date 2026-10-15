@@ -14,15 +14,25 @@ import stat
 import subprocess
 from dataclasses import dataclass, field
 
-from .common import (Option, UsageError, diagnose, encode_arg, file_error_reason,
-                     handle_action, out, parse_args, usage_failure, write)
+from .common import (
+    Option,
+    UsageError,
+    diagnose,
+    encode_arg,
+    file_error_reason,
+    handle_action,
+    out,
+    parse_args,
+    usage_failure,
+    write,
+)
 
 TOOL = "dp-env"
 IS_WINDOWS = os.name == "nt"
 
-EXIT_FAILURE = 125      # dp-env itself failed (including usage errors)
-EXIT_CANNOT_RUN = 126   # COMMAND was found but could not be started
-EXIT_NOT_FOUND = 127    # COMMAND was not found
+EXIT_FAILURE = 125  # dp-env itself failed (including usage errors)
+EXIT_CANNOT_RUN = 126  # COMMAND was found but could not be started
+EXIT_NOT_FOUND = 127  # COMMAND was not found
 DEFAULT_PATHEXT = ".COM;.EXE;.BAT;.CMD"
 FORWARDED_SIGNALS = ("SIGINT", "SIGTERM", "SIGHUP")
 WINDOWS_BAD_EXE_FORMAT = 193  # ERROR_BAD_EXE_FORMAT
@@ -69,6 +79,7 @@ class RuntimeFailure(Exception):
 
 # --- environment model (FR-05 .. FR-08) ------------------------------------------------
 
+
 def name_key(name: str) -> str:
     """Variable names compare case-insensitively on Windows, exactly elsewhere (FR-08)."""
     return name.upper() if IS_WINDOWS else name
@@ -78,10 +89,12 @@ def name_key(name: str) -> str:
 class Environment:
     """Ordered name -> value mapping that remembers each entry's spelling."""
 
-    entries: dict[str, tuple[str, str]] = field(default_factory=dict)  # key -> (name, value)
+    entries: dict[str, tuple[str, str]] = field(
+        default_factory=dict
+    )  # key -> (name, value)
 
     @classmethod
-    def inherited(cls) -> "Environment":
+    def inherited(cls) -> Environment:
         env = cls()
         # Note: on Windows, os.environ reports names in upper case, so the inherited spelling
         # is not preserved by this model. The black-box suites only print under -i.
@@ -128,15 +141,19 @@ def parse_request(argv: list[str]) -> Request | None:
     if operands and operands[0] == "-":
         ignore = True
         operands.pop(0)
-    unset = [str(name) for name in parsed.values.get("unset", [])]  # type: ignore[union-attr]
+    unset = [str(name) for name in parsed.values.get("unset", [])]  # type: ignore
     for name in unset:
         if name == "" or "=" in name:
-            raise RuntimeFailure(f"cannot unset '{name}': Invalid argument", EXIT_FAILURE)
+            raise RuntimeFailure(
+                f"cannot unset '{name}': Invalid argument", EXIT_FAILURE
+            )
     assignments = []
     while operands and "=" in operands[0]:
         name, _, value = operands.pop(0).partition("=")
         if name == "":
-            raise RuntimeFailure(f"cannot set '={value}': Invalid argument", EXIT_FAILURE)
+            raise RuntimeFailure(
+                f"cannot set '={value}': Invalid argument", EXIT_FAILURE
+            )
         assignments.append((name, value))
     chdir = parsed.values.get("chdir")
     null = bool(parsed.values.get("null"))
@@ -144,8 +161,14 @@ def parse_request(argv: list[str]) -> Request | None:
         raise UsageError("cannot specify --null (-0) with command")
     if chdir is not None and not operands:
         raise UsageError("must specify command with --chdir (-C)")
-    return Request(ignore, unset, assignments, None if chdir is None else str(chdir), null,
-                   operands)
+    return Request(
+        ignore,
+        unset,
+        assignments,
+        None if chdir is None else str(chdir),
+        null,
+        operands,
+    )
 
 
 def build_environment(request: Request) -> Environment:
@@ -160,8 +183,9 @@ def build_environment(request: Request) -> Environment:
 def print_environment(env: Environment, null: bool) -> None:
     """FR-09: one NAME=VALUE entry per line (or NUL-terminated), byte-wise sorted by name."""
     terminator = b"\0" if null else b"\n"
-    data = b"".join(encode_arg(f"{name}={value}") + terminator
-                    for name, value in env.sorted_items())
+    data = b"".join(
+        encode_arg(f"{name}={value}") + terminator for name, value in env.sorted_items()
+    )
     try:
         write(data)
         out.flush()
@@ -173,6 +197,7 @@ def print_environment(env: Environment, null: bool) -> None:
 
 # --- working directory and command resolution (FR-10 .. FR-12) --------------------------
 
+
 def change_directory(directory: str) -> None:
     try:
         if os.path.exists(directory) and not os.path.isdir(directory):
@@ -180,13 +205,18 @@ def change_directory(directory: str) -> None:
         os.chdir(directory)
     except OSError as error:
         reason = file_error_reason(error)
-        raise RuntimeFailure(f"cannot change directory to '{directory}': {reason}",
-                             EXIT_FAILURE) from None
+        raise RuntimeFailure(
+            f"cannot change directory to '{directory}': {reason}", EXIT_FAILURE
+        ) from None
 
 
 def has_separator(command: str) -> bool:
     if IS_WINDOWS:
-        return "/" in command or "\\" in command or (len(command) >= 2 and command[1] == ":")
+        return (
+            "/" in command
+            or "\\" in command
+            or (len(command) >= 2 and command[1] == ":")
+        )
     return "/" in command
 
 
@@ -260,12 +290,16 @@ def spawn_failure(command: str, error: OSError) -> RuntimeFailure:
     """FR-12: map a failure to start the selected file to 127 or 126."""
     if isinstance(error, FileNotFoundError):
         return not_found(command)
-    if error.errno == errno.ENOEXEC or getattr(error, "winerror", None) == WINDOWS_BAD_EXE_FORMAT:
+    if (
+        error.errno == errno.ENOEXEC
+        or getattr(error, "winerror", None) == WINDOWS_BAD_EXE_FORMAT
+    ):
         return cannot_run(command, "Exec format error")
     return cannot_run(command, file_error_reason(error))
 
 
 # --- execution with signal forwarding (FR-13 .. FR-15) ----------------------------------
+
 
 class SignalForwarder:
     """Relays SIGINT/SIGTERM/SIGHUP to the child (POSIX) or ignores console events (Windows).
@@ -297,7 +331,7 @@ class SignalForwarder:
 
     def restore(self) -> None:
         for number, handler in self.previous.items():
-            signal.signal(number, handler)  # type: ignore[arg-type]
+            signal.signal(number, handler)  # type: ignore
 
     def forward(self, number: int, _frame: object) -> None:
         if self.child is None:

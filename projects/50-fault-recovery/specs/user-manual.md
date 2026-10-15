@@ -1,11 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [dp-divide — User Manual](#dp-divide--user-manual)
+  - [NAME](#name)
+  - [SYNOPSIS](#synopsis)
+  - [DESCRIPTION](#description)
+    - [Faults and recovery](#faults-and-recovery)
+    - [Numbers](#numbers)
+    - [Working interactively](#working-interactively)
+  - [OPTIONS](#options)
+    - [Option syntax](#option-syntax)
+  - [EXIT STATUS](#exit-status)
+  - [DIAGNOSTICS](#diagnostics)
+  - [EXAMPLES](#examples)
+  - [HELP OUTPUT](#help-output)
+  - [VERSION OUTPUT](#version-output)
+  - [ENVIRONMENT](#environment)
+  - [PLATFORM NOTES](#platform-notes)
+  - [INSTALLATION](#installation)
+  - [SEE ALSO](#see-also)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # dp-divide — User Manual
 
-| Field | Value |
-| :-- | :-- |
-| Product | `dp-divide` 1.0.0 |
-| Project | `50-fault-recovery` — Structured Exception Handling & Fault Recovery |
-| Applies to | Linux, macOS, Windows |
-| Specification | `SRS.md` (SRS-50), `shared/CLI-CONVENTIONS.md` |
+| Field         | Value                                                                |
+| :------------ | :------------------------------------------------------------------- |
+| Product       | `dp-divide` 1.0.0                                                    |
+| Project       | `50-fault-recovery` — Structured Exception Handling & Fault Recovery |
+| Applies to    | Linux, macOS, Windows                                                |
+| Specification | `SRS.md` (SRS-50), `shared/CLI-CONVENTIONS.md`                       |
 
 ---
 
@@ -23,9 +49,9 @@ dp-divide --version
 
 ## DESCRIPTION
 
-`dp-divide` reads numbers from *FILE*, or from standard input when there is no *FILE* or
-*FILE* is `-`, two at a time. For each pair *a b* it prints one line with *a*, *b*, and *a*
-divided by *b*, each with six digits after the decimal point:
+`dp-divide` reads numbers from _FILE_, or from standard input when there is no _FILE_ or
+_FILE_ is `-`, two at a time. For each pair _a b_ it prints one line with _a_, _b_, and _a_
+divided by _b_, each with six digits after the decimal point:
 
 ```text
 12.000000 / 4.000000 == 3.000000
@@ -41,7 +67,7 @@ Some pairs cannot be divided:
 - the quotient is **too large** to represent (its magnitude would exceed about
   1.8 × 10³⁰⁸), for example `-1e308 0.1`.
 
-Such a pair is a *fault*. Instead of printing an infinite or undefined result, `dp-divide`
+Such a pair is a _fault_. Instead of printing an infinite or undefined result, `dp-divide`
 recovers: it prints these two lines on standard output, ignores the rest of the input, and
 exits with status **0**:
 
@@ -54,7 +80,7 @@ The wording comes from the textbook program, which recovered from the arithmetic
 (signal number 8) by jumping back to a recovery point. A recovered fault is not an error; it is
 how the tool is meant to end when a pair cannot be divided.
 
-A quotient that is merely very *small* is not a fault: it is printed as `0.000000` (or a few
+A quotient that is merely very _small_ is not a fault: it is printed as `0.000000` (or a few
 millionths). Likewise a divisor such as `1e-8` is printed as `0.000000` but is not zero, so it
 is divided normally.
 
@@ -97,8 +123,8 @@ results and the recovery lines.
 ## OPTIONS
 
 **`-p`, `--prompt`**
-: Before each pair is read, write `Two floats: ` to standard error. A last prompt appears
-  before the end of the input is noticed; no prompt follows a fault.
+: Before each pair is read, write `Two floats:o standard error. A last prompt appears
+before the end of the input is noticed; no prompt follows a fault.
 
 **`--help`**
 : Display the help text below and exit with status 0.
@@ -118,11 +144,11 @@ results and the recovery lines.
 
 ## EXIT STATUS
 
-| Status | Meaning |
-| :-- | :-- |
-| 0 | Success: every pair was divided (an empty input is fine), or a fault occurred and the tool recovered from it, or help or version was printed |
-| 1 | The input could not be read, it contained an invalid number, or its last pair was incomplete |
-| 2 | Usage error: an invalid option or more than one file |
+| Status | Meaning                                                                                                                                      |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | Success: every pair was divided (an empty input is fine), or a fault occurred and the tool recovered from it, or help or version was printed |
+| 1      | The input could not be read, it contained an invalid number, or its last pair was incomplete                                                 |
+| 2      | Usage error: an invalid option or more than one file                                                                                         |
 
 ## DIAGNOSTICS
 
@@ -135,16 +161,16 @@ $ dp-divide bad.txt
 dp-divide: bad.txt:2: invalid number 'two'
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `S:L: invalid number 'K'` | Entry *K* on line *L* is not a number, or is too large to store | Write the number in decimal digits, with an optional fraction and exponent |
-| `S:L: unexpected end of input` | The input ended after the first number of a pair; *L* is the last line | Add the missing divisor or remove the extra number |
-| `F: No such file or directory` | *F* does not exist | Check the spelling and the current directory |
-| `F: Permission denied` | You may not read *F* | Check the file's permissions |
-| `F: Is a directory` | *F* is a directory | Name a file instead |
-| `F: Not a directory` | Part of the path *F* is a file, not a directory | Correct the path |
-| `F: Input/output error` | Any other read failure | Check the device or file system |
-| `write error` | The results could not be written (for example, the disk is full) | Free space or redirect the output elsewhere |
+| Message                        | Cause                                                                  | Fix                                                                        |
+| :----------------------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| `S:L: invalid number 'K'`      | Entry _K_ on line _L_ is not a number, or is too large to store        | Write the number in decimal digits, with an optional fraction and exponent |
+| `S:L: unexpected end of input` | The input ended after the first number of a pair; _L_ is the last line | Add the missing divisor or remove the extra number                         |
+| `F: No such file or directory` | _F_ does not exist                                                     | Check the spelling and the current directory                               |
+| `F: Permission denied`         | You may not read _F_                                                   | Check the file's permissions                                               |
+| `F: Is a directory`            | _F_ is a directory                                                     | Name a file instead                                                        |
+| `F: Not a directory`           | Part of the path _F_ is a file, not a directory                        | Correct the path                                                           |
+| `F: Input/output error`        | Any other read failure                                                 | Check the device or file system                                            |
+| `write error`                  | The results could not be written (for example, the disk is full)       | Free space or redirect the output elsewhere                                |
 
 Usage errors are written to standard error as two lines; nothing is read and nothing is
 written to standard output:
@@ -155,12 +181,12 @@ dp-divide: extra operand 'pairs.txt'
 Try 'dp-divide --help' for more information.
 ```
 
-| Message | Cause | Fix |
-| :-- | :-- | :-- |
-| `invalid option -- 'x'` | Unknown short option `-x` | Use `-p` |
-| `unrecognized option '--xyz'` | Unknown or abbreviated long option | Spell the option in full |
-| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…` |
-| `extra operand 'F'` | More than one file was named | Run `dp-divide` once per file |
+| Message                                       | Cause                                                   | Fix                           |
+| :-------------------------------------------- | :------------------------------------------------------ | :---------------------------- |
+| `invalid option -- 'x'`                       | Unknown short option `-x`                               | Use `-p`                      |
+| `unrecognized option '--xyz'`                 | Unknown or abbreviated long option                      | Spell the option in full      |
+| `option '--prompt' doesn't allow an argument` | A value was given with `=` to an option that takes none | Remove the `=…`               |
+| `extra operand 'F'`                           | More than one file was named                            | Run `dp-divide` once per file |
 
 ## EXAMPLES
 

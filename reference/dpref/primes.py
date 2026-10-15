@@ -7,9 +7,22 @@ tool answers as soon as n has been typed, without waiting for the end of the inp
 from __future__ import annotations
 
 from . import common
-from .common import (PROMPT, DataError, InputError, InputStream, Option, UsageError,
-                     data_failure, file_failure, handle_action, open_input, parse_args,
-                     parse_int_token, prompt, usage_failure)
+from .common import (
+    PROMPT,
+    DataError,
+    InputError,
+    InputStream,
+    Option,
+    UsageError,
+    data_failure,
+    file_failure,
+    handle_action,
+    open_input,
+    parse_args,
+    parse_int_token,
+    prompt,
+    usage_failure,
+)
 
 TOOL = "dp-primes"
 MAX_N = 10_000_000
@@ -44,7 +57,7 @@ def primes_up_to(n: int) -> list[int]:
     p = 2
     while p * p <= n:
         if sieve[p]:
-            sieve[p * p::p] = bytes(len(range(p * p, n + 1, p)))
+            sieve[p * p :: p] = bytes(len(range(p * p, n + 1, p)))
         p += 1
     return [i for i in range(2, n + 1) if sieve[i]]
 

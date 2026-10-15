@@ -8,7 +8,7 @@ case-folds on Windows). A pattern is translated once into an anchored regular ex
 from __future__ import annotations
 
 import re
-from typing import Callable
+from collections.abc import Callable
 
 _NEVER = "(?!)"  # matches nothing: a non-negated bracket expression with an empty set
 
@@ -43,8 +43,11 @@ def _bracket(pattern: str, start: int) -> tuple[str, int] | None:
             char = pattern[index]
         index += 1
         # A range is c1 '-' c2, where the '-' is not the last member before ']'.
-        if (index + 1 < len(pattern) and pattern[index] == "-"
-                and pattern[index + 1] != "]"):
+        if (
+            index + 1 < len(pattern)
+            and pattern[index] == "-"
+            and pattern[index + 1] != "]"
+        ):
             high_index = index + 1
             high = pattern[high_index]
             if high == "\\" and high_index + 1 < len(pattern):

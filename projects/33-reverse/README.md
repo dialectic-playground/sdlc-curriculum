@@ -1,3 +1,19 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+
+- [Project 33 — Two-Pointer In-Place Sequence Reversal (`dp-reverse`)](#project-33--two-pointer-in-place-sequence-reversal-dp-reverse)
+  - [Purpose](#purpose)
+  - [Operational scope](#operational-scope)
+  - [Learning objectives](#learning-objectives)
+  - [What is provided](#what-is-provided)
+  - [What you deliver (in your language repository)](#what-you-deliver-in-your-language-repository)
+  - [Quick start](#quick-start)
+  - [Acceptance](#acceptance)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Project 33 — Two-Pointer In-Place Sequence Reversal (`dp-reverse`)
 
 > Reverse short strings in place with two converging indices, the way a professional tool
@@ -7,7 +23,7 @@
 
 ## Purpose
 
-Project 33 is adapted from §6.5 of Johnsonbaugh & Kalin, *Applications Programming in ANSI C*:
+Project 33 is adapted from §6.5 of Johnsonbaugh & Kalin, _Applications Programming in ANSI C_:
 a program that prompts for a string of up to 100 characters, reverses it in place by swapping
 characters from both ends towards the middle, and prints the result. The textbook version reads
 one word into a fixed array without checking its length and reverses bytes, so it overruns its
@@ -20,16 +36,16 @@ and [Project 29](../29-strlen/) measure text by the same character rule.
 
 ## Operational scope
 
-| In scope | Out of scope |
-| :-- | :-- |
-| Strings as whitespace-free words (CONV-32), or whole lines with `-l`, `--lines` | Reversing a whole file as one sequence |
-| Reversal of UTF-8 characters (SRS-04 rule), or of bytes with `-b`, `--bytes` | Grapheme clusters (combining marks, emoji sequences) |
-| In-place reversal with converging indices, O(1) extra space | Strings longer than 100 characters |
-| The textbook prompt and report line; prompts on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output |
-| Standard input or one `FILE` operand (`-` is standard input) | Several input files, writing files |
-| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37) | Other legacy encodings |
-| Data diagnostics with line numbers (CONV-34), CONV-16 file errors | Recovering after a string that is too long |
-| `--help`, `--version`, CONV-13 usage errors | Configuration files, environment variables |
+| In scope                                                                                   | Out of scope                                         |
+| :----------------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| Strings as whitespace-free words (CONV-32), or whole lines with `-l`, `--lines`            | Reversing a whole file as one sequence               |
+| Reversal of UTF-8 characters (SRS-04 rule), or of bytes with `-b`, `--bytes`               | Grapheme clusters (combining marks, emoji sequences) |
+| In-place reversal with converging indices, O(1) extra space                                | Strings longer than 100 characters                   |
+| The textbook prompt and report line; prompts on standard error (`-p`, `--prompt`, CONV-36) | Prompts on standard output                           |
+| Standard input or one `FILE` operand (`-` is standard input)                               | Several input files, writing files                   |
+| CRLF input and a trailing Ctrl-Z end-of-file marker (CONV-37)                              | Other legacy encodings                               |
+| Data diagnostics with line numbers (CONV-34), CONV-16 file errors                          | Recovering after a string that is too long           |
+| `--help`, `--version`, CONV-13 usage errors                                                | Configuration files, environment variables           |
 
 ## Learning objectives
 
@@ -46,15 +62,15 @@ and [Project 29](../29-strlen/) measure text by the same character rule.
 
 ## What is provided
 
-| Path | Contents |
-| :-- | :-- |
-| `specs/URD.md` | User requirements (UR-01 … UR-14) |
-| `specs/SRS.md` | System requirements (FR-01 … FR-14, NFR-01 … NFR-08) |
-| `specs/user-manual.md` | Complete user manual, including the normative help text |
-| `tests/fixtures/` | Input files shared by both suites (`words.txt`, `utf8.txt`, `lines.txt`, `toolong.txt`) |
-| `tests/public/` | 10 visible black-box tests with exact expected outputs |
-| `tests/private/` | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
-| `assignment/` | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates |
+| Path                   | Contents                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `specs/URD.md`         | User requirements (UR-01 … UR-14)                                                       |
+| `specs/SRS.md`         | System requirements (FR-01 … FR-14, NFR-01 … NFR-08)                                    |
+| `specs/user-manual.md` | Complete user manual, including the normative help text                                 |
+| `tests/fixtures/`      | Input files shared by both suites (`words.txt`, `utf8.txt`, `lines.txt`, `toolong.txt`) |
+| `tests/public/`        | 10 visible black-box tests with exact expected outputs                                  |
+| `tests/private/`       | 10 hidden black-box tests and their fixtures (used by grading/CI; unseen by convention) |
+| `assignment/`          | Language-neutral `Makefile` and blank HLD, LLD, RTM, and master-test-plan templates     |
 
 The textbook section has no companion data file; every fixture was written for this project.
 
@@ -78,4 +94,4 @@ make test-hidden    # hidden suite (CI does this on Linux, macOS, and Windows)
 ## Acceptance
 
 The project is complete when `make test` and `make test-hidden` pass on all three operating
-systems in CI, `make lint` is clean, and every RTM row is *Verified*.
+systems in CI, `make lint` is clean, and every RTM row is _Verified_.
