@@ -5,6 +5,9 @@
 # multi-architecture index digest; Dependabot (docker) keeps it current.
 FROM docker.io/library/python:3.12-slim-trixie@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
 
+# Debian keeps only the current version of each package, so apt versions cannot be pinned
+# reproducibly; the base image is pinned by digest instead.
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -y --no-install-recommends make git \
     && rm -rf /var/lib/apt/lists/*
