@@ -20,10 +20,24 @@ jobs:
         with:
           persist-credentials: false
 
+      # lychee runs from its official release binary, verified against the checksum below:
+      # the organization's allowed-actions policy does not include lycheeverse/lychee-action.
+      - name: Install lychee
+        env:
+          LYCHEE_VERSION: "0.24.2"
+          LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+        run: |
+          archive=lychee-x86_64-unknown-linux-gnu.tar.gz
+          curl -fsSLo "$RUNNER_TEMP/$archive" \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v$LYCHEE_VERSION/$archive"
+          echo "$LYCHEE_SHA256  $RUNNER_TEMP/$archive" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
+
       - name: Check links in Markdown files
-        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
-        with:
-          args: --no-progress --max-concurrency 8 --accept 200,206,429 --exclude-path .venv './**/*.md'
-          fail: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          lychee --version
+          lychee --no-progress --max-concurrency 8 --accept 200,206,429 --exclude-loopback \
+            --exclude-path .venv './**/*.md'
