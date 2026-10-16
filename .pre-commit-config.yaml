@@ -107,7 +107,7 @@ repos:
               projects/39-size/tests/(?:private/)?fixtures/(?:sub/)?[\w-]+\.c
           )$
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+    rev: v8.30.1
     hooks:
       - id: gitleaks
         name: Detect hardcoded secrets, API keys, and credentials
