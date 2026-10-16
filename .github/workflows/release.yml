@@ -1,0 +1,29 @@
+# Publishes the GitHub release for every pushed v* tag, so a tag never lacks its release
+# (the releases page and "Latest" come from releases, not tags). A release that already
+# exists, for example one created by hand with written notes, is left unchanged.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  release:
+    name: GitHub release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create the release for this tag unless it exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
+          else
+            gh release create "$TAG" --repo "$REPO" --verify-tag --title "$TAG" --generate-notes
+          fi
