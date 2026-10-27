@@ -112,7 +112,7 @@ repos:
       - id: gitleaks
         name: Detect hardcoded secrets, API keys, and credentials
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.0
+    rev: v0.17.1
     hooks:
       - id: ruff-check
         name: ruff check
@@ -129,7 +129,7 @@ repos:
               projects/\d+-[\w-]+/tests/(?:fixtures|private|public)/.+
           )$
   - repo: https://github.com/astral-sh/ty-pre-commit
-    rev: v0.0.87
+    rev: v0.0.90
     hooks:
       - id: ty
         name: ty
